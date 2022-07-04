@@ -1,5 +1,6 @@
 package de.seifi.quittung.ui;
 
+import de.seifi.quittung.models.QuittungModel;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -17,6 +18,8 @@ public class QuittungBindingViewModel {
     
     private float berechnenFaktorBasis = 1f;
     private float berechnenFaktorZiel = 1f;
+    
+    private QuittungModel savingModel = null;
     
 
     public QuittungBindingViewModel(float berechnenFaktorBasis, float berechnenFaktorZiel) {
