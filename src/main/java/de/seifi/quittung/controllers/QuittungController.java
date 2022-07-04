@@ -39,6 +39,15 @@ public class QuittungController implements Initializable {
         //QuittungApp.setRoot("secondary");
     }
 
+    @FXML
+    private void reload() throws IOException {
+        //QuittungApp.setRoot("secondary");
+    	
+        itemsTableView.setItems(null);
+    	quittungModel.reset();
+        itemsTableView.setItems(quittungModel.getQuittungItems());
+    }
+
     @Override
     public void initialize(URL url,
                            ResourceBundle resourceBundle) {

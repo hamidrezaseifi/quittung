@@ -11,15 +11,12 @@ public class QuittungBindingViewModel {
 
     private ObservableList<QuittungItemProperty> quittungItems;
 
-    //private ObjectProperty<ObservableList<QuittungItemProperty>> quittungItemsProperty;
-
     private FloatProperty gesamtSumme;
     private FloatProperty nettoSumme;
     private FloatProperty mvstSumme;
     
     private float berechnenFaktorBasis = 1f;
     private float berechnenFaktorZiel = 1f;
-    private float mvst100 = 19f;
     
 
     public QuittungBindingViewModel(float berechnenFaktorBasis, float berechnenFaktorZiel) {
@@ -31,11 +28,9 @@ public class QuittungBindingViewModel {
         mvstSumme = new SimpleFloatProperty(0);
 
         quittungItems = FXCollections.observableArrayList();
-        while (quittungItems.size() < INITIAL_ITEMS){
-            quittungItems.add(new QuittungItemProperty());
-        }
+        reset();
 
-        calculateQuittungSumme();
+        
     }
 
     public void calculateQuittungSumme() {
@@ -57,18 +52,6 @@ public class QuittungBindingViewModel {
     public void setQuittungItems(ObservableList<QuittungItemProperty> quittungItems) {
         this.quittungItems = quittungItems;
     }
-
-    /*public ObservableList<QuittungItemProperty> getQuittungItemsProperty() {
-        return quittungItemsProperty.get();
-    }
-
-    public ObjectProperty<ObservableList<QuittungItemProperty>> quittungItemsPropertyProperty() {
-        return quittungItemsProperty;
-    }
-
-    public void setQuittungItemsProperty(ObservableList<QuittungItemProperty> quittungItemsProperty) {
-        this.quittungItemsProperty.set(quittungItemsProperty);
-    }*/
 
     public float getGesamtSumme() {
         return gesamtSumme.get();
@@ -128,6 +111,14 @@ public class QuittungBindingViewModel {
 
 	public void setBerechnenFaktorZiel(float berechnenFaktorZiel) {
 		this.berechnenFaktorZiel = berechnenFaktorZiel;
+	}
+
+	public void reset() {
+		quittungItems.clear();
+        while (quittungItems.size() < INITIAL_ITEMS){
+            quittungItems.add(new QuittungItemProperty());
+        }
+        calculateQuittungSumme();
 	}
 	
 	

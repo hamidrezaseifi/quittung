@@ -59,7 +59,7 @@ public class MainController implements Initializable {
     	
     	clearChildren();
     	
-    	childBox.getChildren().add(QuittungApp.getQuittungPane());
+    	childBox.getChildren().add(QuittungApp.getReportPane());
     }
 	
     @FXML
@@ -67,7 +67,7 @@ public class MainController implements Initializable {
     	
     	clearChildren();
     	
-    	childBox.getChildren().add(QuittungApp.getQuittungPane());
+    	childBox.getChildren().add(QuittungApp.getAdminPane());
     }
     
     private void clearChildren() {

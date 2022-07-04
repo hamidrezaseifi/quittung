@@ -54,6 +54,17 @@
     
 }
 
+.reload-button {
+	         
+    -fx-background-image: url('../images/reload.png');
+    
+    -fx-background-size: 32 32;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position:left;   
+    -fx-font-size: 14px;
+    
+}
+
 .bill-button {
 	         
     -fx-background-image: url('../images/bill.png');

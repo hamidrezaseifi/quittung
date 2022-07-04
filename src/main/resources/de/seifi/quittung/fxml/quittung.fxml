@@ -33,7 +33,8 @@
         <HBox GridPane.columnIndex="0" GridPane.rowIndex="0">
             <Label text="Quittung" styleClass="quittung-name-label" />
         </HBox>
-        <HBox GridPane.columnIndex="0" GridPane.rowIndex="1">
+        <HBox GridPane.columnIndex="0" GridPane.rowIndex="1" spacing="10" alignment="CENTER_RIGHT">
+            <Button styleClass="reload-button" text="Zurücksetzen" onAction="#reload" prefWidth="130" prefHeight="36" alignment="CENTER_RIGHT"></Button>
             <Button styleClass="save-button" text="Speichern" onAction="#speichern" prefWidth="116" prefHeight="36" alignment="CENTER_RIGHT"></Button>
             
         </HBox>
