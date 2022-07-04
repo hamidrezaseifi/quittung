@@ -1,5 +1,6 @@
 package de.seifi.quittung.ui;
 
+import de.seifi.quittung.db.DbConnection;
 import de.seifi.quittung.models.QuittungModel;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
@@ -7,8 +8,16 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.collections.SetChangeListener;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.stream.Collectors;
+
 public class QuittungBindingViewModel {
     private int INITIAL_ITEMS = 10;
+    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyy");
+
+    private final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
     private ObservableList<QuittungItemProperty> quittungItems;
 
@@ -122,7 +131,25 @@ public class QuittungBindingViewModel {
             quittungItems.add(new QuittungItemProperty());
         }
         calculateQuittungSumme();
+        savingModel = null;
 	}
-	
-	
+
+
+    public boolean save() {
+        if(savingModel == null){
+            LocalDateTime ldt = LocalDateTime.now();
+
+            String date = dateFormatter.format(ldt);
+            String time = timeFormatter.format(ldt);
+
+            int lastNummer = DbConnection.getLastQuittungNummer(date);
+
+            savingModel = new QuittungModel(lastNummer + 1, date, time);
+            savingModel.getItems().addAll(quittungItems.stream().filter(qi -> qi.isValid()).map(qi -> qi.toModel()).collect(Collectors.toList()));
+            DbConnection.addQuittung(savingModel);
+
+        }
+
+        return true;
+    }
 }

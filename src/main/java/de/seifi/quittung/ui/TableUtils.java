@@ -34,7 +34,7 @@ public class TableUtils {
     
     public static String formatGeld(Number geld) {
     	
-    	String sGeld = String.format("%.2f €", geld);
+    	String sGeld = String.format("%.2f â‚¬", geld);
     	
     	return sGeld;
     }

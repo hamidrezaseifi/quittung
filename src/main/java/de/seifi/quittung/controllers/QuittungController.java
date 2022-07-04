@@ -37,6 +37,9 @@ public class QuittungController implements Initializable {
     @FXML
     private void speichern() throws IOException {
         //QuittungApp.setRoot("secondary");
+        if(quittungModel.save()){
+            reload();
+        }
     }
 
     @FXML
@@ -53,9 +56,7 @@ public class QuittungController implements Initializable {
                            ResourceBundle resourceBundle) {
     	
     	URL u = QuittungController.class.getResource("images/save.png");
-    	
-    	DbConnection.initialDbIfNotExists();
-    	
+
         quittungModel = new QuittungBindingViewModel(1.4f, 1.2f);
 
         itemsTableView.getColumns().get(0).prefWidthProperty().bind(

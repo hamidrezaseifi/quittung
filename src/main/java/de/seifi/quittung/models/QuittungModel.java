@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class QuittungModel {
-    private String nummer;
+    private Integer nummer;
     private String date;
     private String time;
     private List<QuittungItemModel> items;
@@ -13,7 +13,7 @@ public class QuittungModel {
     	items = new ArrayList<QuittungItemModel>();
     }
 
-	public QuittungModel(String nummer, String date, String time) {
+	public QuittungModel(Integer nummer, String date, String time) {
 		this();
 		this.nummer = nummer;
 		this.date = date;
@@ -21,7 +21,7 @@ public class QuittungModel {
 		
 	}
 
-	public QuittungModel(String nummer, String date, String time, List<QuittungItemModel> items) {
+	public QuittungModel(Integer nummer, String date, String time, List<QuittungItemModel> items) {
 		this();
 		this.nummer = nummer;
 		this.date = date;
@@ -29,11 +29,11 @@ public class QuittungModel {
 		this.items = items;
 	}
 
-	public String getNummer() {
+	public Integer getNummer() {
 		return nummer;
 	}
 
-	public void setNummer(String nummer) {
+	public void setNummer(Integer nummer) {
 		this.nummer = nummer;
 	}
 

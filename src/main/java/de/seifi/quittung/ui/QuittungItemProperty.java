@@ -97,7 +97,17 @@ public class QuittungItemProperty {
 		this.brutoPreis.set(brutoPreis);
 	}
 
+    public QuittungItemModel toModel(){
+        return new QuittungItemModel(this.bezeichnung.get(), this.menge.get(), this.preis.get());
+    }
 
+    public boolean isValid(){
+        if(bezeichnung.get() == null){
+            return false;
+        }
+
+        return (!bezeichnung.get().trim().isEmpty() ) && (menge.get() > 0) && (preis.get() > 0);
+    }
 	public FloatProperty brutoPreisProperty() {
 		return brutoPreis;
 	}

@@ -1,5 +1,6 @@
 package de.seifi.quittung;
 
+import de.seifi.quittung.db.DbConnection;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -23,7 +24,10 @@ public class QuittungApp extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-    	
+        DbConnection.initialDbIfNotExists();
+
+        DbConnection.test();
+
         scene = new Scene(loadFXML("main"));
         scene.getStylesheets().add(getClass().getResource("styles/styles.css").toExternalForm());
         stage.setScene(scene);
