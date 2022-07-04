@@ -1,0 +1,99 @@
+.button {
+    -fx-text-fill: blue;
+}
+
+.quittung-name-label{
+    -fx-font-family: Arial, Helvetica, sans-serif;
+    -fx-font-size: 40px;
+    -fx-font-weight: bold;
+}
+
+.quittung-list-top-label{
+    -fx-font-family: Arial, Helvetica, sans-serif;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+.quittung-list-item{
+    -fx-font-family: Arial, Helvetica, sans-serif;
+    -fx-font-size: 16px;
+    -fx-font-weight: normal;
+}
+
+.summe-value{
+    -fx-font-family: Arial, Helvetica, sans-serif;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-align: right;
+}
+
+.summe-label{
+    -fx-font-family: Arial, Helvetica, sans-serif;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.table-view .table-column{
+    -fx-alignment:center;
+    -fx-font-size:14px;
+    -fx-font-weight:bold;
+}
+
+.table-view .table-cell{
+    -fx-font-size:12px;
+}
+
+.save-button {
+	         
+    -fx-background-image: url('../images/save.png');
+    
+    -fx-background-size: 32 32;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position:left;   
+    -fx-font-size: 14px;
+    
+}
+
+.bill-button {
+	         
+    -fx-background-image: url('../images/bill.png');
+    
+    -fx-background-size: 32 32;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position:left;   
+    -fx-font-size: 14px;
+    
+}
+
+.home-button {
+	         
+    -fx-background-image: url('../images/home.png');
+    
+    -fx-background-size: 30 30;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 5px;   
+    -fx-font-size: 14px;
+    
+}
+
+.report-button {
+	         
+    -fx-background-image: url('../images/chart.png');
+    
+    -fx-background-size: 32 32;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position:left;   
+    -fx-font-size: 14px;
+    
+}
+
+.admin-button {
+	         
+    -fx-background-image: url('../images/admin.png');
+    
+    -fx-background-size: 30 26;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position:left;   
+    -fx-font-size: 14px;
+    
+}

@@ -4,20 +4,14 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import de.seifi.quittung.QuittungApp;
+import de.seifi.quittung.db.DbConnection;
 import de.seifi.quittung.ui.FloatGeldLabel;
-import de.seifi.quittung.ui.FloatTextField;
 import de.seifi.quittung.ui.QuittungBindingViewModel;
 import de.seifi.quittung.ui.QuittungItemProperty;
-import javafx.beans.property.Property;
-import javafx.beans.property.SimpleListProperty;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.layout.VBox;
 
 public class QuittungController implements Initializable {
 
@@ -41,13 +35,18 @@ public class QuittungController implements Initializable {
     private QuittungBindingViewModel quittungModel;
 
     @FXML
-    private void switchToSecondary() throws IOException {
-        QuittungApp.setRoot("secondary");
+    private void speichern() throws IOException {
+        //QuittungApp.setRoot("secondary");
     }
 
     @Override
     public void initialize(URL url,
                            ResourceBundle resourceBundle) {
+    	
+    	URL u = QuittungController.class.getResource("images/save.png");
+    	
+    	DbConnection.initialDbIfNotExists();
+    	
         quittungModel = new QuittungBindingViewModel(1.4f, 1.2f);
 
         itemsTableView.getColumns().get(0).prefWidthProperty().bind(
