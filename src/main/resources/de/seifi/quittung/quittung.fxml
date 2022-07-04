@@ -42,7 +42,7 @@
                         <BezeichnungTableCellFactory />
                     </cellFactory>
                 </TableColumn>
-                <TableColumn fx:id="mengeColumn" text="Menge" prefWidth="100">
+                <TableColumn fx:id="mengeColumn" text="Menge" prefWidth="90">
                     <cellValueFactory>
                         <PropertyValueFactory property="menge" />
                     </cellValueFactory>
@@ -50,12 +50,20 @@
                         <MengeTableCellFactory />
                     </cellFactory>
                 </TableColumn>
-                <TableColumn fx:id="preisColumn" text="Preis" prefWidth="120">
+                <TableColumn fx:id="bPreisColumn" text="Bruto-Preis" prefWidth="120">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="brutoPreis" />
+                    </cellValueFactory>
+                    <cellFactory>
+                        <GeldEditingTableCellFactory />
+                    </cellFactory>
+                </TableColumn>
+                <TableColumn fx:id="nPreisColumn" text="Neto-Preis" prefWidth="120" editable="false">
                     <cellValueFactory>
                         <PropertyValueFactory property="preis" />
                     </cellValueFactory>
                     <cellFactory>
-                        <GeldTableCellFactory />
+                        <GeldLabelTableCellFactory />
                     </cellFactory>
                 </TableColumn>
                 <TableColumn fx:id="gesamtColumn" text="Gesamt" prefWidth="180" editable="false">
@@ -63,7 +71,7 @@
                         <PropertyValueFactory property="gesamt" />
                     </cellValueFactory>
                     <cellFactory>
-                        <GeldTableCellFactory />
+                        <GeldLabelTableCellFactory />
                     </cellFactory>
                 </TableColumn>
             </columns>
@@ -84,12 +92,12 @@
             </rowConstraints>
             <children>
                 <Label text="Nettobetrag" GridPane.columnIndex="1" GridPane.rowIndex="1" styleClass="summe-label" textAlignment="LEFT" />
-                <FloatGeldLabel text="0" fx:id="lblNetto" GridPane.columnIndex="2" GridPane.rowIndex="1" prefWidth="170" styleClass="summe-value" textAlignment="RIGHT" />
+                <FloatGeldLabel fx:id="lblNetto" GridPane.columnIndex="2" GridPane.rowIndex="1" prefWidth="170" styleClass="summe-value" textAlignment="RIGHT" />
                 <Label text="Mwst 19,00 %" GridPane.columnIndex="1" GridPane.rowIndex="2" textAlignment="LEFT" styleClass="summe-label" />
-                <FloatGeldLabel text="0" fx:id="lblMvst" GridPane.columnIndex="2" GridPane.rowIndex="2" prefWidth="170" styleClass="summe-value" textAlignment="RIGHT" />
+                <FloatGeldLabel fx:id="lblMvst" GridPane.columnIndex="2" GridPane.rowIndex="2" prefWidth="170" styleClass="summe-value" textAlignment="RIGHT" />
                 <Line GridPane.columnSpan="2" GridPane.columnIndex="1" GridPane.rowIndex="3" strokeWidth="2" startX="40.0" startY="56.0" endX="330.0" endY="56.0"/>
                 <Label text="Gesamtsumme" GridPane.columnIndex="1" GridPane.rowIndex="4" textAlignment="LEFT" styleClass="summe-label" />
-                <FloatGeldLabel text="0" fx:id="lblGesamt" GridPane.columnIndex="2" GridPane.rowIndex="4" prefWidth="170" styleClass="summe-value" textAlignment="RIGHT" />
+                <FloatGeldLabel fx:id="lblGesamt" GridPane.columnIndex="2" GridPane.rowIndex="4" prefWidth="170" styleClass="summe-value" textAlignment="RIGHT" />
             </children>
 
         </GridPane>

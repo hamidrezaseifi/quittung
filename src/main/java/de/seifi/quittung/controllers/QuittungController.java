@@ -7,7 +7,7 @@ import java.util.ResourceBundle;
 import de.seifi.quittung.QuittungApp;
 import de.seifi.quittung.ui.FloatGeldLabel;
 import de.seifi.quittung.ui.FloatTextField;
-import de.seifi.quittung.ui.QuittungBindingModel;
+import de.seifi.quittung.ui.QuittungBindingViewModel;
 import de.seifi.quittung.ui.QuittungItemProperty;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleListProperty;
@@ -31,12 +31,14 @@ public class QuittungController implements Initializable {
 
     @FXML private TableColumn<QuittungItemProperty, Integer> mengeColumn;
 
-    @FXML private TableColumn<QuittungItemProperty, Float> preisColumn;
+    @FXML private TableColumn<QuittungItemProperty, Float> nPreisColumn;
+
+    @FXML private TableColumn<QuittungItemProperty, Float> bPreisColumn;
 
     @FXML private TableColumn<QuittungItemProperty, Float> gesamtColumn;
 
 
-    private QuittungBindingModel quittungModel;
+    private QuittungBindingViewModel quittungModel;
 
     @FXML
     private void switchToSecondary() throws IOException {
@@ -46,13 +48,14 @@ public class QuittungController implements Initializable {
     @Override
     public void initialize(URL url,
                            ResourceBundle resourceBundle) {
-        quittungModel = new QuittungBindingModel();
+        quittungModel = new QuittungBindingViewModel(1.4f, 1.2f);
 
         itemsTableView.getColumns().get(0).prefWidthProperty().bind(
                 itemsTableView.widthProperty().subtract(
-                        itemsTableView.getColumns().get(1).widthProperty()).subtract(
-                        itemsTableView.getColumns().get(2).widthProperty()).subtract(
-                        itemsTableView.getColumns().get(3).widthProperty()).subtract(5)
+                		mengeColumn.widthProperty()).subtract(
+                				bPreisColumn.widthProperty()).subtract(
+                						nPreisColumn.widthProperty()).subtract(
+                								gesamtColumn.widthProperty()).subtract(5)
                                                                    );
 
         itemsTableView.setItems(quittungModel.getQuittungItems());
@@ -61,17 +64,16 @@ public class QuittungController implements Initializable {
             final Integer value = event.getNewValue();
             QuittungItemProperty prop = event.getTableView().getItems().get(event.getTablePosition().getRow());
             prop.setMenge(value);
-            prop.setGesamt(value * prop.getPreis());
 
             quittungModel.calculateQuittungSumme();
         });
 
-        preisColumn.setOnEditCommit(event -> {
+        bPreisColumn.setOnEditCommit(event -> {
             final Float value = event.getNewValue();
             QuittungItemProperty prop = event.getTableView().getItems().get(event.getTablePosition().getRow());
-            prop.setPreis(value);
-            prop.setGesamt(prop.getMenge() * value);
-
+            prop.setBrutoPreis(value);
+            prop.setPreis(quittungModel.calculateNettoPreis(value));
+            
             quittungModel.calculateQuittungSumme();
         });
 

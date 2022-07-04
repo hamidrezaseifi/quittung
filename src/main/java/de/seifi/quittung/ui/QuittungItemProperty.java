@@ -6,14 +6,16 @@ import javafx.beans.property.*;
 public class QuittungItemProperty {
     private StringProperty bezeichnung;
     private IntegerProperty menge;
+    private FloatProperty brutoPreis;
     private FloatProperty preis;
     private FloatProperty gesamt;
 
     public QuittungItemProperty() {
         this.bezeichnung = new SimpleStringProperty();
-        this.menge = new SimpleIntegerProperty();
-        this.preis = new SimpleFloatProperty();
-        this.gesamt = new SimpleFloatProperty();
+        this.menge = new SimpleIntegerProperty(0);
+        this.brutoPreis = new SimpleFloatProperty(0f);
+        this.preis = new SimpleFloatProperty(0f);
+        this.gesamt = new SimpleFloatProperty(0f);
 
     }
 
@@ -59,6 +61,7 @@ public class QuittungItemProperty {
 
     public void setMenge(int menge) {
         this.menge.set(menge);
+        this.calculateGesamt();
     }
 
     public float getPreis() {
@@ -71,6 +74,7 @@ public class QuittungItemProperty {
 
     public void setPreis(float preis) {
         this.preis.set(preis);
+        this.calculateGesamt();
     }
 
     public float getGesamt() {
@@ -84,4 +88,22 @@ public class QuittungItemProperty {
     public void setGesamt(float gesamt) {
         this.gesamt.set(gesamt);
     }
+
+	public Float getBrutoPreis() {
+		return brutoPreis.get();
+	}
+
+	public void setBrutoPreis(float brutoPreis) {
+		this.brutoPreis.set(brutoPreis);
+	}
+
+
+	public FloatProperty brutoPreisProperty() {
+		return brutoPreis;
+	}
+	
+	public void calculateGesamt() {
+		this.setGesamt(this.getPreis() * this.getMenge());
+	}
+    
 }

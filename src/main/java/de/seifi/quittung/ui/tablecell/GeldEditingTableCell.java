@@ -1,25 +1,20 @@
 package de.seifi.quittung.ui.tablecell;
 
 import de.seifi.quittung.ui.FloatTextField;
-import de.seifi.quittung.ui.IntegerTextField;
 import de.seifi.quittung.ui.QuittungItemProperty;
 import de.seifi.quittung.ui.TableUtils;
 import javafx.scene.control.ContentDisplay;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.util.Pair;
-import javafx.util.StringConverter;
-import javafx.util.converter.DefaultStringConverter;
 
-public class GeldTableCell extends TableCell<QuittungItemProperty, Float> {
+public class GeldEditingTableCell extends TableCell<QuittungItemProperty, Float> {
 
     private final FloatTextField textField = new FloatTextField();
-    private final Label lblPresent = new Label();
 
-    public GeldTableCell() {
+    public GeldEditingTableCell() {
 
         itemProperty().addListener((obx, oldItem, newItem) -> {
             Float val = 0f;
@@ -27,7 +22,7 @@ public class GeldTableCell extends TableCell<QuittungItemProperty, Float> {
                 val = newItem;
             }
 
-            setText(String.valueOf(newItem) + " €");
+            setText(TableUtils.formatGeld(val));
         });
 
         setGraphic(textField);

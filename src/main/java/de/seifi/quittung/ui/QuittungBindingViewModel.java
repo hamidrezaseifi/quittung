@@ -6,7 +6,7 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.collections.SetChangeListener;
 
-public class QuittungBindingModel {
+public class QuittungBindingViewModel {
     private int INITIAL_ITEMS = 10;
 
     private ObservableList<QuittungItemProperty> quittungItems;
@@ -16,8 +16,16 @@ public class QuittungBindingModel {
     private FloatProperty gesamtSumme;
     private FloatProperty nettoSumme;
     private FloatProperty mvstSumme;
+    
+    private float berechnenFaktorBasis = 1f;
+    private float berechnenFaktorZiel = 1f;
+    private float mvst100 = 19f;
+    
 
-    public QuittungBindingModel() {
+    public QuittungBindingViewModel(float berechnenFaktorBasis, float berechnenFaktorZiel) {
+    	this.berechnenFaktorBasis = berechnenFaktorBasis;
+    	this.berechnenFaktorZiel = berechnenFaktorZiel;
+    	
         gesamtSumme = new SimpleFloatProperty(0);
         nettoSumme = new SimpleFloatProperty(0);
         mvstSumme = new SimpleFloatProperty(0);
@@ -97,4 +105,30 @@ public class QuittungBindingModel {
     public void setMvstSumme(float mvstSumme) {
         this.mvstSumme.set(mvstSumme);
     }
+
+	public float calculateNettoPreis(Float value) {
+		
+		float netto = (value * 100) / 119;
+		netto = (netto * berechnenFaktorZiel) / berechnenFaktorBasis;
+		
+		return netto;
+	}
+
+	public float getBerechnenFaktorBasis() {
+		return berechnenFaktorBasis;
+	}
+
+	public void setBerechnenFaktorBasis(float berechnenFaktorBasis) {
+		this.berechnenFaktorBasis = berechnenFaktorBasis;
+	}
+
+	public float getBerechnenFaktorZiel() {
+		return berechnenFaktorZiel;
+	}
+
+	public void setBerechnenFaktorZiel(float berechnenFaktorZiel) {
+		this.berechnenFaktorZiel = berechnenFaktorZiel;
+	}
+	
+	
 }

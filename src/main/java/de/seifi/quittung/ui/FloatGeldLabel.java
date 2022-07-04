@@ -14,8 +14,10 @@ public class FloatGeldLabel extends Label
         this.setAlignment(Pos.CENTER_RIGHT);
         this.value.addListener((data, before, after) -> {
 
-            super.setText(String.valueOf(after) + " €");
+        	setGeld(after);
         });
+        
+        setGeld(value.get());
     }
 
     public float getValue() {
@@ -28,5 +30,10 @@ public class FloatGeldLabel extends Label
 
     public void setValue(float value) {
         this.value.set(value);
+    }
+    
+    protected void setGeld(Number geld) {
+    	
+    	super.setText(TableUtils.formatGeld(geld));
     }
 }

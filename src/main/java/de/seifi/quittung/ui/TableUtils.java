@@ -31,4 +31,11 @@ public class TableUtils {
 
         return new Pair(r, tv.getColumns().get(c));
     }
+    
+    public static String formatGeld(Number geld) {
+    	
+    	String sGeld = String.format("%.2f €", geld);
+    	
+    	return sGeld;
+    }
 }
