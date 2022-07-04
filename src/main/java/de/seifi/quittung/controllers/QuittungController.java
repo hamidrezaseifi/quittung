@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import de.seifi.quittung.QuittungApp;
 import de.seifi.quittung.db.DbConnection;
 import de.seifi.quittung.ui.FloatGeldLabel;
 import de.seifi.quittung.ui.QuittungBindingViewModel;
@@ -12,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.layout.GridPane;
 
 public class QuittungController implements Initializable {
 
@@ -31,6 +33,8 @@ public class QuittungController implements Initializable {
 
     @FXML private TableColumn<QuittungItemProperty, Float> gesamtColumn;
 
+    @FXML private GridPane rootPane;
+
 
     private QuittungBindingViewModel quittungModel;
 
@@ -49,6 +53,16 @@ public class QuittungController implements Initializable {
         itemsTableView.setItems(null);
     	quittungModel.reset();
         itemsTableView.setItems(quittungModel.getQuittungItems());
+    }
+
+    @FXML
+    private void printQuittung() {
+
+    }
+
+    @FXML
+    private void closeQuittung() throws IOException {
+        QuittungApp.getMainController().showHome();
     }
 
     @Override

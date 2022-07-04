@@ -1,5 +1,6 @@
 package de.seifi.quittung;
 
+import de.seifi.quittung.controllers.MainController;
 import de.seifi.quittung.db.DbConnection;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -20,7 +21,8 @@ public class QuittungApp extends Application {
     private static GridPane quittungPane = null;
     private static GridPane reportPane = null;
     private static GridPane adminPane = null;
-    
+
+    private static MainController mainController;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -85,4 +87,11 @@ public class QuittungApp extends Application {
         launch();
     }
 
+    public static MainController getMainController() {
+        return mainController;
+    }
+
+    public static void setMainController(MainController mainController) {
+        QuittungApp.mainController = mainController;
+    }
 }

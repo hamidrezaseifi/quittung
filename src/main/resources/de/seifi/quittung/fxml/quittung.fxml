@@ -18,7 +18,7 @@
 <?import de.seifi.quittung.ui.FloatGeldLabel?>
 <?import javafx.scene.shape.Line?>
 <GridPane alignment="TOP_LEFT" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
-          fx:controller="de.seifi.quittung.controllers.QuittungController">
+          fx:controller="de.seifi.quittung.controllers.QuittungController" fx:id="rootPane">
     <columnConstraints>
         <ColumnConstraints hgrow="ALWAYS" />
     </columnConstraints>
@@ -36,7 +36,9 @@
         <HBox GridPane.columnIndex="0" GridPane.rowIndex="1" spacing="10" alignment="CENTER_RIGHT">
             <Button styleClass="reload-button" text="Zurücksetzen" onAction="#reload" prefWidth="130" prefHeight="36" alignment="CENTER_RIGHT"></Button>
             <Button styleClass="save-button" text="Speichern" onAction="#speichern" prefWidth="116" prefHeight="36" alignment="CENTER_RIGHT"></Button>
-            
+            <Button styleClass="print-button" text="Drucken" onAction="#printQuittung" prefWidth="116" prefHeight="36" alignment="CENTER_RIGHT"></Button>
+            <Button styleClass="cancel-button" text="Schließen" onAction="#closeQuittung" prefWidth="116" prefHeight="36" alignment="CENTER_RIGHT"></Button>
+
         </HBox>
         <TableView editable="true" GridPane.columnIndex="0" GridPane.rowIndex="2" fx:id="itemsTableView">
             <columns>

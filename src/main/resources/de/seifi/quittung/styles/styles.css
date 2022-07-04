@@ -108,3 +108,33 @@
     -fx-font-size: 14px;
     
 }
+
+.print-button {
+
+    -fx-background-image: url('../images/print.png');
+
+    -fx-background-size: 30 26;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position:left;
+    -fx-font-size: 14px;
+
+}
+
+.cancel-button {
+
+    -fx-background-image: url('../images/cancel.png');
+
+    -fx-background-size: 30 26;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position:left;
+    -fx-font-size: 14px;
+
+}
+
+.home-pane{
+    -fx-background-image: url("../photos/auto_teil_photo_1.jpg");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 100% auto;
+    -fx-background-position: left top;
+
+}

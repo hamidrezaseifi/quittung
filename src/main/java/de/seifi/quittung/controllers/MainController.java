@@ -17,25 +17,14 @@ public class MainController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		
-		clearChildren();
-    	
-    	try {
-    		GridPane pange = QuittungApp.getHomePane();
-    		
-    		URL url = QuittungApp.loadResource("photos/auto_teil_photo_1.jpg");
-    		
-    		ImageView imageView = new ImageView(url.toString());
-    		imageView.setFitHeight(753);
-    		imageView.setFitWidth(1000);
-    		pange.getChildren().add(imageView);
-    		
-			childBox.getChildren().add(pange);
-		} catch (Exception e) {
-			
-			e.printStackTrace();
+
+		QuittungApp.setMainController(this);
+		try {
+			showHome();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
 		}
-		
+
 	}
 	
     @FXML
@@ -47,7 +36,7 @@ public class MainController implements Initializable {
     }
 	
     @FXML
-    private void showHome() throws IOException {
+    public void showHome() throws IOException {
     	
     	clearChildren();
     	
