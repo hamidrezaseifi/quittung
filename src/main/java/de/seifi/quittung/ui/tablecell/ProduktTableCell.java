@@ -2,22 +2,24 @@ package de.seifi.quittung.ui.tablecell;
 
 import de.seifi.quittung.ui.QuittungItemProperty;
 import de.seifi.quittung.ui.TableUtils;
-import javafx.scene.control.ContentDisplay;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.util.Pair;
 import javafx.util.StringConverter;
 import javafx.util.converter.DefaultStringConverter;
 
-public class BezeichnungTableCell extends TableCell<QuittungItemProperty, String> {
+public class ProduktTableCell extends TableCell<QuittungItemProperty, String> {
 
-    private final TextField textField = new TextField();
+    //private final TextField textField = new TextField();
+
+    private final ComboBox comboBox = new ComboBox();
+
     private StringConverter<String> converter = new DefaultStringConverter();
 
-    public BezeichnungTableCell() {
+    public ProduktTableCell() {
+        comboBox.setEditable(true);
+        comboBox.prefWidthProperty().bind(this.widthProperty().subtract(3));
 
         itemProperty().addListener((obx, oldItem, newItem) -> {
             if (newItem == null) {
@@ -27,21 +29,21 @@ public class BezeichnungTableCell extends TableCell<QuittungItemProperty, String
             }
         });
 
-        setGraphic(textField);
+        setGraphic(comboBox);
         setContentDisplay(ContentDisplay.TEXT_ONLY);
 
-        textField.setOnAction(evt -> {
-            commitEdit(this.converter.fromString(textField.getText()));
+        comboBox.setOnAction(evt -> {
+            commitEdit(this.converter.fromString(comboBox.getEditor().getText()));
         });
-        textField.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
+        comboBox.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
             if (!isNowFocused) {
-                commitEdit(this.converter.fromString(textField.getText()));
+                commitEdit(this.converter.fromString(comboBox.getEditor().getText()));
             }
         });
 
-        textField.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+        comboBox.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             if (event.getCode() == KeyCode.ESCAPE) {
-                textField.setText(converter.toString(getItem()));
+                comboBox.getEditor().setText(converter.toString(getItem()));
                 cancelEdit();
                 event.consume();
             } else if (event.getCode() == KeyCode.RIGHT) {
@@ -57,7 +59,7 @@ public class BezeichnungTableCell extends TableCell<QuittungItemProperty, String
                 getTableView().getSelectionModel().selectBelowCell();
                 event.consume();
             }else if (event.getCode() == KeyCode.TAB) {
-                commitEdit(textField.getText());
+                commitEdit(comboBox.getEditor().getText());
                 Pair<Integer, TableColumn> res = TableUtils.findNextEditable(this);
                 if(res != null){
                     getTableView().getSelectionModel().select(res.getKey(), res.getValue());
@@ -78,9 +80,9 @@ public class BezeichnungTableCell extends TableCell<QuittungItemProperty, String
     @Override
     public void startEdit() {
         super.startEdit();
-        textField.setText(getItem());
+        comboBox.getEditor().setText(getItem());
         setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-        textField.requestFocus();
+        comboBox.requestFocus();
     }
 
     @Override

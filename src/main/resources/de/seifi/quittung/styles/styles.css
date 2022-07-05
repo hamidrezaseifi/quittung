@@ -131,7 +131,7 @@
 
 }
 
-.home-pane{
+.home-pane1{
     -fx-background-image: url("../photos/auto_teil_photo_1.jpg");
     -fx-background-repeat: no-repeat;
     -fx-background-size: 100% auto;
@@ -141,7 +141,7 @@
 
 .quittung-banner{
     -fx-background-image: url("../images/logo.png");
-    -fx-background-color: rgb(189, 188, 183);
+    -fx-background-color: rgb(255, 255, 255);
     -fx-background-repeat: no-repeat;
     -fx-background-size: auto 140px;
     -fx-background-position: left top;

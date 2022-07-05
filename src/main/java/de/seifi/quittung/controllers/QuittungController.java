@@ -6,12 +6,12 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 import de.seifi.quittung.QuittungApp;
-import de.seifi.quittung.db.DbConnection;
 import de.seifi.quittung.ui.FloatGeldLabel;
 import de.seifi.quittung.ui.QuittungBindingViewModel;
 import de.seifi.quittung.ui.QuittungItemProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.print.*;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -19,6 +19,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.transform.Scale;
 
 public class QuittungController implements Initializable, ControllerBse {
 
@@ -29,8 +30,10 @@ public class QuittungController implements Initializable, ControllerBse {
     @FXML private FloatGeldLabel lblMvst;
 
     @FXML private FloatGeldLabel lblGesamt;
-    
-    @FXML private TableColumn<QuittungItemProperty, String> bezeichnungColumn;
+
+    @FXML private TableColumn<QuittungItemProperty, String> produktColumn;
+
+    @FXML private TableColumn<QuittungItemProperty, String> artikelNummerColumn;
 
     @FXML private TableColumn<QuittungItemProperty, Integer> mengeColumn;
 
@@ -59,7 +62,7 @@ public class QuittungController implements Initializable, ControllerBse {
     private void speichern() throws IOException {
         //QuittungApp.setRoot("secondary");
         if(quittungModel.save()){
-            reload();
+
         }
     }
 
@@ -81,7 +84,31 @@ public class QuittungController implements Initializable, ControllerBse {
     
     @FXML
     private void printQuittung() {
+        PrinterJob job = PrinterJob.createPrinterJob();
+        if (job != null) {
+            Printer printer = job.getPrinter();
+            PageLayout pageLayout = printer.createPageLayout(Paper.A4, PageOrientation.PORTRAIT, Printer.MarginType.HARDWARE_MINIMUM);
 
+            //PageLayout pageLayout = job.getPrinter().getDefaultPageLayout();
+            job.showPrintDialog(null);
+            //job.showPageSetupDialog(null);
+            double w = rootPane.getWidth();
+            double h = rootPane.getHeight();
+
+            double scaleX = pageLayout.getPrintableWidth() / rootPane.getWidth();
+            double scaleY = pageLayout.getPrintableHeight() / rootPane.getHeight();
+
+            Scale scale = new Scale(scaleX, scaleY);
+
+            rootPane.getTransforms().add(scale);
+            boolean success = job.printPage(pageLayout, rootPane);
+            if (success) {
+                job.endJob();
+            }
+
+            rootPane.setPrefHeight(h);
+            rootPane.setPrefWidth(w);
+        }
     }
 
     @FXML
@@ -96,8 +123,8 @@ public class QuittungController implements Initializable, ControllerBse {
     private boolean canResetData() {
     	if(quittungModel.isDirty()) {
     		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-    	    alert.setTitle("Geändrte daten löschen ...");
-    	    alert.setHeaderText("Die Daten von Quittung ist geändert. Soll die Änderungen gelöscht werden?");
+    	    alert.setTitle("GeÃ¤ndrte daten lÃ¶schen ...");
+    	    alert.setHeaderText("Die Daten von Quittung ist geÃ¤ndert. Soll die Anderungen gelÃ¶scht werden?");
     	    alert.setContentText(null);
     	    Optional<ButtonType> res = alert.showAndWait();
     	    if(res.isPresent() && res.get() == ButtonType.OK) {
@@ -117,13 +144,14 @@ public class QuittungController implements Initializable, ControllerBse {
 
         quittungModel = new QuittungBindingViewModel(1.4f, 1.2f);
 
-        itemsTableView.getColumns().get(0).prefWidthProperty().bind(
+        produktColumn.prefWidthProperty().bind(
                 itemsTableView.widthProperty().subtract(
-                		mengeColumn.widthProperty()).subtract(
-                				bPreisColumn.widthProperty()).subtract(
-                						nPreisColumn.widthProperty()).subtract(
-                								gesamtColumn.widthProperty()).subtract(5)
-                                                                   );
+                        artikelNummerColumn.widthProperty()).subtract(
+                            mengeColumn.widthProperty()).subtract(
+                                    bPreisColumn.widthProperty()).subtract(
+                                            nPreisColumn.widthProperty()).subtract(
+                                                    gesamtColumn.widthProperty()).subtract(5)
+                                                                       );
 
         itemsTableView.setItems(quittungModel.getQuittungItems());
 
@@ -153,17 +181,29 @@ public class QuittungController implements Initializable, ControllerBse {
             }
             
         });
-        
-        bezeichnungColumn.setOnEditCommit(event -> {
-        	final String value = event.getNewValue();
+
+        produktColumn.setOnEditCommit(event -> {
+            final String value = event.getNewValue();
             QuittungItemProperty prop = event.getTableView().getItems().get(event.getTablePosition().getRow());
-            if(prop.getBezeichnung() != value) {
-            	prop.setBezeichnung(value);
-            	quittungModel.calculateQuittungSumme();
+            if(prop.getProdukt() != value) {
+                prop.setProdukt(value);
+                quittungModel.calculateQuittungSumme();
                 quittungModel.setDirty(true);
-            	
+
             }
-            
+
+        });
+
+        artikelNummerColumn.setOnEditCommit(event -> {
+            final String value = event.getNewValue();
+            QuittungItemProperty prop = event.getTableView().getItems().get(event.getTablePosition().getRow());
+            if(prop.getArtikelNummer() != value) {
+                prop.setArtikelNummer(value);
+                quittungModel.calculateQuittungSumme();
+                quittungModel.setDirty(true);
+
+            }
+
         });
 
         lblNetto.valueProperty().bind(quittungModel.nettoSummeProperty());
@@ -183,4 +223,9 @@ public class QuittungController implements Initializable, ControllerBse {
 		
 		return quittungModel.isDirty();
 	}
+
+    @Override
+    public String getDirtyMessage() {
+        return "Die Quittung-Daten ist geÃ¤ndert aber nicht gescpeichert!";
+    }
 }

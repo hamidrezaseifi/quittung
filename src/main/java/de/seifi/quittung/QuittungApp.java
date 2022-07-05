@@ -3,16 +3,22 @@ package de.seifi.quittung;
 import de.seifi.quittung.controllers.ControllerBse;
 import de.seifi.quittung.controllers.MainController;
 import de.seifi.quittung.db.DbConnection;
+import de.seifi.quittung.exception.DataSqlException;
+import de.seifi.quittung.ui.UiUtils;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 
 public class QuittungApp extends Application {
 
@@ -30,14 +36,28 @@ public class QuittungApp extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        DbConnection.initialDbIfNotExists();
-
-        DbConnection.test();
+        try {
+            DbConnection.initialDbIfNotExists();
+        } catch (DataSqlException e) {
+            UiUtils.showError("Erstellen von Datenbank ...", e.getMessage());
+        }
 
         scene = new Scene(loadFXML("main"));
         scene.getStylesheets().add(getClass().getResource("styles/styles.css").toExternalForm());
         stage.setScene(scene);
+
+        scene.getWindow().addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, this::closeWindowEvent);
         stage.show();
+    }
+
+    private void closeWindowEvent(WindowEvent event) {
+        if(isCurrentControllerDirty()){
+            UiUtils.showError("Niche gespeicherte Änderungen ...", currentController.getDirtyMessage());
+
+            event.consume();
+            return;
+        }
+
     }
 
     public static void setRoot(String fxml) throws IOException {

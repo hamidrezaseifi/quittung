@@ -4,14 +4,16 @@ import de.seifi.quittung.models.QuittungItemModel;
 import javafx.beans.property.*;
 
 public class QuittungItemProperty {
-    private StringProperty bezeichnung;
+    private StringProperty produkt;
+    private StringProperty artikelNummer;
     private IntegerProperty menge;
     private FloatProperty brutoPreis;
     private FloatProperty preis;
     private FloatProperty gesamt;
 
     public QuittungItemProperty() {
-        this.bezeichnung = new SimpleStringProperty();
+        this.produkt = new SimpleStringProperty();
+        this.artikelNummer = new SimpleStringProperty();
         this.menge = new SimpleIntegerProperty(0);
         this.brutoPreis = new SimpleFloatProperty(0f);
         this.preis = new SimpleFloatProperty(0f);
@@ -21,34 +23,49 @@ public class QuittungItemProperty {
 
     public QuittungItemProperty(QuittungItemModel model) {
         this();
-        this.bezeichnung.set(model.getBezeichnung());
+        this.produkt.set(model.getProdukt());
+        this.artikelNummer.set(model.getArtikelNummer());
         this.menge.set(model.getMenge());
         this.preis.set(model.getPreis());
         this.gesamt.set(model.getGesmt());
     }
 
     public QuittungItemProperty(
-            String bezeichnung,
+            String produkt,
+            String artikelNummer,
             int menge,
             float preis) {
         this();
-        this.bezeichnung.set(bezeichnung);
+        this.produkt.set(produkt);
+        this.artikelNummer.set(artikelNummer);
         this.menge.set(menge);
         this.preis.set(preis);
         this.gesamt.set(preis * menge);
     }
 
 
-    public String getBezeichnung() {
-        return bezeichnung.get();
+    public String getProdukt() {
+        return produkt.get();
     }
 
-    public StringProperty bezeichnungProperty() {
-        return bezeichnung;
+    public StringProperty produktProperty() {
+        return produkt;
     }
 
-    public void setBezeichnung(String bezeichnung) {
-        this.bezeichnung.set(bezeichnung);
+    public void setProdukt(String produkt) {
+        this.produkt.set(produkt);
+    }
+
+    public String getArtikelNummer() {
+        return artikelNummer.get();
+    }
+
+    public StringProperty artikelNummerProperty() {
+        return artikelNummer;
+    }
+
+    public void setArtikelNummer(String artikelNummer) {
+        this.artikelNummer.set(artikelNummer);
     }
 
     public int getMenge() {
@@ -98,15 +115,18 @@ public class QuittungItemProperty {
 	}
 
     public QuittungItemModel toModel(){
-        return new QuittungItemModel(this.bezeichnung.get(), this.menge.get(), this.preis.get());
+        return new QuittungItemModel(this.produkt.get(), this.artikelNummer.get(), this.menge.get(), this.preis.get());
     }
 
     public boolean isValid(){
-        if(bezeichnung.get() == null){
+        if(produkt.get() == null){
+            return false;
+        }
+        if(artikelNummer.get() == null){
             return false;
         }
 
-        return (!bezeichnung.get().trim().isEmpty() ) && (menge.get() > 0) && (preis.get() > 0);
+        return (!produkt.get().trim().isEmpty() ) && (!artikelNummer.get().trim().isEmpty() ) && (menge.get() > 0) && (preis.get() > 0);
     }
 	public FloatProperty brutoPreisProperty() {
 		return brutoPreis;

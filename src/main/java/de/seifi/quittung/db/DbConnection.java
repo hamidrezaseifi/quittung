@@ -1,8 +1,10 @@
 package de.seifi.quittung.db;
 
+import de.seifi.quittung.exception.DataSqlException;
 import de.seifi.quittung.models.QuittungItemModel;
 import de.seifi.quittung.models.QuittungModel;
 
+import javax.sql.DataSource;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -16,13 +18,19 @@ public class DbConnection {
 													"(quittung_nummer, create_date, create_time) values(?, ?, ?)";
 
 	private static final String quittungItemInsertSql = "Insert into quittung_item " +
-														"(quittung_id, bezeichnung , menge , preis) values(?, ?, ?, ?)";
+														"(quittung_id, produkt, artikel_nummer, menge , preis) values(?, ?, ?, ?, ?)";
+
+	private static final String quittungDeleteSql = "Delete from quittung where id = ?";
+
+	private static final String quittungItemDeleteByQuittungIdSql = "Delete from quittung_item  where quittung_id = ?";
+
+	private static final String quittungItemDeleteByIdSql = "Delete from quittung_item  where id = ?";
 
 	private static final String quittungCreateSql = "CREATE TABLE quittung " +
 						  "(id INTEGER PRIMARY KEY ASC, quittung_nummer INT, create_date VARCHAR(10), create_time VARCHAR(8))";
 
 	private static final String quittungItemCreateSql = "CREATE TABLE quittung_item " +
-							   "(id INTEGER PRIMARY KEY ASC, quittung_id INT,  bezeichnung VARCHAR(255),  menge INT, preis FLOAT)";
+							   "(id INTEGER PRIMARY KEY ASC, quittung_id INT, produkt VARCHAR(255), artikel_nummer VARCHAR(255),  menge INT, preis FLOAT)";
 
 	private static final String quittungGetMaxNummerSql = "select max(quittung_nummer) as max_num from quittung where create_date = ?";
 
@@ -32,11 +40,11 @@ public class DbConnection {
 
 	private static final String quittungGetByIdSql = "select id, quittung_nummer, create_date, create_time from quittung where id = ?";
 
-	private static final String quittungItemGetByIdSql = "select id, quittung_id, bezeichnung , menge , preis from quittung_item where id = ?";
+	private static final String quittungItemGetByIdSql = "select id, quittung_id, produkt, artikel_nummer, menge , preis from quittung_item where id = ?";
 
-	private static final String quittungItemGetByQuittungIdSql = "select id, quittung_id, bezeichnung , menge , preis from quittung_item where quittung_id = ?";
+	private static final String quittungItemGetByQuittungIdSql = "select id, quittung_id, produkt, artikel_nummer, menge , preis from quittung_item where quittung_id = ?";
 
-	public static Connection getConnection() {
+	public static Connection getConnection() throws DataSqlException {
 
 		String dbPathStr = getCurrentDbPath();
 		
@@ -51,21 +59,10 @@ public class DbConnection {
             
             return conn;
             
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
+        } catch (SQLException ex) {
+			throw new DataSqlException(String.format("Fehler bei der Verbindung mit Datenbank: %s", ex.getMessage()));
         } 
-        
-        return null;
-        
-        /*finally {
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException ex) {
-                System.out.println(ex.getMessage());
-            }
-        }*/
+
     }
 	
 	public static String getWorkingRootPath() {
@@ -84,7 +81,7 @@ public class DbConnection {
 		return dbPathStr;
 	}
 	
-	public static void initialDbIfNotExists() {
+	public static void initialDbIfNotExists() throws DataSqlException {
 		String dbPathStr = getCurrentDbPath();
 		if(new File(dbPathStr).exists()) {
 			return;
@@ -100,7 +97,7 @@ public class DbConnection {
 			stmt.executeUpdate(quittungItemCreateSql);
 			
 		} catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+			throw new DataSqlException(String.format("Fehler beim Erstellen von Datenbank: %s", ex.getMessage()));
         }
 		finally {
             try {
@@ -114,7 +111,7 @@ public class DbConnection {
       
 	}
 
-	public static int getLastQuittungNummer(String date){
+	public static int getLastQuittungNummer(String date) throws DataSqlException {
 
 		int lastQuittungNummer = 0;
 
@@ -129,7 +126,7 @@ public class DbConnection {
 			}
 
 		} catch (SQLException ex) {
-			System.out.println(ex.getMessage());
+			throw new DataSqlException(String.format("Fehler beim Lesen von den letzten Quittung Nummer: %s", ex.getMessage()));
 		}
 		finally {
 			try {
@@ -144,7 +141,7 @@ public class DbConnection {
 		return lastQuittungNummer;
 	}
 
-	public static int getLastQuittungId(Connection conn){
+	public static int getLastQuittungId(Connection conn) throws DataSqlException {
 
 		int lastQuittungNummer = 0;
 
@@ -156,16 +153,16 @@ public class DbConnection {
 			}
 
 		} catch (SQLException ex) {
-			System.out.println(ex.getMessage());
+			throw new DataSqlException(String.format("Fehler beim Lesen von den letzten Quittung ID: %s", ex.getMessage()));
 		}
 
 		return lastQuittungNummer;
 	}
 
-	public static QuittungModel createQuittung(QuittungModel savingModel) {
+	public static QuittungModel createQuittung(QuittungModel savingModel) throws DataSqlException {
 
 		Connection conn = getConnection();
-		int insertedId = 0;
+		int insertedId = -1;
 		
 		try{
 
@@ -173,22 +170,39 @@ public class DbConnection {
 			pStatement.setInt(1, savingModel.getNummer());
 			pStatement.setString(2, savingModel.getDate());
 			pStatement.setString(3, savingModel.getTime());
-			int rs = pStatement.executeUpdate();
+			pStatement.executeUpdate();
 
 			insertedId = getLastQuittungId(conn);
 
-			//quittung_id, bezeichnung , menge , preis
 			for(QuittungItemModel item: savingModel.getItems()){
 				pStatement = conn.prepareStatement(quittungItemInsertSql);
 				pStatement.setInt(1, insertedId);
-				pStatement.setString(2, item.getBezeichnung());
-				pStatement.setInt(3, item.getMenge());
-				pStatement.setFloat(4, item.getPreis());
-				rs = pStatement.executeUpdate();
+				pStatement.setString(2, item.getProdukt());
+				pStatement.setString(3, item.getArtikelNummer());
+				pStatement.setInt(4, item.getMenge());
+				pStatement.setFloat(5, item.getPreis());
+				pStatement.executeUpdate();
 			}
 
 		} catch (SQLException ex) {
-			System.out.println(ex.getMessage());
+
+			if(insertedId > 0){
+				try{
+					PreparedStatement pStatement = conn.prepareStatement(quittungDeleteSql);
+					pStatement.setInt(1, insertedId);
+					pStatement.executeUpdate();
+
+					pStatement = conn.prepareStatement(quittungItemDeleteByQuittungIdSql);
+					pStatement.setInt(1, insertedId);
+					pStatement.executeUpdate();
+
+				}
+				catch (Exception e){
+
+				}
+
+			}
+			throw new DataSqlException(String.format("Fehler beim Speichern von Quittung: %s", ex.getMessage()));
 
 		}
 		finally {
@@ -205,7 +219,7 @@ public class DbConnection {
 
 	}
 
-	public static QuittungModel getQuittungById(int id){
+	public static QuittungModel getQuittungById(int id) throws DataSqlException {
 
 		QuittungModel model = null;
 		
@@ -229,7 +243,7 @@ public class DbConnection {
 			}
 
 		} catch (SQLException ex) {
-			System.out.println(ex.getMessage());
+			throw new DataSqlException(String.format("Fehler beim Lesen von Quittung: %s", ex.getMessage()));
 		}
 		finally {
 			try {
@@ -246,7 +260,7 @@ public class DbConnection {
 	}
 
 
-	public static List<QuittungItemModel> getQuittungItemsByQuittungId(int quittungId){
+	public static List<QuittungItemModel> getQuittungItemsByQuittungId(int quittungId) throws DataSqlException {
 
 		List<QuittungItemModel> list = new ArrayList<QuittungItemModel>();
 		
@@ -259,18 +273,19 @@ public class DbConnection {
 			ResultSet rs = pStatement.executeQuery();
 			
 			while(rs.next()){
-				//id, quittung_id, bezeichnung , menge , preis
+
 				int id = rs.getInt("id");
-				String bezeichnung = rs.getString("bezeichnung");
+				String produkt = rs.getString("produkt");
+				String artikelNummer = rs.getString("artikel_nummer");
 				int menge = rs.getInt("menge");
 				float preis = rs.getFloat("preis");
 				
-				QuittungItemModel item = new QuittungItemModel(id, bezeichnung, menge, preis);
+				QuittungItemModel item = new QuittungItemModel(id, produkt, artikelNummer, menge, preis);
 				list.add(item);
 			}
 
 		} catch (SQLException ex) {
-			System.out.println(ex.getMessage());
+			throw new DataSqlException(String.format("Fehler beim Lesen von Einzeln von Quittung: %s", ex.getMessage()));
 		}
 		finally {
 			try {
@@ -287,7 +302,7 @@ public class DbConnection {
 	}
 
 
-	public static void test(){
+	public static void test() throws DataSqlException {
 
 		int id = -1;
 		int quittungNummer = -1;
@@ -310,7 +325,7 @@ public class DbConnection {
 			}
 
 		} catch (SQLException ex) {
-			System.out.println(ex.getMessage());
+			throw new DataSqlException(String.format("Fehler beim Lesen von Quittung: %s", ex.getMessage()));
 		}
 		finally {
 			try {
