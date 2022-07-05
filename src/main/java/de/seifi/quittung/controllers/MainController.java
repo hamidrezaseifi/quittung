@@ -30,6 +30,10 @@ public class MainController implements Initializable {
     @FXML
     private void showQuittung() throws IOException {
     	
+    	if(QuittungApp.isCurrentControllerDirty()) {
+    		return;
+    	}
+
     	clearChildren();
     	
     	childBox.getChildren().add(QuittungApp.getQuittungPane());
@@ -38,6 +42,10 @@ public class MainController implements Initializable {
     @FXML
     public void showHome() throws IOException {
     	
+    	if(QuittungApp.isCurrentControllerDirty()) {
+    		return;
+    	}
+
     	clearChildren();
     	
     	childBox.getChildren().add(QuittungApp.getHomePane());
@@ -46,6 +54,10 @@ public class MainController implements Initializable {
     @FXML
     private void showReport() throws IOException {
     	
+    	if(QuittungApp.isCurrentControllerDirty()) {
+    		return;
+    	}
+
     	clearChildren();
     	
     	childBox.getChildren().add(QuittungApp.getReportPane());
@@ -54,6 +66,10 @@ public class MainController implements Initializable {
     @FXML
     private void showAdmin() throws IOException {
     	
+    	if(QuittungApp.isCurrentControllerDirty()) {
+    		return;
+    	}
+	
     	clearChildren();
     	
     	childBox.getChildren().add(QuittungApp.getAdminPane());

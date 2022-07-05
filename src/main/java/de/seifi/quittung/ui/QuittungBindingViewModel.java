@@ -26,13 +26,17 @@ public class QuittungBindingViewModel {
     private StringProperty quittungDatum;
     private StringProperty liferDatum;
     
+    private BooleanProperty disableSave;
+    private BooleanProperty disablePrint;
+    
     
     private float berechnenFaktorBasis = 1f;
     private float berechnenFaktorZiel = 1f;
     
     private QuittungModel savingModel = new QuittungModel();
+        
+    private boolean isDirty;
     
-
     public QuittungBindingViewModel(float berechnenFaktorBasis, float berechnenFaktorZiel) {
     	this.berechnenFaktorBasis = berechnenFaktorBasis;
     	this.berechnenFaktorZiel = berechnenFaktorZiel;
@@ -44,6 +48,9 @@ public class QuittungBindingViewModel {
         quittungNummer = new SimpleStringProperty();
         quittungDatum = new SimpleStringProperty();
         liferDatum = new SimpleStringProperty();
+        
+        disableSave = new SimpleBooleanProperty(true);
+        disablePrint = new SimpleBooleanProperty(true);
         
         quittungItems = FXCollections.observableArrayList();
         
@@ -58,7 +65,7 @@ public class QuittungBindingViewModel {
         for(QuittungItemProperty i:quittungItems){
             netto += i.getGesamt();
         }
-
+        
         nettoSumme.set(netto);
         mvstSumme.set(netto * 19 / 100);
         gesamtSumme.set(nettoSumme.getValue() + mvstSumme.getValue());
@@ -152,6 +159,8 @@ public class QuittungBindingViewModel {
         quittungNummer.set(String.valueOf(lastNummer + 1));
         quittungDatum.set(date);
         liferDatum.set(date);
+        
+        isDirty = false;
 	}
 
 	public int getCurrentQuittungNummer() {
@@ -172,11 +181,41 @@ public class QuittungBindingViewModel {
 		return liferDatum;
 	}
 
+	public boolean isDirty() {
+		return isDirty;
+	}
+
+	
+	public void setDirty(boolean isDirty) {
+		this.isDirty = isDirty;
+		
+		if(isDirty) {
+			if(quittungItems.stream().anyMatch(pi -> pi.isValid())) {
+				this.disableSave.set(false);
+			}
+		}
+		
+		
+		this.disablePrint.set(isDirty);
+	}
+	
+	
+
+	public BooleanProperty getDisableSaveProperty() {
+		return disableSave;
+	}
+
+	public BooleanProperty getDisablePrintProperty() {
+		return disablePrint;
+	}
+
 	public boolean save() {
         if(savingModel.getId() == 0){
 
             savingModel.getItems().addAll(quittungItems.stream().filter(qi -> qi.isValid()).map(qi -> qi.toModel()).collect(Collectors.toList()));
             QuittungModel savedModel = DbConnection.createQuittung(savingModel);
+            
+            setDirty(false);
 
         }
 

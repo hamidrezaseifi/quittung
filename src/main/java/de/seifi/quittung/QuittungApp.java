@@ -1,5 +1,6 @@
 package de.seifi.quittung;
 
+import de.seifi.quittung.controllers.ControllerBse;
 import de.seifi.quittung.controllers.MainController;
 import de.seifi.quittung.db.DbConnection;
 import javafx.application.Application;
@@ -17,12 +18,15 @@ public class QuittungApp extends Application {
 
     private static Scene scene;
     
-    private static GridPane homePane = null;
-    private static GridPane quittungPane = null;
-    private static GridPane reportPane = null;
-    private static GridPane adminPane = null;
+    //private static GridPane homePane = null;
+    //private static GridPane quittungPane = null;
+    //private static GridPane reportPane = null;
+    //private static GridPane adminPane = null;
 
     private static MainController mainController;
+    
+    private static ControllerBse currentController;
+    
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -52,34 +56,34 @@ public class QuittungApp extends Application {
     }
 
     public static GridPane getQuittungPane() throws IOException {
-    	if(quittungPane == null) {
-    		quittungPane =  (GridPane)loadFXML("quittung");
-    	}
-    	
+    	/*if(quittungPane == null) {
+    		GridPane quittungPane =  (GridPane)loadFXML("quittung");
+    	}*/
+    	GridPane quittungPane =  (GridPane)loadFXML("quittung");
     	return quittungPane;
     }
 
     public static GridPane getHomePane() throws IOException {
-    	if(homePane == null) {
+    	/*if(homePane == null) {
     		homePane =  (GridPane)loadFXML("home");
-    	}
-    	
+    	}*/
+    	GridPane homePane =  (GridPane)loadFXML("home");
     	return homePane;
     }
 
     public static GridPane getReportPane() throws IOException {
-    	if(reportPane == null) {
+    	/*if(reportPane == null) {
     		reportPane =  (GridPane)loadFXML("report");
-    	}
-    	
+    	}*/
+    	GridPane reportPane =  (GridPane)loadFXML("report");
     	return reportPane;
     }
 
     public static GridPane getAdminPane() throws IOException {
-    	if(adminPane == null) {
+    	/*if(adminPane == null) {
     		adminPane =  (GridPane)loadFXML("admin");
-    	}
-    	
+    	}*/
+    	GridPane adminPane =  (GridPane)loadFXML("admin");
     	return adminPane;
     }
     
@@ -94,4 +98,18 @@ public class QuittungApp extends Application {
     public static void setMainController(MainController mainController) {
         QuittungApp.mainController = mainController;
     }
+
+	public static ControllerBse getCurrentController() {
+		return currentController;
+	}
+
+	public static boolean isCurrentControllerDirty() {
+		return currentController != null? currentController.isDirty() : false;
+	}
+
+	public static void setCurrentController(ControllerBse currentController) {
+		QuittungApp.currentController = currentController;
+	}
+    
+    
 }
