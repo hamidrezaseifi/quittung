@@ -22,6 +22,11 @@ public class QuittungBindingViewModel {
     private FloatProperty nettoSumme;
     private FloatProperty mvstSumme;
     
+    private StringProperty quittungNummer;
+    private StringProperty quittungDatum;
+    private StringProperty liferDatum;
+    
+    
     private float berechnenFaktorBasis = 1f;
     private float berechnenFaktorZiel = 1f;
     
@@ -35,17 +40,13 @@ public class QuittungBindingViewModel {
         gesamtSumme = new SimpleFloatProperty(0);
         nettoSumme = new SimpleFloatProperty(0);
         mvstSumme = new SimpleFloatProperty(0);
-
-        LocalDateTime ldt = LocalDateTime.now();
-
-        String date = dateFormatter.format(ldt);
-        String time = timeFormatter.format(ldt);
-
-        int lastNummer = DbConnection.getLastQuittungNummer(date);
         
-        savingModel = new QuittungModel(0, lastNummer + 1, date, time);
+        quittungNummer = new SimpleStringProperty();
+        quittungDatum = new SimpleStringProperty();
+        liferDatum = new SimpleStringProperty();
         
         quittungItems = FXCollections.observableArrayList();
+        
         reset();
 
         
@@ -137,14 +138,41 @@ public class QuittungBindingViewModel {
             quittungItems.add(new QuittungItemProperty());
         }
         calculateQuittungSumme();
-        savingModel = null;
+        
+
+        LocalDateTime ldt = LocalDateTime.now();
+
+        String date = dateFormatter.format(ldt);
+        String time = timeFormatter.format(ldt);
+
+        int lastNummer = DbConnection.getLastQuittungNummer(date);
+        
+        savingModel = new QuittungModel(0, lastNummer + 1, date, time);
+
+        quittungNummer.set(String.valueOf(lastNummer + 1));
+        quittungDatum.set(date);
+        liferDatum.set(date);
 	}
 
 	public int getCurrentQuittungNummer() {
 		return savingModel.getNummer();
 	}
 	
-    public boolean save() {
+	
+	
+    public StringProperty getQuittungNummerProperty() {
+		return quittungNummer;
+	}
+
+	public StringProperty getQuittungDatumProperty() {
+		return quittungDatum;
+	}
+
+	public StringProperty getLiferDatumProperty() {
+		return liferDatum;
+	}
+
+	public boolean save() {
         if(savingModel.getId() == 0){
 
             savingModel.getItems().addAll(quittungItems.stream().filter(qi -> qi.isValid()).map(qi -> qi.toModel()).collect(Collectors.toList()));

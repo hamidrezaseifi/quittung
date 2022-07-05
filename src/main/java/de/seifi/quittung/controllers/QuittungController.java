@@ -11,6 +11,7 @@ import de.seifi.quittung.ui.QuittungBindingViewModel;
 import de.seifi.quittung.ui.QuittungItemProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.GridPane;
@@ -34,6 +35,12 @@ public class QuittungController implements Initializable {
     @FXML private TableColumn<QuittungItemProperty, Float> gesamtColumn;
 
     @FXML private GridPane rootPane;
+    
+    @FXML private Label lblQuittungNummer;
+    
+    @FXML private Label lblQuittungDatum;
+    
+    @FXML private Label lblLiferdatum;
 
 
     private QuittungBindingViewModel quittungModel;
@@ -103,6 +110,10 @@ public class QuittungController implements Initializable {
         lblNetto.valueProperty().bind(quittungModel.nettoSummeProperty());
         lblMvst.valueProperty().bind(quittungModel.mvstSummeProperty());
         lblGesamt.valueProperty().bind(quittungModel.gesamtSummeProperty());
+        
+        lblQuittungNummer.textProperty().bind(quittungModel.getQuittungNummerProperty());
+        lblQuittungDatum.textProperty().bind(quittungModel.getQuittungDatumProperty());
+        lblLiferdatum.textProperty().bind(quittungModel.getLiferDatumProperty());
 
     }
 }
