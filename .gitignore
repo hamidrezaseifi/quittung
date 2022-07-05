@@ -12,3 +12,4 @@ buildNumber.properties
 /.idea/
 /.classpath
 /.project
+/quittung.db
