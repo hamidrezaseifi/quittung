@@ -4,11 +4,8 @@ import de.seifi.quittung.db.DbConnection;
 import de.seifi.quittung.models.QuittungModel;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.collections.SetChangeListener;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.stream.Collectors;
@@ -28,7 +25,7 @@ public class QuittungBindingViewModel {
     private float berechnenFaktorBasis = 1f;
     private float berechnenFaktorZiel = 1f;
     
-    private QuittungModel savingModel = null;
+    private QuittungModel savingModel = new QuittungModel();
     
 
     public QuittungBindingViewModel(float berechnenFaktorBasis, float berechnenFaktorZiel) {
@@ -39,6 +36,15 @@ public class QuittungBindingViewModel {
         nettoSumme = new SimpleFloatProperty(0);
         mvstSumme = new SimpleFloatProperty(0);
 
+        LocalDateTime ldt = LocalDateTime.now();
+
+        String date = dateFormatter.format(ldt);
+        String time = timeFormatter.format(ldt);
+
+        int lastNummer = DbConnection.getLastQuittungNummer(date);
+        
+        savingModel = new QuittungModel(0, lastNummer + 1, date, time);
+        
         quittungItems = FXCollections.observableArrayList();
         reset();
 
@@ -134,19 +140,15 @@ public class QuittungBindingViewModel {
         savingModel = null;
 	}
 
-
+	public int getCurrentQuittungNummer() {
+		return savingModel.getNummer();
+	}
+	
     public boolean save() {
-        if(savingModel == null){
-            LocalDateTime ldt = LocalDateTime.now();
+        if(savingModel.getId() == 0){
 
-            String date = dateFormatter.format(ldt);
-            String time = timeFormatter.format(ldt);
-
-            int lastNummer = DbConnection.getLastQuittungNummer(date);
-
-            savingModel = new QuittungModel(lastNummer + 1, date, time);
             savingModel.getItems().addAll(quittungItems.stream().filter(qi -> qi.isValid()).map(qi -> qi.toModel()).collect(Collectors.toList()));
-            DbConnection.addQuittung(savingModel);
+            QuittungModel savedModel = DbConnection.createQuittung(savingModel);
 
         }
 

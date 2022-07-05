@@ -1,22 +1,45 @@
 package de.seifi.quittung.models;
 
 public class QuittungItemModel {
+	private int id;
     private String bezeichnung;
     private int menge;
     private float preis;
 
     public QuittungItemModel() {
+    	id = 0;
     }
 
     public QuittungItemModel(String bezeichnung,
                              int menge,
                              float preis) {
+    	this();
         this.bezeichnung = bezeichnung;
         this.menge = menge;
         this.preis = preis;
     }
 
-    public String getBezeichnung() {
+    public QuittungItemModel(int id,
+    						String bezeichnung,
+                             int menge,
+                             float preis) {
+    	this();
+        this.id = id;
+        this.bezeichnung = bezeichnung;
+        this.menge = menge;
+        this.preis = preis;
+    }
+
+    
+    public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getBezeichnung() {
         return bezeichnung;
     }
 

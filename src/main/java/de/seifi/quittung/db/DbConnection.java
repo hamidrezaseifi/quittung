@@ -7,6 +7,8 @@ import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DbConnection {
 
@@ -27,6 +29,12 @@ public class DbConnection {
 	private static final String quittungGetMaxIdSql = "select max(id) as max_id from quittung";
 
 	private static final String quittungGetAllSql = "select id, quittung_nummer, create_date, create_time from quittung";
+
+	private static final String quittungGetByIdSql = "select id, quittung_nummer, create_date, create_time from quittung where id = ?";
+
+	private static final String quittungItemGetByIdSql = "select id, quittung_id, bezeichnung , menge , preis from quittung_item where id = ?";
+
+	private static final String quittungItemGetByQuittungIdSql = "select id, quittung_id, bezeichnung , menge , preis from quittung_item where quittung_id = ?";
 
 	public static Connection getConnection() {
 
@@ -154,11 +162,11 @@ public class DbConnection {
 		return lastQuittungNummer;
 	}
 
-	public static boolean addQuittung(QuittungModel savingModel) {
-
+	public static QuittungModel createQuittung(QuittungModel savingModel) {
 
 		Connection conn = getConnection();
-
+		int insertedId = 0;
+		
 		try{
 
 			PreparedStatement pStatement = conn.prepareStatement(quittungInsertSql);
@@ -167,7 +175,7 @@ public class DbConnection {
 			pStatement.setString(3, savingModel.getTime());
 			int rs = pStatement.executeUpdate();
 
-			int insertedId = getLastQuittungId(conn);
+			insertedId = getLastQuittungId(conn);
 
 			//quittung_id, bezeichnung , menge , preis
 			for(QuittungItemModel item: savingModel.getItems()){
@@ -193,7 +201,88 @@ public class DbConnection {
 			}
 		}
 
-		return true;
+		return getQuittungById(insertedId);
+
+	}
+
+	public static QuittungModel getQuittungById(int id){
+
+		QuittungModel model = null;
+		
+		Connection conn = getConnection();
+
+		try{
+
+			PreparedStatement pStatement = conn.prepareStatement(quittungGetByIdSql);
+			pStatement.setInt(1, id);
+			ResultSet rs = pStatement.executeQuery();
+			
+			if(rs.next()){
+				//id, quittung_nummer, create_date, create_time
+				int quittungNummer = rs.getInt("quittung_nummer");
+				String createDate = rs.getString("create_date");
+				String createTime = rs.getString("create_time");
+				
+				model = new QuittungModel(id, quittungNummer, createDate, createTime);
+				model.setItems(getQuittungItemsByQuittungId(id));
+				
+			}
+
+		} catch (SQLException ex) {
+			System.out.println(ex.getMessage());
+		}
+		finally {
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException ex) {
+				System.out.println(ex.getMessage());
+			}
+		}
+		
+		return model;
+
+	}
+
+
+	public static List<QuittungItemModel> getQuittungItemsByQuittungId(int quittungId){
+
+		List<QuittungItemModel> list = new ArrayList<QuittungItemModel>();
+		
+		Connection conn = getConnection();
+
+		try{
+
+			PreparedStatement pStatement = conn.prepareStatement(quittungItemGetByQuittungIdSql);
+			pStatement.setInt(1, quittungId);
+			ResultSet rs = pStatement.executeQuery();
+			
+			while(rs.next()){
+				//id, quittung_id, bezeichnung , menge , preis
+				int id = rs.getInt("id");
+				String bezeichnung = rs.getString("bezeichnung");
+				int menge = rs.getInt("menge");
+				float preis = rs.getFloat("preis");
+				
+				QuittungItemModel item = new QuittungItemModel(id, bezeichnung, menge, preis);
+				list.add(item);
+			}
+
+		} catch (SQLException ex) {
+			System.out.println(ex.getMessage());
+		}
+		finally {
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException ex) {
+				System.out.println(ex.getMessage());
+			}
+		}
+		
+		return list;
 
 	}
 
