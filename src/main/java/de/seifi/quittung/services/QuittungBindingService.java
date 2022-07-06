@@ -1,12 +1,12 @@
-package de.seifi.quittung.ui;
+package de.seifi.quittung.services;
 
-import de.seifi.quittung.db.DbConnection;
 import de.seifi.quittung.db.ProduktRepository;
 import de.seifi.quittung.db.QuittungRepository;
 import de.seifi.quittung.exception.DataSqlException;
 import de.seifi.quittung.models.ProduktModel;
-import de.seifi.quittung.models.QuittungItemModel;
 import de.seifi.quittung.models.QuittungModel;
+import de.seifi.quittung.ui.QuittungItemProperty;
+import de.seifi.quittung.ui.UiUtils;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class QuittungBindingViewModel {
+public class QuittungBindingService {
     private int INITIAL_ITEMS = 10;
     
     private final QuittungRepository quittungRepository = new QuittungRepository();
@@ -53,7 +53,7 @@ public class QuittungBindingViewModel {
         
     private boolean isDirty;
     
-    public QuittungBindingViewModel(float berechnenFaktorBasis, float berechnenFaktorZiel) {
+    public QuittungBindingService(float berechnenFaktorBasis, float berechnenFaktorZiel) {
     	this.berechnenFaktorBasis = berechnenFaktorBasis;
     	this.berechnenFaktorZiel = berechnenFaktorZiel;
     	
@@ -200,9 +200,11 @@ public class QuittungBindingViewModel {
 	public int getCurrentQuittungNummer() {
 		return savingModel.getNummer();
 	}
-	
-	
-	
+
+    public QuittungModel getSavingModel() {
+        return savingModel;
+    }
+
     public StringProperty getQuittungNummerProperty() {
 		return quittungNummer;
 	}

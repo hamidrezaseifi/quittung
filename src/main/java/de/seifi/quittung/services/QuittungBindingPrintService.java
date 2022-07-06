@@ -1,0 +1,107 @@
+package de.seifi.quittung.services;
+
+import de.seifi.quittung.models.QuittungItemModel;
+import de.seifi.quittung.models.QuittungModel;
+import de.seifi.quittung.ui.QuittungItemProperty;
+import de.seifi.quittung.ui.TableUtils;
+import javafx.beans.property.FloatProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class QuittungBindingPrintService {
+
+    private float berechnenFaktorBasis = 1f;
+    private float berechnenFaktorZiel = 1f;
+
+    private String gesamtSumme;
+    private String nettoSumme;
+    private String mvstSumme;
+    private List<QuittungModel> quittungModelList = new ArrayList<>();
+
+    private int printingIndex = 0;
+
+    public QuittungBindingPrintService(float berechnenFaktorBasis,
+                                  float berechnenFaktorZiel) {
+        this.berechnenFaktorBasis = berechnenFaktorBasis;
+        this.berechnenFaktorZiel = berechnenFaktorZiel;
+
+
+    }
+
+    public ObservableList<QuittungItemProperty> getQuittungItems() {
+        List<QuittungItemProperty> propList =
+                quittungModelList.get(printingIndex).getItems().stream().map(i -> new QuittungItemProperty(i)).collect(Collectors.toList());
+        return FXCollections.observableArrayList(propList);
+    }
+
+    public String getNettoSumme() {
+        return nettoSumme;
+    }
+
+    public String getMvstSumme() {
+        return mvstSumme;
+    }
+
+    public String getQuittungNummer() {
+        return String.valueOf(quittungModelList.get(printingIndex).getNummer());
+    }
+
+    public String getGesamtSumme() {
+        return gesamtSumme;
+    }
+
+    public String getQuittungDatum() {
+        return quittungModelList.get(printingIndex).getDate();
+    }
+
+    public String getLiferDatum() {
+        return quittungModelList.get(printingIndex).getDate();
+    }
+
+    public void setQuittungModelList(List<QuittungModel> quittungModelList) {
+        this.quittungModelList = quittungModelList;
+        if(!quittungModelList.isEmpty()){
+            setPrintingIndex(0);
+            calculateQuittungSumme();
+        }
+
+    }
+
+    private void calculateQuittungSumme() {
+        float netto = 0;
+
+        for(QuittungItemModel i:quittungModelList.get(printingIndex).getItems()){
+            netto += i.getGesmt();
+        }
+
+        nettoSumme = TableUtils.formatGeld(netto);
+        mvstSumme = TableUtils.formatGeld(netto * 19 / 100);
+        gesamtSumme = TableUtils.formatGeld(netto + (netto * 19 / 100));
+    }
+
+    public void setPrintingIndex(int printingIndex) {
+        this.printingIndex = printingIndex;
+    }
+
+    public boolean increasePrintingIndex() {
+        if(this.printingIndex >= quittungModelList.size() - 1){
+            return false;
+        }
+        this.printingIndex += 1;
+        calculateQuittungSumme();
+        return true;
+    }
+
+    public boolean hasPrintingPage() {
+        if(this.printingIndex >= quittungModelList.size()){
+            return false;
+        }
+
+        return true;
+    }
+
+}

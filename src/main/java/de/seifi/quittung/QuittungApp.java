@@ -15,6 +15,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import javafx.util.Pair;
 
 import java.io.IOException;
 import java.net.URL;
@@ -22,12 +23,10 @@ import java.util.Optional;
 
 public class QuittungApp extends Application {
 
+    public static float BerechnenFaktorBasis = 1.4f;
+    public static float BerechnenFaktorZiel = 1.2f;
+
     private static Scene scene;
-    
-    //private static GridPane homePane = null;
-    //private static GridPane quittungPane = null;
-    //private static GridPane reportPane = null;
-    //private static GridPane adminPane = null;
 
     private static MainController mainController;
     
@@ -70,6 +69,12 @@ public class QuittungApp extends Application {
         return fxmlLoader.load();
     }
 
+    public static Pair<Parent, FXMLLoader> loadFXMLLoader(String fxml) throws IOException {
+        URL fxmlResource = QuittungApp.class.getResource("fxml/" + fxml + ".fxml");
+        FXMLLoader fxmlLoader = new FXMLLoader(fxmlResource);
+        return new Pair(fxmlLoader.load(), fxmlLoader) ;
+    }
+
     public static URL loadResource(String resourcePath) throws IOException {
         URL resourceUrl = QuittungApp.class.getResource(resourcePath);
         return resourceUrl;
@@ -106,7 +111,7 @@ public class QuittungApp extends Application {
     	GridPane adminPane =  (GridPane)loadFXML("admin");
     	return adminPane;
     }
-    
+
     public static void main(String[] args) {
         launch();
     }

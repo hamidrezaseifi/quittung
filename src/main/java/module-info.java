@@ -19,4 +19,6 @@ module QuittungApplication {
     opens de.seifi.quittung.ui.tablecell to javafx.fxml;
     exports de.seifi.quittung.db.base;
     opens de.seifi.quittung.db.base to org.sqlite;
+    exports de.seifi.quittung.services;
+    opens de.seifi.quittung.services to javafx.fxml;
 }

@@ -33,14 +33,25 @@
     -fx-font-weight: bold;
 }
 
-.table-view .table-column{
+#showItemsTableView.table-view .table-column{
     -fx-alignment:center;
     -fx-font-size:14px;
     -fx-font-weight:bold;
 }
 
-.table-view .table-cell{
+#showItemsTableView.table-view .table-cell{
     -fx-font-size:12px;
+}
+
+
+#printItemsTableView.table-view .table-column{
+    -fx-alignment:center;
+    -fx-font-size:12px;
+    -fx-font-weight:bold;
+}
+
+#printItemsTableView.table-view .table-cell{
+    -fx-font-size:10px;
 }
 
 .save-button {
