@@ -1,6 +1,7 @@
 package de.seifi.quittung.ui;
 
 import de.seifi.quittung.db.DbConnection;
+import de.seifi.quittung.db.QuittungRepository;
 import de.seifi.quittung.exception.DataSqlException;
 import de.seifi.quittung.models.QuittungModel;
 import javafx.beans.property.*;
@@ -9,10 +10,14 @@ import javafx.collections.ObservableList;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class QuittungBindingViewModel {
     private int INITIAL_ITEMS = 10;
+    
+    private final QuittungRepository quittungRepository = new QuittungRepository();
+    
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyy");
 
     private final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
@@ -155,7 +160,7 @@ public class QuittungBindingViewModel {
 
         int lastNummer = 0;
         try {
-            lastNummer = DbConnection.getLastQuittungNummer(date);
+            lastNummer = quittungRepository.getLastQuittungNummer(date);
         } catch (DataSqlException e) {
             UiUtils.showError("Extrahieren der letzten Quittung-Nummer ...", e.getMessage());
         }
@@ -220,7 +225,10 @@ public class QuittungBindingViewModel {
 
             savingModel.getItems().addAll(quittungItems.stream().filter(qi -> qi.isValid()).map(qi -> qi.toModel()).collect(Collectors.toList()));
             try {
-                savingModel = DbConnection.createQuittung(savingModel);
+            	Optional<QuittungModel> savedModelOptional = quittungRepository.create(savingModel);
+            	if(savedModelOptional.isPresent()) {
+            		savingModel = savedModelOptional.get();
+            	}
 
             } catch (DataSqlException e) {
                 UiUtils.showError("Speichern der Quittung ...", e.getMessage());

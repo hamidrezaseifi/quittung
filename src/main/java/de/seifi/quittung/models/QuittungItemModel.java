@@ -2,6 +2,7 @@ package de.seifi.quittung.models;
 
 public class QuittungItemModel {
 	private int id;
+	private int quittungId;
     private String produkt;
     private String artikelNummer;
     private int menge;
@@ -79,4 +80,14 @@ public class QuittungItemModel {
     public void setArtikelNummer(String artikelNummer) {
         this.artikelNummer = artikelNummer;
     }
+
+	public int getQuittungId() {
+		return quittungId;
+	}
+
+	public void setQuittungId(int quittungId) {
+		this.quittungId = quittungId;
+	}
+    
+    
 }
