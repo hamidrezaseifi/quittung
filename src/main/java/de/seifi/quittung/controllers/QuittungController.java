@@ -14,6 +14,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -91,7 +92,7 @@ public class QuittungController implements Initializable, ControllerBse {
         GridPane printPane = (GridPane)pair.getKey();
         FXMLLoader fxmlLoader = pair.getValue();
         PrintDialogController dialogController = fxmlLoader.<PrintDialogController>getController();
-        dialogController.setQuittungModel(Arrays.asList(quittungBindingService.getSavingModel()));
+        dialogController.printQuittungList(Arrays.asList(quittungBindingService.getSavingModel()));
 
     }
 

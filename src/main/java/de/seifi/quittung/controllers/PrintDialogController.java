@@ -63,7 +63,7 @@ public class PrintDialogController implements Initializable {
                                               );
     }
 
-    public void setQuittungModel(List<QuittungModel> quittungModelList){
+    public void printQuittungList(List<QuittungModel> quittungModelList){
         //quittung_print
         this.quittungBindingService.setQuittungModelList(quittungModelList);
         quittungBindingService.setPrintingIndex(0);

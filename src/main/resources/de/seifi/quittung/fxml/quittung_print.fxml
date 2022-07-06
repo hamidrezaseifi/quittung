@@ -54,7 +54,7 @@
 			</children>        
         </GridPane>
 
-        <TableView editable="true" GridPane.columnIndex="0" GridPane.rowIndex="1" fx:id="printItemsTableView" styleClass="print-list">
+        <TableView editable="true" GridPane.columnIndex="0" GridPane.rowIndex="1" fx:id="printItemsTableView" stylesheets="@../styles/print_styles.css">
             <columns>
                 <TableColumn fx:id="mengeColumn" text="Menge" prefWidth="70">
                     <cellValueFactory>

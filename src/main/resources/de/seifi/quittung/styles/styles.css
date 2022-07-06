@@ -46,12 +46,12 @@
 
 #printItemsTableView.table-view .table-column{
     -fx-alignment:center;
-    -fx-font-size:12px;
+    -fx-font-size:10px;
     -fx-font-weight:bold;
 }
 
 #printItemsTableView.table-view .table-cell{
-    -fx-font-size:10px;
+    -fx-font-size:8px;
 }
 
 .save-button {

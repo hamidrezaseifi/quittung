@@ -9,9 +9,6 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -19,7 +16,6 @@ import javafx.util.Pair;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Optional;
 
 public class QuittungApp extends Application {
 
@@ -42,11 +38,15 @@ public class QuittungApp extends Application {
         }
 
         scene = new Scene(loadFXML("main"));
-        scene.getStylesheets().add(getClass().getResource("styles/styles.css").toExternalForm());
+        scene.getStylesheets().add(getMainStyle());
         stage.setScene(scene);
 
         scene.getWindow().addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, this::closeWindowEvent);
         stage.show();
+    }
+
+    public static String getMainStyle() {
+        return QuittungApp.class.getResource("styles/styles.css").toExternalForm();
     }
 
     private void closeWindowEvent(WindowEvent event) {
