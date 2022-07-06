@@ -157,19 +157,23 @@ public class QuittungController implements Initializable, ControllerBse {
 
         mengeColumn.setOnEditCommit(event -> {
             final Integer value = event.getNewValue();
-            QuittungItemProperty prop = event.getTableView().getItems().get(event.getTablePosition().getRow());
+            quittungModel.setNewMengeValue(event.getTablePosition().getRow(), value);
+            
+            /*QuittungItemProperty prop = event.getTableView().getItems().get(event.getTablePosition().getRow());
             if(prop.getMenge() != value) {
             	prop.setMenge(value);
 
                 quittungModel.calculateQuittungSumme();
                 quittungModel.setDirty(true);
-            }
+            }*/
             
         });
 
         bPreisColumn.setOnEditCommit(event -> {
             final Float value = event.getNewValue();
-            QuittungItemProperty prop = event.getTableView().getItems().get(event.getTablePosition().getRow());
+            quittungModel.setNewBrutoPreisValue(event.getTablePosition().getRow(), value);
+
+            /*QuittungItemProperty prop = event.getTableView().getItems().get(event.getTablePosition().getRow());
             
             if(prop.getBrutoPreis() != value) {
             	
@@ -178,31 +182,35 @@ public class QuittungController implements Initializable, ControllerBse {
                 
                 quittungModel.calculateQuittungSumme();
                 quittungModel.setDirty(true);
-            }
+            }*/
             
         });
 
         produktColumn.setOnEditCommit(event -> {
             final String value = event.getNewValue();
-            QuittungItemProperty prop = event.getTableView().getItems().get(event.getTablePosition().getRow());
+            quittungModel.setNewProduktValue(event.getTablePosition().getRow(), value);
+
+            /*QuittungItemProperty prop = event.getTableView().getItems().get(event.getTablePosition().getRow());
             if(prop.getProdukt() != value) {
                 prop.setProdukt(value);
                 quittungModel.calculateQuittungSumme();
                 quittungModel.setDirty(true);
 
-            }
+            }*/
 
         });
 
         artikelNummerColumn.setOnEditCommit(event -> {
             final String value = event.getNewValue();
-            QuittungItemProperty prop = event.getTableView().getItems().get(event.getTablePosition().getRow());
+            quittungModel.setNewArtikelNummerValue(event.getTablePosition().getRow(), value);
+
+            /*QuittungItemProperty prop = event.getTableView().getItems().get(event.getTablePosition().getRow());
             if(prop.getArtikelNummer() != value) {
                 prop.setArtikelNummer(value);
                 quittungModel.calculateQuittungSumme();
                 quittungModel.setDirty(true);
 
-            }
+            }*/
 
         });
 

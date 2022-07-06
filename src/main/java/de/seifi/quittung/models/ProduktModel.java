@@ -2,6 +2,8 @@ package de.seifi.quittung.models;
 
 public class ProduktModel {
 	
+	private int id;
+	
 	private String produkt;
 	
 	private float lastPreis;
@@ -16,6 +18,23 @@ public class ProduktModel {
 		super();
 		this.produkt = produkt;
 		this.lastPreis = lastPreis;
+	}
+	
+
+	public ProduktModel(int id, String produkt, float lastPreis) {
+		super();
+		this.id = id;
+		this.produkt = produkt;
+		this.lastPreis = lastPreis;
+	}
+
+	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getProdukt() {
@@ -34,6 +53,10 @@ public class ProduktModel {
 		this.lastPreis = lastPreis;
 	}
 	
+	@Override
+	public String toString() {
+		return produkt;
+	}
 	
 
 }

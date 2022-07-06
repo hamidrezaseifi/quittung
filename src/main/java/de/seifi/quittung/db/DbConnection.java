@@ -17,23 +17,28 @@ import java.util.Map;
 
 public class DbConnection {
 
-	private static Map<String, ISqliteRepository> mapTables = new HashMap<String, ISqliteRepository>();
+	private static List<ISqliteRepository> mapTables = new ArrayList<ISqliteRepository>();
 	
+	private static Connection lastConnection = null;
 
 	public static Connection getConnection() throws DataSqlException {
-
+		
 		String dbPathStr = getCurrentDbPath();
 		
 		String jdbcUrl = String.format("jdbc:sqlite:%s", dbPathStr);
 		
-        Connection conn = null;
         try {
-            // db parameters
+    		if(lastConnection != null) {
+    			if(lastConnection.isClosed() == false) {
+    				return lastConnection;
+    			}
+    		}
+    			
             String url = jdbcUrl;
             // create a connection to the database
-            conn = DriverManager.getConnection(url);
+            lastConnection = DriverManager.getConnection(url);
             
-            return conn;
+            return lastConnection;
             
         } catch (SQLException ex) {
 			throw new DataSqlException(String.format("Fehler bei der Verbindung mit Datenbank: %s", ex.getMessage()));
@@ -59,9 +64,9 @@ public class DbConnection {
 	
 	public static void initialDbIfNotExists() throws DataSqlException {
 		
-		mapTables.put("quittung", new QuittungRepository());
-		mapTables.put("quittung_item", new QuittungItemRepository());
-		//mapTables.put("produkt", new QuittungRepository());
+		mapTables.add(new QuittungRepository());
+		mapTables.add(new QuittungItemRepository());
+		mapTables.add(new ProduktRepository());
 		
 		Connection conn = getConnection();
 		
@@ -72,9 +77,9 @@ public class DbConnection {
 			while(rs.next()) {
 				createdTables.add(rs.getString("TABLE_NAME"));
 			}
-			for(String key: mapTables.keySet()) {
-				if(createdTables.contains(key) == false) {
-					ISqliteRepository repo = mapTables.get(key);
+			for(ISqliteRepository repo: mapTables) {
+				if(createdTables.contains(repo.getTableName()) == false) {
+					
 					repo.createTable(conn);
 				}
 				

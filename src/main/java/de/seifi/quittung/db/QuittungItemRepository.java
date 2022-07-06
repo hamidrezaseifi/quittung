@@ -29,7 +29,7 @@ public class QuittungItemRepository extends SqliteRepositoryBase implements ISql
 	private static final String quittungItemDeleteByIdSql = "Delete from quittung_item  where id = ?";
 
 
-	private static final String quittungItemCreateSql = "CREATE TABLE quittung_item " +
+	private static final String createSql = "CREATE TABLE quittung_item " +
 							   "(id INTEGER PRIMARY KEY ASC, quittung_id INT, produkt VARCHAR(255), artikel_nummer VARCHAR(255),  menge INT, preis FLOAT)";
 
 
@@ -38,21 +38,6 @@ public class QuittungItemRepository extends SqliteRepositoryBase implements ISql
 	private static final String quittungItemInsertSql = "Insert into quittung_item " +
 			"(quittung_id, produkt, artikel_nummer, menge , preis) values(?, ?, ?, ?, ?)";
 
-
-	@Override
-	public void createTable(Connection connection) throws DataSqlException {
-		
-		try {
-			Statement stmt = connection.createStatement();
-
-			stmt.executeUpdate(quittungItemCreateSql);
-			
-		} catch (SQLException ex) {
-			throw new DataSqlException(String.format("Fehler beim Erstellen von der Tabelle '%s': %s", getTableName(), ex.getMessage()));
-        }
-		
-		
-	}
 
 	@Override
 	public Optional<QuittungItemModel> getById(Integer id) throws DataSqlException {
@@ -155,4 +140,11 @@ public class QuittungItemRepository extends SqliteRepositoryBase implements ISql
 		return list;
 
 	}
+
+	@Override
+	protected String getCreateSql() {
+		
+		return createSql;
+	}
+
 }

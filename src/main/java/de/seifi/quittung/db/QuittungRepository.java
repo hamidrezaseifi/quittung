@@ -22,37 +22,22 @@ public class QuittungRepository extends SqliteRepositoryBase implements ISqliteR
 	private final QuittungItemRepository ItemRepository = new QuittungItemRepository();
 	
 	
-	private static final String quittungInsertSql = "Insert into quittung " +
+	private static final String insertSql = "Insert into quittung " +
 			"(quittung_nummer, create_date, create_time) values(?, ?, ?)";
 
-	private static final String quittungDeleteSql = "Delete from quittung where id = ?";
+	private static final String deleteSql = "Delete from quittung where id = ?";
 
-	private static final String quittungCreateSql = "CREATE TABLE quittung " +
+	private static final String createSql = "CREATE TABLE quittung " +
 			  "(id INTEGER PRIMARY KEY ASC, quittung_nummer INT, create_date VARCHAR(10), create_time VARCHAR(8))";
 
-	private static final String quittungGetMaxNummerSql = "select max(quittung_nummer) as max_num from quittung where create_date = ?";
+	private static final String getMaxNummerSql = "select max(quittung_nummer) as max_num from quittung where create_date = ?";
 
-	private static final String quittungGetMaxIdSql = "select max(id) as max_id from quittung";
+	private static final String getMaxIdSql = "select max(id) as max_id from quittung";
 
-	private static final String quittungGetAllSql = "select id, quittung_nummer, create_date, create_time from quittung order by create_date desc, create_time desc";
+	private static final String getAllSql = "select id, quittung_nummer, create_date, create_time from quittung order by create_date desc, create_time desc";
 
-	private static final String quittungGetByIdSql = "select id, quittung_nummer, create_date, create_time from quittung where id = ?";
+	private static final String getByIdSql = "select id, quittung_nummer, create_date, create_time from quittung where id = ?";
 
-
-	@Override
-	public void createTable(Connection connection) throws DataSqlException {
-		Statement stmt;
-		try {
-			
-			stmt = connection.createStatement();
-			stmt.executeUpdate(quittungCreateSql);
-			
-		} catch (Exception ex) {
-			throw new DataSqlException(String.format("Fehler beim Erstellen von der Tabelle '%s': %s", getTableName(), ex.getMessage()));
-		}
-		
-		
-	}
 	
     @Override
     public Optional<QuittungModel> getById(Integer id) throws DataSqlException {
@@ -62,7 +47,7 @@ public class QuittungRepository extends SqliteRepositoryBase implements ISqliteR
 
 		try{
 
-			PreparedStatement pStatement = conn.prepareStatement(quittungGetByIdSql);
+			PreparedStatement pStatement = conn.prepareStatement(getByIdSql);
 			pStatement.setInt(1, id);
 			ResultSet rs = pStatement.executeQuery();
 			
@@ -99,7 +84,7 @@ public class QuittungRepository extends SqliteRepositoryBase implements ISqliteR
 		try{
 			Statement stmt = conn.createStatement();
 
-			ResultSet rs = stmt.executeQuery(quittungGetAllSql);
+			ResultSet rs = stmt.executeQuery(getAllSql);
 			while(rs.next()){
 				QuittungModel model = rowMapper.mapRow(rs);
 
@@ -133,7 +118,7 @@ public class QuittungRepository extends SqliteRepositoryBase implements ISqliteR
 		
 		try{
 
-			PreparedStatement pStatement = conn.prepareStatement(quittungInsertSql);
+			PreparedStatement pStatement = conn.prepareStatement(insertSql);
 			pStatement.setInt(1, model.getNummer());
 			pStatement.setString(2, model.getDate());
 			pStatement.setString(3, model.getTime());
@@ -185,7 +170,7 @@ public class QuittungRepository extends SqliteRepositoryBase implements ISqliteR
     	Connection conn = getConnection();
     	
 		try {
-			PreparedStatement pStatement = conn.prepareStatement(quittungDeleteSql);
+			PreparedStatement pStatement = conn.prepareStatement(deleteSql);
 			pStatement.setInt(1, id);
 			pStatement.executeUpdate();
 		} catch (SQLException ex) {
@@ -211,7 +196,7 @@ public class QuittungRepository extends SqliteRepositoryBase implements ISqliteR
 		Connection conn = getConnection();
 
 		try{
-			PreparedStatement pStatement = conn.prepareStatement(quittungGetMaxNummerSql);
+			PreparedStatement pStatement = conn.prepareStatement(getMaxNummerSql);
 			pStatement.setString(1, date);
 			ResultSet rs = pStatement.executeQuery();
 			if(rs.next()){
@@ -239,7 +224,7 @@ public class QuittungRepository extends SqliteRepositoryBase implements ISqliteR
 		int lastQuittungNummer = 0;
 
 		try{
-			PreparedStatement pStatement = conn.prepareStatement(quittungGetMaxIdSql);
+			PreparedStatement pStatement = conn.prepareStatement(getMaxIdSql);
 			ResultSet rs = pStatement.executeQuery();
 			if(rs.next()){
 				lastQuittungNummer = rs.getInt("max_id");
@@ -250,5 +235,11 @@ public class QuittungRepository extends SqliteRepositoryBase implements ISqliteR
 		}
 
 		return lastQuittungNummer;
+	}
+
+	@Override
+	protected String getCreateSql() {
+		
+		return createSql;
 	}
 }

@@ -1,8 +1,11 @@
 package de.seifi.quittung.ui;
 
 import de.seifi.quittung.db.DbConnection;
+import de.seifi.quittung.db.ProduktRepository;
 import de.seifi.quittung.db.QuittungRepository;
 import de.seifi.quittung.exception.DataSqlException;
+import de.seifi.quittung.models.ProduktModel;
+import de.seifi.quittung.models.QuittungItemModel;
 import de.seifi.quittung.models.QuittungModel;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
@@ -10,6 +13,9 @@ import javafx.collections.ObservableList;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -17,7 +23,11 @@ public class QuittungBindingViewModel {
     private int INITIAL_ITEMS = 10;
     
     private final QuittungRepository quittungRepository = new QuittungRepository();
+    private final ProduktRepository produktRepository = new ProduktRepository();
     
+	    
+    Map<String, ProduktModel> produktMap;
+
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyy");
 
     private final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
@@ -60,11 +70,24 @@ public class QuittungBindingViewModel {
         
         quittungItems = FXCollections.observableArrayList();
         
+        retreiveProduktMap();
+        
         reset();
 
-        
     }
 
+    private void retreiveProduktMap() {
+    	List<ProduktModel> produktList = new ArrayList<ProduktModel>();
+    	try {
+			produktList = produktRepository.getAll();
+		} catch (DataSqlException e) {
+			
+			UiUtils.showError("Produkt-Liste extrahieren ...", "Fehler bei Produkt-Liste extrahieren: " + e.getLocalizedMessage());
+		}
+    	
+    	produktMap = produktList.stream().collect(Collectors.toMap(p -> p.getProdukt(), p -> p));
+    }
+    
     public void calculateQuittungSumme() {
         float netto = 0;
 
@@ -228,6 +251,14 @@ public class QuittungBindingViewModel {
             	Optional<QuittungModel> savedModelOptional = quittungRepository.create(savingModel);
             	if(savedModelOptional.isPresent()) {
             		savingModel = savedModelOptional.get();
+            		List<QuittungItemProperty> items = quittungItems.stream().filter(qi -> qi.isValid()).collect(Collectors.toList());
+            		
+            		for(QuittungItemProperty item: items) {
+            			ProduktModel produktModel = new ProduktModel(item.getProdukt(), item.getBrutoPreis());
+            			produktRepository.updateOrCreate(produktModel);
+            			
+            		}
+            		
             	}
 
             } catch (DataSqlException e) {
@@ -240,4 +271,60 @@ public class QuittungBindingViewModel {
 
         return true;
     }
+	
+	public void setNewMengeValue(int row, Integer value) {
+		QuittungItemProperty prop = quittungItems.get(row);
+        if(prop.getMenge() != value) {
+        	prop.setMenge(value);
+
+            calculateQuittungSumme();
+            setDirty(true);
+        }
+	}
+
+	public void setNewBrutoPreisValue(int row, Float value) {
+		
+		QuittungItemProperty prop = quittungItems.get(row);
+        
+        if(prop.getBrutoPreis() != value) {
+        	
+        	prop.setBrutoPreis(value);
+            prop.setPreis(calculateNettoPreis(value));
+            
+            calculateQuittungSumme();
+            setDirty(true);
+        }
+		
+	}
+
+	public void setNewProduktValue(int row, String value) {
+		
+		QuittungItemProperty prop = quittungItems.get(row);
+        if(prop.getProdukt() != value) {
+            prop.setProdukt(value);
+            calculateQuittungSumme();
+            setDirty(true);
+
+            Optional<String> foundProdukt = produktMap.keySet().stream().filter(k -> k.toLowerCase().equals(value.toLowerCase())).findAny();
+            
+            if(foundProdukt.isPresent()) {
+            	
+            	ProduktModel produktModel = produktMap.get(foundProdukt.get());
+            	prop.setBrutoPreis(produktModel.getLastPreis());
+            }
+        }
+		
+	}
+
+	public void setNewArtikelNummerValue(int row, String value) {
+		
+		QuittungItemProperty prop = quittungItems.get(row);
+        if(prop.getArtikelNummer() != value) {
+            prop.setArtikelNummer(value);
+            calculateQuittungSumme();
+            setDirty(true);
+
+        }
+		
+	}
 }

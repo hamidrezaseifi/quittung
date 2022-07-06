@@ -1,7 +1,19 @@
 package de.seifi.quittung.ui.tablecell;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import de.seifi.quittung.db.ProduktRepository;
+import de.seifi.quittung.exception.DataSqlException;
+import de.seifi.quittung.models.ProduktModel;
 import de.seifi.quittung.ui.QuittungItemProperty;
 import de.seifi.quittung.ui.TableUtils;
+import de.seifi.quittung.ui.UiUtils;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -12,15 +24,29 @@ import javafx.util.converter.DefaultStringConverter;
 public class ProduktTableCell extends TableCell<QuittungItemProperty, String> {
 
     //private final TextField textField = new TextField();
+	private final ProduktRepository produktRepository = new ProduktRepository();
 
-    private final ComboBox comboBox = new ComboBox();
+    private final ComboBox comboBox;
 
     private StringConverter<String> converter = new DefaultStringConverter();
 
     public ProduktTableCell() {
+    	
+    	List<ProduktModel> produktList = new ArrayList<ProduktModel>();
+    	try {
+			produktList = produktRepository.getAll();
+		} catch (DataSqlException e) {
+						
+		}
+    	
+    	ObservableList<String> obsProduktList = 
+    			FXCollections.observableArrayList(produktList.stream().map(p -> p.getProdukt()).collect(Collectors.toList()));
+    	
+    	comboBox = new ComboBox(obsProduktList);
+    	
         comboBox.setEditable(true);
         comboBox.prefWidthProperty().bind(this.widthProperty().subtract(3));
-
+        
         itemProperty().addListener((obx, oldItem, newItem) -> {
             if (newItem == null) {
                 setText(null);

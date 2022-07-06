@@ -4,6 +4,7 @@ module QuittungApplication {
     requires javafx.fxml;
 	requires java.sql;
     requires javafx.graphics;
+	requires javafx.base;
 
     opens de.seifi.quittung to javafx.fxml;
     opens de.seifi.quittung.controllers to javafx.fxml;
