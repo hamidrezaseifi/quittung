@@ -9,9 +9,11 @@ import java.util.stream.Collectors;
 import de.seifi.quittung.db.ProduktRepository;
 import de.seifi.quittung.exception.DataSqlException;
 import de.seifi.quittung.models.ProduktModel;
+import de.seifi.quittung.ui.FilterComboBox;
 import de.seifi.quittung.ui.QuittungItemProperty;
 import de.seifi.quittung.ui.TableUtils;
 import de.seifi.quittung.ui.UiUtils;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.*;
@@ -26,7 +28,7 @@ public class ProduktTableCell extends TableCell<QuittungItemProperty, String> {
     //private final TextField textField = new TextField();
 	private final ProduktRepository produktRepository = new ProduktRepository();
 
-    private final ComboBox comboBox;
+    private final FilterComboBox comboBox;
 
     private StringConverter<String> converter = new DefaultStringConverter();
 
@@ -42,7 +44,7 @@ public class ProduktTableCell extends TableCell<QuittungItemProperty, String> {
     	ObservableList<String> obsProduktList = 
     			FXCollections.observableArrayList(produktList.stream().map(p -> p.getProdukt()).collect(Collectors.toList()));
     	
-    	comboBox = new ComboBox(obsProduktList);
+    	comboBox = new FilterComboBox(obsProduktList);
     	
         comboBox.setEditable(true);
         comboBox.prefWidthProperty().bind(this.widthProperty().subtract(3));
@@ -94,7 +96,8 @@ public class ProduktTableCell extends TableCell<QuittungItemProperty, String> {
 
             }
         });
-
+        
+        
     }
 
     @Override
@@ -109,6 +112,7 @@ public class ProduktTableCell extends TableCell<QuittungItemProperty, String> {
         comboBox.getEditor().setText(getItem());
         setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
         comboBox.requestFocus();
+        comboBox.show();
     }
 
     @Override
