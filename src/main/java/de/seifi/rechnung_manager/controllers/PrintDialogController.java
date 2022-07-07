@@ -53,7 +53,7 @@ public class PrintDialogController implements Initializable {
     @Override
     public void initialize(URL url,
                            ResourceBundle resourceBundle) {
-        quittungBindingService = new QuittungBindingPrintService(RechnungManagerFxApp.BerechnenFaktorBasis, RechnungManagerFxApp.BerechnenFaktorZiel);
+        quittungBindingService = new QuittungBindingPrintService();
 
 
         produktColumn.prefWidthProperty().bind(

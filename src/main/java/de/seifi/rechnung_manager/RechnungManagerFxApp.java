@@ -2,8 +2,6 @@ package de.seifi.rechnung_manager;
 
 import de.seifi.rechnung_manager.controllers.ControllerBse;
 import de.seifi.rechnung_manager.controllers.MainController;
-import de.seifi.rechnung_manager.repositories.ProduktRepository;
-import de.seifi.rechnung_manager.repositories.RechnungRepository;
 import de.seifi.rechnung_manager.ui.UiUtils;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -16,13 +14,10 @@ import javafx.util.Pair;
 
 import java.io.IOException;
 import java.net.URL;
-
-import org.springframework.context.ConfigurableApplicationContext;
+import java.util.Arrays;
+import java.util.List;
 
 public class RechnungManagerFxApp extends Application {
-
-    public static float BerechnenFaktorBasis = 1.4f;
-    public static float BerechnenFaktorZiel = 1.2f;
 
     private static Scene scene;
 

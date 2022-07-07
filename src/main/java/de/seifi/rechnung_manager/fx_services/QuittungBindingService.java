@@ -14,6 +14,7 @@ import javafx.collections.ObservableList;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -51,24 +52,28 @@ public class QuittungBindingService {
     
     private BooleanProperty disableSave;
     private BooleanProperty disablePrint;
-    
-    
-    private float berechnenFaktorBasis = 1f;
-    private float berechnenFaktorZiel = 1f;
+
+    private int activeBerechnenZiel;
+
+    private float berechnenFaktorBasis = 1.4f;
+
+    private List<Float> berechnenFaktorZielList = Arrays.asList(1.4f, 1.2f);
+
+    private List<String> berechnenFaktorZielColorList = Arrays.asList("-fx-background-color: white", "-fx-background-color: #f7fbff");
+    private StringProperty bannerBackColor;
+
     
     private RechnungModel savingModel = new RechnungModel();
         
     private boolean isDirty;
     
-    public QuittungBindingService(float berechnenFaktorBasis, 
-    		float berechnenFaktorZiel, 
-    		ProduktRepository produktRepository,
+    public QuittungBindingService(ProduktRepository produktRepository,
     		final RechnungRepository rechnungRepository) {
     	
     	CURRENT_INSTANCE = this;
-    	
-    	this.berechnenFaktorBasis = berechnenFaktorBasis;
-    	this.berechnenFaktorZiel = berechnenFaktorZiel;
+        this.activeBerechnenZiel = 0;
+        this.bannerBackColor = new SimpleStringProperty(this.berechnenFaktorZielColorList.get(this.activeBerechnenZiel));
+
     	this.produktRepository = produktRepository;
     	this.rechnungRepository = rechnungRepository;
     	
@@ -89,6 +94,20 @@ public class QuittungBindingService {
         
         reset();
 
+    }
+
+    public void toggleActiveBerechnenZiel(){
+        this.activeBerechnenZiel = this.activeBerechnenZiel == 0 ? 1 : 0;
+        this.bannerBackColor.set(this.berechnenFaktorZielColorList.get(this.activeBerechnenZiel));
+
+    }
+
+    public String getBannerBackColor() {
+        return bannerBackColor.get();
+    }
+
+    public StringProperty bannerBackColorProperty() {
+        return bannerBackColor;
     }
 
     private void retreiveProduktMap() {
@@ -157,7 +176,7 @@ public class QuittungBindingService {
 	public float calculateNettoPreis(Float value) {
 		
 		float netto = (value * 100) / 119;
-		netto = (netto * berechnenFaktorZiel) / berechnenFaktorBasis;
+		netto = (netto * getBerechnenFaktorZiel()) / berechnenFaktorBasis;
 		
 		return netto;
 	}
@@ -171,11 +190,7 @@ public class QuittungBindingService {
 	}
 
 	public float getBerechnenFaktorZiel() {
-		return berechnenFaktorZiel;
-	}
-
-	public void setBerechnenFaktorZiel(float berechnenFaktorZiel) {
-		this.berechnenFaktorZiel = berechnenFaktorZiel;
+        return this.berechnenFaktorZielList.get(this.activeBerechnenZiel);
 	}
 
 	public void reset() {

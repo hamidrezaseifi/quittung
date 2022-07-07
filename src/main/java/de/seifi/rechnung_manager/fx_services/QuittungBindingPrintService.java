@@ -14,9 +14,6 @@ import java.util.stream.Collectors;
 
 public class QuittungBindingPrintService {
 
-    private float berechnenFaktorBasis = 1f;
-    private float berechnenFaktorZiel = 1f;
-
     private String gesamtSumme;
     private String nettoSumme;
     private String mvstSumme;
@@ -24,10 +21,8 @@ public class QuittungBindingPrintService {
 
     private int printingIndex = 0;
 
-    public QuittungBindingPrintService(float berechnenFaktorBasis,
-                                  float berechnenFaktorZiel) {
-        this.berechnenFaktorBasis = berechnenFaktorBasis;
-        this.berechnenFaktorZiel = berechnenFaktorZiel;
+    public QuittungBindingPrintService() {
+
 
 
     }

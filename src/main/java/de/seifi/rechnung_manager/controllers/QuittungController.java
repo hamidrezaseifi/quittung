@@ -19,7 +19,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -62,6 +61,8 @@ public class QuittungController implements Initializable, ControllerBse {
     @FXML private Button btnSave;
     
     @FXML private Button btnPrint;
+
+    @FXML private GridPane bannerPane;
 
 
     private QuittungBindingService quittungBindingService;
@@ -123,6 +124,11 @@ public class QuittungController implements Initializable, ControllerBse {
     	
     }
 
+    @FXML
+    private void toggleBrerechnenZiel(){
+        quittungBindingService.toggleActiveBerechnenZiel();
+    }
+
     private boolean canResetData() {
     	if(quittungBindingService.isDirty()) {
     		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -146,10 +152,10 @@ public class QuittungController implements Initializable, ControllerBse {
     	RechnungManagerFxApp.setCurrentController(this);
 
         quittungBindingService = new QuittungBindingService(
-        		RechnungManagerFxApp.BerechnenFaktorBasis, 
-        		RechnungManagerFxApp.BerechnenFaktorZiel,
         		this.produktRepository,
         		this.rechnungRepository);
+
+        bannerPane.styleProperty().bind(quittungBindingService.bannerBackColorProperty());
 
         produktColumn.prefWidthProperty().bind(
                 showItemsTableView.widthProperty().subtract(
