@@ -1,17 +1,14 @@
 package de.seifi.rechnung_manager.ui.tablecell;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
+import de.seifi.rechnung_manager.fx_services.QuittungBindingService;
 import de.seifi.rechnung_manager.models.ProduktModel;
 import de.seifi.rechnung_manager.ui.FilterComboBox;
 import de.seifi.rechnung_manager.ui.QuittungItemProperty;
 import de.seifi.rechnung_manager.ui.TableUtils;
-import de.seifi.rechnung_manager.ui.UiUtils;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.*;
@@ -23,26 +20,16 @@ import javafx.util.converter.DefaultStringConverter;
 
 public class ProduktTableCell extends TableCell<QuittungItemProperty, String> {
 
-    //private final TextField textField = new TextField();
-	//private final ProduktRepository produktRepository = new ProduktRepository();
-
     private final FilterComboBox comboBox;
-
+    private ObservableList<String> obsProduktList;
+    
     private StringConverter<String> converter = new DefaultStringConverter();
 
     public ProduktTableCell() {
+     	
+    	comboBox = new FilterComboBox(FXCollections.observableArrayList());
     	
-    	List<ProduktModel> produktList = new ArrayList<ProduktModel>();
-    	/*try {
-			produktList = produktRepository.getAll();
-		} catch (DataSqlException e) {
-						
-		}*/
-    	
-    	ObservableList<String> obsProduktList = 
-    			FXCollections.observableArrayList(produktList.stream().map(p -> p.getProduktName()).collect(Collectors.toList()));
-    	
-    	comboBox = new FilterComboBox(obsProduktList);
+    	reloadProdukts();
     	
         comboBox.setEditable(true);
         comboBox.prefWidthProperty().bind(this.widthProperty().subtract(3));
@@ -101,6 +88,14 @@ public class ProduktTableCell extends TableCell<QuittungItemProperty, String> {
     @Override
     public void updateItem(String item, boolean empty) {
         super.updateItem(item, empty);
+        reloadProdukts();
+    }
+    
+    private void reloadProdukts() {
+        comboBox.setItems(obsProduktList);
+        List<ProduktModel> produktList = QuittungBindingService.CURRENT_INSTANCE.getProduktList();
+    	
+    	obsProduktList = FXCollections.observableArrayList(produktList.stream().map(p -> p.getProduktName()).collect(Collectors.toList()));
 
     }
 

@@ -22,6 +22,9 @@ import java.util.stream.Collectors;
 import org.springframework.data.domain.Sort;
 
 public class QuittungBindingService {
+	
+	public static QuittungBindingService CURRENT_INSTANCE = null;
+	
     private int INITIAL_ITEMS = 10;
     
     private final ProduktRepository produktRepository;
@@ -29,7 +32,8 @@ public class QuittungBindingService {
     private final RechnungRepository rechnungRepository;
     
 	    
-    Map<String, ProduktModel> produktMap;
+    private Map<String, ProduktModel> produktMap;
+    private List<ProduktModel> produktList;
 
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyy");
 
@@ -60,6 +64,9 @@ public class QuittungBindingService {
     		float berechnenFaktorZiel, 
     		ProduktRepository produktRepository,
     		final RechnungRepository rechnungRepository) {
+    	
+    	CURRENT_INSTANCE = this;
+    	
     	this.berechnenFaktorBasis = berechnenFaktorBasis;
     	this.berechnenFaktorZiel = berechnenFaktorZiel;
     	this.produktRepository = produktRepository;
@@ -86,7 +93,7 @@ public class QuittungBindingService {
 
     private void retreiveProduktMap() {
     	List<ProduktEntity> entityList = produktRepository.findAll(Sort.by(Sort.Direction.ASC, "produktName"));
-    	List<ProduktModel> produktList = entityList.stream().map(e -> e.toModel()).collect(Collectors.toList());
+    	produktList = entityList.stream().map(e -> e.toModel()).collect(Collectors.toList());
     	
     	produktMap = produktList.stream().collect(Collectors.toMap(p -> p.getProduktName(), p -> p));
     }
@@ -280,6 +287,7 @@ public class QuittungBindingService {
         			produktRepository.save(produktEntity);
         			
         		}
+        		retreiveProduktMap();
         		
         	}
 
@@ -346,4 +354,10 @@ public class QuittungBindingService {
         }
 		
 	}
+
+	public List<ProduktModel> getProduktList() {
+		return produktList;
+	}
+	
+	
 }

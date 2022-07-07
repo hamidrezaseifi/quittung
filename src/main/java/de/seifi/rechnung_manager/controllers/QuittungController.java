@@ -3,6 +3,7 @@ package de.seifi.rechnung_manager.controllers;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -10,6 +11,7 @@ import de.seifi.rechnung_manager.ui.FloatGeldLabel;
 import de.seifi.rechnung_manager.RechnungManagerFxApp;
 import de.seifi.rechnung_manager.RechnungManagerSpringApp;
 import de.seifi.rechnung_manager.fx_services.QuittungBindingService;
+import de.seifi.rechnung_manager.models.ProduktModel;
 import de.seifi.rechnung_manager.repositories.ProduktRepository;
 import de.seifi.rechnung_manager.repositories.RechnungRepository;
 import de.seifi.rechnung_manager.ui.QuittungItemProperty;
@@ -241,4 +243,10 @@ public class QuittungController implements Initializable, ControllerBse {
     public String getDirtyMessage() {
         return "Die Quittung-Daten ist geändert aber nicht gescpeichert!";
     }
+    
+
+	public List<ProduktModel> getProduktList() {
+		return quittungBindingService.getProduktList();
+	}
+
 }
