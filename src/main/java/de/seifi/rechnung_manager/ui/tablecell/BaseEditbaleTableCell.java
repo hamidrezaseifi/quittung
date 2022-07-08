@@ -2,13 +2,13 @@ package de.seifi.rechnung_manager.ui.tablecell;
 
 import de.seifi.rechnung_manager.ui.FloatTextField;
 import de.seifi.rechnung_manager.ui.IntegerTextField;
-import de.seifi.rechnung_manager.ui.RechnungItemProperty;
+import de.seifi.rechnung_manager.models.RechnungItemProperty;
 import de.seifi.rechnung_manager.ui.TableUtils;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
-public abstract class BaseTableCell<T> extends TableCell<RechnungItemProperty, T> {
+public abstract class BaseEditbaleTableCell<T> extends TableCell<RechnungItemProperty, T> {
 
 	protected abstract void createEditingControl();
 
@@ -21,7 +21,7 @@ public abstract class BaseTableCell<T> extends TableCell<RechnungItemProperty, T
 	protected abstract void setCellText(T text);
 
 
-    public BaseTableCell() {
+    public BaseEditbaleTableCell() {
         
     	createEditingControl();
     	

@@ -14,11 +14,10 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import de.seifi.rechnung_manager.RechnungManagerFxApp;
 import de.seifi.rechnung_manager.fx_services.RechnungBindingPrintService;
 import de.seifi.rechnung_manager.models.RechnungModel;
 import de.seifi.rechnung_manager.ui.FloatGeldLabel;
-import de.seifi.rechnung_manager.ui.RechnungItemProperty;
+import de.seifi.rechnung_manager.models.RechnungItemProperty;
 
 public class PrintDialogController implements Initializable {
 

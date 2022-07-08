@@ -1,26 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
+<?import de.seifi.rechnung_manager.ui.tablecell.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.*?>
 <?import javafx.scene.layout.*?>
 
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Button?>
-<?import javafx.geometry.Insets?>
-
-<?import javafx.scene.control.cell.PropertyValueFactory?>
-<?import javafx.collections.FXCollections?>
-<?import de.seifi.rechnung_manager.ui.tablecell.*?>
-<?import de.seifi.rechnung_manager.ui.FloatTextField?>
-<?import de.seifi.rechnung_manager.ui.FloatGeldLabel?>
-<?import javafx.scene.shape.Line?>
-<?import javafx.scene.image.ImageView?>
-
-<GridPane alignment="TOP_LEFT" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
-          fx:controller="de.seifi.rechnung_manager.controllers.ReportController" fx:id="rootPane">
+<GridPane fx:id="rootPane" alignment="TOP_LEFT" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.seifi.rechnung_manager.controllers.ReportController">
     <columnConstraints>
         <ColumnConstraints hgrow="ALWAYS" />
     </columnConstraints>
@@ -30,61 +15,46 @@
     </rowConstraints>
     <children>
             
-        <HBox GridPane.columnIndex="0" GridPane.rowIndex="0" spacing="10" alignment="CENTER_RIGHT">
-            <Button styleClass="report-button" text="Bericht" onAction="#reload" prefWidth="130" prefHeight="36" alignment="CENTER_RIGHT"></Button>
-            <Button styleClass="print-button" fx:id="btnPrint" text="Drucken" onAction="#printRechnung" prefWidth="116" prefHeight="36" alignment="CENTER_RIGHT"></Button>
-            <Button styleClass="cancel-button" text="Schließen" onAction="#closeRechnung" prefWidth="116" prefHeight="36" alignment="CENTER_RIGHT"></Button>
+        <HBox alignment="CENTER_RIGHT" spacing="10" GridPane.columnIndex="0" GridPane.rowIndex="0">
+            <Button alignment="CENTER_RIGHT" onAction="#search" prefHeight="36" prefWidth="130" styleClass="report-button" text="Suchen" />
+            <Button fx:id="btnPrint" alignment="CENTER_RIGHT" onAction="#printRechnung" prefHeight="36" prefWidth="116" styleClass="print-button" text="Drucken" />
+            <Button alignment="CENTER_RIGHT" onAction="#closeRechnung" prefHeight="36" prefWidth="116" styleClass="cancel-button" text="Schließen" />
 
         </HBox>
-        <TableView editable="true" GridPane.columnIndex="0" GridPane.rowIndex="1" fx:id="reportTableView">
+        <TableView fx:id="reportTableView" GridPane.columnIndex="0" GridPane.rowIndex="1">
             <columns>
-                <TableColumn fx:id="mengeColumn" text="Menge" prefWidth="90">
+                <TableColumn fx:id="datumColumn" editable="false" prefWidth="120.0" sortable="false" text="Rechnung-Datum">
                     <cellValueFactory>
-                        <PropertyValueFactory property="menge" />
+                        <PropertyValueFactory property="rechnungDatum" />
+                    </cellValueFactory>
+
+                </TableColumn>
+                <TableColumn fx:id="nummerColumn" editable="false" sortable="false" text="Nummer">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="nummer" />
+                    </cellValueFactory>
+
+                </TableColumn>
+                <TableColumn fx:id="zeitColumn" prefWidth="110" text="Erstellen-Zeit">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="rechnungZeit" />
+                    </cellValueFactory>
+
+                </TableColumn>
+                <TableColumn fx:id="produktListColumn" prefWidth="120" text="Produkte">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="produktListItem" />
                     </cellValueFactory>
                     <cellFactory>
-                        <MengeTableCellFactory />
+                        <ProduktListTableCellFactory />
                     </cellFactory>
+
                 </TableColumn>
-                <TableColumn fx:id="produktColumn" text="Produkt">
-                    <cellValueFactory>
-                        <PropertyValueFactory property="produkt" />
-                    </cellValueFactory>
-                    <cellFactory>
-                        <ProduktTableCellFactory />
-                    </cellFactory>
-                </TableColumn>
-                <TableColumn fx:id="artikelNummerColumn" text="Artikel-Nr." prefWidth="110">
-                    <cellValueFactory>
-                        <PropertyValueFactory property="artikelNummer" />
-                    </cellValueFactory>
-                    <cellFactory>
-                        <ArtikelNummerTableCellFactory />
-                    </cellFactory>
-                </TableColumn>
-                <TableColumn fx:id="bPreisColumn" text="Bruto-Preis" prefWidth="120">
-                    <cellValueFactory>
-                        <PropertyValueFactory property="brutoPreis" />
-                    </cellValueFactory>
-                    <cellFactory>
-                        <GeldEditingTableCellFactory />
-                    </cellFactory>
-                </TableColumn>
-                <TableColumn fx:id="nPreisColumn" text="Einzelpreis" prefWidth="120" editable="false">
-                    <cellValueFactory>
-                        <PropertyValueFactory property="preis" />
-                    </cellValueFactory>
-                    <cellFactory>
-                        <GeldLabelTableCellFactory />
-                    </cellFactory>
-                </TableColumn>
-                <TableColumn fx:id="gesamtColumn" text="Gesamtpreis" prefWidth="180" editable="false">
+                <TableColumn fx:id="gesamtColumn" editable="false" prefWidth="180" text="Gesamtpreis">
                     <cellValueFactory>
                         <PropertyValueFactory property="gesamt" />
                     </cellValueFactory>
-                    <cellFactory>
-                        <GeldLabelTableCellFactory />
-                    </cellFactory>
+
                 </TableColumn>
             </columns>
 

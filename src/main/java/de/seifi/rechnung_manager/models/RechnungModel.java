@@ -120,6 +120,15 @@ public class RechnungModel {
 		this.updated = updated;
 	}
 
+	public float getGesamt(){
+		float gesamt = 0.0f;
+
+		for(RechnungItemModel item: items) {
+			gesamt += item.getGesmt();
+		}
+
+		return gesamt;
+	}
 
 	public RechnungEntity toEntity() {
 		RechnungEntity entity = null;

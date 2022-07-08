@@ -2,9 +2,8 @@ package de.seifi.rechnung_manager.fx_services;
 
 import de.seifi.rechnung_manager.models.RechnungItemModel;
 import de.seifi.rechnung_manager.models.RechnungModel;
-import de.seifi.rechnung_manager.ui.RechnungItemProperty;
+import de.seifi.rechnung_manager.models.RechnungItemProperty;
 import de.seifi.rechnung_manager.ui.TableUtils;
-import javafx.beans.property.FloatProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 

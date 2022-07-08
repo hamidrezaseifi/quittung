@@ -4,7 +4,7 @@ import de.seifi.rechnung_manager.ui.FloatTextField;
 import de.seifi.rechnung_manager.ui.TableUtils;
 import javafx.scene.control.Control;
 
-public class GeldEditingTableCell extends BaseTableCell<Float> {
+public class GeldEditingTableCell extends BaseEditbaleTableCell<Float> {
 
     private FloatTextField textField;
 

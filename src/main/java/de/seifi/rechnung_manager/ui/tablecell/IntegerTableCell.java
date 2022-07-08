@@ -3,7 +3,7 @@ package de.seifi.rechnung_manager.ui.tablecell;
 import de.seifi.rechnung_manager.ui.IntegerTextField;
 import javafx.scene.control.Control;
 
-public class IntegerTableCell extends BaseTableCell<Integer> {
+public class IntegerTableCell extends BaseEditbaleTableCell<Integer> {
 
     private IntegerTextField textField;
     

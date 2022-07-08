@@ -12,7 +12,7 @@ import javafx.scene.control.*;
 import javafx.util.StringConverter;
 import javafx.util.converter.DefaultStringConverter;
 
-public class ProduktTableCell extends BaseTableCell<String> {
+public class ProduktTableCell extends BaseEditbaleTableCell<String> {
 
     private FilterComboBox editComboBox;
     private ObservableList<String> obsProduktList;

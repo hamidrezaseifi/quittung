@@ -118,10 +118,10 @@ public class RechnungItemModel {
 	public RechnungItemEntity toEntity() {
 		RechnungItemEntity entity = null;
 		if(id != null) {
-			entity = new RechnungItemEntity(id, artikelNummer, artikelNummer, menge, preis, Timestamp.valueOf(this.created), Timestamp.valueOf(this.updated));
+			entity = new RechnungItemEntity(id, produkt, artikelNummer, menge, preis, Timestamp.valueOf(this.created), Timestamp.valueOf(this.updated));
 		} 
 		else {
-			entity = new RechnungItemEntity(artikelNummer, artikelNummer, menge, preis);
+			entity = new RechnungItemEntity(produkt, artikelNummer, menge, preis);
 		}
 		
 		

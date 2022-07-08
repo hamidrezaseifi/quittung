@@ -71,7 +71,7 @@
                         <PropertyValueFactory property="menge" />
                     </cellValueFactory>
                     <cellFactory>
-                        <MengeTableCellFactory />
+                        <IntegerTableCellFactory />
                     </cellFactory>
                 </TableColumn>
                 <TableColumn fx:id="produktColumn" text="Produkt" sortable="false">

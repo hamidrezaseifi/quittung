@@ -1,6 +1,6 @@
 package de.seifi.rechnung_manager.ui.tablecell;
 
-import de.seifi.rechnung_manager.ui.RechnungItemProperty;
+import de.seifi.rechnung_manager.models.RechnungItemProperty;
 import de.seifi.rechnung_manager.ui.TableUtils;
 import javafx.scene.control.TableCell;
 

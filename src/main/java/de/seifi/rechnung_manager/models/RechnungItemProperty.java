@@ -1,4 +1,4 @@
-package de.seifi.rechnung_manager.ui;
+package de.seifi.rechnung_manager.models;
 
 import de.seifi.rechnung_manager.models.RechnungItemModel;
 import javafx.beans.property.*;
@@ -129,10 +129,15 @@ public class RechnungItemProperty {
     }
 
     public boolean isEmpty(){
-       
+
         return isPropertyEmpty(produkt) && isPropertyEmpty(artikelNummer) && isPropertyEmpty(menge) && isPropertyEmpty(brutoPreis) && isPropertyEmpty(preis) && isPropertyEmpty(gesamt);
     }
-    
+
+    public boolean canSaved(){
+
+        return !isEmpty() && isValid();
+    }
+
     private boolean isPropertyEmpty(StringProperty prop) {
     	return prop.getValue() == null || prop.getValue().toString().trim().isEmpty() || prop.getValue().toString().trim().isBlank();
     }

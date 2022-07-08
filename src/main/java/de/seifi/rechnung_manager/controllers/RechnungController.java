@@ -14,7 +14,7 @@ import de.seifi.rechnung_manager.fx_services.RechnungBindingService;
 import de.seifi.rechnung_manager.models.ProduktModel;
 import de.seifi.rechnung_manager.repositories.ProduktRepository;
 import de.seifi.rechnung_manager.repositories.RechnungRepository;
-import de.seifi.rechnung_manager.ui.RechnungItemProperty;
+import de.seifi.rechnung_manager.models.RechnungItemProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -89,9 +89,9 @@ public class RechnungController implements Initializable, ControllerBse {
 		
 		showItemsTableView.setItems(null);
 		
-        /*if(rechnungBindingService.save()){
+        if(rechnungBindingService.save()){
 
-        }*/
+        }
 		
 		showItemsTableView.setItems(rechnungBindingService.getRechnungItems());
         showItemsTableView.setEditable(true);

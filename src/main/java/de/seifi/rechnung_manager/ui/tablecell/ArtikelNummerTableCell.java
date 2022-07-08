@@ -4,7 +4,7 @@ import javafx.scene.control.*;
 import javafx.util.StringConverter;
 import javafx.util.converter.DefaultStringConverter;
 
-public class ArtikelNummerTableCell extends BaseTableCell<String> {
+public class ArtikelNummerTableCell extends BaseEditbaleTableCell<String> {
 
     private TextField textField;
 

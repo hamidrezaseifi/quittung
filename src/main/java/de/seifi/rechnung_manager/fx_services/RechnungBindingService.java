@@ -7,10 +7,9 @@ import de.seifi.rechnung_manager.models.ProduktModel;
 import de.seifi.rechnung_manager.models.RechnungModel;
 import de.seifi.rechnung_manager.repositories.ProduktRepository;
 import de.seifi.rechnung_manager.repositories.RechnungRepository;
-import de.seifi.rechnung_manager.ui.RechnungItemProperty;
+import de.seifi.rechnung_manager.models.RechnungItemProperty;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 
 import java.time.LocalDateTime;
@@ -266,38 +265,38 @@ public class RechnungBindingService {
 	}
 
 	public boolean save() {
-        if(savingModel.isNew()){
-        	savingModel.getItems().clear();
-            savingModel.getItems().addAll(this.rechnungItems.stream().filter(qi -> qi.isValid()).map(qi -> qi.toModel()).collect(Collectors.toList()));
 
-        	RechnungEntity savingEntity = savingModel.toEntity();
-        	
-        	rechnungRepository.save(savingEntity);
-        	Optional<RechnungEntity> savedEntityOptional = rechnungRepository.findById(savingEntity.getId());
-        	if(savedEntityOptional.isPresent()) {
-        		savingModel = savedEntityOptional.get().toModel();
-        		List<RechnungItemProperty> items = this.rechnungItems.stream().filter(qi -> qi.isValid()).collect(Collectors.toList());
-        		
-        		for(RechnungItemProperty item: items) {
-        			Optional<String> foundProdukt = produktMap.keySet().stream().filter(k -> k.toLowerCase().equals(item.getProdukt().toLowerCase())).findAny();
-        			ProduktEntity produktEntity = null;
-        			if(foundProdukt.isPresent()) {
-        				produktEntity = produktMap.get(foundProdukt.get()).toEntity();
-        				produktEntity.setLastPreis(item.getBrutoPreis());
-        			}
-        			else {
-        				produktEntity = new ProduktEntity(item.getProdukt(), item.getBrutoPreis());
-        			}
-        			produktRepository.save(produktEntity);
-        			
-        		}
-        		retreiveProduktMap();
-        	}
+        savingModel.getItems().clear();
+        savingModel.getItems().addAll(this.rechnungItems.stream().filter(qi -> qi.canSaved()).map(qi -> qi.toModel()).collect(Collectors.toList()));
 
-            
-            setDirty(false);
+        RechnungEntity savingEntity = savingModel.toEntity();
 
+        rechnungRepository.save(savingEntity);
+        Optional<RechnungEntity> savedEntityOptional = rechnungRepository.findById(savingEntity.getId());
+        if(savedEntityOptional.isPresent()) {
+            savingModel = savedEntityOptional.get().toModel();
+            List<RechnungItemProperty> items = this.rechnungItems.stream().filter(qi -> qi.canSaved()).collect(Collectors.toList());
+
+            for(RechnungItemProperty item: items) {
+                Optional<String> foundProdukt = produktMap.keySet().stream().filter(k -> k.toLowerCase().equals(item.getProdukt().toLowerCase())).findAny();
+                ProduktEntity produktEntity = null;
+                if(foundProdukt.isPresent()) {
+                    produktEntity = produktMap.get(foundProdukt.get()).toEntity();
+                    produktEntity.setLastPreis(item.getBrutoPreis());
+                }
+                else {
+                    produktEntity = new ProduktEntity(item.getProdukt(), item.getBrutoPreis());
+                }
+                produktRepository.save(produktEntity);
+
+            }
+            retreiveProduktMap();
         }
+
+
+        setDirty(false);
+
+
 
         return true;
     }
