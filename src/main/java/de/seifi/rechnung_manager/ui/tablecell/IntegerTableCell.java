@@ -3,7 +3,7 @@ package de.seifi.rechnung_manager.ui.tablecell;
 import de.seifi.rechnung_manager.ui.IntegerTextField;
 import javafx.scene.control.Control;
 
-public class MengeTableCell extends BaseTableCell<Integer> {
+public class IntegerTableCell extends BaseTableCell<Integer> {
 
     private IntegerTextField textField;
     
@@ -19,6 +19,7 @@ public class MengeTableCell extends BaseTableCell<Integer> {
 
 	@Override
 	protected void setEditingControlValue(Integer value) {
+		value = value == null ? 0 : value;
 		textField.setValue(value);
 	}
 
@@ -34,7 +35,7 @@ public class MengeTableCell extends BaseTableCell<Integer> {
 		
 	}
 
-    public MengeTableCell() {
+    public IntegerTableCell() {
     	super();
 
     }

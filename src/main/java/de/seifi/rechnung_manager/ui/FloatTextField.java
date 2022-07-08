@@ -28,7 +28,14 @@ public class FloatTextField extends TextField
     }
 
     public Float getValue(){
-        return Float.parseFloat(getText().replace(",", "."));
+    	try {
+    		return Float.parseFloat(getText().replace(",", "."));
+    	}
+    	catch (NumberFormatException e) {
+			setValue(0.0f);
+			return 0.0f;
+		}
+        
     }
 
     public void setValue(Float value){

@@ -56,6 +56,9 @@ public abstract class BaseTableCell<T> extends TableCell<RechnungItemProperty, T
                 	txtField.selectAll();
                 }
             }
+            else {
+            	commitEdit(getEditingControlValue());
+            }
         });
 
         getEditingControl().addEventFilter(KeyEvent.KEY_PRESSED, event -> {
@@ -79,8 +82,16 @@ public abstract class BaseTableCell<T> extends TableCell<RechnungItemProperty, T
                 commitEdit(getEditingControlValue());
             }
             
-            if ((event.getCode() == KeyCode.TAB) || (event.getCode() == KeyCode.ENTER)) {
+            if (((event.getCode() == KeyCode.TAB) && !event.isShiftDown()) || (event.getCode() == KeyCode.ENTER)) {
             	TableUtils.selectNextEditable(this);
+            }
+            if ((event.getCode() == KeyCode.TAB) && event.isShiftDown()) {
+            	if(TableUtils.selectPrevEditable(this)) {
+            		
+            	}
+            	else {
+            		event.consume();
+            	}
             }
             
         });

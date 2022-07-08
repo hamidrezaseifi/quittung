@@ -83,16 +83,19 @@ public class RechnungController implements Initializable, ControllerBse {
 
 	@FXML
     private void speichern() throws IOException {
-		rechnungBindingService.doCancelEditing();
 		showItemsTableView.setEditable(false);
-		TablePosition<RechnungItemProperty,?> tp = showItemsTableView.getEditingCell();
 		showItemsTableView.edit(-1, null);
+		showItemsTableView.setDisable(true);
 		
-        if(rechnungBindingService.save()){
+		showItemsTableView.setItems(null);
+		
+        /*if(rechnungBindingService.save()){
 
-        }
+        }*/
+		
+		showItemsTableView.setItems(rechnungBindingService.getRechnungItems());
         showItemsTableView.setEditable(true);
-        rechnungBindingService.cancelCancelEditing();
+        showItemsTableView.setDisable(false);
     }
 
     @FXML

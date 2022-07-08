@@ -9,6 +9,6 @@ public class MengeTableCellFactory implements
                                          Callback<TableColumn<RechnungItemProperty, Integer>, TableCell<RechnungItemProperty, Integer>> {
     @Override
     public TableCell<RechnungItemProperty, Integer> call(TableColumn<RechnungItemProperty, Integer> rechnungItemPropertyStringTableColumn) {
-        return new MengeTableCell();
+        return new IntegerTableCell();
     }
 }

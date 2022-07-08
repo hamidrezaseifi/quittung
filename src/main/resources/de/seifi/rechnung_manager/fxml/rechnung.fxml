@@ -66,7 +66,7 @@
         </HBox>
         <TableView editable="true" GridPane.columnIndex="0" GridPane.rowIndex="2" fx:id="showItemsTableView">
             <columns>
-                <TableColumn fx:id="mengeColumn" text="Menge" prefWidth="90">
+                <TableColumn fx:id="mengeColumn" text="Menge" prefWidth="90" sortable="false">
                     <cellValueFactory>
                         <PropertyValueFactory property="menge" />
                     </cellValueFactory>
@@ -74,7 +74,7 @@
                         <MengeTableCellFactory />
                     </cellFactory>
                 </TableColumn>
-                <TableColumn fx:id="produktColumn" text="Produkt">
+                <TableColumn fx:id="produktColumn" text="Produkt" sortable="false">
                     <cellValueFactory>
                         <PropertyValueFactory property="produkt" />
                     </cellValueFactory>
@@ -82,7 +82,7 @@
                         <ProduktTableCellFactory />
                     </cellFactory>
                 </TableColumn>
-                <TableColumn fx:id="artikelNummerColumn" text="Artikel-Nr." prefWidth="110">
+                <TableColumn fx:id="artikelNummerColumn" text="Artikel-Nr." prefWidth="110" sortable="false">
                     <cellValueFactory>
                         <PropertyValueFactory property="artikelNummer" />
                     </cellValueFactory>
@@ -90,7 +90,7 @@
                         <ArtikelNummerTableCellFactory />
                     </cellFactory>
                 </TableColumn>
-                <TableColumn fx:id="bPreisColumn" text="Bruto-Preis" prefWidth="120">
+                <TableColumn fx:id="bPreisColumn" text="Bruto-Preis" prefWidth="120" sortable="false">
                     <cellValueFactory>
                         <PropertyValueFactory property="brutoPreis" />
                     </cellValueFactory>
@@ -98,7 +98,7 @@
                         <GeldEditingTableCellFactory />
                     </cellFactory>
                 </TableColumn>
-                <TableColumn fx:id="nPreisColumn" text="Einzelpreis" prefWidth="120" editable="false">
+                <TableColumn fx:id="nPreisColumn" text="Einzelpreis" prefWidth="120" editable="false" sortable="false">
                     <cellValueFactory>
                         <PropertyValueFactory property="preis" />
                     </cellValueFactory>
@@ -106,7 +106,7 @@
                         <GeldLabelTableCellFactory />
                     </cellFactory>
                 </TableColumn>
-                <TableColumn fx:id="gesamtColumn" text="Gesamtpreis" prefWidth="180" editable="false">
+                <TableColumn fx:id="gesamtColumn" text="Gesamtpreis" prefWidth="180" editable="false" sortable="false">
                     <cellValueFactory>
                         <PropertyValueFactory property="gesamt" />
                     </cellValueFactory>

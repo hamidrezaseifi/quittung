@@ -12,13 +12,14 @@ public class RechnungItemProperty {
     private FloatProperty gesamt;
 
     public RechnungItemProperty() {
+    	
         this.produkt = new SimpleStringProperty();
         this.artikelNummer = new SimpleStringProperty();
         this.menge = new SimpleIntegerProperty(0);
         this.brutoPreis = new SimpleFloatProperty(0f);
         this.preis = new SimpleFloatProperty(0f);
         this.gesamt = new SimpleFloatProperty(0f);
-
+        
     }
 
     public RechnungItemProperty(RechnungItemModel model) {
@@ -119,15 +120,32 @@ public class RechnungItemProperty {
     }
 
     public boolean isValid(){
-        if(produkt.get() == null){
-            return false;
-        }
-        if(artikelNummer.get() == null){
-            return false;
+    	if(isEmpty()){
+            return true;
         }
 
-        return (!produkt.get().trim().isEmpty() ) && (!artikelNummer.get().trim().isEmpty() ) && (menge.get() > 0) && (preis.get() > 0);
+        return !isPropertyEmpty(produkt) && !isPropertyEmpty(artikelNummer) && !isPropertyEmpty(menge) && 
+        		!isPropertyEmpty(brutoPreis) && !isPropertyEmpty(preis) && !isPropertyEmpty(gesamt);
     }
+
+    public boolean isEmpty(){
+       
+        return isPropertyEmpty(produkt) && isPropertyEmpty(artikelNummer) && isPropertyEmpty(menge) && isPropertyEmpty(brutoPreis) && isPropertyEmpty(preis) && isPropertyEmpty(gesamt);
+    }
+    
+    private boolean isPropertyEmpty(StringProperty prop) {
+    	return prop.getValue() == null || prop.getValue().toString().trim().isEmpty() || prop.getValue().toString().trim().isBlank();
+    }
+
+    
+    private boolean isPropertyEmpty(FloatProperty prop) {
+    	return prop.getValue() == null || prop.getValue() == 0.0;
+    }
+
+    private boolean isPropertyEmpty(IntegerProperty prop) {
+    	return prop.getValue() == null || prop.getValue() == 0;
+    }
+    
 	public FloatProperty brutoPreisProperty() {
 		return brutoPreis;
 	}

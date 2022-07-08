@@ -10,6 +10,7 @@ import de.seifi.rechnung_manager.repositories.RechnungRepository;
 import de.seifi.rechnung_manager.ui.RechnungItemProperty;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 
 import java.time.LocalDateTime;
@@ -62,8 +63,6 @@ public class RechnungBindingService {
     private List<String> berechnenFaktorZielColorList = Arrays.asList("-fx-background-color: white", "-fx-background-color: #f7fbff");
     private StringProperty bannerBackColor;
     
-    private boolean cancelEditing;
-    
 
     
     private RechnungModel savingModel = new RechnungModel();
@@ -75,7 +74,6 @@ public class RechnungBindingService {
     	
     	CURRENT_INSTANCE = this;
         this.activeBerechnenZiel = 0;
-        this.cancelEditing = false;
         this.bannerBackColor = new SimpleStringProperty(this.berechnenFaktorZielColorList.get(this.activeBerechnenZiel));
 
     	this.produktRepository = produktRepository;
@@ -92,24 +90,12 @@ public class RechnungBindingService {
         disableSave = new SimpleBooleanProperty(true);
         disablePrint = new SimpleBooleanProperty(false);
         
-        rechnungItems = FXCollections.observableArrayList();
+        this.rechnungItems = FXCollections.observableArrayList();
         
         retreiveProduktMap();
         
         reset();
 
-    }
-    
-    public boolean isCancelEditing() {
-    	return this.cancelEditing;
-    }
-
-    public void doCancelEditing() {
-    	this.cancelEditing = true;
-    }
-    
-    public void cancelCancelEditing() {
-    	this.cancelEditing = false;
     }
 
     public void toggleActiveBerechnenZiel(){
@@ -129,7 +115,7 @@ public class RechnungBindingService {
     public void calculateRechnungSumme() {
         float netto = 0;
 
-        for(RechnungItemProperty i:rechnungItems){
+        for(RechnungItemProperty i:this.rechnungItems){
             netto += i.getGesamt();
         }
         
@@ -139,7 +125,7 @@ public class RechnungBindingService {
     }
 
     public ObservableList<RechnungItemProperty> getRechnungItems() {
-        return rechnungItems;
+        return this.rechnungItems;
     }
 
     public float getGesamtSumme() {
@@ -199,9 +185,9 @@ public class RechnungBindingService {
 	}
 
 	public void reset() {
-		rechnungItems.clear();
-        while (rechnungItems.size() < INITIAL_ITEMS){
-            rechnungItems.add(new RechnungItemProperty());
+		this.rechnungItems.clear();
+        while (this.rechnungItems.size() < INITIAL_ITEMS){
+        	addNewRowIntern(new RechnungItemProperty());
         }
         calculateRechnungSumme();
         
@@ -256,16 +242,20 @@ public class RechnungBindingService {
 		this.isDirty = isDirty;
 		
 		if(isDirty) {
-			if(rechnungItems.stream().anyMatch(pi -> pi.isValid())) {
-				this.disableSave.set(false);
+			if(this.rechnungItems.stream().anyMatch(pi -> !pi.isValid())) {
+				this.disableSave.set(true);
+			}
+			else {
+				this.disableSave.set(!isAnyValidArtikelToSave());
 			}
 		}
-		
 		
 		this.disablePrint.set(isDirty);
 	}
 	
-	
+	private boolean isAnyValidArtikelToSave() {
+		return this.rechnungItems.stream().anyMatch(pi -> pi.isValid() & !pi.isEmpty());
+	}
 
 	public BooleanProperty getDisableSaveProperty() {
 		return disableSave;
@@ -278,7 +268,7 @@ public class RechnungBindingService {
 	public boolean save() {
         if(savingModel.isNew()){
         	savingModel.getItems().clear();
-            savingModel.getItems().addAll(rechnungItems.stream().filter(qi -> qi.isValid()).map(qi -> qi.toModel()).collect(Collectors.toList()));
+            savingModel.getItems().addAll(this.rechnungItems.stream().filter(qi -> qi.isValid()).map(qi -> qi.toModel()).collect(Collectors.toList()));
 
         	RechnungEntity savingEntity = savingModel.toEntity();
         	
@@ -286,7 +276,7 @@ public class RechnungBindingService {
         	Optional<RechnungEntity> savedEntityOptional = rechnungRepository.findById(savingEntity.getId());
         	if(savedEntityOptional.isPresent()) {
         		savingModel = savedEntityOptional.get().toModel();
-        		List<RechnungItemProperty> items = rechnungItems.stream().filter(qi -> qi.isValid()).collect(Collectors.toList());
+        		List<RechnungItemProperty> items = this.rechnungItems.stream().filter(qi -> qi.isValid()).collect(Collectors.toList());
         		
         		for(RechnungItemProperty item: items) {
         			Optional<String> foundProdukt = produktMap.keySet().stream().filter(k -> k.toLowerCase().equals(item.getProdukt().toLowerCase())).findAny();
@@ -320,18 +310,19 @@ public class RechnungBindingService {
     }
 
 	public void setNewMengeValue(int row, Integer value) {
-		RechnungItemProperty prop = rechnungItems.get(row);
+		RechnungItemProperty prop = this.rechnungItems.get(row);
         if(prop.getMenge() != value) {
         	prop.setMenge(value);
 
             calculateRechnungSumme();
             setDirty(true);
+
         }
 	}
 
 	public void setNewBrutoPreisValue(int row, Float value) {
 		
-		RechnungItemProperty prop = rechnungItems.get(row);
+		RechnungItemProperty prop = this.rechnungItems.get(row);
         
         if(prop.getBrutoPreis() != value) {
         	
@@ -340,13 +331,14 @@ public class RechnungBindingService {
             
             calculateRechnungSumme();
             setDirty(true);
+ 
         }
 		
 	}
 
 	public void setNewProduktValue(int row, String value) {
 		
-		RechnungItemProperty prop = rechnungItems.get(row);
+		RechnungItemProperty prop = this.rechnungItems.get(row);
         if(prop.getProdukt() != value) {
             prop.setProdukt(value);
             calculateRechnungSumme();
@@ -359,13 +351,14 @@ public class RechnungBindingService {
             	ProduktModel produktModel = produktMap.get(foundProdukt.get());
             	prop.setBrutoPreis(produktModel.getLastPreis());
             }
+
         }
 		
 	}
 
 	public void setNewArtikelNummerValue(int row, String value) {
 		
-		RechnungItemProperty prop = rechnungItems.get(row);
+		RechnungItemProperty prop = this.rechnungItems.get(row);
         if(prop.getArtikelNummer() != value) {
             prop.setArtikelNummer(value);
             calculateRechnungSumme();
@@ -379,8 +372,13 @@ public class RechnungBindingService {
 		return produktList;
 	}
 
+	private void addNewRowIntern(RechnungItemProperty item) {
+		
+		this.rechnungItems.add(item);
+	}
+
 	public void addNewRow() {
-		rechnungItems.add(new RechnungItemProperty());
+		addNewRowIntern(new RechnungItemProperty());
 	}
 	
 	

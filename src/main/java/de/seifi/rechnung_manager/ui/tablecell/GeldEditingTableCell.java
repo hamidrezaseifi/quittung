@@ -22,6 +22,7 @@ public class GeldEditingTableCell extends BaseTableCell<Float> {
 
 	@Override
 	protected void setEditingControlValue(Float value) {
+		value = value == null ? 0.0f : value;
 		textField.setValue(value);
 		
 	}

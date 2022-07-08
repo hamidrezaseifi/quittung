@@ -29,7 +29,13 @@ public class IntegerTextField extends TextField
     }
 
     public Integer getValue(){
-        return Integer.parseInt(getText());
+    	try {
+    		return Integer.parseInt(getText());
+    	}
+    	catch (NumberFormatException e) {
+			setValue(0);
+			return 0;
+		}
     }
 
     public void setValue(Integer value){
