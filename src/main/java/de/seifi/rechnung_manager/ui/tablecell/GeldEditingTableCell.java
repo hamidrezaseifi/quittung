@@ -1,98 +1,53 @@
 package de.seifi.rechnung_manager.ui.tablecell;
 
 import de.seifi.rechnung_manager.ui.FloatTextField;
-import de.seifi.rechnung_manager.ui.QuittungItemProperty;
 import de.seifi.rechnung_manager.ui.TableUtils;
-import javafx.scene.control.ContentDisplay;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.util.Pair;
+import javafx.scene.control.Control;
 
-public class GeldEditingTableCell extends TableCell<QuittungItemProperty, Float> {
+public class GeldEditingTableCell extends BaseTableCell<Float> {
 
-    private final FloatTextField textField = new FloatTextField();
+    private FloatTextField textField;
 
+
+	@Override
+	protected Control getEditingControl() {
+		return textField;
+	}
+
+	@Override
+	protected Float getEditingControlValue() {
+		
+		return textField.getValue();
+	}
+
+	@Override
+	protected void setEditingControlValue(Float value) {
+		textField.setValue(value);
+		
+	}
+
+	@Override
+	protected void setCellText(Float value) {
+		
+		if(value == null) {
+			setText(TableUtils.formatGeld(0.0f));
+		}
+		else {
+			setText(TableUtils.formatGeld(value));
+		}
+	}
+
+	
     public GeldEditingTableCell() {
-
-        itemProperty().addListener((obx, oldItem, newItem) -> {
-            Float val = 0f;
-            if (newItem != null) {
-                val = newItem;
-            }
-
-            setText(TableUtils.formatGeld(val));
-        });
-
-        setGraphic(textField);
-        setContentDisplay(ContentDisplay.TEXT_ONLY);
-
-        textField.setOnAction(evt -> {
-            commitEdit(textField.getValue());
-        });
-        textField.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
-            if (!isNowFocused) {
-                commitEdit(textField.getValue());
-            }
-        });
-
-        textField.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-            if (event.getCode() == KeyCode.ESCAPE) {
-                textField.setText(String.valueOf(getItem()));
-                cancelEdit();
-                event.consume();
-            } else if (event.getCode() == KeyCode.RIGHT) {
-                getTableView().getSelectionModel().selectRightCell();
-                event.consume();
-            } else if (event.getCode() == KeyCode.LEFT) {
-                getTableView().getSelectionModel().selectLeftCell();
-                event.consume();
-            } else if (event.getCode() == KeyCode.UP) {
-                getTableView().getSelectionModel().selectAboveCell();
-                event.consume();
-            } else if (event.getCode() == KeyCode.DOWN) {
-                getTableView().getSelectionModel().selectBelowCell();
-                event.consume();
-            }
-            else if (event.getCode() == KeyCode.TAB) {
-                commitEdit(textField.getValue());
-                Pair<Integer, TableColumn> res = TableUtils.findNextEditable(this);
-                if(res != null){
-                    getTableView().getSelectionModel().select(res.getKey(), res.getValue());
-                    getTableView().edit(res.getKey(), res.getValue());
-                }
-            }
-        });
+    	super();
 
     }
 
-    @Override
-    public void updateItem(Float item, boolean empty) {
-        super.updateItem(item, empty);
+	@Override
+	protected void createEditingControl() {
+		textField = new FloatTextField();
+		
+	}
 
-    }
-
-    @Override
-    public void startEdit() {
-        super.startEdit();
-        textField.setText(String.valueOf(getItem()));
-        setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-        textField.selectAll();
-        textField.requestFocus();
-
-    }
-
-    @Override
-    public void cancelEdit() {
-        super.cancelEdit();
-        setContentDisplay(ContentDisplay.TEXT_ONLY);
-    }
-
-    @Override
-    public void commitEdit(Float item) {
-        super.commitEdit(item);
-        setContentDisplay(ContentDisplay.TEXT_ONLY);
-    }
 
 }

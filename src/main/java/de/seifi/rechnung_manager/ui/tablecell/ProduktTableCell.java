@@ -1,88 +1,63 @@
 package de.seifi.rechnung_manager.ui.tablecell;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import de.seifi.rechnung_manager.fx_services.QuittungBindingService;
+import de.seifi.rechnung_manager.fx_services.RechnungBindingService;
 import de.seifi.rechnung_manager.models.ProduktModel;
 import de.seifi.rechnung_manager.ui.FilterComboBox;
-import de.seifi.rechnung_manager.ui.QuittungItemProperty;
-import de.seifi.rechnung_manager.ui.TableUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.util.Pair;
 import javafx.util.StringConverter;
 import javafx.util.converter.DefaultStringConverter;
 
-public class ProduktTableCell extends TableCell<QuittungItemProperty, String> {
+public class ProduktTableCell extends BaseTableCell<String> {
 
-    private final FilterComboBox comboBox;
+    private FilterComboBox editComboBox;
     private ObservableList<String> obsProduktList;
     
     private StringConverter<String> converter = new DefaultStringConverter();
 
+
+	@Override
+	protected Control getEditingControl() {
+
+		return editComboBox;
+	}
+
+	@Override
+	protected String getEditingControlValue() {
+		return editComboBox.getEditor().getText();
+	}
+
+	@Override
+	protected void setEditingControlValue(String value) {
+		editComboBox.getEditor().setText(converter.toString(value));
+	}
+
+	@Override
+	protected void setCellText(String text) {
+		if (text == null) {
+            setText(null);
+        } else {
+            setText(converter.toString(text));
+        }
+	}
+
+	
     public ProduktTableCell() {
-     	
-    	comboBox = new FilterComboBox(FXCollections.observableArrayList());
+        
+        super();
+     	 
+    }
+    
+    private void reloadProdukts() {
+        editComboBox.setItems(obsProduktList);
+        List<ProduktModel> produktList = RechnungBindingService.CURRENT_INSTANCE.getProduktList();
     	
-    	reloadProdukts();
-    	
-        comboBox.setEditable(true);
-        comboBox.prefWidthProperty().bind(this.widthProperty().subtract(3));
-        
-        itemProperty().addListener((obx, oldItem, newItem) -> {
-            if (newItem == null) {
-                setText(null);
-            } else {
-                setText(converter.toString(newItem));
-            }
-        });
+    	obsProduktList = FXCollections.observableArrayList(produktList.stream().map(p -> p.getProduktName()).collect(Collectors.toList()));
 
-        setGraphic(comboBox);
-        setContentDisplay(ContentDisplay.TEXT_ONLY);
-
-        comboBox.setOnAction(evt -> {
-            commitEdit(this.converter.fromString(comboBox.getEditor().getText()));
-        });
-        comboBox.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
-            if (!isNowFocused) {
-                commitEdit(this.converter.fromString(comboBox.getEditor().getText()));
-            }
-        });
-
-        comboBox.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-            if (event.getCode() == KeyCode.ESCAPE) {
-                comboBox.getEditor().setText(converter.toString(getItem()));
-                cancelEdit();
-                event.consume();
-            } else if (event.getCode() == KeyCode.RIGHT) {
-                getTableView().getSelectionModel().selectRightCell();
-                event.consume();
-            } else if (event.getCode() == KeyCode.LEFT) {
-                getTableView().getSelectionModel().selectLeftCell();
-                event.consume();
-            } else if (event.getCode() == KeyCode.UP) {
-                getTableView().getSelectionModel().selectAboveCell();
-                event.consume();
-            } else if (event.getCode() == KeyCode.DOWN) {
-                getTableView().getSelectionModel().selectBelowCell();
-                event.consume();
-            }else if (event.getCode() == KeyCode.TAB) {
-                commitEdit(comboBox.getEditor().getText());
-                Pair<Integer, TableColumn> res = TableUtils.findNextEditable(this);
-                if(res != null){
-                    getTableView().getSelectionModel().select(res.getKey(), res.getValue());
-                    getTableView().edit(res.getKey(), res.getValue());
-                }
-
-            }
-        });
-        
-        
     }
 
     @Override
@@ -90,34 +65,23 @@ public class ProduktTableCell extends TableCell<QuittungItemProperty, String> {
         super.updateItem(item, empty);
         reloadProdukts();
     }
-    
-    private void reloadProdukts() {
-        comboBox.setItems(obsProduktList);
-        List<ProduktModel> produktList = QuittungBindingService.CURRENT_INSTANCE.getProduktList();
-    	
-    	obsProduktList = FXCollections.observableArrayList(produktList.stream().map(p -> p.getProduktName()).collect(Collectors.toList()));
-
-    }
 
     @Override
     public void startEdit() {
         super.startEdit();
-        comboBox.getEditor().setText(getItem());
-        setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-        comboBox.requestFocus();
-        comboBox.show();
+        editComboBox.show();
     }
 
-    @Override
-    public void cancelEdit() {
-        super.cancelEdit();
-        setContentDisplay(ContentDisplay.TEXT_ONLY);
-    }
+	@Override
+	protected void createEditingControl() {
+    	editComboBox = new FilterComboBox(FXCollections.observableArrayList());
+    	
+    	reloadProdukts();
+    	
+        editComboBox.setEditable(true);
+        editComboBox.prefWidthProperty().bind(this.widthProperty().subtract(3));
 
-    @Override
-    public void commitEdit(String item) {
-        super.commitEdit(item);
-        setContentDisplay(ContentDisplay.TEXT_ONLY);
-    }
+		
+	}
 
 }

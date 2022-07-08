@@ -31,4 +31,8 @@ public class IntegerTextField extends TextField
     public Integer getValue(){
         return Integer.parseInt(getText());
     }
+
+    public void setValue(Integer value){
+        setText(String.valueOf(value));
+    }
 }

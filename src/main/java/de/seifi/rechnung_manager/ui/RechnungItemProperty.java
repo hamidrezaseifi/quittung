@@ -3,7 +3,7 @@ package de.seifi.rechnung_manager.ui;
 import de.seifi.rechnung_manager.models.RechnungItemModel;
 import javafx.beans.property.*;
 
-public class QuittungItemProperty {
+public class RechnungItemProperty {
     private StringProperty produkt;
     private StringProperty artikelNummer;
     private IntegerProperty menge;
@@ -11,7 +11,7 @@ public class QuittungItemProperty {
     private FloatProperty preis;
     private FloatProperty gesamt;
 
-    public QuittungItemProperty() {
+    public RechnungItemProperty() {
         this.produkt = new SimpleStringProperty();
         this.artikelNummer = new SimpleStringProperty();
         this.menge = new SimpleIntegerProperty(0);
@@ -21,7 +21,7 @@ public class QuittungItemProperty {
 
     }
 
-    public QuittungItemProperty(RechnungItemModel model) {
+    public RechnungItemProperty(RechnungItemModel model) {
         this();
         this.produkt.set(model.getProdukt());
         this.artikelNummer.set(model.getArtikelNummer());
@@ -30,7 +30,7 @@ public class QuittungItemProperty {
         this.gesamt.set(model.getGesmt());
     }
 
-    public QuittungItemProperty(
+    public RechnungItemProperty(
             String produkt,
             String artikelNummer,
             int menge,

@@ -30,7 +30,7 @@
     </rowConstraints>
     <children>
             
-    	<GridPane GridPane.columnIndex="0" GridPane.rowIndex="0" styleClass="quittung-banner">
+    	<GridPane GridPane.columnIndex="0" GridPane.rowIndex="0" styleClass="rechnung-banner">
 			<columnConstraints>
 		        <ColumnConstraints hgrow="ALWAYS" />
 		        <ColumnConstraints hgrow="NEVER" prefWidth="150" />
@@ -43,10 +43,10 @@
 		    </rowConstraints>
 		    <children>
                	<Label text="Rechnung Nr." GridPane.columnIndex="1" GridPane.rowIndex="0" styleClass="summe-label" textAlignment="LEFT" />
-               	<Label fx:id="lblQuittungNummer" GridPane.columnIndex="2" GridPane.rowIndex="0" styleClass="summe-label" textAlignment="LEFT" />
+               	<Label fx:id="lblRechnungNummer" GridPane.columnIndex="2" GridPane.rowIndex="0" styleClass="summe-label" textAlignment="LEFT" />
 
                	<Label text="Rechnungdatunm" GridPane.columnIndex="1" GridPane.rowIndex="1" styleClass="summe-label" textAlignment="LEFT" />
-               	<Label fx:id="lblQuittungDatum" GridPane.columnIndex="2" GridPane.rowIndex="1" styleClass="summe-label" textAlignment="LEFT" />
+               	<Label fx:id="lblRechnungDatum" GridPane.columnIndex="2" GridPane.rowIndex="1" styleClass="summe-label" textAlignment="LEFT" />
 
                	<Label text="Liferdatum" GridPane.columnIndex="1" GridPane.rowIndex="2" styleClass="summe-label" textAlignment="LEFT" />
                	<Label fx:id="lblLiferdatum" GridPane.columnIndex="2" GridPane.rowIndex="2" styleClass="summe-label" textAlignment="LEFT" />

@@ -72,12 +72,10 @@ public class RechnungManagerFxApp extends Application {
         return resourceUrl;
     }
 
-    public static GridPane getQuittungPane() throws IOException {
-    	/*if(quittungPane == null) {
-    		GridPane quittungPane =  (GridPane)loadFXML("quittung");
-    	}*/
-    	GridPane quittungPane =  (GridPane)loadFXML("quittung");
-    	return quittungPane;
+    public static GridPane getRechnungPane() throws IOException {
+    	
+    	GridPane rechnungPane =  (GridPane)loadFXML("rechnung");
+    	return rechnungPane;
     }
 
     public static GridPane getHomePane() throws IOException {

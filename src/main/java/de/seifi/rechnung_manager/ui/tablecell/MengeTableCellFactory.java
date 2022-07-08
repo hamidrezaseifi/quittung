@@ -1,14 +1,14 @@
 package de.seifi.rechnung_manager.ui.tablecell;
 
-import de.seifi.rechnung_manager.ui.QuittungItemProperty;
+import de.seifi.rechnung_manager.ui.RechnungItemProperty;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.util.Callback;
 
 public class MengeTableCellFactory implements
-                                         Callback<TableColumn<QuittungItemProperty, Integer>, TableCell<QuittungItemProperty, Integer>> {
+                                         Callback<TableColumn<RechnungItemProperty, Integer>, TableCell<RechnungItemProperty, Integer>> {
     @Override
-    public TableCell<QuittungItemProperty, Integer> call(TableColumn<QuittungItemProperty, Integer> quittungItemPropertyStringTableColumn) {
+    public TableCell<RechnungItemProperty, Integer> call(TableColumn<RechnungItemProperty, Integer> rechnungItemPropertyStringTableColumn) {
         return new MengeTableCell();
     }
 }

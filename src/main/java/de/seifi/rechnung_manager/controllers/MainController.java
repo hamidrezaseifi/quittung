@@ -28,7 +28,7 @@ public class MainController implements Initializable {
 	}
 	
     @FXML
-    private void showQuittung() throws IOException {
+    private void showRechnung() throws IOException {
     	
     	if(RechnungManagerFxApp.isCurrentControllerDirty()) {
     		return;
@@ -36,7 +36,7 @@ public class MainController implements Initializable {
 
     	clearChildren();
     	
-    	childBox.getChildren().add(RechnungManagerFxApp.getQuittungPane());
+    	childBox.getChildren().add(RechnungManagerFxApp.getRechnungPane());
     }
 	
     @FXML

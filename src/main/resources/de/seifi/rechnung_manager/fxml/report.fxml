@@ -18,21 +18,77 @@
 <?import de.seifi.rechnung_manager.ui.FloatGeldLabel?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.image.ImageView?>
-<GridPane alignment="TOP_LEFT" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+
+<GridPane alignment="TOP_LEFT" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="de.seifi.rechnung_manager.controllers.ReportController" fx:id="rootPane">
     <columnConstraints>
         <ColumnConstraints hgrow="ALWAYS" />
     </columnConstraints>
     <rowConstraints>
+        <RowConstraints prefHeight="40" vgrow="NEVER" />
         <RowConstraints vgrow="ALWAYS" />
     </rowConstraints>
     <children>
-    	
-        <Label GridPane.columnIndex="0" GridPane.rowIndex="0" text="Bericht">
-        	
-        </Label>
-      
+            
+        <HBox GridPane.columnIndex="0" GridPane.rowIndex="0" spacing="10" alignment="CENTER_RIGHT">
+            <Button styleClass="report-button" text="Bericht" onAction="#reload" prefWidth="130" prefHeight="36" alignment="CENTER_RIGHT"></Button>
+            <Button styleClass="print-button" fx:id="btnPrint" text="Drucken" onAction="#printRechnung" prefWidth="116" prefHeight="36" alignment="CENTER_RIGHT"></Button>
+            <Button styleClass="cancel-button" text="Schließen" onAction="#closeRechnung" prefWidth="116" prefHeight="36" alignment="CENTER_RIGHT"></Button>
+
+        </HBox>
+        <TableView editable="true" GridPane.columnIndex="0" GridPane.rowIndex="1" fx:id="reportTableView">
+            <columns>
+                <TableColumn fx:id="mengeColumn" text="Menge" prefWidth="90">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="menge" />
+                    </cellValueFactory>
+                    <cellFactory>
+                        <MengeTableCellFactory />
+                    </cellFactory>
+                </TableColumn>
+                <TableColumn fx:id="produktColumn" text="Produkt">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="produkt" />
+                    </cellValueFactory>
+                    <cellFactory>
+                        <ProduktTableCellFactory />
+                    </cellFactory>
+                </TableColumn>
+                <TableColumn fx:id="artikelNummerColumn" text="Artikel-Nr." prefWidth="110">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="artikelNummer" />
+                    </cellValueFactory>
+                    <cellFactory>
+                        <ArtikelNummerTableCellFactory />
+                    </cellFactory>
+                </TableColumn>
+                <TableColumn fx:id="bPreisColumn" text="Bruto-Preis" prefWidth="120">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="brutoPreis" />
+                    </cellValueFactory>
+                    <cellFactory>
+                        <GeldEditingTableCellFactory />
+                    </cellFactory>
+                </TableColumn>
+                <TableColumn fx:id="nPreisColumn" text="Einzelpreis" prefWidth="120" editable="false">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="preis" />
+                    </cellValueFactory>
+                    <cellFactory>
+                        <GeldLabelTableCellFactory />
+                    </cellFactory>
+                </TableColumn>
+                <TableColumn fx:id="gesamtColumn" text="Gesamtpreis" prefWidth="180" editable="false">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="gesamt" />
+                    </cellValueFactory>
+                    <cellFactory>
+                        <GeldLabelTableCellFactory />
+                    </cellFactory>
+                </TableColumn>
+            </columns>
+
+        </TableView>
+        
     </children>
-    <padding>
-        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-    </padding>
 </GridPane>

@@ -1,10 +1,10 @@
 package de.seifi.rechnung_manager.ui.tablecell;
 
-import de.seifi.rechnung_manager.ui.QuittungItemProperty;
+import de.seifi.rechnung_manager.ui.RechnungItemProperty;
 import de.seifi.rechnung_manager.ui.TableUtils;
 import javafx.scene.control.TableCell;
 
-public class GeldLabelTableCell extends TableCell<QuittungItemProperty, Float> {
+public class GeldLabelTableCell extends TableCell<RechnungItemProperty, Float> {
 
     public GeldLabelTableCell() {
 

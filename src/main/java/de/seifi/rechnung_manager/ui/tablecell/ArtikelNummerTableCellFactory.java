@@ -1,14 +1,14 @@
 package de.seifi.rechnung_manager.ui.tablecell;
 
-import de.seifi.rechnung_manager.ui.QuittungItemProperty;
+import de.seifi.rechnung_manager.ui.RechnungItemProperty;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.util.Callback;
 
 public class ArtikelNummerTableCellFactory implements
-                                         Callback<TableColumn<QuittungItemProperty, String>, TableCell<QuittungItemProperty, String>> {
+                                         Callback<TableColumn<RechnungItemProperty, String>, TableCell<RechnungItemProperty, String>> {
     @Override
-    public TableCell<QuittungItemProperty, String> call(TableColumn<QuittungItemProperty, String> quittungItemPropertyStringTableColumn) {
+    public TableCell<RechnungItemProperty, String> call(TableColumn<RechnungItemProperty, String> rechnungItemPropertyStringTableColumn) {
         return new ArtikelNummerTableCell();
     }
 }

@@ -1,7 +1,5 @@
 package de.seifi.rechnung_manager.ui;
 
-import javafx.beans.property.FloatProperty;
-import javafx.beans.property.SimpleFloatProperty;
 import javafx.scene.control.TextField;
 
 public class FloatTextField extends TextField
@@ -31,5 +29,9 @@ public class FloatTextField extends TextField
 
     public Float getValue(){
         return Float.parseFloat(getText().replace(",", "."));
+    }
+
+    public void setValue(Float value){
+    	setText(String.valueOf(value));
     }
 }

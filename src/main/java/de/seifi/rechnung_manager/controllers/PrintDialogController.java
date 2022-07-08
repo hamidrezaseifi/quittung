@@ -15,14 +15,14 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import de.seifi.rechnung_manager.RechnungManagerFxApp;
-import de.seifi.rechnung_manager.fx_services.QuittungBindingPrintService;
+import de.seifi.rechnung_manager.fx_services.RechnungBindingPrintService;
 import de.seifi.rechnung_manager.models.RechnungModel;
 import de.seifi.rechnung_manager.ui.FloatGeldLabel;
-import de.seifi.rechnung_manager.ui.QuittungItemProperty;
+import de.seifi.rechnung_manager.ui.RechnungItemProperty;
 
 public class PrintDialogController implements Initializable {
 
-    @FXML private TableView<QuittungItemProperty> printItemsTableView;
+    @FXML private TableView<RechnungItemProperty> printItemsTableView;
 
     @FXML private FloatGeldLabel lblNetto;
 
@@ -30,30 +30,30 @@ public class PrintDialogController implements Initializable {
 
     @FXML private FloatGeldLabel lblGesamt;
 
-    @FXML private TableColumn<QuittungItemProperty, String> produktColumn;
+    @FXML private TableColumn<RechnungItemProperty, String> produktColumn;
 
-    @FXML private TableColumn<QuittungItemProperty, String> artikelNummerColumn;
+    @FXML private TableColumn<RechnungItemProperty, String> artikelNummerColumn;
 
-    @FXML private TableColumn<QuittungItemProperty, Integer> mengeColumn;
+    @FXML private TableColumn<RechnungItemProperty, Integer> mengeColumn;
 
-    @FXML private TableColumn<QuittungItemProperty, Float> nPreisColumn;
+    @FXML private TableColumn<RechnungItemProperty, Float> nPreisColumn;
 
-    @FXML private TableColumn<QuittungItemProperty, Float> gesamtColumn;
+    @FXML private TableColumn<RechnungItemProperty, Float> gesamtColumn;
 
     @FXML private GridPane rootPane;
 
-    @FXML private Label lblQuittungNummer;
+    @FXML private Label lblRechnungNummer;
 
-    @FXML private Label lblQuittungDatum;
+    @FXML private Label lblRechnungDatum;
 
     @FXML private Label lblLiferdatum;
 
-    private QuittungBindingPrintService quittungBindingService;
+    private RechnungBindingPrintService RechnungBindingService;
 
     @Override
     public void initialize(URL url,
                            ResourceBundle resourceBundle) {
-        quittungBindingService = new QuittungBindingPrintService();
+        RechnungBindingService = new RechnungBindingPrintService();
 
 
         produktColumn.prefWidthProperty().bind(
@@ -65,17 +65,17 @@ public class PrintDialogController implements Initializable {
                                               );
     }
 
-    public void printQuittungList(List<RechnungModel> quittungModelList){
-        //quittung_print
-        this.quittungBindingService.setQuittungModelList(quittungModelList);
-        quittungBindingService.setPrintingIndex(0);
+    public void printRechnungList(List<RechnungModel> RechnungModelList){
+        //Rechnung_print
+        this.RechnungBindingService.setRechnungModelList(RechnungModelList);
+        RechnungBindingService.setPrintingIndex(0);
         this.preparePrint();
 
     }
 
     private void preparePrint() {
 
-        if(this.quittungBindingService.hasPrintingPage()){
+        if(this.RechnungBindingService.hasPrintingPage()){
             PrinterJob job = PrinterJob.createPrinterJob();
             if (job != null) {
                 Printer printer = job.getPrinter();
@@ -99,9 +99,9 @@ public class PrintDialogController implements Initializable {
                 Scale scale = new Scale(scaleX, scaleY);
 
                 rootPane.getTransforms().add(scale);
-                this.quittungBindingService.setPrintingIndex(-1);
+                this.RechnungBindingService.setPrintingIndex(-1);
 
-                while (this.quittungBindingService.increasePrintingIndex()){
+                while (this.RechnungBindingService.increasePrintingIndex()){
                     this.startPrint(job, pageLayout);
                 }
 
@@ -113,15 +113,15 @@ public class PrintDialogController implements Initializable {
 
     private void startPrint(PrinterJob job, PageLayout pageLayout) {
 
-        printItemsTableView.setItems(quittungBindingService.getQuittungItems());
+        printItemsTableView.setItems(RechnungBindingService.getRechnungItems());
 
-        lblNetto.setText(quittungBindingService.getNettoSumme());
-        lblMvst.setText(quittungBindingService.getMvstSumme());
-        lblGesamt.setText(quittungBindingService.getGesamtSumme());
+        lblNetto.setText(RechnungBindingService.getNettoSumme());
+        lblMvst.setText(RechnungBindingService.getMvstSumme());
+        lblGesamt.setText(RechnungBindingService.getGesamtSumme());
 
-        lblQuittungNummer.setText(quittungBindingService.getQuittungNummer());
-        lblQuittungDatum.setText(quittungBindingService.getQuittungDatum());
-        lblLiferdatum.setText(quittungBindingService.getLiferDatum());
+        lblRechnungNummer.setText(RechnungBindingService.getRechnungNummer());
+        lblRechnungDatum.setText(RechnungBindingService.getRechnungDatum());
+        lblLiferdatum.setText(RechnungBindingService.getLiferDatum());
 
         boolean success = job.printPage(pageLayout, rootPane);
         if (success) {

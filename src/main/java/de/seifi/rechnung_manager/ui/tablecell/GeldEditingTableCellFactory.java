@@ -1,14 +1,14 @@
 package de.seifi.rechnung_manager.ui.tablecell;
 
-import de.seifi.rechnung_manager.ui.QuittungItemProperty;
+import de.seifi.rechnung_manager.ui.RechnungItemProperty;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.util.Callback;
 
 public class GeldEditingTableCellFactory implements
-                                         Callback<TableColumn<QuittungItemProperty, Float>, TableCell<QuittungItemProperty, Float>> {
+                                         Callback<TableColumn<RechnungItemProperty, Float>, TableCell<RechnungItemProperty, Float>> {
     @Override
-    public TableCell<QuittungItemProperty, Float> call(TableColumn<QuittungItemProperty, Float> quittungItemPropertyStringTableColumn) {
+    public TableCell<RechnungItemProperty, Float> call(TableColumn<RechnungItemProperty, Float> rechnungItemPropertyStringTableColumn) {
         return new GeldEditingTableCell();
     }
 }

@@ -29,7 +29,7 @@
     <children>
         <HBox GridPane.columnIndex="0" GridPane.rowIndex="0" spacing="10">
             <Button styleClass="home-button" text="Home" onAction="#showHome" prefWidth="116" prefHeight="36" alignment="CENTER_RIGHT"></Button>
-            <Button styleClass="bill-button" text="Quittung" onAction="#showQuittung" prefWidth="116" prefHeight="36" alignment="CENTER_RIGHT"></Button>
+            <Button styleClass="bill-button" text="Rechnung" onAction="#showRechnung" prefWidth="116" prefHeight="36" alignment="CENTER_RIGHT"></Button>
             <Button styleClass="report-button" text="Bericht" onAction="#showReport" prefWidth="116" prefHeight="36" alignment="CENTER_RIGHT"></Button>
             <Button styleClass="admin-button" text="Verwaltung" onAction="#showAdmin" prefWidth="116" prefHeight="36" alignment="CENTER_RIGHT"></Button>
             

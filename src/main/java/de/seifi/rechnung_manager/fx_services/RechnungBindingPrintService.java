@@ -2,7 +2,7 @@ package de.seifi.rechnung_manager.fx_services;
 
 import de.seifi.rechnung_manager.models.RechnungItemModel;
 import de.seifi.rechnung_manager.models.RechnungModel;
-import de.seifi.rechnung_manager.ui.QuittungItemProperty;
+import de.seifi.rechnung_manager.ui.RechnungItemProperty;
 import de.seifi.rechnung_manager.ui.TableUtils;
 import javafx.beans.property.FloatProperty;
 import javafx.collections.FXCollections;
@@ -12,24 +12,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class QuittungBindingPrintService {
+public class RechnungBindingPrintService {
 
     private String gesamtSumme;
     private String nettoSumme;
     private String mvstSumme;
-    private List<RechnungModel> quittungModelList = new ArrayList<>();
+    private List<RechnungModel> rechnungModelList = new ArrayList<>();
 
     private int printingIndex = 0;
 
-    public QuittungBindingPrintService() {
+    public RechnungBindingPrintService() {
 
 
 
     }
 
-    public ObservableList<QuittungItemProperty> getQuittungItems() {
-        List<QuittungItemProperty> propList =
-                quittungModelList.get(printingIndex).getItems().stream().map(i -> new QuittungItemProperty(i)).collect(Collectors.toList());
+    public ObservableList<RechnungItemProperty> getRechnungItems() {
+        List<RechnungItemProperty> propList =
+                rechnungModelList.get(printingIndex).getItems().stream().map(i -> new RechnungItemProperty(i)).collect(Collectors.toList());
         return FXCollections.observableArrayList(propList);
     }
 
@@ -41,35 +41,35 @@ public class QuittungBindingPrintService {
         return mvstSumme;
     }
 
-    public String getQuittungNummer() {
-        return String.valueOf(quittungModelList.get(printingIndex).getNummer());
+    public String getRechnungNummer() {
+        return String.valueOf(rechnungModelList.get(printingIndex).getNummer());
     }
 
     public String getGesamtSumme() {
         return gesamtSumme;
     }
 
-    public String getQuittungDatum() {
-        return quittungModelList.get(printingIndex).getRechnungCreate();
+    public String getRechnungDatum() {
+        return rechnungModelList.get(printingIndex).getRechnungCreate();
     }
 
     public String getLiferDatum() {
-        return quittungModelList.get(printingIndex).getLiferDate();
+        return rechnungModelList.get(printingIndex).getLiferDate();
     }
 
-    public void setQuittungModelList(List<RechnungModel> quittungModelList) {
-        this.quittungModelList = quittungModelList;
-        if(!quittungModelList.isEmpty()){
+    public void setRechnungModelList(List<RechnungModel> rechnungModelList) {
+        this.rechnungModelList = rechnungModelList;
+        if(!rechnungModelList.isEmpty()){
             setPrintingIndex(0);
-            calculateQuittungSumme();
+            calculateRechnungSumme();
         }
 
     }
 
-    private void calculateQuittungSumme() {
+    private void calculateRechnungSumme() {
         float netto = 0;
 
-        for(RechnungItemModel i:quittungModelList.get(printingIndex).getItems()){
+        for(RechnungItemModel i:rechnungModelList.get(printingIndex).getItems()){
             netto += i.getGesmt();
         }
 
@@ -83,16 +83,16 @@ public class QuittungBindingPrintService {
     }
 
     public boolean increasePrintingIndex() {
-        if(this.printingIndex >= quittungModelList.size() - 1){
+        if(this.printingIndex >= rechnungModelList.size() - 1){
             return false;
         }
         this.printingIndex += 1;
-        calculateQuittungSumme();
+        calculateRechnungSumme();
         return true;
     }
 
     public boolean hasPrintingPage() {
-        if(this.printingIndex >= quittungModelList.size()){
+        if(this.printingIndex >= rechnungModelList.size()){
             return false;
         }
 

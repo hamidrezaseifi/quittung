@@ -18,7 +18,7 @@
 <?import de.seifi.rechnung_manager.ui.FloatGeldLabel?>
 <?import javafx.scene.shape.Line?>
 <GridPane alignment="TOP_LEFT" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
-          fx:controller="de.seifi.rechnung_manager.controllers.QuittungController" fx:id="rootPane">
+          fx:controller="de.seifi.rechnung_manager.controllers.RechnungController" fx:id="rootPane">
     <columnConstraints>
         <ColumnConstraints hgrow="ALWAYS" />
     </columnConstraints>
@@ -31,7 +31,7 @@
     </rowConstraints>
     <children>
             
-    	<GridPane GridPane.columnIndex="0" GridPane.rowIndex="0" styleClass="quittung-banner" fx:id="bannerPane">
+    	<GridPane GridPane.columnIndex="0" GridPane.rowIndex="0" styleClass="rechnung-banner" fx:id="bannerPane">
 			<columnConstraints>
 		        <ColumnConstraints hgrow="ALWAYS" />
 		        <ColumnConstraints hgrow="NEVER" prefWidth="150" />
@@ -46,10 +46,10 @@
 		    </rowConstraints>
 		    <children>
                	<Label text="Rechnung Nr." GridPane.columnIndex="1" GridPane.rowIndex="0" styleClass="summe-label" textAlignment="LEFT" />
-               	<Label fx:id="lblQuittungNummer" GridPane.columnIndex="2" GridPane.rowIndex="0" styleClass="summe-label" textAlignment="LEFT" />
+               	<Label fx:id="lblRechnungNummer" GridPane.columnIndex="2" GridPane.rowIndex="0" styleClass="summe-label" textAlignment="LEFT" />
 
                	<Label text="Rechnungdatunm" GridPane.columnIndex="1" GridPane.rowIndex="1" styleClass="summe-label" textAlignment="LEFT" />
-               	<Label fx:id="lblQuittungDatum" GridPane.columnIndex="2" GridPane.rowIndex="1" styleClass="summe-label" textAlignment="LEFT" />
+               	<Label fx:id="lblRechnungDatum" GridPane.columnIndex="2" GridPane.rowIndex="1" styleClass="summe-label" textAlignment="LEFT" />
 
                	<Label text="Liferdatum" GridPane.columnIndex="1" GridPane.rowIndex="2" styleClass="summe-label" textAlignment="LEFT" />
                	<Label fx:id="lblLiferdatum" GridPane.columnIndex="2" GridPane.rowIndex="2" styleClass="summe-label" textAlignment="LEFT" />
@@ -60,8 +60,8 @@
         <HBox GridPane.columnIndex="0" GridPane.rowIndex="1" spacing="10" alignment="CENTER_RIGHT">
             <Button styleClass="reload-button" text="Zurücksetzen" onAction="#reload" prefWidth="130" prefHeight="36" alignment="CENTER_RIGHT"></Button>
             <Button styleClass="save-button" fx:id="btnSave" text="Speichern" onAction="#speichern" prefWidth="116" prefHeight="36" alignment="CENTER_RIGHT"></Button>
-            <Button styleClass="print-button" fx:id="btnPrint" text="Drucken" onAction="#printQuittung" prefWidth="116" prefHeight="36" alignment="CENTER_RIGHT"></Button>
-            <Button styleClass="cancel-button" text="Schließen" onAction="#closeQuittung" prefWidth="116" prefHeight="36" alignment="CENTER_RIGHT"></Button>
+            <Button styleClass="print-button" fx:id="btnPrint" text="Drucken" onAction="#printRechnung" prefWidth="116" prefHeight="36" alignment="CENTER_RIGHT"></Button>
+            <Button styleClass="cancel-button" text="Schließen" onAction="#closeRechnung" prefWidth="116" prefHeight="36" alignment="CENTER_RIGHT"></Button>
 
         </HBox>
         <TableView editable="true" GridPane.columnIndex="0" GridPane.rowIndex="2" fx:id="showItemsTableView">
