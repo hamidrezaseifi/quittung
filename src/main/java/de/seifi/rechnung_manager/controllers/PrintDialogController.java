@@ -60,7 +60,7 @@ public class PrintDialogController implements Initializable {
             PrinterJob job = PrinterJob.createPrinterJob();
             if (job != null) {
                 Printer printer = job.getPrinter();
-                PageLayout pageLayout = printer.createPageLayout(Paper.A4, PageOrientation.PORTRAIT, 30,30,20,10);
+                PageLayout pageLayout = printer.createPageLayout(Paper.A4, PageOrientation.PORTRAIT, 50,50,40,40);
                
                 //PageLayout pageLayout = job.getPrinter().getDefaultPageLayout();
                 job.showPrintDialog(null);

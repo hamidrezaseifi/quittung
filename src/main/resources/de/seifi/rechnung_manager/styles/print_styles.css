@@ -73,3 +73,23 @@
     -fx-background-color: transparent;
 }
 
+
+.rechnung-banner{
+    -fx-background-image: url("../images/logo.png");
+    -fx-background-color: rgb(255, 255, 255);
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: auto 100px;
+    -fx-background-position: left top;
+	
+}
+
+
+.item-list-pane{
+    -fx-border-color:black;
+    -fx-border-width: 1px;
+    -fx-border-style: solid;
+    -fx-background-color: rgb(240, 240, 240);
+}
+
+
+
