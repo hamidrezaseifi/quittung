@@ -27,6 +27,7 @@
         <RowConstraints vgrow="ALWAYS" />
         <RowConstraints prefHeight="90" vgrow="NEVER" />
         <RowConstraints prefHeight="50" vgrow="NEVER" />
+        <RowConstraints prefHeight="80" vgrow="NEVER" />
     </rowConstraints>
     <children>
             
@@ -53,8 +54,11 @@
 			    
 			</children>        
         </GridPane>
+        <GridPane GridPane.columnIndex="0" GridPane.rowIndex="1" fx:id="rechnungItemsGrid" alignment="TOP_RIGHT">
+        
+        </GridPane>
 
-        <GridPane GridPane.columnIndex="0" GridPane.rowIndex="2" alignment="TOP_RIGHT">
+        <GridPane GridPane.columnIndex="0" GridPane.rowIndex="2" alignment="TOP_RIGHT" style=" -fx-padding: 0 0 10px 0;">
             <columnConstraints>
                 <ColumnConstraints hgrow="ALWAYS" />
                 <ColumnConstraints hgrow="NEVER" prefWidth="120" />
@@ -75,6 +79,34 @@
                 <Line GridPane.columnSpan="2" GridPane.columnIndex="1" GridPane.rowIndex="3" strokeWidth="2" startX="40.0" startY="56.0" endX="330.0" endY="56.0"/>
                 <Label text="Endsumme" GridPane.columnIndex="1" GridPane.rowIndex="4" textAlignment="LEFT" styleClass="summe-label" />
                 <FloatGeldLabel fx:id="lblGesamt" GridPane.columnIndex="2" GridPane.rowIndex="4" prefWidth="170" styleClass="summe-value" textAlignment="RIGHT" />
+            </children>
+
+        </GridPane>
+
+        <GridPane GridPane.columnIndex="0" GridPane.rowIndex="3" style="-fx-border-style: solid none none none; -fx-border-width: 1; -fx-border-color: black; -fx-padding: 10px 0 0 0;">
+            <columnConstraints>
+                <ColumnConstraints hgrow="ALWAYS" percentWidth="33" />
+                <ColumnConstraints hgrow="ALWAYS" percentWidth="33" />
+                <ColumnConstraints hgrow="ALWAYS" percentWidth="33" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints prefHeight="20" vgrow="NEVER" />
+                <RowConstraints prefHeight="20" vgrow="NEVER" />
+                <RowConstraints prefHeight="20" vgrow="NEVER" />
+            </rowConstraints>
+            <children>
+                <Label GridPane.columnIndex="0" GridPane.rowIndex="0" style="-fx-font-size: 10px;" textAlignment="LEFT" text="Kurt-Schumacher-Str: 30" />
+                <Label GridPane.columnIndex="0" GridPane.rowIndex="1" style="-fx-font-size: 10px;" textAlignment="LEFT" text="30159 Hannover" />
+                <Label GridPane.columnIndex="0" GridPane.rowIndex="2" style="-fx-font-size: 10px;" textAlignment="LEFT" text="" />
+                
+                <Label GridPane.columnIndex="1" GridPane.rowIndex="0" style="-fx-font-size: 10px;" textAlignment="LEFT" text="Sparkasse Hannover" />
+                <Label GridPane.columnIndex="1" GridPane.rowIndex="1" style="-fx-font-size: 10px;" textAlignment="LEFT" text="IBAN DE 87 2505 0180 0910 4996 08" />
+                <Label GridPane.columnIndex="1" GridPane.rowIndex="2" style="-fx-font-size: 10px;" textAlignment="LEFT" text="BIC SPKHDE2hXXX" />
+                
+                <Label GridPane.columnIndex="2" GridPane.rowIndex="0" style="-fx-font-size: 10px;" textAlignment="LEFT" text="Email: Autoteile-Nima@web.de" />
+                <Label GridPane.columnIndex="2" GridPane.rowIndex="1" style="-fx-font-size: 10px;" textAlignment="LEFT" text="Steuer-Nr. 25/121/22623" />
+                <Label GridPane.columnIndex="2" GridPane.rowIndex="2" style="-fx-font-size: 10px;" textAlignment="LEFT" text="Usr-ID: 26/121/11535" />
+                
             </children>
 
         </GridPane>

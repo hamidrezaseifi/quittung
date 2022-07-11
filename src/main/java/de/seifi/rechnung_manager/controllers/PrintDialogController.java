@@ -27,6 +27,7 @@ public class PrintDialogController implements Initializable {
 
     @FXML private FloatGeldLabel lblGesamt;
 
+    @FXML private GridPane rechnungItemsGrid;
 
     @FXML private GridPane rootPane;
 
