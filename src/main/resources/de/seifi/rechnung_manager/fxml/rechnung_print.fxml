@@ -41,7 +41,8 @@
 		        <RowConstraints prefHeight="30" vgrow="NEVER" />
 		        <RowConstraints prefHeight="20" vgrow="NEVER" />
 		        <RowConstraints prefHeight="20" vgrow="NEVER" />
-		        <RowConstraints prefHeight="20" vgrow="NEVER" />
+                <RowConstraints prefHeight="20" vgrow="NEVER" />
+                <RowConstraints prefHeight="50" vgrow="NEVER" />
 		    </rowConstraints>
 		    <children>
                	<Label text="Rechnung Nr." GridPane.columnIndex="1" GridPane.rowIndex="1" styleClass="summe-label" textAlignment="LEFT" style="-fx-font-size: 10px;" />
@@ -52,12 +53,49 @@
 
                	<Label text="Liferdatum" GridPane.columnIndex="1" GridPane.rowIndex="3" styleClass="summe-label" textAlignment="LEFT" style="-fx-font-size: 10px;" />
                	<Label fx:id="lblLiferdatum" GridPane.columnIndex="2" GridPane.rowIndex="3" styleClass="summe-label" textAlignment="LEFT" style="-fx-font-size: 10px;" />
-			    
-			</children>        
+
+                <Label text="Rechnung" GridPane.columnIndex="0" GridPane.rowIndex="4" textAlignment="LEFT" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+
+            </children>
         </GridPane>
-        <GridPane GridPane.columnIndex="0" GridPane.rowIndex="1" fx:id="rechnungItemsGrid" prefHeight="467" prefWidth="570" styleClass="item-list-pane" alignment="TOP_RIGHT" stylesheets="@../styles/print_styles.css">
-        
-        </GridPane>
+        <TableView fx:id="printTableView"  GridPane.columnIndex="0" GridPane.rowIndex="1" prefHeight="467" prefWidth="570"
+                   styleClass="print-table" stylesheets="@../styles/print_styles.css" editable="false">
+            <columns>
+                <TableColumn editable="false" prefWidth="20" sortable="false" text="#">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="index" />
+                    </cellValueFactory>
+                </TableColumn>
+
+                <TableColumn editable="false" prefWidth="220" sortable="false" text="Produkt">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="produkt" />
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn editable="false" prefWidth="90" sortable="false" text="Artikel-Nr.">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="artikelNummer" />
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn editable="false" prefWidth="60" sortable="false" text="Menge">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="menge" />
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn editable="false" prefWidth="80" sortable="false" text="Einzelpreis">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="einzelpreis" />
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn editable="false" prefWidth="100" sortable="false" text="Gesamtpreis">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="gesamtpreis" />
+                    </cellValueFactory>
+                </TableColumn>
+
+            </columns>
+
+        </TableView>
 
         <GridPane GridPane.columnIndex="0" GridPane.rowIndex="2" alignment="TOP_RIGHT" style=" -fx-padding: 0 0 10px 0;">
     		<columnConstraints>

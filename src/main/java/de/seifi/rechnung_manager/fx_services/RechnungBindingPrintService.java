@@ -1,17 +1,20 @@
 package de.seifi.rechnung_manager.fx_services;
 
 import de.seifi.rechnung_manager.models.RechnungItemModel;
+import de.seifi.rechnung_manager.models.RechnungItemPrintProperty;
 import de.seifi.rechnung_manager.models.RechnungModel;
-import de.seifi.rechnung_manager.models.RechnungItemProperty;
 import de.seifi.rechnung_manager.ui.TableUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public class RechnungBindingPrintService {
+
+    private static int MAX_PRINT_LIST_ITEMS = 17;
 
     private String gesamtSumme;
     private String nettoSumme;
@@ -19,16 +22,25 @@ public class RechnungBindingPrintService {
     private List<RechnungModel> rechnungModelList = new ArrayList<>();
 
     private int printingIndex = 0;
+    private int printingItemPage = 0;
 
     public RechnungBindingPrintService() {
 
 
-
     }
 
-    public ObservableList<RechnungItemProperty> getRechnungItems() {
-        List<RechnungItemProperty> propList =
-                rechnungModelList.get(printingIndex).getItems().stream().map(i -> new RechnungItemProperty(i)).collect(Collectors.toList());
+    public ObservableList<RechnungItemPrintProperty> getRechnungPrintItems() {
+        List<RechnungItemModel> modelItems = rechnungModelList.get(printingIndex).getItems();
+        List<RechnungItemPrintProperty> propList = new ArrayList<>();
+
+        AtomicInteger idx = new AtomicInteger(1);
+        for(int k= 0; k< 20; k++){
+            for(int i=0; i<modelItems.size(); i++){
+                propList.add(new RechnungItemPrintProperty(propList.size() + 1, modelItems.get(i)));
+            }
+        }
+
+
         return FXCollections.observableArrayList(propList);
     }
 
