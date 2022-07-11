@@ -59,26 +59,32 @@
         </GridPane>
 
         <GridPane GridPane.columnIndex="0" GridPane.rowIndex="2" alignment="TOP_RIGHT" style=" -fx-padding: 0 0 10px 0;">
-            <columnConstraints>
-                <ColumnConstraints hgrow="ALWAYS" />
-                <ColumnConstraints hgrow="NEVER" prefWidth="120" />
-                <ColumnConstraints hgrow="NEVER" prefWidth="180" />
-            </columnConstraints>
+    		<columnConstraints>
+        		<ColumnConstraints hgrow="ALWAYS" />
+    		</columnConstraints>
             <rowConstraints>
                 <RowConstraints prefHeight="20" vgrow="NEVER" />
                 <RowConstraints prefHeight="40" vgrow="NEVER" />
                 <RowConstraints prefHeight="40" vgrow="NEVER" />
                 <RowConstraints prefHeight="40" vgrow="NEVER" />
                 <RowConstraints prefHeight="40" vgrow="NEVER" />
+                <RowConstraints prefHeight="20" vgrow="NEVER" />
             </rowConstraints>
             <children>
-                <Label text="Nettosumme" GridPane.columnIndex="1" GridPane.rowIndex="1" styleClass="summe-label" textAlignment="LEFT" />
-                <FloatGeldLabel fx:id="lblNetto" GridPane.columnIndex="2" GridPane.rowIndex="1" prefWidth="170" styleClass="summe-value" textAlignment="RIGHT" />
-                <Label text="Mwst 19,00 %" GridPane.columnIndex="1" GridPane.rowIndex="2" textAlignment="LEFT" styleClass="summe-label" />
-                <FloatGeldLabel fx:id="lblMvst" GridPane.columnIndex="2" GridPane.rowIndex="2" prefWidth="170" styleClass="summe-value" textAlignment="RIGHT" />
-                <Line GridPane.columnSpan="2" GridPane.columnIndex="1" GridPane.rowIndex="3" strokeWidth="2" startX="40.0" startY="56.0" endX="330.0" endY="56.0"/>
-                <Label text="Endsumme" GridPane.columnIndex="1" GridPane.rowIndex="4" textAlignment="LEFT" styleClass="summe-label" />
-                <FloatGeldLabel fx:id="lblGesamt" GridPane.columnIndex="2" GridPane.rowIndex="4" prefWidth="170" styleClass="summe-value" textAlignment="RIGHT" />
+            	<HBox GridPane.rowIndex="1">
+	                <Label text="Nettosumme" styleClass="summe-label" textAlignment="LEFT" prefWidth="370" style=" -fx-padding: 0 0 0 10px;-fx-font-size: 10px;" />
+	                <FloatGeldLabel fx:id="lblNetto" prefWidth="180" styleClass="summe-value" textAlignment="RIGHT" style="-fx-padding: 0 10px 0 10px;-fx-font-size: 10px;" />
+            	</HBox>
+            	<HBox GridPane.rowIndex="2">
+	                <Label text="Mwst 19,00 %" textAlignment="LEFT" styleClass="summe-label" prefWidth="370" style=" -fx-padding: 0 0 0 10px;-fx-font-size: 10px;" />
+	                <FloatGeldLabel fx:id="lblMvst" prefWidth="180" styleClass="summe-value" textAlignment="RIGHT" style="-fx-padding: 0 10px 0 10px;-fx-font-size: 10px;" />
+            	</HBox>
+
+            	<HBox GridPane.rowIndex="3" style="-fx-background-color:black; -fx-text-fill:white;">
+	                <Label text="Endsumme" textAlignment="LEFT" style="-fx-text-fill:white; -fx-padding: 0 0 0 10px;" styleClass="summe-label" prefWidth="370" />
+	                <FloatGeldLabel fx:id="lblGesamt" prefWidth="180" style="-fx-text-fill:white; -fx-padding: 0 10px 0 10px;" styleClass="summe-value" textAlignment="RIGHT" />
+            	</HBox>
+                
             </children>
 
         </GridPane>

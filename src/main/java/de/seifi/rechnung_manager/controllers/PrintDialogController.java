@@ -60,16 +60,13 @@ public class PrintDialogController implements Initializable {
             PrinterJob job = PrinterJob.createPrinterJob();
             if (job != null) {
                 Printer printer = job.getPrinter();
-                PageLayout pageLayout = printer.createPageLayout(Paper.A4, PageOrientation.PORTRAIT, Printer.MarginType.HARDWARE_MINIMUM);
-
+                PageLayout pageLayout = printer.createPageLayout(Paper.A4, PageOrientation.PORTRAIT, 30,30,20,10);
+               
                 //PageLayout pageLayout = job.getPrinter().getDefaultPageLayout();
                 job.showPrintDialog(null);
                 //job.showPageSetupDialog(null);
                 double w = rootPane.getPrefWidth();
                 double h = rootPane.getPrefHeight();
-
-                double nWidth = rootPane.getBoundsInParent().getWidth();
-                double nHeight = rootPane.getBoundsInParent().getHeight();
 
                 double pagePrintableWidth = pageLayout.getPrintableWidth(); //this should be 8.5 inches for this page layout.
                 double pagePrintableHeight = pageLayout.getPrintableHeight();// this should be 11 inches for this page layout.
