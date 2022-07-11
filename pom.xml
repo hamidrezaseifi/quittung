@@ -47,6 +47,12 @@
             <artifactId>javafx-base</artifactId>
             <version>${javafx.version}</version>
         </dependency>
+        
+        <dependency>
+		    <groupId>it.sauronsoftware</groupId>
+		    <artifactId>junique</artifactId>
+		    <version>1.0.4</version>
+		</dependency>
 		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
