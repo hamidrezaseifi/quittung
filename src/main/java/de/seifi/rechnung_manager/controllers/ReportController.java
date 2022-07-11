@@ -41,6 +41,8 @@ public class ReportController implements Initializable, ControllerBse {
     @FXML private TableColumn<ReportItemModel, String> produktListColumn;
 
     @FXML private TableColumn<ReportItemModel, String> gesamtColumn;
+    
+    @FXML private TableColumn<ReportItemModel, String> toolsColumn;
 
 
     @FXML private GridPane rootPane;
@@ -125,11 +127,12 @@ public class ReportController implements Initializable, ControllerBse {
                 reportTableView.widthProperty().subtract(
                         datumColumn.widthProperty()).subtract(
                         nummerColumn.widthProperty()).subtract(
-                        zeitColumn.widthProperty()).subtract(
+                                zeitColumn.widthProperty()).subtract(
+                                		toolsColumn.widthProperty()).subtract(
                                             gesamtColumn.widthProperty()).subtract(5)
                                                                        );
 
-        reportTableView.setItems(reportBindingService.getRechnungItems());
+        reportTableView.setItems(reportBindingService.getReportItems());
         reportTableView.setUserData(reportBindingService);
 
         btnPrint.disableProperty().bind(reportBindingService.getDisablePrintProperty());

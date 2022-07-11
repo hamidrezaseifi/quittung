@@ -35,16 +35,6 @@ public abstract class BaseEditbaleTableCell<T> extends TableCell<RechnungItemPro
 
         setGraphic(getEditingControl());
         setContentDisplay(ContentDisplay.TEXT_ONLY);
-
-        /*textField.setOnAction(evt -> {
-            commitEdit(this.converter.fromString(textField.getText()));
-        });
-        
-        textField.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
-            if (!isNowFocused) {
-                commitEdit(this.converter.fromString(textField.getText()));
-            }
-        });*/
         
         getEditingControl().focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
             if (isNowFocused) {

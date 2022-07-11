@@ -54,51 +54,6 @@
 			</children>        
         </GridPane>
 
-        <TableView editable="true" GridPane.columnIndex="0" GridPane.rowIndex="1" fx:id="printItemsTableView" stylesheets="@../styles/print_styles.css">
-            <columns>
-                <TableColumn fx:id="mengeColumn" text="Menge" prefWidth="70">
-                    <cellValueFactory>
-                        <PropertyValueFactory property="menge" />
-                    </cellValueFactory>
-                    <cellFactory>
-                        <IntegerTableCellFactory />
-                    </cellFactory>
-                </TableColumn>
-                <TableColumn fx:id="produktColumn" text="Produkt">
-                    <cellValueFactory>
-                        <PropertyValueFactory property="produkt" />
-                    </cellValueFactory>
-                    <cellFactory>
-                        <ProduktTableCellFactory />
-                    </cellFactory>
-                </TableColumn>
-                <TableColumn fx:id="artikelNummerColumn" text="Artikel-Nr." prefWidth="80">
-                    <cellValueFactory>
-                        <PropertyValueFactory property="artikelNummer" />
-                    </cellValueFactory>
-                    <cellFactory>
-                        <ArtikelNummerTableCellFactory />
-                    </cellFactory>
-                </TableColumn>
-                <TableColumn fx:id="nPreisColumn" text="Einzelpreis" prefWidth="80" editable="false">
-                    <cellValueFactory>
-                        <PropertyValueFactory property="preis" />
-                    </cellValueFactory>
-                    <cellFactory>
-                        <GeldLabelTableCellFactory />
-                    </cellFactory>
-                </TableColumn>
-                <TableColumn fx:id="gesamtColumn" text="Gesamtpreis" prefWidth="90" editable="false">
-                    <cellValueFactory>
-                        <PropertyValueFactory property="gesamt" />
-                    </cellValueFactory>
-                    <cellFactory>
-                        <GeldLabelTableCellFactory />
-                    </cellFactory>
-                </TableColumn>
-            </columns>
-
-        </TableView>
         <GridPane GridPane.columnIndex="0" GridPane.rowIndex="2" alignment="TOP_RIGHT">
             <columnConstraints>
                 <ColumnConstraints hgrow="ALWAYS" />

@@ -14,6 +14,7 @@ public class ReportItemModel {
     private StringProperty rechnungZeit;
     private ListProperty produktListItem;
     private StringProperty gesamt;
+    private RechnungModel rechnungModel;
 
     public ReportItemModel(RechnungModel model) {
         this.rechnungDatum = new SimpleStringProperty(model.getRechnungCreate());
@@ -21,6 +22,7 @@ public class ReportItemModel {
         this.rechnungZeit = new SimpleStringProperty(model.getRechnungCreate());
         this.produktListItem = new SimpleListProperty(FXCollections.observableArrayList(model.getItems()));
         this.gesamt = new SimpleStringProperty(TableUtils.formatGeld(model.getGesamt()));
+        this.rechnungModel = model;
     }
 
     public String getRechnungDatum() {
@@ -62,4 +64,10 @@ public class ReportItemModel {
     public StringProperty gesamtProperty() {
         return gesamt;
     }
+
+	public RechnungModel getRechnungModel() {
+		return rechnungModel;
+	}
+    
+    
 }

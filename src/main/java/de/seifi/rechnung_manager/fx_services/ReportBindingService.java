@@ -72,7 +72,7 @@ public class ReportBindingService {
     	produktMap = produktList.stream().collect(Collectors.toMap(p -> p.getProduktName(), p -> p));
     }
 
-    public ObservableList<ReportItemModel> getRechnungItems() {
+    public ObservableList<ReportItemModel> getReportItems() {
         return rechnungItems;
     }
 

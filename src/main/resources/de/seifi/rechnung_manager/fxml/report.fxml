@@ -56,6 +56,14 @@
                     </cellValueFactory>
 
                 </TableColumn>
+                <TableColumn fx:id="toolsColumn" text="..." prefWidth="100" editable="false" sortable="false">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="gesamt" />
+                    </cellValueFactory>
+                    <cellFactory>
+                        <ReportToolsTableCellFactory />
+                    </cellFactory>
+                </TableColumn>
             </columns>
 
         </TableView>

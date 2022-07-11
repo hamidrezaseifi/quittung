@@ -21,23 +21,12 @@ import de.seifi.rechnung_manager.models.RechnungItemProperty;
 
 public class PrintDialogController implements Initializable {
 
-    @FXML private TableView<RechnungItemProperty> printItemsTableView;
-
     @FXML private FloatGeldLabel lblNetto;
 
     @FXML private FloatGeldLabel lblMvst;
 
     @FXML private FloatGeldLabel lblGesamt;
 
-    @FXML private TableColumn<RechnungItemProperty, String> produktColumn;
-
-    @FXML private TableColumn<RechnungItemProperty, String> artikelNummerColumn;
-
-    @FXML private TableColumn<RechnungItemProperty, Integer> mengeColumn;
-
-    @FXML private TableColumn<RechnungItemProperty, Float> nPreisColumn;
-
-    @FXML private TableColumn<RechnungItemProperty, Float> gesamtColumn;
 
     @FXML private GridPane rootPane;
 
@@ -54,14 +43,6 @@ public class PrintDialogController implements Initializable {
                            ResourceBundle resourceBundle) {
         RechnungBindingService = new RechnungBindingPrintService();
 
-
-        produktColumn.prefWidthProperty().bind(
-                printItemsTableView.widthProperty().subtract(
-                        artikelNummerColumn.widthProperty()).subtract(
-                        mengeColumn.widthProperty()).subtract(
-                        nPreisColumn.widthProperty()).subtract(
-                        gesamtColumn.widthProperty()).subtract(5)
-                                              );
     }
 
     public void printRechnungList(List<RechnungModel> RechnungModelList){
@@ -112,8 +93,7 @@ public class PrintDialogController implements Initializable {
 
     private void startPrint(PrinterJob job, PageLayout pageLayout) {
 
-        printItemsTableView.setItems(RechnungBindingService.getRechnungItems());
-
+        
         lblNetto.setText(RechnungBindingService.getNettoSumme());
         lblMvst.setText(RechnungBindingService.getMvstSumme());
         lblGesamt.setText(RechnungBindingService.getGesamtSumme());
