@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 import de.seifi.rechnung_manager.RechnungManagerFxApp;
 import de.seifi.rechnung_manager.RechnungManagerSpringApp;
@@ -14,7 +15,9 @@ import de.seifi.rechnung_manager.models.ProduktModel;
 import de.seifi.rechnung_manager.models.ReportItemModel;
 import de.seifi.rechnung_manager.repositories.ProduktRepository;
 import de.seifi.rechnung_manager.repositories.RechnungRepository;
+import de.seifi.rechnung_manager.ui.UiUtils;
 import de.seifi.rechnung_manager.models.RechnungItemProperty;
+import de.seifi.rechnung_manager.models.RechnungModel;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -80,11 +83,8 @@ public class ReportController implements Initializable, ControllerBse {
     @FXML
     private void printRechnung() throws IOException {
 
-        Pair<Parent, FXMLLoader> pair = RechnungManagerFxApp.loadFXMLLoader("rechnung_print");
-        GridPane printPane = (GridPane)pair.getKey();
-        FXMLLoader fxmlLoader = pair.getValue();
-        PrintDialogController dialogController = fxmlLoader.<PrintDialogController>getController();
-        //dialogController.printRechnungList(Arrays.asList(reportBindingService.getSavingModel()));
+        List<RechnungModel> modelList = reportBindingService.getReportItems().stream().map(r -> r.getRechnungModel()).collect(Collectors.toList());
+        UiUtils.printRechnungItems(modelList);
 
     }
 

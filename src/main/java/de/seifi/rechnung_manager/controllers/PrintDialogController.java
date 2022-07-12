@@ -14,10 +14,10 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import de.seifi.rechnung_manager.RechnungManagerFxApp;
 import de.seifi.rechnung_manager.fx_services.RechnungBindingPrintService;
 import de.seifi.rechnung_manager.models.RechnungModel;
 import de.seifi.rechnung_manager.ui.FloatGeldLabel;
-import de.seifi.rechnung_manager.models.RechnungItemProperty;
 
 public class PrintDialogController implements Initializable {
 
@@ -46,23 +46,24 @@ public class PrintDialogController implements Initializable {
 
     }
 
-    public void printRechnungList(List<RechnungModel> RechnungModelList){
+    public void printRechnungList(List<RechnungModel> rechnungModelList){
         //Rechnung_print
-        this.rechnungBindingService.setRechnungModelList(RechnungModelList);
+        this.rechnungBindingService.setRechnungModelList(rechnungModelList);
         rechnungBindingService.setPrintingIndex(0);
         PrinterJob job = PrinterJob.createPrinterJob();
         if (job != null) {
             Printer printer = job.getPrinter();
             PageLayout pageLayout = printer.createPageLayout(Paper.A4, PageOrientation.PORTRAIT, 50,50,40,40);
-            job.showPrintDialog(null);
-            job.showPageSetupDialog(null);
+            job.showPrintDialog(RechnungManagerFxApp.getWindow());
+            job.showPageSetupDialog(RechnungManagerFxApp.getWindow());
         	this.preparePrint(job, pageLayout);
         }
 
     }
 
     private void preparePrint(PrinterJob job, PageLayout pageLayout) {
-
+    	boolean isPrinted = false;
+    	
         if(this.rechnungBindingService.hasPrintingPage()){
             
             double w = rootPane.getPrefWidth();
@@ -77,32 +78,60 @@ public class PrintDialogController implements Initializable {
             Scale scale = new Scale(scaleX, scaleY);
 
             rootPane.getTransforms().add(scale);
-            this.rechnungBindingService.setPrintingIndex(-1);
+            if(this.startPrintItemPage(job, pageLayout)) {
+            	isPrinted = true;
+            }
 
             while (this.rechnungBindingService.increasePrintingIndex()){
-                this.startPrint(job, pageLayout);
+            	if(this.startPrintItemPage(job, pageLayout)) {
+                	isPrinted = true;
+                }
             }
 
 
         }
 
-    }
 
-    private void startPrint(PrinterJob job, PageLayout pageLayout) {
-
-        printTableView.setItems(rechnungBindingService.getRechnungPrintItems());
-        lblNetto.setText(rechnungBindingService.getNettoSumme());
-        lblMvst.setText(rechnungBindingService.getMvstSumme());
-        lblGesamt.setText(rechnungBindingService.getGesamtSumme());
-
-        lblRechnungNummer.setText(rechnungBindingService.getRechnungNummer());
-        lblRechnungDatum.setText(rechnungBindingService.getLiferDatum());
-        lblLiferdatum.setText(rechnungBindingService.getLiferDatum());
-
-        boolean success = job.printPage(pageLayout, rootPane);
-        if (success) {
+    	if (isPrinted) {
             job.endJob();
         }
+    	
+    }
+
+    private boolean startPrintItemPage(PrinterJob job, PageLayout pageLayout) {
+    	
+    	boolean isPrinted = false;
+    	if(rechnungBindingService.hasMorePrintingPage()) {
+    		if(this.startPrint(job, pageLayout)){
+    			isPrinted = true;
+    		}
+    		
+    		while(rechnungBindingService.increateIfMorePrintingPage()) {
+    			this.startPrint(job, pageLayout);
+    		}
+    	}
+        
+    	return isPrinted;
+    	
+    }
+
+    private boolean startPrint(PrinterJob job, PageLayout pageLayout) {
+    	
+    	if(rechnungBindingService.hasMorePrintingPage()) {
+    		printTableView.setItems(rechnungBindingService.getRechnungPrintItems());
+            lblNetto.setText(rechnungBindingService.getNettoSumme());
+            lblMvst.setText(rechnungBindingService.getMvstSumme());
+            lblGesamt.setText(rechnungBindingService.getGesamtSumme());
+
+            lblRechnungNummer.setText(rechnungBindingService.getRechnungNummer());
+            lblRechnungDatum.setText(rechnungBindingService.getLiferDatum());
+            lblLiferdatum.setText(rechnungBindingService.getLiferDatum());
+
+            boolean success = job.printPage(pageLayout, rootPane);
+            
+            return success;
+    	}
+        return false;
 
     }
 

@@ -86,11 +86,17 @@
                     <cellValueFactory>
                         <PropertyValueFactory property="einzelpreis" />
                     </cellValueFactory>
+                    <cellFactory>
+                        <GeldLabelTableCellFactory />
+                    </cellFactory>
                 </TableColumn>
-                <TableColumn editable="false" prefWidth="100" sortable="false" text="Gesamtpreis">
+                <TableColumn editable="false" prefWidth="100" sortable="false" text="Gesamtpreis" styleClass="print-table-last">
                     <cellValueFactory>
                         <PropertyValueFactory property="gesamtpreis" />
                     </cellValueFactory>
+                    <cellFactory>
+                        <GeldLabelTableCellFactory />
+                    </cellFactory>
                 </TableColumn>
 
             </columns>

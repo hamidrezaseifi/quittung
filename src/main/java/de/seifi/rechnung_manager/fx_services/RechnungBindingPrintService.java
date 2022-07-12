@@ -38,23 +38,68 @@ public class RechnungBindingPrintService {
         
         if(!rechnungModelList.isEmpty()){
             setPrintingIndex(0);
-            calculateRechnungSumme();
+            
         }
 
     }
 
-    public ObservableList<RechnungItemPrintProperty> getRechnungPrintItems() {
-        List<RechnungItemModel> modelItems = rechnungModelList.get(printingIndex).getItems();
-        List<RechnungItemPrintProperty> propList = new ArrayList<>();
-
-        for(int k= 0; k< 20; k++){
-            for(int i=0; i<modelItems.size(); i++){
-                propList.add(new RechnungItemPrintProperty(propList.size() + 1, modelItems.get(i)));
-            }
+    public boolean increasePrintingIndex() {
+        if(this.printingIndex >= rechnungModelList.size() - 1){
+            return false;
         }
+        this.printingIndex += 1;
+        setPrintingIndex(this.printingIndex);
+        calculateRechnungSumme();
+        return true;
+    }
 
+    public void setPrintingIndex(int printingIndex) {
+        this.printingIndex = printingIndex;
+        preparePrintPropertyList();
+        calculateRechnungSumme();
+    }
+    
+    public boolean increateIfMorePrintingPage() {
+    	if(!hasMorePrintingPage()){
+            return false;
+        }
+        this.printingItemPageIndex += 1;
+        return true;
+    }
+    
+    public boolean hasMorePrintingPage() {
+    	if(this.printingItemPageIndex >= this.printingItemPageCount){
+            return false;
+        }
+        
+        return true;
+    }
+    
+    private void preparePrintPropertyList() {
+    	List<RechnungItemModel> modelItems = rechnungModelList.get(printingIndex).getItems();
+    	this.printPropertyList.clear();
 
-        return FXCollections.observableArrayList(propList);
+        //for(int k= 0; k< 5; k++){
+            for(int i=0; i<modelItems.size(); i++){
+            	this.printPropertyList.add(new RechnungItemPrintProperty(this.printPropertyList.size() + 1, modelItems.get(i)));
+            }
+        //}
+        
+        this.printingItemPageIndex = 0;
+        this.printingItemPageCount = (int)(this.printPropertyList.size() / MAX_PRINT_LIST_ITEMS);
+        if(this.printingItemPageCount * MAX_PRINT_LIST_ITEMS < this.printPropertyList.size()) {
+        	this.printingItemPageCount += 1;
+        }
+    }
+
+    public ObservableList<RechnungItemPrintProperty> getRechnungPrintItems() {
+    	int start = this.printingItemPageIndex * MAX_PRINT_LIST_ITEMS;
+    	int to = ((this.printingItemPageIndex + 1) * MAX_PRINT_LIST_ITEMS);
+    	if(to > this.printPropertyList.size()) {
+    		to = this.printPropertyList.size();
+    	}
+    	List<RechnungItemPrintProperty> items = this.printPropertyList.subList(start, to);
+        return FXCollections.observableArrayList(items);
     }
 
     public String getNettoSumme() {
@@ -91,19 +136,6 @@ public class RechnungBindingPrintService {
         nettoSumme = TableUtils.formatGeld(netto);
         mvstSumme = TableUtils.formatGeld(netto * 19 / 100);
         gesamtSumme = TableUtils.formatGeld(netto + (netto * 19 / 100));
-    }
-
-    public void setPrintingIndex(int printingIndex) {
-        this.printingIndex = printingIndex;
-    }
-
-    public boolean increasePrintingIndex() {
-        if(this.printingIndex >= rechnungModelList.size() - 1){
-            return false;
-        }
-        this.printingIndex += 1;
-        calculateRechnungSumme();
-        return true;
     }
 
     public boolean hasPrintingPage() {

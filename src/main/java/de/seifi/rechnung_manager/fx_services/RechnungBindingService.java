@@ -7,6 +7,7 @@ import de.seifi.rechnung_manager.models.ProduktModel;
 import de.seifi.rechnung_manager.models.RechnungModel;
 import de.seifi.rechnung_manager.repositories.ProduktRepository;
 import de.seifi.rechnung_manager.repositories.RechnungRepository;
+import de.seifi.rechnung_manager.utils.GerldCalculator;
 import de.seifi.rechnung_manager.models.RechnungItemProperty;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
@@ -165,7 +166,8 @@ public class RechnungBindingService {
 
 	public float calculateNettoPreis(Float value) {
 		
-		float netto = (value * 100) / 119;
+		float netto = GerldCalculator.bruttoToNetto(value);
+		
 		netto = (netto * getBerechnenFaktorZiel()) / berechnenFaktorBasis;
 		
 		return netto;

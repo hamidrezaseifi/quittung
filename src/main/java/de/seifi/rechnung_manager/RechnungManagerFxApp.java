@@ -9,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import javafx.stage.WindowEvent;
 import javafx.util.Pair;
 
@@ -25,6 +26,9 @@ public class RechnungManagerFxApp extends Application {
     
     private static ControllerBse currentController;
     
+    public static Window getWindow() {
+    	return scene.getWindow();
+    }
 
     @Override
     public void start(Stage stage) throws IOException {

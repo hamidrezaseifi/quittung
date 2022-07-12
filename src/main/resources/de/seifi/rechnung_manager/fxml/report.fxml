@@ -50,16 +50,14 @@
                     </cellFactory>
 
                 </TableColumn>
-                <TableColumn fx:id="gesamtColumn" editable="false" prefWidth="180" text="Gesamtpreis">
+                <TableColumn fx:id="gesamtColumn" editable="false" prefWidth="180" text="Endsumme">
                     <cellValueFactory>
-                        <PropertyValueFactory property="gesamt" />
+                        <PropertyValueFactory property="bruttoGesamt" />
                     </cellValueFactory>
 
                 </TableColumn>
                 <TableColumn fx:id="toolsColumn" text="..." prefWidth="100" editable="false" sortable="false">
-                    <cellValueFactory>
-                        <PropertyValueFactory property="gesamt" />
-                    </cellValueFactory>
+                    
                     <cellFactory>
                         <ReportToolsTableCellFactory />
                     </cellFactory>

@@ -10,6 +10,7 @@ import de.seifi.rechnung_manager.fx_services.ReportBindingService;
 import de.seifi.rechnung_manager.models.RechnungItemProperty;
 import de.seifi.rechnung_manager.models.ReportItemModel;
 import de.seifi.rechnung_manager.ui.TableUtils;
+import de.seifi.rechnung_manager.ui.UiUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -43,17 +44,8 @@ public class ReportToolsTableCell extends TableCell<ReportItemModel, String> {
 			
 			ReportItemModel item = reportBindingService.getReportItems().get(this.getTableRow().getIndex());
 			
+			UiUtils.printRechnungItems(Arrays.asList(item.getRechnungModel()));
 			
-			try {
-				Pair<Parent, FXMLLoader> pair = RechnungManagerFxApp.loadFXMLLoader("rechnung_print");
-				GridPane printPane = (GridPane)pair.getKey();
-		        FXMLLoader fxmlLoader = pair.getValue();
-		        PrintDialogController dialogController = fxmlLoader.<PrintDialogController>getController();
-		        dialogController.printRechnungList(Arrays.asList(item.getRechnungModel()));
-			} catch (IOException e) {
-				
-			}
-	        
         });
 		
 		
