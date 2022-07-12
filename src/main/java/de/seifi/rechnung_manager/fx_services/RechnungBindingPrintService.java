@@ -20,12 +20,26 @@ public class RechnungBindingPrintService {
     private String nettoSumme;
     private String mvstSumme;
     private List<RechnungModel> rechnungModelList = new ArrayList<>();
+    
+    ObservableList<RechnungItemPrintProperty> printPropertyList;
 
     private int printingIndex = 0;
-    private int printingItemPage = 0;
+    private int printingItemPageIndex = 0;
+    private int printingItemPageCount = 0;
 
     public RechnungBindingPrintService() {
 
+    }
+
+
+    public void setRechnungModelList(List<RechnungModel> rechnungModelList) {
+        this.rechnungModelList = rechnungModelList;
+        this.printPropertyList = FXCollections.observableArrayList();
+        
+        if(!rechnungModelList.isEmpty()){
+            setPrintingIndex(0);
+            calculateRechnungSumme();
+        }
 
     }
 
@@ -33,7 +47,6 @@ public class RechnungBindingPrintService {
         List<RechnungItemModel> modelItems = rechnungModelList.get(printingIndex).getItems();
         List<RechnungItemPrintProperty> propList = new ArrayList<>();
 
-        AtomicInteger idx = new AtomicInteger(1);
         for(int k= 0; k< 20; k++){
             for(int i=0; i<modelItems.size(); i++){
                 propList.add(new RechnungItemPrintProperty(propList.size() + 1, modelItems.get(i)));
@@ -66,15 +79,6 @@ public class RechnungBindingPrintService {
 
     public String getLiferDatum() {
         return rechnungModelList.get(printingIndex).getLiferDate();
-    }
-
-    public void setRechnungModelList(List<RechnungModel> rechnungModelList) {
-        this.rechnungModelList = rechnungModelList;
-        if(!rechnungModelList.isEmpty()){
-            setPrintingIndex(0);
-            calculateRechnungSumme();
-        }
-
     }
 
     private void calculateRechnungSumme() {

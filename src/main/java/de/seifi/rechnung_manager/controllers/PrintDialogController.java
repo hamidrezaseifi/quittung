@@ -50,41 +50,40 @@ public class PrintDialogController implements Initializable {
         //Rechnung_print
         this.rechnungBindingService.setRechnungModelList(RechnungModelList);
         rechnungBindingService.setPrintingIndex(0);
-        this.preparePrint();
+        PrinterJob job = PrinterJob.createPrinterJob();
+        if (job != null) {
+            Printer printer = job.getPrinter();
+            PageLayout pageLayout = printer.createPageLayout(Paper.A4, PageOrientation.PORTRAIT, 50,50,40,40);
+            job.showPrintDialog(null);
+            job.showPageSetupDialog(null);
+        	this.preparePrint(job, pageLayout);
+        }
 
     }
 
-    private void preparePrint() {
+    private void preparePrint(PrinterJob job, PageLayout pageLayout) {
 
         if(this.rechnungBindingService.hasPrintingPage()){
-            PrinterJob job = PrinterJob.createPrinterJob();
-            if (job != null) {
-                Printer printer = job.getPrinter();
-                PageLayout pageLayout = printer.createPageLayout(Paper.A4, PageOrientation.PORTRAIT, 50,50,40,40);
-               
-                //PageLayout pageLayout = job.getPrinter().getDefaultPageLayout();
-                job.showPrintDialog(null);
-                //job.showPageSetupDialog(null);
-                double w = rootPane.getPrefWidth();
-                double h = rootPane.getPrefHeight();
+            
+            double w = rootPane.getPrefWidth();
+            double h = rootPane.getPrefHeight();
 
-                double pagePrintableWidth = pageLayout.getPrintableWidth(); //this should be 8.5 inches for this page layout.
-                double pagePrintableHeight = pageLayout.getPrintableHeight();// this should be 11 inches for this page layout.
+            double pagePrintableWidth = pageLayout.getPrintableWidth(); 
+            double pagePrintableHeight = pageLayout.getPrintableHeight();
 
-                double scaleX = pagePrintableWidth / w;
-                double scaleY = pagePrintableHeight / h;
+            double scaleX = pagePrintableWidth / w;
+            double scaleY = pagePrintableHeight / h;
 
-                Scale scale = new Scale(scaleX, scaleY);
+            Scale scale = new Scale(scaleX, scaleY);
 
-                rootPane.getTransforms().add(scale);
-                this.rechnungBindingService.setPrintingIndex(-1);
+            rootPane.getTransforms().add(scale);
+            this.rechnungBindingService.setPrintingIndex(-1);
 
-                while (this.rechnungBindingService.increasePrintingIndex()){
-                    this.startPrint(job, pageLayout);
-                }
-
-
+            while (this.rechnungBindingService.increasePrintingIndex()){
+                this.startPrint(job, pageLayout);
             }
+
+
         }
 
     }
