@@ -24,7 +24,7 @@ public class ProduktListTableCell extends TableCell<ReportItemModel, Object> {
         vBox.prefWidthProperty().bind(this.widthProperty().subtract(3));
 
         itemProperty().addListener((obx, oldItem, newItem) -> {
-
+        	vBox.getChildren().clear();
             if (newItem != null) {
 
                 List<RechnungItemModel> list = (List<RechnungItemModel>)newItem;

@@ -16,6 +16,9 @@ import de.seifi.rechnung_manager.models.ProduktModel;
 import de.seifi.rechnung_manager.models.ReportItemModel;
 import de.seifi.rechnung_manager.repositories.ProduktRepository;
 import de.seifi.rechnung_manager.repositories.RechnungRepository;
+import de.seifi.rechnung_manager.ui.FloatTextField;
+import de.seifi.rechnung_manager.ui.IntegerTextField;
+import de.seifi.rechnung_manager.ui.TextObserverDatePicker;
 import de.seifi.rechnung_manager.ui.UiUtils;
 import de.seifi.rechnung_manager.models.RechnungItemProperty;
 import de.seifi.rechnung_manager.models.RechnungModel;
@@ -30,6 +33,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TablePosition;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.util.Pair;
 
@@ -54,9 +58,9 @@ public class ReportController implements Initializable, ControllerBse {
 
     @FXML private GridPane bannerPane;
     
-    @FXML private DatePicker dtFrom;
+    @FXML private TextObserverDatePicker dtFrom;
     
-    @FXML private DatePicker dtTo;
+    @FXML private TextObserverDatePicker dtTo;
 
 
     private ReportBindingService reportBindingService;
@@ -77,7 +81,7 @@ public class ReportController implements Initializable, ControllerBse {
     @FXML
     private void search() throws IOException {
     	
-    	reportTableView.getItems().clear();
+    	reportTableView.setItems(null);
         reportBindingService.search(dtFrom.getValue(), dtTo.getValue());
         reportTableView.setItems(reportBindingService.getReportItems());
     }
@@ -88,7 +92,9 @@ public class ReportController implements Initializable, ControllerBse {
     
     @FXML
     private void printRechnung() throws IOException {
-
+    	if(reportBindingService.getReportItems().isEmpty()) {
+    		return;
+    	}
         List<RechnungModel> modelList = reportBindingService.getReportItems().stream().map(r -> r.getRechnungModel()).collect(Collectors.toList());
         UiUtils.printRechnungItems(modelList);
 
@@ -128,7 +134,7 @@ public class ReportController implements Initializable, ControllerBse {
     	dtTo.setValue(LocalDate.now());
     	
     	dtFrom.setValue(LocalDate.now().minusMonths(2));
-
+    	
         reportBindingService = new ReportBindingService(
         		this.produktRepository,
         		this.rechnungRepository);

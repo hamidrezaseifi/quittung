@@ -2,6 +2,7 @@
 
 <?import de.seifi.rechnung_manager.ui.tablecell.*?>
 <?import javafx.scene.control.*?>
+<?import de.seifi.rechnung_manager.ui.TextObserverDatePicker?>
 <?import javafx.scene.control.cell.*?>
 <?import javafx.scene.layout.*?>
 
@@ -16,14 +17,14 @@
     <children>
             
         <HBox alignment="CENTER_RIGHT" spacing="10" GridPane.columnIndex="0" GridPane.rowIndex="0" style="-fx-padding: 5px;">
-        	<DatePicker fx:id="dtFrom" prefHeight="26" prefWidth="130" ></DatePicker>
-        	<DatePicker fx:id="dtTo" prefHeight="26" prefWidth="130" ></DatePicker>
+        	<TextObserverDatePicker fx:id="dtFrom" prefHeight="26" prefWidth="130" ></TextObserverDatePicker>
+        	<TextObserverDatePicker fx:id="dtTo" prefHeight="26" prefWidth="130" ></TextObserverDatePicker>
             <Button alignment="CENTER_RIGHT" onAction="#search" prefHeight="26" prefWidth="130" styleClass="report-button" text="Suchen" />
             <Button alignment="CENTER_RIGHT" onAction="#printRechnung" prefHeight="26" prefWidth="116" styleClass="print-button" text="Drucken" />
             <Button alignment="CENTER_RIGHT" onAction="#closeRechnung" prefHeight="26" prefWidth="116" styleClass="cancel-button" text="Schließen" />
 
         </HBox>
-        <TableView fx:id="reportTableView" GridPane.columnIndex="0" GridPane.rowIndex="1">
+        <TableView fx:id="reportTableView" GridPane.columnIndex="0" GridPane.rowIndex="1" editable="false">
             <columns>
                 <TableColumn fx:id="datumColumn" editable="false" prefWidth="120.0" sortable="false" text="Rechnung-Datum">
                     <cellValueFactory>
@@ -37,13 +38,13 @@
                     </cellValueFactory>
 
                 </TableColumn>
-                <TableColumn fx:id="zeitColumn" prefWidth="110" text="Erstellen-Zeit">
+                <TableColumn fx:id="zeitColumn" prefWidth="110" text="Erstellen-Zeit" editable="false" sortable="false">
                     <cellValueFactory>
                         <PropertyValueFactory property="rechnungZeit" />
                     </cellValueFactory>
 
                 </TableColumn>
-                <TableColumn fx:id="produktListColumn" prefWidth="120" text="Produkte">
+                <TableColumn fx:id="produktListColumn" prefWidth="120" text="Produkte" editable="false" sortable="false">
                     <cellValueFactory>
                         <PropertyValueFactory property="produktListItem" />
                     </cellValueFactory>
@@ -52,7 +53,7 @@
                     </cellFactory>
 
                 </TableColumn>
-                <TableColumn fx:id="gesamtColumn" editable="false" prefWidth="180" text="Endsumme">
+                <TableColumn fx:id="gesamtColumn" editable="false" prefWidth="180" text="Endsumme" sortable="false">
                     <cellValueFactory>
                         <PropertyValueFactory property="bruttoGesamt" />
                     </cellValueFactory>
