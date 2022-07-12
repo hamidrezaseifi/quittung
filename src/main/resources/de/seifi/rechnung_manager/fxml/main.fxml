@@ -18,7 +18,8 @@
 <?import de.seifi.rechnung_manager.ui.FloatGeldLabel?>
 <?import javafx.scene.shape.Line?>
 <GridPane alignment="TOP_LEFT" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
-          fx:controller="de.seifi.rechnung_manager.controllers.MainController" prefWidth="1000" prefHeight="1000">
+          fx:controller="de.seifi.rechnung_manager.controllers.MainController" prefWidth="1000" prefHeight="1000"
+           style="-fx-background-color: rgb(177, 177, 177);">
     <columnConstraints>
         <ColumnConstraints hgrow="ALWAYS" />
     </columnConstraints>
@@ -27,7 +28,7 @@
         <RowConstraints vgrow="ALWAYS" />
     </rowConstraints>
     <children>
-        <HBox GridPane.columnIndex="0" GridPane.rowIndex="0" spacing="10">
+        <HBox GridPane.columnIndex="0" GridPane.rowIndex="0" spacing="10" style="-fx-padding: 5px;">
             <Button styleClass="home-button" text="Home" onAction="#showHome" prefWidth="116" prefHeight="36" alignment="CENTER_RIGHT"></Button>
             <Button styleClass="bill-button" text="Rechnung" onAction="#showRechnung" prefWidth="116" prefHeight="36" alignment="CENTER_RIGHT"></Button>
             <Button styleClass="report-button" text="Bericht" onAction="#showReport" prefWidth="116" prefHeight="36" alignment="CENTER_RIGHT"></Button>
@@ -35,7 +36,7 @@
             
         </HBox>
 
-        <GridPane GridPane.columnIndex="0" GridPane.rowIndex="1" fx:id="childBox">
+        <GridPane GridPane.columnIndex="0" GridPane.rowIndex="1" fx:id="childBox" style="-fx-background-color: rgb(230, 230, 230);">
 		     <columnConstraints>
 		        <ColumnConstraints hgrow="ALWAYS" />
 		    </columnConstraints>

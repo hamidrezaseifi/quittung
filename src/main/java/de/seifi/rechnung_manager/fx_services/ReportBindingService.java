@@ -13,6 +13,8 @@ import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
@@ -43,8 +45,6 @@ public class ReportBindingService {
 
     private ObservableList<ReportItemModel> rechnungItems;
 
-    private BooleanProperty disablePrint;
-
     private boolean isDirty;
     
     public ReportBindingService(ProduktRepository produktRepository,
@@ -54,14 +54,10 @@ public class ReportBindingService {
 
     	this.produktRepository = produktRepository;
     	this.rechnungRepository = rechnungRepository;
-
-        disablePrint = new SimpleBooleanProperty(false);
         
         rechnungItems = FXCollections.observableArrayList();
         
         retreiveProduktMap();
-        
-        search();
 
     }
 
@@ -76,10 +72,12 @@ public class ReportBindingService {
         return rechnungItems;
     }
 
-	public void search() {
+	public void search(LocalDate from, LocalDate to) {
 		rechnungItems.clear();
-
-        List<RechnungEntity> entityList = this.rechnungRepository.findAll();
+		Timestamp tsFrom = Timestamp.valueOf(from.atStartOfDay());
+		Timestamp tsTo = Timestamp.valueOf(to.atTime(23, 59, 59));
+		
+        List<RechnungEntity> entityList = this.rechnungRepository.search(tsFrom, tsTo);
         List<ReportItemModel> modelList = entityList.stream().map(e -> new ReportItemModel(e.toModel())).collect(Collectors.toList());
 
         rechnungItems.addAll(modelList);
@@ -89,17 +87,6 @@ public class ReportBindingService {
 
 	public boolean isDirty() {
 		return isDirty;
-	}
-
-	
-	public void setDirty(boolean isDirty) {
-		this.isDirty = isDirty;
-		
-		this.disablePrint.set(isDirty);
-	}
-
-	public BooleanProperty getDisablePrintProperty() {
-		return disablePrint;
 	}
 
 	public List<ProduktModel> getProduktList() {

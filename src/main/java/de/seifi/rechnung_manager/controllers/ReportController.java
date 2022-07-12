@@ -2,6 +2,7 @@ package de.seifi.rechnung_manager.controllers;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +26,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TablePosition;
 import javafx.scene.control.TableView;
@@ -49,10 +51,12 @@ public class ReportController implements Initializable, ControllerBse {
 
 
     @FXML private GridPane rootPane;
-    
-    @FXML private Button btnPrint;
 
     @FXML private GridPane bannerPane;
+    
+    @FXML private DatePicker dtFrom;
+    
+    @FXML private DatePicker dtTo;
 
 
     private ReportBindingService reportBindingService;
@@ -72,8 +76,10 @@ public class ReportController implements Initializable, ControllerBse {
 
     @FXML
     private void search() throws IOException {
-        reportBindingService.search();
     	
+    	reportTableView.getItems().clear();
+        reportBindingService.search(dtFrom.getValue(), dtTo.getValue());
+        reportTableView.setItems(reportBindingService.getReportItems());
     }
 
     private void doReloadData() {
@@ -118,6 +124,10 @@ public class ReportController implements Initializable, ControllerBse {
                            ResourceBundle resourceBundle) {
     	
     	RechnungManagerFxApp.setCurrentController(this);
+    	
+    	dtTo.setValue(LocalDate.now());
+    	
+    	dtFrom.setValue(LocalDate.now().minusMonths(2));
 
         reportBindingService = new ReportBindingService(
         		this.produktRepository,
@@ -135,7 +145,6 @@ public class ReportController implements Initializable, ControllerBse {
         reportTableView.setItems(reportBindingService.getReportItems());
         reportTableView.setUserData(reportBindingService);
 
-        btnPrint.disableProperty().bind(reportBindingService.getDisablePrintProperty());
     }
 
 	@Override
