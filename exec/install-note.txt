@@ -1,0 +1,3 @@
+launch4j to package app: https://sourceforge.net/projects/launch4j/files/launch4j-3/3.14/
+
+launch4j setting: <project_root>/exec/config.xml
