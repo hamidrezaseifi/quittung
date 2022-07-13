@@ -3,12 +3,9 @@ package de.seifi.rechnung_manager.fx_services;
 
 import de.seifi.rechnung_manager.entities.ProduktEntity;
 import de.seifi.rechnung_manager.entities.RechnungEntity;
-import de.seifi.rechnung_manager.models.ProduktModel;
-import de.seifi.rechnung_manager.models.RechnungModel;
-import de.seifi.rechnung_manager.models.ReportItemModel;
+import de.seifi.rechnung_manager.models.*;
 import de.seifi.rechnung_manager.repositories.ProduktRepository;
 import de.seifi.rechnung_manager.repositories.RechnungRepository;
-import de.seifi.rechnung_manager.models.RechnungItemProperty;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -39,13 +36,11 @@ public class ReportBindingService {
     private Map<String, ProduktModel> produktMap;
     private List<ProduktModel> produktList;
 
-    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyy");
-
-    private final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-
     private ObservableList<ReportItemModel> rechnungItems;
 
     private boolean isDirty;
+
+    private SearchFilterProperty searchFilterProperty;
     
     public ReportBindingService(ProduktRepository produktRepository,
     		final RechnungRepository rechnungRepository) {
@@ -56,7 +51,11 @@ public class ReportBindingService {
     	this.rechnungRepository = rechnungRepository;
         
         rechnungItems = FXCollections.observableArrayList();
-        
+
+        this.searchFilterProperty = new SearchFilterProperty();
+        this.searchFilterProperty.setFrom(LocalDate.now().minusMonths(2));
+        this.searchFilterProperty.setTo(LocalDate.now());
+
         retreiveProduktMap();
 
     }
@@ -72,12 +71,25 @@ public class ReportBindingService {
         return rechnungItems;
     }
 
-	public void search(LocalDate from, LocalDate to) {
+	public void search() {
 		rechnungItems.clear();
-		Timestamp tsFrom = Timestamp.valueOf(from.atStartOfDay());
-		Timestamp tsTo = Timestamp.valueOf(to.atTime(23, 59, 59));
-		
-        List<RechnungEntity> entityList = this.rechnungRepository.search(tsFrom, tsTo);
+		Timestamp tsFrom = Timestamp.valueOf(searchFilterProperty.getFrom().atStartOfDay());
+		Timestamp tsTo = Timestamp.valueOf(searchFilterProperty.getTo().atTime(23, 59, 59));
+        List<RechnungEntity> entityList;
+        Integer nummer = null;
+        try {
+            nummer = Integer.parseInt(searchFilterProperty.getNummer());
+        }
+        catch (Exception ex){
+
+        }
+        if(nummer != null){
+            entityList = this.rechnungRepository.search(tsFrom, tsTo, nummer);
+        }
+        else{
+            entityList = this.rechnungRepository.search(tsFrom, tsTo);
+        }
+
         List<ReportItemModel> modelList = entityList.stream().map(e -> new ReportItemModel(e.toModel())).collect(Collectors.toList());
 
         rechnungItems.addAll(modelList);
@@ -93,6 +105,7 @@ public class ReportBindingService {
 		return produktList;
 	}
 
-	
-	
+    public SearchFilterProperty getSearchFilterProperty() {
+        return searchFilterProperty;
+    }
 }

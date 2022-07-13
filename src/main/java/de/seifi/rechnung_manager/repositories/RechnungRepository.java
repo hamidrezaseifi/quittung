@@ -15,8 +15,11 @@ public interface RechnungRepository extends JpaRepository<RechnungEntity, Intege
 	Optional<RechnungEntity> findMaxLastNummer();
 	
 	Optional<RechnungEntity> findTopByOrderByNummerDesc();
-	
+
 	@Query("SELECT r FROM RechnungEntity r where r.created between :from and :to  order by r.nummer desc")
 	List<RechnungEntity> search(@Param("from") Timestamp from, @Param("to") Timestamp to);
+
+	@Query("SELECT r FROM RechnungEntity r where r.created between :from and :to and r.nummer=:nummer  order by r.nummer desc")
+	List<RechnungEntity> search(@Param("from") Timestamp from, @Param("to") Timestamp to, @Param("nummer") Integer nummer);
 
 }

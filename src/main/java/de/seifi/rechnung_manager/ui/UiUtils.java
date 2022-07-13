@@ -18,6 +18,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
+import static de.seifi.rechnung_manager.RechnungManagerFxApp.getMainStyle;
+
 public class UiUtils {
 
     public static void showError(String title, String message){
@@ -43,19 +45,23 @@ public class UiUtils {
     
     public static void showRechnungDialog(RechnungModel rechnungModel) {
     	try {
+			Stage stage = new Stage();
+
 			Pair<Parent, FXMLLoader> pair = RechnungManagerFxApp.loadFXMLLoader("rechnung");
 			GridPane rechnungPane = (GridPane)pair.getKey();
 	        FXMLLoader fxmlLoader = pair.getValue();
 	        RechnungController dialogController = fxmlLoader.<RechnungController>getController();
-	        dialogController.loadModel(rechnungModel, false);
+	        dialogController.loadModel(rechnungModel, false, stage);
 	        rechnungPane.setPadding(new Insets(10));
 	        
 	        Scene scene = new Scene(rechnungPane, 800, 800);
-	        Stage stage = new Stage();
+			scene.getStylesheets().add(getMainStyle());
+
 	        stage.initModality(Modality.APPLICATION_MODAL);
 	        stage.setScene(scene);
-	        stage.setTitle(String.format("Rechnung Nummer %s ansehen", rechnungModel.getNummer()));
+	        stage.setTitle(String.format("Rechnung Nummer %s Ansehen", rechnungModel.getNummer()));
 	        stage.showAndWait();
+
 	        
 		} catch (IOException e) {
 			

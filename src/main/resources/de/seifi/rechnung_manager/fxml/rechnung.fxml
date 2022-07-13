@@ -61,7 +61,7 @@
             <Button styleClass="reload-button" fx:id="btnReset" text="Zurücksetzen" onAction="#reload" prefWidth="130" prefHeight="36" alignment="CENTER_RIGHT"></Button>
             <Button styleClass="save-button" fx:id="btnSave" text="Speichern" onAction="#speichern" prefWidth="116" prefHeight="36" alignment="CENTER_RIGHT"></Button>
             <Button styleClass="print-button" fx:id="btnPrint" text="Drucken" onAction="#printRechnung" prefWidth="116" prefHeight="36" alignment="CENTER_RIGHT"></Button>
-            <Button styleClass="cancel-button" text="Schließen" onAction="#closeRechnung" prefWidth="116" prefHeight="36" alignment="CENTER_RIGHT"></Button>
+            <Button styleClass="cancel-button" fx:id="btnClose" text="Schließen" onAction="#closeRechnung" prefWidth="116" prefHeight="36" alignment="CENTER_RIGHT"></Button>
 
         </HBox>
         <TableView editable="true" GridPane.columnIndex="0" GridPane.rowIndex="2" fx:id="showItemsTableView">

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch4jConfig>
+  <dontWrapJar>false</dontWrapJar>
+  <headerType>gui</headerType>
+  <jar>E:\Hamid\Projects\java\quittung\target\rechnung_manager-0.0.1-SNAPSHOT.jar</jar>
+  <outfile>E:\Hamid\Projects\java\quittung\exec\rechnung.exe</outfile>
+  <errTitle></errTitle>
+  <cmdLine></cmdLine>
+  <chdir>.</chdir>
+  <priority>normal</priority>
+  <downloadUrl>http://java.com/download</downloadUrl>
+  <supportUrl></supportUrl>
+  <stayAlive>false</stayAlive>
+  <restartOnCrash>false</restartOnCrash>
+  <manifest></manifest>
+  <icon>E:\Hamid\Projects\java\quittung\src\main\resources\de\seifi\rechnung_manager\images\view_icon.ico</icon>
+  <jre>
+    <path>F:\Softwares\openjdk-11.0.2</path>
+    <bundledJre64Bit>true</bundledJre64Bit>
+    <bundledJreAsFallback>false</bundledJreAsFallback>
+    <minVersion>11</minVersion>
+    <maxVersion>17</maxVersion>
+    <jdkPreference>preferJdk</jdkPreference>
+    <runtimeBits>64/32</runtimeBits>
+  </jre>
+</launch4jConfig>

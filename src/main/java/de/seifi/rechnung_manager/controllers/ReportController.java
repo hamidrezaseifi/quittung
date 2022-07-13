@@ -26,15 +26,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TablePosition;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.RowConstraints;
 import javafx.util.Pair;
 
 public class ReportController implements Initializable, ControllerBse {
@@ -57,10 +52,20 @@ public class ReportController implements Initializable, ControllerBse {
     @FXML private GridPane rootPane;
 
     @FXML private GridPane bannerPane;
+
+    @FXML private Label lblFilter;
+
+    @FXML private HBox toolbarPane;
+
+    @FXML private HBox filterPane;
+
+    @FXML private RowConstraints filterRow;
     
     @FXML private TextObserverDatePicker dtFrom;
     
     @FXML private TextObserverDatePicker dtTo;
+
+    @FXML private IntegerTextField txtNummer;
 
 
     private ReportBindingService reportBindingService;
@@ -82,7 +87,7 @@ public class ReportController implements Initializable, ControllerBse {
     private void search() throws IOException {
     	
     	reportTableView.setItems(null);
-        reportBindingService.search(dtFrom.getValue(), dtTo.getValue());
+        reportBindingService.search();
         reportTableView.setItems(reportBindingService.getReportItems());
     }
 
@@ -130,14 +135,25 @@ public class ReportController implements Initializable, ControllerBse {
                            ResourceBundle resourceBundle) {
     	
     	RechnungManagerFxApp.setCurrentController(this);
-    	
-    	dtTo.setValue(LocalDate.now());
-    	
-    	dtFrom.setValue(LocalDate.now().minusMonths(2));
-    	
+
         reportBindingService = new ReportBindingService(
         		this.produktRepository,
         		this.rechnungRepository);
+
+
+        dtTo.valueProperty().bindBidirectional(reportBindingService.getSearchFilterProperty().toProperty());
+
+        dtFrom.valueProperty().bindBidirectional(reportBindingService.getSearchFilterProperty().fromProperty());
+
+        txtNummer.textProperty().bindBidirectional(reportBindingService.getSearchFilterProperty().nummerProperty());
+
+        lblFilter.textProperty().bind(reportBindingService.getSearchFilterProperty().labelProperty());
+        lblFilter.prefWidthProperty().bind(toolbarPane.widthProperty().subtract(370));
+        filterRow.setPrefHeight(filterPane.isVisible()? 40: 0);
+        lblFilter.setOnMouseClicked(mouseEvent -> {
+            filterPane.setVisible(!filterPane.isVisible());
+            filterRow.setPrefHeight(filterPane.isVisible()? 40: 0);
+        });
 
         produktListColumn.prefWidthProperty().bind(
                 reportTableView.widthProperty().subtract(

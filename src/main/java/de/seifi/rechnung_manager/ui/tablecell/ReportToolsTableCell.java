@@ -18,6 +18,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.util.Pair;
@@ -37,6 +38,7 @@ public class ReportToolsTableCell extends TableCell<ReportItemModel, String> {
 		btnPrint.setPadding(new Insets(0));
 		btnPrint.getStyleClass().add("tools-print-button");
 		btnPrint.setPrefWidth(35);
+		btnPrint.setTooltip(new Tooltip("Rechnung Druken"));
 		btnPrint.setPrefHeight(30);
 		
 		btnPrint.setOnAction((ActionEvent event) -> {
@@ -49,6 +51,7 @@ public class ReportToolsTableCell extends TableCell<ReportItemModel, String> {
 		btnEdit = new Button();
 		btnEdit.setPadding(new Insets(0));
 		btnEdit.getStyleClass().add("tools-edit-button");
+		btnEdit.setTooltip(new Tooltip("Rechnung Ansehen"));
 		btnEdit.setPrefWidth(35);
 		btnEdit.setPrefHeight(30);
 		

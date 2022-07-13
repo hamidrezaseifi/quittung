@@ -98,13 +98,13 @@
     
 }
 
-.report-button {
+.search-button {
 	         
-    -fx-background-image: url('../images/chart.png');
+    -fx-background-image: url('../images/search.png');
     
-    -fx-background-size: 32 32;
+    -fx-background-size: 22 22;
     -fx-background-repeat: no-repeat;
-    -fx-background-position:left;   
+    -fx-background-position:5px center;
     -fx-font-size: 14px;
     
 }
@@ -142,7 +142,7 @@
 
 }
 
-.home-pane1{
+.home-pane{
     -fx-background-image: url("../photos/auto_teil_photo_1.jpg");
     -fx-background-repeat: no-repeat;
     -fx-background-size: 100% auto;
@@ -190,11 +190,24 @@
 
 .tools-edit-button {
 	         
-    -fx-background-image: url('../images/edit.png');
+    -fx-background-image: url('../images/view.png');
 
     -fx-background-size: 30 26;
     -fx-background-repeat: no-repeat;
     -fx-background-position:center;
     -fx-padding: 0;
+}
+
+.filter-label{
+    -fx-background-image: url('../images/filter1.png');
+    -fx-background-size: 24 24;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position:left;
+
+    -fx-background-color: #f0f7f7;
+    -fx-border-color:black;
+    -fx-border-width: 1px;
+    -fx-border-style: solid;
+    -fx-padding: 5px 5px 5px 31px;
 }
 

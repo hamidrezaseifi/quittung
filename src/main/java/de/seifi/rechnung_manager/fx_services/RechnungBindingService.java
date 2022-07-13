@@ -7,6 +7,7 @@ import de.seifi.rechnung_manager.models.ProduktModel;
 import de.seifi.rechnung_manager.models.RechnungModel;
 import de.seifi.rechnung_manager.repositories.ProduktRepository;
 import de.seifi.rechnung_manager.repositories.RechnungRepository;
+import de.seifi.rechnung_manager.utils.GeneralUtils;
 import de.seifi.rechnung_manager.utils.GerldCalculator;
 import de.seifi.rechnung_manager.models.RechnungItemProperty;
 import javafx.beans.property.*;
@@ -37,9 +38,9 @@ public class RechnungBindingService {
     private Map<String, ProduktModel> produktMap;
     private List<ProduktModel> produktList;
 
-    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyy");
+    //private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyy");
 
-    private final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+    //private final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
     private ObservableList<RechnungItemProperty> rechnungItems;
 
@@ -68,7 +69,8 @@ public class RechnungBindingService {
     private RechnungModel savingModel = new RechnungModel();
         
     private boolean isDirty;
-    
+    private boolean isView = false;
+
     public RechnungBindingService(ProduktRepository produktRepository,
     		final RechnungRepository rechnungRepository) {
     	
@@ -195,8 +197,8 @@ public class RechnungBindingService {
 
         LocalDateTime ldt = LocalDateTime.now();
 
-        String date = dateFormatter.format(ldt);
-        String time = timeFormatter.format(ldt);
+        String date = GeneralUtils.formatDate(ldt);
+        String time = GeneralUtils.formatTime(ldt);
 
         int lastNummer = 0;
         
@@ -392,6 +394,13 @@ public class RechnungBindingService {
 		
 		isDirty = false;
 	}
-	
-	
+
+
+    public void setIsView(boolean isView) {
+        this.isView = isView;
+    }
+
+    public boolean isView() {
+        return isView;
+    }
 }

@@ -21,8 +21,19 @@ public class TextObserverDatePicker extends DatePicker {
 	private void initialize() {
 		focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
     		if (!isNowFocused) {
-          
-    			setValue(getConverter().fromString(getEditor().getText()));
+				try {
+					LocalDate date = getConverter().fromString(getEditor().getText());
+					if(date != null){
+						setValue(date);
+					}
+					else {
+						getEditor().setText(getConverter().toString(getValue()));
+					}
+				}
+				catch (Exception ex){
+					getEditor().setText(getConverter().toString(getValue()));
+				}
+
             }
     		
         });

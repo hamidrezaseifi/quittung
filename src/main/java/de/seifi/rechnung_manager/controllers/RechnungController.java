@@ -29,6 +29,7 @@ import javafx.scene.control.TablePosition;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 import javafx.util.Pair;
 
 public class RechnungController implements Initializable, ControllerBse {
@@ -64,6 +65,8 @@ public class RechnungController implements Initializable, ControllerBse {
     @FXML private Button btnSave;
     
     @FXML private Button btnReset;
+
+    @FXML private Button btnClose;
     
     @FXML private Button btnPrint;
 
@@ -76,8 +79,7 @@ public class RechnungController implements Initializable, ControllerBse {
     private final ProduktRepository produktRepository;
     
     private final RechnungRepository rechnungRepository;
-    
-    
+    private Stage stage;
 
     public RechnungController() {
 		
@@ -136,6 +138,10 @@ public class RechnungController implements Initializable, ControllerBse {
 
     @FXML
     private void closeRechnung() throws IOException {
+        if(rechnungBindingService.isView()){
+            this.stage.close();
+            return;
+        }
     	if(canResetData()) {
     		doReloadData();
 	        RechnungManagerFxApp.getMainController().showHome();
@@ -241,12 +247,14 @@ public class RechnungController implements Initializable, ControllerBse {
 		return rechnungBindingService.getProduktList();
 	}
 
-	public void loadModel(RechnungModel rechnungModel, boolean editable) {
+	public void loadModel(RechnungModel rechnungModel, boolean editable, Stage stage) {
 		showItemsTableView.setEditable(editable);
 		rechnungBindingService.setRechnungModel(rechnungModel);
 		
 		showItemsTableView.getColumns().forEach(c -> c.setEditable(editable));
-		
+        rechnungBindingService.setIsView(!editable);
+        this.stage = stage;
+
 		if(!editable) {
 			HBox hbox = (HBox)lblStatusChange.getParent();
 			hbox.getChildren().remove(lblStatusChange);
@@ -254,6 +262,7 @@ public class RechnungController implements Initializable, ControllerBse {
 			
 			btnSave.setVisible(false);
 			btnReset.setVisible(false);
+
 		}
 	}
 
