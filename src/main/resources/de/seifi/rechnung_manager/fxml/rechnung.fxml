@@ -58,7 +58,7 @@
         </GridPane>
 
         <HBox GridPane.columnIndex="0" GridPane.rowIndex="1" spacing="10" alignment="CENTER_RIGHT">
-            <Button styleClass="reload-button" text="Zurücksetzen" onAction="#reload" prefWidth="130" prefHeight="36" alignment="CENTER_RIGHT"></Button>
+            <Button styleClass="reload-button" fx:id="btnReset" text="Zurücksetzen" onAction="#reload" prefWidth="130" prefHeight="36" alignment="CENTER_RIGHT"></Button>
             <Button styleClass="save-button" fx:id="btnSave" text="Speichern" onAction="#speichern" prefWidth="116" prefHeight="36" alignment="CENTER_RIGHT"></Button>
             <Button styleClass="print-button" fx:id="btnPrint" text="Drucken" onAction="#printRechnung" prefWidth="116" prefHeight="36" alignment="CENTER_RIGHT"></Button>
             <Button styleClass="cancel-button" text="Schließen" onAction="#closeRechnung" prefWidth="116" prefHeight="36" alignment="CENTER_RIGHT"></Button>
@@ -142,7 +142,7 @@
 
         </GridPane>
         <HBox GridPane.columnIndex="0" GridPane.rowIndex="4" spacing="10" alignment="CENTER_LEFT">
-            <Label text="Status: Bereit ..." onMouseClicked="#toggleBrerechnenZiel" styleClass="toggle-label" prefWidth="280" prefHeight="36" alignment="CENTER"></Label>
+            <Label text="Status: Bereit ..." fx:id="lblStatusChange" onMouseClicked="#toggleBrerechnenZiel" styleClass="toggle-label" prefWidth="280" prefHeight="36" alignment="CENTER"></Label>
 
         </HBox>
         

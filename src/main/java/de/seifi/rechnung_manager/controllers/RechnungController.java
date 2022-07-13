@@ -15,6 +15,7 @@ import de.seifi.rechnung_manager.models.ProduktModel;
 import de.seifi.rechnung_manager.repositories.ProduktRepository;
 import de.seifi.rechnung_manager.repositories.RechnungRepository;
 import de.seifi.rechnung_manager.models.RechnungItemProperty;
+import de.seifi.rechnung_manager.models.RechnungModel;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -27,6 +28,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TablePosition;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.util.Pair;
 
 public class RechnungController implements Initializable, ControllerBse {
@@ -61,10 +63,13 @@ public class RechnungController implements Initializable, ControllerBse {
     
     @FXML private Button btnSave;
     
+    @FXML private Button btnReset;
+    
     @FXML private Button btnPrint;
 
     @FXML private GridPane bannerPane;
 
+    @FXML private Label lblStatusChange;
 
     private RechnungBindingService rechnungBindingService;
     
@@ -234,6 +239,22 @@ public class RechnungController implements Initializable, ControllerBse {
 
 	public List<ProduktModel> getProduktList() {
 		return rechnungBindingService.getProduktList();
+	}
+
+	public void loadModel(RechnungModel rechnungModel, boolean editable) {
+		showItemsTableView.setEditable(editable);
+		rechnungBindingService.setRechnungModel(rechnungModel);
+		
+		showItemsTableView.getColumns().forEach(c -> c.setEditable(editable));
+		
+		if(!editable) {
+			HBox hbox = (HBox)lblStatusChange.getParent();
+			hbox.getChildren().remove(lblStatusChange);
+			hbox.setVisible(false);
+			
+			btnSave.setVisible(false);
+			btnReset.setVisible(false);
+		}
 	}
 
 }

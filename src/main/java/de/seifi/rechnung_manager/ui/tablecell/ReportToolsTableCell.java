@@ -8,6 +8,7 @@ import de.seifi.rechnung_manager.controllers.PrintDialogController;
 import de.seifi.rechnung_manager.fx_services.RechnungBindingService;
 import de.seifi.rechnung_manager.fx_services.ReportBindingService;
 import de.seifi.rechnung_manager.models.RechnungItemProperty;
+import de.seifi.rechnung_manager.models.RechnungModel;
 import de.seifi.rechnung_manager.models.ReportItemModel;
 import de.seifi.rechnung_manager.ui.TableUtils;
 import de.seifi.rechnung_manager.ui.UiUtils;
@@ -40,11 +41,7 @@ public class ReportToolsTableCell extends TableCell<ReportItemModel, String> {
 		
 		btnPrint.setOnAction((ActionEvent event) -> {
 			
-			ReportBindingService reportBindingService = (ReportBindingService)this.getTableView().getUserData();
-			
-			ReportItemModel item = reportBindingService.getReportItems().get(this.getTableRow().getIndex());
-			
-			UiUtils.printRechnungItems(Arrays.asList(item.getRechnungModel()));
+			UiUtils.printRechnungItems(Arrays.asList(getCurrentRechnungModel()));
 			
         });
 		
@@ -54,6 +51,15 @@ public class ReportToolsTableCell extends TableCell<ReportItemModel, String> {
 		btnEdit.getStyleClass().add("tools-edit-button");
 		btnEdit.setPrefWidth(35);
 		btnEdit.setPrefHeight(30);
+		
+		
+		btnEdit.setOnAction((ActionEvent event) -> {
+			
+			RechnungModel model = getCurrentRechnungModel();
+			UiUtils.showRechnungDialog(model);
+			
+        });
+
 		
 		hbox.getChildren().add(btnPrint);
 		hbox.getChildren().add(btnEdit);
@@ -68,5 +74,13 @@ public class ReportToolsTableCell extends TableCell<ReportItemModel, String> {
             setGraphic(hbox);
         }
     }
+	
+	private RechnungModel getCurrentRechnungModel() {
+		ReportBindingService reportBindingService = (ReportBindingService)this.getTableView().getUserData();
+		
+		ReportItemModel item = reportBindingService.getReportItems().get(this.getTableRow().getIndex());
+		
+		return item.getRechnungModel();
+	}
 
 }

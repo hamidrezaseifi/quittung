@@ -78,7 +78,7 @@ public class RechnungManagerFxApp extends Application {
 
     public static GridPane getRechnungPane() throws IOException {
     	
-    	GridPane rechnungPane =  (GridPane)loadFXML("rechnung");
+    	GridPane rechnungPane = (GridPane)loadFXML("rechnung");
     	return rechnungPane;
     }
 

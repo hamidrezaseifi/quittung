@@ -381,6 +381,17 @@ public class RechnungBindingService {
 	public void addNewRow() {
 		addNewRowIntern(new RechnungItemProperty());
 	}
+
+	public void setRechnungModel(RechnungModel rechnungModel) {
+		savingModel = rechnungModel;
+		rechnungItems.clear();
+		
+		rechnungModel.getItems().forEach(r -> addNewRowIntern(new RechnungItemProperty(r)));
+		
+		retreiveProduktMap();
+		
+		isDirty = false;
+	}
 	
 	
 }
