@@ -54,13 +54,14 @@
 		    <artifactId>ini4j</artifactId>
 		    <version>0.5.2</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>de.seifi</groupId>
 			<artifactId>rechnung_common</artifactId>
 			<version>0.0.1</version>
+			<scope>compile</scope>
 		</dependency>
-		
+
 	</dependencies>
 
 	<repositories>
@@ -70,17 +71,5 @@
 			<url>https://github.com/poolborges/maven/raw/master/thirdparty/</url>
 		</repository>
 	</repositories>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-		        <configuration>
-		            <outputDirectory>../libs</outputDirectory>
-		        </configuration>
-			</plugin>
-		</plugins>
-	</build>
 
 </project>

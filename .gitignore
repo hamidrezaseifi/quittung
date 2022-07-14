@@ -1,2 +1,7 @@
 /.project
 /libs/**
+/.idea/
+/exec/launch4j.log
+/exec/rechnung.exe
+/target/
+/config.cfg
