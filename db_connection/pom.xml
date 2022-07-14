@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>de.seifi</groupId>
+		<artifactId>rechnung_manager</artifactId>
+		<version>0.0.1</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>de.seifi</groupId>
+	<artifactId>db_connection</artifactId>
+	<version>0.0.1</version>
+	<name>db_connection</name>
+	<description>db_connection</description>
+	<packaging>jar</packaging>
+	<properties>
+		<java.version>11</java.version>
+        <javafx.version>17.0.1</javafx.version>
+        <javafx.maven.plugin.version>0.0.8</javafx.maven.plugin.version>
+        <maven.compiler.release>11</maven.compiler.release>
+
+	</properties>
+	<dependencies>
+
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		
+		<dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-base</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
+		<dependency>
+			<groupId>it.sauronsoftware</groupId>
+			<artifactId>junique</artifactId>
+			<version>1.0.4</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.ini4j</groupId>
+		    <artifactId>ini4j</artifactId>
+		    <version>0.5.2</version>
+		</dependency>
+	</dependencies>
+
+	<repositories>
+		<repository>
+			<id>poolborges-github-thirdparty</id>
+			<name>poolborges-github</name>
+			<url>https://github.com/poolborges/maven/raw/master/thirdparty/</url>
+		</repository>
+	</repositories>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
