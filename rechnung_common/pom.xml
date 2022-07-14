@@ -6,7 +6,6 @@
 		<groupId>de.seifi</groupId>
 		<artifactId>rechnung_manager</artifactId>
 		<version>0.0.1</version>
-		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<artifactId>rechnung_common</artifactId>
 	<name>rechnung_common</name>
@@ -46,12 +45,17 @@
 		</repository>
 	</repositories>
 
+
 	<build>
 		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
+		    <plugin>
+		        <groupId>org.apache.maven.plugins</groupId>
+		        <artifactId>maven-jar-plugin</artifactId>
+		        <version>2.3.1</version>
+		        <configuration>
+		          <outputDirectory>../libs</outputDirectory>
+		        </configuration>
+		      </plugin>
 		</plugins>
 	</build>
 

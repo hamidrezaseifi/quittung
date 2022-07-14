@@ -6,7 +6,6 @@
 		<groupId>de.seifi</groupId>
 		<artifactId>rechnung_manager</artifactId>
 		<version>0.0.1</version>
-		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<artifactId>rechnung_manager_app</artifactId>
 	<name>rechnung_manager</name>
@@ -77,6 +76,9 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+		        <configuration>
+		            <outputDirectory>../libs</outputDirectory>
+		        </configuration>
 			</plugin>
 		</plugins>
 	</build>

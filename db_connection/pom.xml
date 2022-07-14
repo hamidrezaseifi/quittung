@@ -6,11 +6,8 @@
 		<groupId>de.seifi</groupId>
 		<artifactId>rechnung_manager</artifactId>
 		<version>0.0.1</version>
-		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>de.seifi</groupId>
 	<artifactId>db_connection</artifactId>
-	<version>0.0.1</version>
 	<name>db_connection</name>
 	<description>db_connection</description>
 	<packaging>jar</packaging>
@@ -64,9 +61,21 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
+		        <groupId>org.openjfx</groupId>
+		        <artifactId>javafx-maven-plugin</artifactId>
+		        <version>0.0.8</version>
+		        <configuration>
+		            <outputDirectory>../libs</outputDirectory>
+		        </configuration>
+		    </plugin>
+		    <plugin>
+		        <groupId>org.apache.maven.plugins</groupId>
+		        <artifactId>maven-jar-plugin</artifactId>
+		        <version>2.3.1</version>
+		        <configuration>
+		          <outputDirectory>../libs</outputDirectory>
+		        </configuration>
+		      </plugin>
 		</plugins>
 	</build>
 
