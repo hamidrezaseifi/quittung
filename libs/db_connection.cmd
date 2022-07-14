@@ -1,0 +1,1 @@
+start /min cmd /c db_connection.bat

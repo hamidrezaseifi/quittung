@@ -1,7 +1,9 @@
 /.project
-/libs/**
+/libs/*.jar
 /.idea/
 /exec/launch4j.log
 /exec/rechnung.exe
 /target/
 /config.cfg
+/libs/java/
+/libs/*.cfg
