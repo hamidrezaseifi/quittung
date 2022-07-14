@@ -11,40 +11,47 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.geometry.Insets?>
 
-<?import javafx.scene.control.cell.PropertyValueFactory?>
-<?import javafx.collections.FXCollections?>
-<?import de.seifi.rechnung_manager.ui.tablecell.*?>
-<?import de.seifi.rechnung_manager.ui.FloatTextField?>
-<?import de.seifi.rechnung_manager.ui.FloatGeldLabel?>
-<?import javafx.scene.shape.Line?>
 <GridPane alignment="TOP_LEFT" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
-          fx:controller="de.seifi.rechnung_manager.controllers.MainController" prefWidth="1000" prefHeight="1000"
+          fx:controller="de.seifi.db_connection.DbConnectionController" prefWidth="400" prefHeight="300"
            style="-fx-background-color: rgb(177, 177, 177);">
     <columnConstraints>
-        <ColumnConstraints hgrow="ALWAYS" />
+        <ColumnConstraints hgrow="NEVER" />
     </columnConstraints>
     <rowConstraints>
         <RowConstraints prefHeight="40" vgrow="NEVER" />
-        <RowConstraints vgrow="ALWAYS" />
+        <RowConstraints prefHeight="40" vgrow="NEVER" />
+        <RowConstraints prefHeight="40" vgrow="NEVER" />
+        <RowConstraints prefHeight="40" vgrow="NEVER" />
+        <RowConstraints prefHeight="40" vgrow="NEVER" />
+        <RowConstraints prefHeight="40" vgrow="NEVER" />
     </rowConstraints>
     <children>
-        <HBox GridPane.columnIndex="0" GridPane.rowIndex="0" spacing="10" style="-fx-padding: 5px;">
-            <Button styleClass="home-button" text="Home" onAction="#showHome" prefWidth="116" prefHeight="36" alignment="CENTER_RIGHT"></Button>
-            <Button styleClass="bill-button" text="Rechnung" onAction="#showRechnung" prefWidth="116" prefHeight="36" alignment="CENTER_RIGHT"></Button>
-            <Button styleClass="report-button" text="Bericht" onAction="#showReport" prefWidth="116" prefHeight="36" alignment="CENTER_RIGHT"></Button>
-            <Button styleClass="admin-button" text="Verwaltung" onAction="#showAdmin" prefWidth="116" prefHeight="36" alignment="CENTER_RIGHT"></Button>
-            
+        <HBox GridPane.columnIndex="0" GridPane.rowIndex="0" spacing="10" style="-fx-padding: 20px 5px 20px 5px;">
+        	<Label text="Server" prefWidth="100"></Label>
+        	<TextField fx:id="txtServer" prefWidth="290"></TextField>
+        </HBox>
+        <HBox GridPane.columnIndex="0" GridPane.rowIndex="1" spacing="10" style="-fx-padding: 5px;">
+        	<Label text="Port" prefWidth="100"></Label>
+        	<TextField fx:id="txtPort" text="5342" prefWidth="290"></TextField>
+        </HBox>
+        <HBox GridPane.columnIndex="0" GridPane.rowIndex="2" spacing="10" style="-fx-padding: 5px;">
+        	<Label text="Database" prefWidth="100"></Label>
+        	<TextField fx:id="txtDatabase" prefWidth="290"></TextField>
+        </HBox>
+        <HBox GridPane.columnIndex="0" GridPane.rowIndex="3" spacing="10" style="-fx-padding: 5px;">
+        	<Label text="Username" prefWidth="100"></Label>
+        	<TextField fx:id="txtUsername" prefWidth="290"></TextField>
+        </HBox>
+        <HBox GridPane.columnIndex="0" GridPane.rowIndex="4" spacing="10" style="-fx-padding: 5px;">
+        	<Label text="Passwort" prefWidth="100"></Label>
+        	<TextField fx:id="txtPassword" prefWidth="290"></TextField>
         </HBox>
 
-        <GridPane GridPane.columnIndex="0" GridPane.rowIndex="1" fx:id="childBox" style="-fx-background-color: rgb(230, 230, 230);">
-		     <columnConstraints>
-		        <ColumnConstraints hgrow="ALWAYS" />
-		    </columnConstraints>
-		    <rowConstraints>
-		        <RowConstraints vgrow="ALWAYS" />
-		    </rowConstraints>
+        <HBox prefWidth="390" GridPane.columnIndex="0" GridPane.rowIndex="5" spacing="10" style="-fx-padding: 20px 10px 10px 10px;" alignment="CENTER_RIGHT">
+            <Button text="Test" onAction="#textConnectection" prefWidth="100" prefHeight="28"></Button>
+            <Button text="Abbrechen" onAction="#closeForm" prefWidth="100" prefHeight="28"></Button>
             
-        </GridPane>
+        </HBox>
 
         
     </children>

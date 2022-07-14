@@ -15,13 +15,17 @@ public class DbConnectionFxApp extends Application {
 
     private static Scene scene;
     
-    public static Window getWindow() {
-    	return scene.getWindow();
+    private static Stage stage;
+    
+    
+    public static void closeApp() {
+    	stage.close();
     }
 
     @Override
     public void start(Stage stage) throws IOException {
         
+    	DbConnectionFxApp.stage = stage;
         scene = new Scene(loadFXML("main"));
         scene.getStylesheets().add(getMainStyle());
         stage.setScene(scene);
@@ -48,7 +52,5 @@ public class DbConnectionFxApp extends Application {
         launch();
     }
 
-    
-    
     
 }
