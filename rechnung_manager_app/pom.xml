@@ -8,9 +8,7 @@
 		<version>0.0.1</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>de.seifi</groupId>
 	<artifactId>rechnung_manager_app</artifactId>
-	<version>0.0.1</version>
 	<name>rechnung_manager</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
@@ -57,12 +55,13 @@
 		    <artifactId>ini4j</artifactId>
 		    <version>0.5.2</version>
 		</dependency>
-
+		
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
+			<groupId>de.seifi</groupId>
+			<artifactId>rechnung_common</artifactId>
+			<version>0.0.1</version>
 		</dependency>
+		
 	</dependencies>
 
 	<repositories>

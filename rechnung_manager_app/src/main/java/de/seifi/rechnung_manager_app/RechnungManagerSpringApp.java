@@ -6,11 +6,12 @@ import it.sauronsoftware.junique.MessageHandler;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
-
+import org.springframework.context.annotation.ComponentScan;
 
 import javafx.application.Application;
 
 @SpringBootApplication
+@ComponentScan(basePackages = {"de.seifi.rechnung_common.config"})
 public class RechnungManagerSpringApp {
 	public static ConfigurableApplicationContext applicationContext;
 	
@@ -32,6 +33,7 @@ public class RechnungManagerSpringApp {
 	    if (!alreadyRunning) {
 	    	
 	    	applicationContext = SpringApplication.run(RechnungManagerSpringApp.class, args);
+	    	
 			Application.launch(RechnungManagerFxApp.class, args);
 			
 	    } else {
