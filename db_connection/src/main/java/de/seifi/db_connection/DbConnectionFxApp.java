@@ -11,6 +11,10 @@ import javafx.stage.WindowEvent;
 import java.io.IOException;
 import java.net.URL;
 
+import it.sauronsoftware.junique.AlreadyLockedException;
+import it.sauronsoftware.junique.JUnique;
+import it.sauronsoftware.junique.MessageHandler;
+
 public class DbConnectionFxApp extends Application {
 
     private static Scene scene;
@@ -49,7 +53,30 @@ public class DbConnectionFxApp extends Application {
     }
 
     public static void main(String[] args) {
-        launch();
+    	String appId = "DbConnectionFxAppId";
+	    boolean alreadyRunning;
+	    try {
+	        JUnique.acquireLock(appId, new MessageHandler() {
+	            public String handle(String message) {
+	                // A brand new argument received! Handle it!
+	                return null;
+	            }
+	        });
+	        alreadyRunning = false;
+	    } catch (AlreadyLockedException e) {
+	        alreadyRunning = true;
+	    }
+	    if (!alreadyRunning) {
+	    	
+
+	    	Application.launch(args);
+	    	
+			
+	    } else {
+	        for (int i = 0; i < args.length; i++) {
+	            JUnique.sendMessage(appId, args[0]);
+	        }
+	    }
     }
 
     
