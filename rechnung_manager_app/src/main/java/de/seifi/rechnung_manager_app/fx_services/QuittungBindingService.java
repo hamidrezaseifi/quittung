@@ -2,51 +2,45 @@ package de.seifi.rechnung_manager_app.fx_services;
 
 
 import de.seifi.rechnung_manager_app.entities.ProduktEntity;
-import de.seifi.rechnung_manager_app.entities.RechnungEntity;
+import de.seifi.rechnung_manager_app.entities.QuittungEntity;
 import de.seifi.rechnung_manager_app.models.ProduktModel;
-import de.seifi.rechnung_manager_app.models.RechnungModel;
+import de.seifi.rechnung_manager_app.models.QuittungItemProperty;
+import de.seifi.rechnung_manager_app.models.QuittungModel;
 import de.seifi.rechnung_manager_app.repositories.ProduktRepository;
-import de.seifi.rechnung_manager_app.repositories.RechnungRepository;
+import de.seifi.rechnung_manager_app.repositories.QuittungRepository;
 import de.seifi.rechnung_manager_app.utils.GeneralUtils;
 import de.seifi.rechnung_manager_app.utils.GerldCalculator;
-import de.seifi.rechnung_manager_app.models.RechnungItemProperty;
 import de.seifi.rechnung_manager_app.utils.ProduktUtils;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import org.springframework.data.domain.Sort;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.springframework.data.domain.Sort;
+public class QuittungBindingService {
 
-public class RechnungBindingService {
-	
-	public static RechnungBindingService CURRENT_INSTANCE = null;
-	
+	public static QuittungBindingService CURRENT_INSTANCE = null;
+
     private int INITIAL_ITEMS = 10;
 
-    private final RechnungRepository rechnungRepository;
+    private final QuittungRepository quittungRepository;
 
-    //private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyy");
-
-    //private final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-
-    private ObservableList<RechnungItemProperty> rechnungItems;
+    private ObservableList<QuittungItemProperty> quittungItems;
 
     private FloatProperty gesamtSumme;
     private FloatProperty nettoSumme;
     private FloatProperty mvstSumme;
-    
-    private StringProperty rechnungNummer;
-    private StringProperty rechnungDatum;
+
+    private StringProperty quittungNummer;
+    private StringProperty quittungDatum;
     private StringProperty liferDatum;
-    
+
     private BooleanProperty disableSave;
     private BooleanProperty disablePrint;
 
@@ -58,34 +52,36 @@ public class RechnungBindingService {
 
     private List<String> berechnenFaktorZielColorList = Arrays.asList("-fx-background-color: white", "-fx-background-color: #f7fbff");
     private StringProperty bannerBackColor;
-    
 
-    
-    private RechnungModel savingModel = new RechnungModel();
-        
+
+
+    private QuittungModel savingModel = new QuittungModel();
+
     private boolean isDirty;
     private boolean isView = false;
 
-    public RechnungBindingService(final RechnungRepository rechnungRepository) {
+    public QuittungBindingService(final QuittungRepository quittungRepository) {
     	
     	CURRENT_INSTANCE = this;
         this.activeBerechnenZiel = 0;
         this.bannerBackColor = new SimpleStringProperty(this.berechnenFaktorZielColorList.get(this.activeBerechnenZiel));
 
-    	this.rechnungRepository = rechnungRepository;
+    	this.quittungRepository = quittungRepository;
     	
         gesamtSumme = new SimpleFloatProperty(0);
         nettoSumme = new SimpleFloatProperty(0);
         mvstSumme = new SimpleFloatProperty(0);
-        
-        rechnungNummer = new SimpleStringProperty();
-        rechnungDatum = new SimpleStringProperty();
+
+        quittungNummer = new SimpleStringProperty();
+        quittungDatum = new SimpleStringProperty();
         liferDatum = new SimpleStringProperty();
         
         disableSave = new SimpleBooleanProperty(true);
         disablePrint = new SimpleBooleanProperty(false);
         
-        this.rechnungItems = FXCollections.observableArrayList();
+        this.quittungItems = FXCollections.observableArrayList();
+
+        ProduktUtils.retreiveProduktList();
 
         reset();
 
@@ -105,10 +101,10 @@ public class RechnungBindingService {
         return bannerBackColor;
     }
     
-    public void calculateRechnungSumme() {
+    public void calculateQuittungSumme() {
         float netto = 0;
 
-        for(RechnungItemProperty i:this.rechnungItems){
+        for(QuittungItemProperty i:this.quittungItems){
             netto += i.getGesamt();
         }
         
@@ -117,8 +113,8 @@ public class RechnungBindingService {
         gesamtSumme.set(nettoSumme.getValue() + mvstSumme.getValue());
     }
 
-    public ObservableList<RechnungItemProperty> getRechnungItems() {
-        return this.rechnungItems;
+    public ObservableList<QuittungItemProperty> getQuittungItems() {
+        return this.quittungItems;
     }
 
     public float getGesamtSumme() {
@@ -179,11 +175,11 @@ public class RechnungBindingService {
 	}
 
 	public void reset() {
-		this.rechnungItems.clear();
-        while (this.rechnungItems.size() < INITIAL_ITEMS){
-        	addNewRowIntern(new RechnungItemProperty());
+		this.quittungItems.clear();
+        while (this.quittungItems.size() < INITIAL_ITEMS){
+        	addNewRowIntern(new QuittungItemProperty());
         }
-        calculateRechnungSumme();
+        calculateQuittungSumme();
         
 
         LocalDateTime ldt = LocalDateTime.now();
@@ -193,34 +189,34 @@ public class RechnungBindingService {
 
         int lastNummer = 0;
         
-        Optional<RechnungEntity> lasstNummerRechnungOptional = rechnungRepository.findTopByOrderByNummerDesc();
-        if(lasstNummerRechnungOptional.isPresent()) {
-        	lastNummer = lasstNummerRechnungOptional.get().getNummer();
+        Optional<QuittungEntity> lasstQuittungNummerOptional = quittungRepository.findTopByOrderByNummerDesc();
+        if(lasstQuittungNummerOptional.isPresent()) {
+        	lastNummer = lasstQuittungNummerOptional.get().getNummer();
         }
 
-        savingModel = new RechnungModel(lastNummer + 1, date, time);
+        savingModel = new QuittungModel(lastNummer + 1, date, time);
 
-        rechnungNummer.set(String.valueOf(lastNummer + 1));
-        rechnungDatum.set(date);
+        quittungNummer.set(String.valueOf(lastNummer + 1));
+        quittungDatum.set(date);
         liferDatum.set(date);
         
         isDirty = false;
 	}
 
-	public int getCurrentRechnungNummer() {
+	public int getCurrentQuittungNummer() {
 		return savingModel.getNummer();
 	}
 
-    public RechnungModel getSavingModel() {
+    public QuittungModel getSavingModel() {
         return savingModel;
     }
 
-    public StringProperty getRechnungNummerProperty() {
-		return rechnungNummer;
+    public StringProperty getQuittungNummerProperty() {
+		return quittungNummer;
 	}
 
-	public StringProperty getRechnungDatumProperty() {
-		return rechnungDatum;
+	public StringProperty getQuittungDatumProperty() {
+		return quittungDatum;
 	}
 
 	public StringProperty getLiferDatumProperty() {
@@ -236,7 +232,7 @@ public class RechnungBindingService {
 		this.isDirty = isDirty;
 		
 		if(isDirty) {
-			if(this.rechnungItems.stream().anyMatch(pi -> !pi.isValid())) {
+			if(this.quittungItems.stream().anyMatch(pi -> !pi.isValid())) {
 				this.disableSave.set(true);
 			}
 			else {
@@ -248,7 +244,7 @@ public class RechnungBindingService {
 	}
 	
 	private boolean isAnyValidArtikelToSave() {
-		return this.rechnungItems.stream().anyMatch(pi -> pi.isValid() & !pi.isEmpty());
+		return this.quittungItems.stream().anyMatch(pi -> pi.isValid() & !pi.isEmpty());
 	}
 
 	public BooleanProperty getDisableSaveProperty() {
@@ -262,17 +258,19 @@ public class RechnungBindingService {
 	public boolean save() {
 
         savingModel.getItems().clear();
-        savingModel.getItems().addAll(this.rechnungItems.stream().filter(qi -> qi.canSaved()).map(qi -> qi.toModel()).collect(Collectors.toList()));
+        savingModel.getItems().addAll(this.quittungItems
+                                              .stream().filter(qi -> qi.canSaved()).map(qi -> qi.toModel()).collect(Collectors.toList()));
 
-        RechnungEntity savingEntity = savingModel.toEntity();
+        QuittungEntity savingEntity = savingModel.toEntity();
 
-        rechnungRepository.save(savingEntity);
-        Optional<RechnungEntity> savedEntityOptional = rechnungRepository.findById(savingEntity.getId());
+        quittungRepository.save(savingEntity);
+        Optional<QuittungEntity> savedEntityOptional = quittungRepository.findById(savingEntity.getId());
         if(savedEntityOptional.isPresent()) {
             savingModel = savedEntityOptional.get().toModel();
-            List<RechnungItemProperty> items = this.rechnungItems.stream().filter(qi -> qi.canSaved()).collect(Collectors.toList());
+            List<QuittungItemProperty> items = this.quittungItems
+                    .stream().filter(qi -> qi.canSaved()).collect(Collectors.toList());
 
-            for(RechnungItemProperty item: items) {
+            for(QuittungItemProperty item: items) {
                 ProduktUtils.add(item.getProdukt(), item.getBrutoPreis());
 
             }
@@ -288,11 +286,11 @@ public class RechnungBindingService {
     }
 
 	public void setNewMengeValue(int row, Integer value) {
-		RechnungItemProperty prop = this.rechnungItems.get(row);
+		QuittungItemProperty prop = this.quittungItems.get(row);
         if(prop.getMenge() != value) {
         	prop.setMenge(value);
 
-            calculateRechnungSumme();
+            calculateQuittungSumme();
             setDirty(true);
 
         }
@@ -300,14 +298,14 @@ public class RechnungBindingService {
 
 	public void setNewBrutoPreisValue(int row, Float value) {
 		
-		RechnungItemProperty prop = this.rechnungItems.get(row);
+		QuittungItemProperty prop = this.quittungItems.get(row);
         
         if(prop.getBrutoPreis() != value) {
         	
         	prop.setBrutoPreis(value);
             prop.setPreis(calculateNettoPreis(value));
             
-            calculateRechnungSumme();
+            calculateQuittungSumme();
             setDirty(true);
  
         }
@@ -316,10 +314,10 @@ public class RechnungBindingService {
 
 	public void setNewProduktValue(int row, String value) {
 		
-		RechnungItemProperty prop = this.rechnungItems.get(row);
+		QuittungItemProperty prop = this.quittungItems.get(row);
         if(prop.getProdukt() != value) {
             prop.setProdukt(value);
-            calculateRechnungSumme();
+            calculateQuittungSumme();
             setDirty(true);
 
             Optional<String> foundProdukt = ProduktUtils.getProduktMap().keySet().stream().filter(k -> k.toLowerCase().equals(value.toLowerCase())).findAny();
@@ -336,33 +334,31 @@ public class RechnungBindingService {
 
 	public void setNewArtikelNummerValue(int row, String value) {
 		
-		RechnungItemProperty prop = this.rechnungItems.get(row);
+		QuittungItemProperty prop = this.quittungItems.get(row);
         if(prop.getArtikelNummer() != value) {
             prop.setArtikelNummer(value);
-            calculateRechnungSumme();
+            calculateQuittungSumme();
             setDirty(true);
 
         }
 		
 	}
 
-	private void addNewRowIntern(RechnungItemProperty item) {
+	private void addNewRowIntern(QuittungItemProperty item) {
 		
-		this.rechnungItems.add(item);
+		this.quittungItems.add(item);
 	}
 
 	public void addNewRow() {
-		addNewRowIntern(new RechnungItemProperty());
+		addNewRowIntern(new QuittungItemProperty());
 	}
 
-	public void setRechnungModel(RechnungModel rechnungModel) {
-		savingModel = rechnungModel;
-		rechnungItems.clear();
+	public void setQuittungModel(QuittungModel quittungModel) {
+		savingModel = quittungModel;
+		quittungItems.clear();
 		
-		rechnungModel.getItems().forEach(r -> addNewRowIntern(new RechnungItemProperty(r)));
+		quittungModel.getItems().forEach(r -> addNewRowIntern(new QuittungItemProperty(r)));
 
-        ProduktUtils.retreiveProduktList();
-		
 		isDirty = false;
 	}
 

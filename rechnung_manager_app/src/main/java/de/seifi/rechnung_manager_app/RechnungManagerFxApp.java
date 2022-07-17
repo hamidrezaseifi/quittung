@@ -12,20 +12,11 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.Window;
@@ -33,20 +24,15 @@ import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 import javafx.util.Pair;
 
-import static de.seifi.rechnung_manager_app.RechnungManagerFxApp.getMainStyle;
-
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.List;
-
-import org.springframework.boot.SpringApplication;
 
 public class RechnungManagerFxApp extends Application implements Runnable {
 
     private static final int SPLASH_WIDTH = 770;
 
-	private static final int SPLASH_HEIGHT = 582;
+	private static final int SPLASH_HEIGHT = 770;
 
 	private static Scene scene;
 	
@@ -112,6 +98,10 @@ public class RechnungManagerFxApp extends Application implements Runnable {
     	splashStage = initStage;
     	
 		splashPane = RechnungManagerFxApp.getSplashPane();
+        /*ImageView imageView = new ImageView();
+        Image image = loadLoadingImage();
+        imageView.setImage(image);
+        splashPane.add(imageView, 0, 1);*/
 
         Scene splashScene = new Scene(splashPane, SPLASH_WIDTH, SPLASH_HEIGHT);
         splashScene.getStylesheets().add(getMainStyle());
@@ -122,7 +112,7 @@ public class RechnungManagerFxApp extends Application implements Runnable {
         
         initStage.toFront();
     }
-    
+
     private void showMainStage() throws IOException {
     	
     	mainStage = new Stage(StageStyle.DECORATED);
@@ -139,7 +129,7 @@ public class RechnungManagerFxApp extends Application implements Runnable {
         mainStage.show();
         
         FadeTransition fadeSplash = new FadeTransition(Duration.seconds(0.7), splashPane);
-        fadeSplash.setFromValue(1.0);
+        fadeSplash.setFromValue(0.7);
         fadeSplash.setToValue(0.0);
         
         fadeSplash.setOnFinished(new EventHandler<ActionEvent>() {
@@ -192,6 +182,14 @@ public class RechnungManagerFxApp extends Application implements Runnable {
         return fxmlLoader.load();
     }
 
+    public static Image loadLoadingImage() throws IOException {
+        URL resource = RechnungManagerFxApp.class.getResource("images/loading.png");
+        resource.openStream();
+        try (InputStream stream = resource.openStream()) {
+            return new Image(stream, 100, 100, false, false);
+        }
+    }
+
     public static Pair<Parent, FXMLLoader> loadFXMLLoader(String fxml) throws IOException {
         URL fxmlResource = RechnungManagerFxApp.class.getResource("fxml/" + fxml + ".fxml");
         FXMLLoader fxmlLoader = new FXMLLoader(fxmlResource);
@@ -204,9 +202,15 @@ public class RechnungManagerFxApp extends Application implements Runnable {
     }
 
     public static GridPane getRechnungPane() throws IOException {
-    	
-    	GridPane rechnungPane = (GridPane)loadFXML("rechnung");
-    	return rechnungPane;
+
+        GridPane rechnungPane = (GridPane)loadFXML("rechnung");
+        return rechnungPane;
+    }
+
+    public static GridPane getQuittungPane() throws IOException {
+
+        GridPane rechnungPane = (GridPane)loadFXML("quittung");
+        return rechnungPane;
     }
 
     public static GridPane getHomePane() throws IOException {

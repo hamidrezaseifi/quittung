@@ -75,16 +75,13 @@ public class RechnungController implements Initializable, ControllerBse {
     @FXML private Label lblStatusChange;
 
     private RechnungBindingService rechnungBindingService;
-    
-    private final ProduktRepository produktRepository;
-    
+
     private final RechnungRepository rechnungRepository;
     private Stage stage;
 
     public RechnungController() {
 		
     	this.rechnungRepository = RechnungManagerSpringApp.applicationContext.getBean(RechnungRepository.class);
-    	this.produktRepository = RechnungManagerSpringApp.applicationContext.getBean(ProduktRepository.class);
 
 	}
 
@@ -176,9 +173,7 @@ public class RechnungController implements Initializable, ControllerBse {
     	
     	RechnungManagerFxApp.setCurrentController(this);
 
-        rechnungBindingService = new RechnungBindingService(
-        		this.produktRepository,
-        		this.rechnungRepository);
+        rechnungBindingService = new RechnungBindingService(this.rechnungRepository);
 
         bannerPane.styleProperty().bind(rechnungBindingService.bannerBackColorProperty());
 
@@ -241,11 +236,6 @@ public class RechnungController implements Initializable, ControllerBse {
     public String getDirtyMessage() {
         return "Die Rechnung-Daten ist geändert aber nicht gescpeichert!";
     }
-    
-
-	public List<ProduktModel> getProduktList() {
-		return rechnungBindingService.getProduktList();
-	}
 
 	public void loadModel(RechnungModel rechnungModel, boolean editable, Stage stage) {
 		showItemsTableView.setEditable(editable);

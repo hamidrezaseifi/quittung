@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import de.seifi.rechnung_manager_app.fx_services.RechnungBindingService;
 import de.seifi.rechnung_manager_app.models.ProduktModel;
 import de.seifi.rechnung_manager_app.ui.FilterComboBox;
+import de.seifi.rechnung_manager_app.utils.ProduktUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.*;
@@ -54,7 +55,7 @@ public class ProduktTableCell extends BaseEditbaleTableCell<String> {
     
     private void reloadProdukts() {
         editComboBox.setItems(obsProduktList);
-        List<ProduktModel> produktList = RechnungBindingService.CURRENT_INSTANCE.getProduktList();
+        List<ProduktModel> produktList = ProduktUtils.getProduktList();
     	
     	obsProduktList = FXCollections.observableArrayList(produktList.stream().map(p -> p.getProduktName()).collect(Collectors.toList()));
 

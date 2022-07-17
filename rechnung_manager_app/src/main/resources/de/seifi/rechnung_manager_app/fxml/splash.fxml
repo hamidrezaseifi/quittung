@@ -19,8 +19,16 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.image.ImageView?>
 <GridPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
-          fx:id="rootPane" styleClass="home-pane">
-    
+          styleClass="splash-pane" alignment="CENTER">
+    <columnConstraints>
+        <ColumnConstraints hgrow="ALWAYS" halignment="CENTER" />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints vgrow="ALWAYS" />
+        <RowConstraints prefHeight="210" vgrow="NEVER" valignment="TOP" />
+    </rowConstraints>
+
+    <ImageView GridPane.columnIndex="0"  GridPane.rowIndex="1" fitWidth="110" fitHeight="110"></ImageView>
     <padding>
         <Insets bottom="0" left="0" right="0" top="0" />
     </padding>

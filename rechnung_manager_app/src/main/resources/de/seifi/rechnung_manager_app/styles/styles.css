@@ -87,6 +87,17 @@
     
 }
 
+.receipt-button {
+
+    -fx-background-image: url('../images/receipt.png');
+
+    -fx-background-size: 26 26;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position:3px center;
+    -fx-font-size: 14px;
+
+}
+
 .home-button {
 	         
     -fx-background-image: url('../images/home.png');
@@ -96,6 +107,17 @@
     -fx-background-position: 5px;   
     -fx-font-size: 14px;
     
+}
+
+.report-button {
+
+    -fx-background-image: url('../images/search.png');
+
+    -fx-background-size: 30 30;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 5px;
+    -fx-font-size: 14px;
+
 }
 
 .search-button {
@@ -149,6 +171,15 @@
     -fx-background-position: left top;
 
 }
+
+.splash-pane{
+    -fx-background-image: url("../photos/photo_splash.jpg");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 100% 100%;
+    -fx-background-position: left left;
+}
+
+
 
 .rechnung-banner{
     -fx-background-image: url("../images/logo.png");

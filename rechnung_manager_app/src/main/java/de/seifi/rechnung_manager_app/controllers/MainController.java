@@ -26,19 +26,31 @@ public class MainController implements Initializable {
 		}
 
 	}
-	
-    @FXML
-    private void showRechnung() throws IOException {
-    	
-    	if(RechnungManagerFxApp.isCurrentControllerDirty()) {
-    		return;
-    	}
 
-    	clearChildren();
-    	
-    	childBox.getChildren().add(RechnungManagerFxApp.getRechnungPane());
-    }
-	
+	@FXML
+	private void showQuitting() throws IOException {
+
+		if(RechnungManagerFxApp.isCurrentControllerDirty()) {
+			return;
+		}
+
+		clearChildren();
+
+		childBox.getChildren().add(RechnungManagerFxApp.getQuittungPane());
+	}
+
+	@FXML
+	private void showRechnung() throws IOException {
+
+		if(RechnungManagerFxApp.isCurrentControllerDirty()) {
+			return;
+		}
+
+		clearChildren();
+
+		childBox.getChildren().add(RechnungManagerFxApp.getRechnungPane());
+	}
+
     @FXML
     public void showHome() throws IOException {
     	
