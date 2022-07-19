@@ -6,18 +6,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.seifi.rechnung_manager_app.entities.RechnungEntity;
-
+import de.seifi.rechnung_manager_app.enums.RechnungStatus;
 
 public class RechnungModel {
 	
     private Integer id;
+
+	private String customerName;
+
+	private String streetHouseNumber;
+
+	private String plz;
+
+	private String city;
 
 	private Integer nummer;
 	   
 	private String rechnungCreate;
 	   
 	private String liferDate;
-    
+
+	private RechnungStatus status;
+
 	private LocalDateTime created;
 	
 	private LocalDateTime updated;
@@ -28,28 +38,69 @@ public class RechnungModel {
     	super();
     	id = null;
     	items = new ArrayList<>();
+
     }
 
-
-	public RechnungModel(Integer nummer, String rechnungCreate, String liferDate) {
+	public RechnungModel(String customerName,
+						 String streetHouseNumber,
+						 String plz,
+						 String city,
+						 Integer nummer,
+						 String rechnungCreate,
+						 String liferDate,
+						 int status) {
 		this();
+		this.customerName = customerName;
+		this.streetHouseNumber = streetHouseNumber;
+		this.plz = plz;
+		this.city = city;
 		this.nummer = nummer;
 		this.rechnungCreate = rechnungCreate;
 		this.liferDate = liferDate;
+		this.status = RechnungStatus.ofValue(status);
+	}
+
+	public RechnungModel(String customerName,
+						 String streetHouseNumber,
+						 String plz,
+						 String city,
+						 Integer nummer,
+						 String rechnungCreate,
+						 String liferDate,
+						 RechnungStatus status) {
+		this();
+		this.customerName = customerName;
+		this.streetHouseNumber = streetHouseNumber;
+		this.plz = plz;
+		this.city = city;
+		this.nummer = nummer;
+		this.rechnungCreate = rechnungCreate;
+		this.liferDate = liferDate;
+		this.status = status;
 	}
 
 
-	public RechnungModel(Integer id, 
-			Integer nummer, 
-			String rechnungCreate, 
-			String liferDate,
-            LocalDateTime created,
-            LocalDateTime updated) {
+	public RechnungModel(Integer id,
+						 String customerName,
+						 String streetHouseNumber,
+						 String plz,
+						 String city,
+						 Integer nummer,
+						 String rechnungCreate,
+						 String liferDate,
+						 int status,
+						 LocalDateTime created,
+						 LocalDateTime updated) {
 		this();
 		this.id = id;
+		this.customerName = customerName;
+		this.streetHouseNumber = streetHouseNumber;
+		this.plz = plz;
+		this.city = city;
 		this.nummer = nummer;
 		this.rechnungCreate = rechnungCreate;
 		this.liferDate = liferDate;
+		this.status = RechnungStatus.ofValue(status);
         this.created = created;
         this.updated = updated;
 	}
@@ -65,6 +116,38 @@ public class RechnungModel {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public String getCustomerName() {
+		return customerName;
+	}
+
+	public void setCustomerName(String customerName) {
+		this.customerName = customerName;
+	}
+
+	public String getStreetHouseNumber() {
+		return streetHouseNumber;
+	}
+
+	public void setStreetHouseNumber(String streetHouseNumber) {
+		this.streetHouseNumber = streetHouseNumber;
+	}
+
+	public String getPlz() {
+		return plz;
+	}
+
+	public void setPlz(String plz) {
+		this.plz = plz;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
 	}
 
 	public Integer getNummer() {
@@ -104,6 +187,14 @@ public class RechnungModel {
 		this.items = items;
 	}
 
+	public RechnungStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(RechnungStatus status) {
+		this.status = status;
+	}
+
 	public LocalDateTime getCreated() {
 		return created;
 	}
@@ -133,10 +224,11 @@ public class RechnungModel {
 	public RechnungEntity toEntity() {
 		RechnungEntity entity = null;
 		if(id != null) {
-			entity = new RechnungEntity(id, nummer, rechnungCreate, liferDate, Timestamp.valueOf(this.created), Timestamp.valueOf(this.updated));
+			entity = new RechnungEntity(id, customerName, streetHouseNumber, plz, city, nummer, rechnungCreate,
+										liferDate, status.getValue(), Timestamp.valueOf(this.created), Timestamp.valueOf(this.updated));
 		} 
 		else {
-			entity = new RechnungEntity(nummer, rechnungCreate, liferDate);
+			entity = new RechnungEntity(customerName, streetHouseNumber, plz, city, nummer, rechnungCreate, liferDate, status.getValue());
 		}
 		
 		for(RechnungItemModel item: items) {

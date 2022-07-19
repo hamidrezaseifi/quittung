@@ -1,12 +1,11 @@
 package de.seifi.rechnung_manager_app.fx_services;
 
 
-import de.seifi.rechnung_manager_app.entities.ProduktEntity;
+import de.seifi.rechnung_manager_app.data_service.IRechnungDataHelper;
 import de.seifi.rechnung_manager_app.entities.QuittungEntity;
 import de.seifi.rechnung_manager_app.models.ProduktModel;
 import de.seifi.rechnung_manager_app.models.QuittungItemProperty;
 import de.seifi.rechnung_manager_app.models.QuittungModel;
-import de.seifi.rechnung_manager_app.repositories.ProduktRepository;
 import de.seifi.rechnung_manager_app.repositories.QuittungRepository;
 import de.seifi.rechnung_manager_app.utils.GeneralUtils;
 import de.seifi.rechnung_manager_app.utils.GerldCalculator;
@@ -14,12 +13,10 @@ import de.seifi.rechnung_manager_app.utils.ProduktUtils;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import org.springframework.data.domain.Sort;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -30,6 +27,8 @@ public class QuittungBindingService {
     private int INITIAL_ITEMS = 10;
 
     private final QuittungRepository quittungRepository;
+
+    private final IRechnungDataHelper rechnungDataHelper;
 
     private ObservableList<QuittungItemProperty> quittungItems;
 
@@ -60,14 +59,15 @@ public class QuittungBindingService {
     private boolean isDirty;
     private boolean isView = false;
 
-    public QuittungBindingService(final QuittungRepository quittungRepository) {
+    public QuittungBindingService(final QuittungRepository quittungRepository, IRechnungDataHelper rechnungDataHelper) {
     	
     	CURRENT_INSTANCE = this;
         this.activeBerechnenZiel = 0;
         this.bannerBackColor = new SimpleStringProperty(this.berechnenFaktorZielColorList.get(this.activeBerechnenZiel));
 
-    	this.quittungRepository = quittungRepository;
-    	
+        this.quittungRepository = quittungRepository;
+        this.rechnungDataHelper = rechnungDataHelper;
+
         gesamtSumme = new SimpleFloatProperty(0);
         nettoSumme = new SimpleFloatProperty(0);
         mvstSumme = new SimpleFloatProperty(0);
@@ -187,12 +187,7 @@ public class QuittungBindingService {
         String date = GeneralUtils.formatDate(ldt);
         String time = GeneralUtils.formatTime(ldt);
 
-        int lastNummer = 0;
-        
-        Optional<QuittungEntity> lasstQuittungNummerOptional = quittungRepository.findTopByOrderByNummerDesc();
-        if(lasstQuittungNummerOptional.isPresent()) {
-        	lastNummer = lasstQuittungNummerOptional.get().getNummer();
-        }
+        int lastNummer = this.rechnungDataHelper.getLastActiveRechnungNummer();
 
         savingModel = new QuittungModel(lastNummer + 1, date, time);
 

@@ -24,6 +24,8 @@ public class QuittungEntity extends EntityBase {
 	@Column(name="lifer_date")
 	private String liferDate;
 
+	private Integer status;
+
 	private Timestamp created;
 
 	private Timestamp updated;
@@ -113,6 +115,14 @@ public class QuittungEntity extends EntityBase {
 		item.setQuittung(this);
 		this.items.add(item);
 		
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
 	}
 
 	@Override

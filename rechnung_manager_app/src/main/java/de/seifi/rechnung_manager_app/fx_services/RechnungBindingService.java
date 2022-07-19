@@ -1,11 +1,11 @@
 package de.seifi.rechnung_manager_app.fx_services;
 
 
-import de.seifi.rechnung_manager_app.entities.ProduktEntity;
+import de.seifi.rechnung_manager_app.data_service.IRechnungDataHelper;
 import de.seifi.rechnung_manager_app.entities.RechnungEntity;
+import de.seifi.rechnung_manager_app.enums.RechnungStatus;
 import de.seifi.rechnung_manager_app.models.ProduktModel;
 import de.seifi.rechnung_manager_app.models.RechnungModel;
-import de.seifi.rechnung_manager_app.repositories.ProduktRepository;
 import de.seifi.rechnung_manager_app.repositories.RechnungRepository;
 import de.seifi.rechnung_manager_app.utils.GeneralUtils;
 import de.seifi.rechnung_manager_app.utils.GerldCalculator;
@@ -16,14 +16,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import org.springframework.data.domain.Sort;
 
 public class RechnungBindingService {
 	
@@ -32,10 +27,7 @@ public class RechnungBindingService {
     private int INITIAL_ITEMS = 10;
 
     private final RechnungRepository rechnungRepository;
-
-    //private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyy");
-
-    //private final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+    private final IRechnungDataHelper rechnungDataHelper;
 
     private ObservableList<RechnungItemProperty> rechnungItems;
 
@@ -50,15 +42,6 @@ public class RechnungBindingService {
     private BooleanProperty disableSave;
     private BooleanProperty disablePrint;
 
-    private int activeBerechnenZiel;
-
-    private float berechnenFaktorBasis = 1.4f;
-
-    private List<Float> berechnenFaktorZielList = Arrays.asList(1.4f, 1.2f);
-
-    private List<String> berechnenFaktorZielColorList = Arrays.asList("-fx-background-color: white", "-fx-background-color: #f7fbff");
-    private StringProperty bannerBackColor;
-    
 
     
     private RechnungModel savingModel = new RechnungModel();
@@ -66,14 +49,13 @@ public class RechnungBindingService {
     private boolean isDirty;
     private boolean isView = false;
 
-    public RechnungBindingService(final RechnungRepository rechnungRepository) {
+    public RechnungBindingService(final RechnungRepository rechnungRepository, IRechnungDataHelper rechnungDataHelper) {
     	
     	CURRENT_INSTANCE = this;
-        this.activeBerechnenZiel = 0;
-        this.bannerBackColor = new SimpleStringProperty(this.berechnenFaktorZielColorList.get(this.activeBerechnenZiel));
 
-    	this.rechnungRepository = rechnungRepository;
-    	
+        this.rechnungRepository = rechnungRepository;
+        this.rechnungDataHelper = rechnungDataHelper;
+
         gesamtSumme = new SimpleFloatProperty(0);
         nettoSumme = new SimpleFloatProperty(0);
         mvstSumme = new SimpleFloatProperty(0);
@@ -89,20 +71,6 @@ public class RechnungBindingService {
 
         reset();
 
-    }
-
-    public void toggleActiveBerechnenZiel(){
-        this.activeBerechnenZiel = this.activeBerechnenZiel == 0 ? 1 : 0;
-        this.bannerBackColor.set(this.berechnenFaktorZielColorList.get(this.activeBerechnenZiel));
-
-    }
-
-    public String getBannerBackColor() {
-        return bannerBackColor.get();
-    }
-
-    public StringProperty bannerBackColorProperty() {
-        return bannerBackColor;
     }
     
     public void calculateRechnungSumme() {
@@ -160,22 +128,8 @@ public class RechnungBindingService {
 	public float calculateNettoPreis(Float value) {
 		
 		float netto = GerldCalculator.bruttoToNetto(value);
-		
-		netto = (netto * getBerechnenFaktorZiel()) / berechnenFaktorBasis;
-		
+
 		return netto;
-	}
-
-	public float getBerechnenFaktorBasis() {
-		return berechnenFaktorBasis;
-	}
-
-	public void setBerechnenFaktorBasis(float berechnenFaktorBasis) {
-		this.berechnenFaktorBasis = berechnenFaktorBasis;
-	}
-
-	public float getBerechnenFaktorZiel() {
-        return this.berechnenFaktorZielList.get(this.activeBerechnenZiel);
 	}
 
 	public void reset() {
@@ -191,14 +145,9 @@ public class RechnungBindingService {
         String date = GeneralUtils.formatDate(ldt);
         String time = GeneralUtils.formatTime(ldt);
 
-        int lastNummer = 0;
-        
-        Optional<RechnungEntity> lasstNummerRechnungOptional = rechnungRepository.findTopByOrderByNummerDesc();
-        if(lasstNummerRechnungOptional.isPresent()) {
-        	lastNummer = lasstNummerRechnungOptional.get().getNummer();
-        }
+        int lastNummer = this.rechnungDataHelper.getLastActiveRechnungNummer();
 
-        savingModel = new RechnungModel(lastNummer + 1, date, time);
+        savingModel = new RechnungModel("", "", "", "", lastNummer + 1, date, time, RechnungStatus.ACTIVE);
 
         rechnungNummer.set(String.valueOf(lastNummer + 1));
         rechnungDatum.set(date);
@@ -373,5 +322,32 @@ public class RechnungBindingService {
 
     public boolean isView() {
         return isView;
+    }
+
+    public void setCustomerNameValue(String newValue) {
+        savingModel.setCustomerName(newValue);
+    }
+
+    public void setStreetValue(String newValue) {
+
+        savingModel.setStreetHouseNumber(newValue);
+    }
+
+    public void setPlzValue(String newValue) {
+        newValue = newValue.trim();
+        if(newValue.isEmpty()){
+            savingModel.setPlz("");
+            savingModel.setCity("");
+            return;
+        }
+        int index = newValue.trim().indexOf(" ");
+        if(index == -1){
+            savingModel.setPlz(newValue);
+            savingModel.setCity("");
+            return;
+        }
+        savingModel.setPlz(newValue.substring(0, index).trim());
+        savingModel.setCity(newValue.substring(index).trim());
+
     }
 }

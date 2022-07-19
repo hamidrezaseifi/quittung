@@ -2,6 +2,7 @@ package de.seifi.rechnung_manager_app.controllers;
 
 import de.seifi.rechnung_manager_app.RechnungManagerFxApp;
 import de.seifi.rechnung_manager_app.RechnungManagerSpringApp;
+import de.seifi.rechnung_manager_app.data_service.IRechnungDataHelper;
 import de.seifi.rechnung_manager_app.fx_services.QuittungBindingService;
 import de.seifi.rechnung_manager_app.models.ProduktModel;
 import de.seifi.rechnung_manager_app.models.QuittungItemProperty;
@@ -69,11 +70,15 @@ public class QuittungController implements Initializable, ControllerBse {
     private QuittungBindingService quittungBindingService;
 
     private final QuittungRepository quittungRepository;
+
+    private final IRechnungDataHelper rechnungDataHelper;
+
     private Stage stage;
 
     public QuittungController() {
 		
     	this.quittungRepository = RechnungManagerSpringApp.applicationContext.getBean(QuittungRepository.class);
+        this.rechnungDataHelper = RechnungManagerSpringApp.applicationContext.getBean(IRechnungDataHelper.class);
 
 	}
 
@@ -161,7 +166,7 @@ public class QuittungController implements Initializable, ControllerBse {
     	
     	RechnungManagerFxApp.setCurrentController(this);
 
-        quittungBindingService = new QuittungBindingService(this.quittungRepository);
+        quittungBindingService = new QuittungBindingService(this.quittungRepository, this.rechnungDataHelper);
 
         bannerPane.styleProperty().bind(quittungBindingService.bannerBackColorProperty());
 

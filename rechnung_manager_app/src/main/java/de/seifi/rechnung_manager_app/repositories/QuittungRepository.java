@@ -21,4 +21,7 @@ public interface QuittungRepository extends JpaRepository<QuittungEntity, Intege
 	@Query("SELECT r FROM QuittungEntity r where r.created between :from and :to and r.nummer=:nummer  order by r.nummer desc")
 	List<QuittungEntity> search(@Param("from") Timestamp from, @Param("to") Timestamp to, @Param("nummer") Integer nummer);
 
+	@Query("SELECT max(r.nummer) FROM QuittungEntity r where r.status=:status")
+	Optional<Integer> getMaxNummer(@Param("status") int status);
+
 }

@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import de.seifi.rechnung_manager_app.data_service.IRechnungDataHelper;
+import de.seifi.rechnung_manager_app.data_service.impl.RechnungDataHelper;
 import de.seifi.rechnung_manager_app.ui.FloatGeldLabel;
 import de.seifi.rechnung_manager_app.RechnungManagerFxApp;
 import de.seifi.rechnung_manager_app.RechnungManagerSpringApp;
@@ -20,13 +22,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TablePosition;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
@@ -72,16 +68,25 @@ public class RechnungController implements Initializable, ControllerBse {
 
     @FXML private GridPane bannerPane;
 
-    @FXML private Label lblStatusChange;
+    @FXML private TextField txtName;
+
+    @FXML private TextField txtStreet;
+
+    @FXML private TextField txtPlz;
+
 
     private RechnungBindingService rechnungBindingService;
 
     private final RechnungRepository rechnungRepository;
+
+    private final IRechnungDataHelper rechnungDataHelper;
+
     private Stage stage;
 
     public RechnungController() {
-		
-    	this.rechnungRepository = RechnungManagerSpringApp.applicationContext.getBean(RechnungRepository.class);
+
+        this.rechnungRepository = RechnungManagerSpringApp.applicationContext.getBean(RechnungRepository.class);
+        this.rechnungDataHelper = RechnungManagerSpringApp.applicationContext.getBean(IRechnungDataHelper.class);
 
 	}
 
@@ -104,11 +109,9 @@ public class RechnungController implements Initializable, ControllerBse {
 
     @FXML
     private void reload() throws IOException {
-        //RechnungApp.setRoot("secondary");
-    	
+
     	if(canResetData()) {
     		doReloadData();
-	        
     	}
     }
 
@@ -116,6 +119,10 @@ public class RechnungController implements Initializable, ControllerBse {
     	showItemsTableView.setItems(null);
     	rechnungBindingService.reset();
         showItemsTableView.setItems(rechnungBindingService.getRechnungItems());
+
+        txtPlz.setText("");
+        txtName.setText("");
+        txtStreet.setText("");
     }
     
     @FXML
@@ -146,11 +153,6 @@ public class RechnungController implements Initializable, ControllerBse {
     	
     }
 
-    @FXML
-    private void toggleBrerechnenZiel(){
-        rechnungBindingService.toggleActiveBerechnenZiel();
-    }
-
     private boolean canResetData() {
     	if(rechnungBindingService.isDirty()) {
     		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -173,9 +175,7 @@ public class RechnungController implements Initializable, ControllerBse {
     	
     	RechnungManagerFxApp.setCurrentController(this);
 
-        rechnungBindingService = new RechnungBindingService(this.rechnungRepository);
-
-        bannerPane.styleProperty().bind(rechnungBindingService.bannerBackColorProperty());
+        rechnungBindingService = new RechnungBindingService(this.rechnungRepository, this.rechnungDataHelper);
 
         produktColumn.prefWidthProperty().bind(
                 showItemsTableView.widthProperty().subtract(
@@ -224,6 +224,18 @@ public class RechnungController implements Initializable, ControllerBse {
 
         btnSave.disableProperty().bind(rechnungBindingService.getDisableSaveProperty());
         btnPrint.disableProperty().bind(rechnungBindingService.getDisablePrintProperty());
+
+        txtName.textProperty().addListener((observable, oldValue, newValue) -> {
+            rechnungBindingService.setCustomerNameValue(newValue);
+        });
+
+        txtStreet.textProperty().addListener((observable, oldValue, newValue) -> {
+            rechnungBindingService.setStreetValue(newValue);
+        });
+
+        txtPlz.textProperty().addListener((observable, oldValue, newValue) -> {
+            rechnungBindingService.setPlzValue(newValue);
+        });
     }
 
 	@Override
@@ -246,10 +258,7 @@ public class RechnungController implements Initializable, ControllerBse {
         this.stage = stage;
 
 		if(!editable) {
-			HBox hbox = (HBox)lblStatusChange.getParent();
-			hbox.getChildren().remove(lblStatusChange);
-			hbox.setVisible(false);
-			
+
 			btnSave.setVisible(false);
 			btnReset.setVisible(false);
 

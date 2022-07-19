@@ -6,7 +6,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"de.seifi.rechnung_common.config"})
+@ComponentScan(basePackages = {"de.seifi.rechnung_common.config", "de.seifi.rechnung_manager_app.data_service.impl"})
 public class RechnungManagerSpringApp {
 	public static ConfigurableApplicationContext applicationContext;
 	

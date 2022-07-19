@@ -18,6 +18,16 @@ public class RechnungEntity extends EntityBase {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+	@Column(name="customer_name")
+	private String customerName;
+
+	@Column(name="street_house_number")
+	private String streetHouseNumber;
+
+	private String plz;
+
+	private String city;
+
 	private Integer nummer;
 	   
 	@Column(name="rechnung_create")
@@ -25,6 +35,8 @@ public class RechnungEntity extends EntityBase {
 	   
 	@Column(name="lifer_date")
 	private String liferDate;
+
+	private Integer status;
     
 	private Timestamp created;
 	
@@ -38,30 +50,49 @@ public class RechnungEntity extends EntityBase {
     	items = new HashSet<>();
     }
 
-
-	public RechnungEntity(Integer nummer, String rechnungCreate, String liferDate) {
+	public RechnungEntity(String customerName,
+						  String streetHouseNumber,
+						  String plz,
+						  String city,
+						  Integer nummer,
+						  String rechnungCreate,
+						  String liferDate,
+						  int status) {
 		this();
+		this.customerName = customerName;
+		this.streetHouseNumber = streetHouseNumber;
+		this.plz = plz;
+		this.city = city;
 		this.nummer = nummer;
 		this.rechnungCreate = rechnungCreate;
 		this.liferDate = liferDate;
+		this.status = status;
 	}
 
-
-	public RechnungEntity(Integer id, 
-			Integer nummer, 
-			String rechnungCreate, 
-			String liferDate,
-			Timestamp created,
-			Timestamp updated) {
+	public RechnungEntity(Integer id,
+						  String customerName,
+						  String streetHouseNumber,
+						  String plz,
+						  String city,
+						  Integer nummer,
+						  String rechnungCreate,
+						  String liferDate,
+						  int status,
+						  Timestamp created,
+						  Timestamp updated) {
 		this();
 		this.id = id;
+		this.customerName = customerName;
+		this.streetHouseNumber = streetHouseNumber;
+		this.plz = plz;
+		this.city = city;
 		this.nummer = nummer;
 		this.rechnungCreate = rechnungCreate;
 		this.liferDate = liferDate;
-        this.created = created;
-        this.updated = updated;
+		this.status = status;
+		this.created = created;
+		this.updated = updated;
 	}
-
 
 	public Integer getId() {
 		return id;
@@ -70,6 +101,38 @@ public class RechnungEntity extends EntityBase {
 	@Override
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public String getCustomerName() {
+		return customerName;
+	}
+
+	public void setCustomerName(String customerName) {
+		this.customerName = customerName;
+	}
+
+	public String getStreetHouseNumber() {
+		return streetHouseNumber;
+	}
+
+	public void setStreetHouseNumber(String streetHouseNumber) {
+		this.streetHouseNumber = streetHouseNumber;
+	}
+
+	public String getPlz() {
+		return plz;
+	}
+
+	public void setPlz(String plz) {
+		this.plz = plz;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
 	}
 
 	public Integer getNummer() {
@@ -119,7 +182,15 @@ public class RechnungEntity extends EntityBase {
 		this.items.add(item);
 		
 	}
-	
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
 
 	@Override
 	public Timestamp getCreated() {
@@ -143,7 +214,9 @@ public class RechnungEntity extends EntityBase {
 
 
 	public RechnungModel toModel() {
-		RechnungModel model = new RechnungModel(id, nummer, rechnungCreate, liferDate, created.toLocalDateTime(), updated.toLocalDateTime());
+		RechnungModel model = new RechnungModel(id, customerName, streetHouseNumber, plz, city, nummer,
+												rechnungCreate, liferDate, status, created.toLocalDateTime(),
+												updated.toLocalDateTime());
 		for(RechnungItemEntity item: items) {
 			model.getItems().add(item.toModel());
 		}
