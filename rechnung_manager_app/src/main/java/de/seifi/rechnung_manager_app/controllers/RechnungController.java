@@ -73,7 +73,12 @@ public class RechnungController implements Initializable, ControllerBse {
     @FXML private TextField txtStreet;
 
     @FXML private TextField txtPlz;
-
+    
+    @FXML private TextField txtCity;
+    
+    @FXML private TextField txtHaus;
+    
+    @FXML private TextField txtAddress2;
 
     private RechnungBindingService rechnungBindingService;
 
@@ -123,6 +128,11 @@ public class RechnungController implements Initializable, ControllerBse {
         txtPlz.setText("");
         txtName.setText("");
         txtStreet.setText("");
+        txtAddress2.setText("");
+        txtCity.setText("");
+        txtHaus.setText("");
+        
+        txtName.setFocusTraversable(true);
     }
     
     @FXML
@@ -235,6 +245,18 @@ public class RechnungController implements Initializable, ControllerBse {
 
         txtPlz.textProperty().addListener((observable, oldValue, newValue) -> {
             rechnungBindingService.setPlzValue(newValue);
+        });
+
+        txtAddress2.textProperty().addListener((observable, oldValue, newValue) -> {
+            rechnungBindingService.setAddress2Value(newValue);
+        });
+
+        txtCity.textProperty().addListener((observable, oldValue, newValue) -> {
+            rechnungBindingService.setCityValue(newValue);
+        });
+
+        txtHaus.textProperty().addListener((observable, oldValue, newValue) -> {
+            rechnungBindingService.setHausValue(newValue);
         });
     }
 

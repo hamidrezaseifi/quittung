@@ -35,7 +35,7 @@
 			<columnConstraints>
 		        <ColumnConstraints hgrow="ALWAYS" />
                 <ColumnConstraints hgrow="NEVER" prefWidth="130" />
-                <ColumnConstraints hgrow="NEVER" prefWidth="180" />
+                <ColumnConstraints hgrow="NEVER" prefWidth="250" />
                 <ColumnConstraints hgrow="NEVER" prefWidth="10" />
                 <ColumnConstraints hgrow="NEVER" prefWidth="150" />
                 <ColumnConstraints hgrow="NEVER" prefWidth="150" />
@@ -49,13 +49,23 @@
 		    </rowConstraints>
 		    <children>
                	<Label text="Name" GridPane.columnIndex="1" GridPane.rowIndex="0" styleClass="summe-label" textAlignment="LEFT" />
-               	<TextField fx:id="txtName" GridPane.columnIndex="2" GridPane.rowIndex="0" styleClass="summe-label"/>
+               	<TextField fx:id="txtName" GridPane.columnIndex="2" GridPane.rowIndex="0" styleClass="rechnung-text-field"/>
 
                	<Label text="Straße / Haus No." GridPane.columnIndex="1" GridPane.rowIndex="1" styleClass="summe-label" textAlignment="LEFT" />
-               	<TextField fx:id="txtStreet" GridPane.columnIndex="2" GridPane.rowIndex="1" styleClass="summe-label" />
-
-               	<Label text="Plz / Stadt" GridPane.columnIndex="1" GridPane.rowIndex="2" styleClass="summe-label" textAlignment="LEFT" />
-               	<TextField fx:id="txtPlz" GridPane.columnIndex="2" GridPane.rowIndex="2" styleClass="summe-label"  />
+               	
+				<HBox GridPane.columnIndex="2" GridPane.rowIndex="1" spacing="5">
+	               	<TextField fx:id="txtStreet" styleClass="rechnung-text-field" />
+	               	<TextField fx:id="txtHaus" styleClass="rechnung-text-field" prefWidth="90" />
+				</HBox>
+				
+				<Label text="zusätzliche Adresse" GridPane.columnIndex="1" GridPane.rowIndex="2" styleClass="summe-label" textAlignment="LEFT" />
+               	<TextField fx:id="txtAddress2" GridPane.columnIndex="2" GridPane.rowIndex="2" styleClass="rechnung-text-field"/>
+				
+               	<Label text="Plz / Stadt" GridPane.columnIndex="1" GridPane.rowIndex="3" styleClass="summe-label" textAlignment="LEFT" />
+				<HBox GridPane.columnIndex="2" GridPane.rowIndex="3" spacing="5">
+	               	<TextField fx:id="txtPlz" styleClass="rechnung-text-field" prefWidth="120"  />
+	               	<TextField fx:id="txtCity" styleClass="rechnung-text-field"  />
+				</HBox>
 
                 <Label text="Rechnung Nr." GridPane.columnIndex="4" GridPane.rowIndex="0" styleClass="summe-label" textAlignment="LEFT" />
                 <Label fx:id="lblRechnungNummer" GridPane.columnIndex="5" GridPane.rowIndex="0" styleClass="summe-label" textAlignment="LEFT" />

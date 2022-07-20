@@ -14,7 +14,11 @@ public class RechnungModel {
 
 	private String customerName;
 
-	private String streetHouseNumber;
+	private String street;
+
+	private String houseNumber;
+
+	private String address2;
 
 	private String plz;
 
@@ -41,8 +45,27 @@ public class RechnungModel {
 
     }
 
-	public RechnungModel(String customerName,
-						 String streetHouseNumber,
+	public RechnungModel(Integer nummer,
+						 String rechnungCreate,
+						 String liferDate,
+						 RechnungStatus status) {
+		this();
+		this.customerName = "";
+		this.street = "";
+		this.houseNumber = "";
+		this.address2 = "";
+		this.plz = "";
+		this.city = "";
+		this.nummer = nummer;
+		this.rechnungCreate = rechnungCreate;
+		this.liferDate = liferDate;
+		this.status = status;
+	}
+
+	public RechnungModel(String customerName, 
+			 			 String street, 
+			 			 String houseNumber,
+						 String address2,
 						 String plz,
 						 String city,
 						 Integer nummer,
@@ -51,7 +74,9 @@ public class RechnungModel {
 						 int status) {
 		this();
 		this.customerName = customerName;
-		this.streetHouseNumber = streetHouseNumber;
+		this.street = street;
+		this.houseNumber = houseNumber;
+		this.address2 = address2;
 		this.plz = plz;
 		this.city = city;
 		this.nummer = nummer;
@@ -61,7 +86,9 @@ public class RechnungModel {
 	}
 
 	public RechnungModel(String customerName,
-						 String streetHouseNumber,
+			 			 String street, 
+			 			 String houseNumber,
+						 String address2,
 						 String plz,
 						 String city,
 						 Integer nummer,
@@ -70,7 +97,9 @@ public class RechnungModel {
 						 RechnungStatus status) {
 		this();
 		this.customerName = customerName;
-		this.streetHouseNumber = streetHouseNumber;
+		this.street = street;
+		this.houseNumber = houseNumber;
+		this.address2 = address2;
 		this.plz = plz;
 		this.city = city;
 		this.nummer = nummer;
@@ -82,7 +111,9 @@ public class RechnungModel {
 
 	public RechnungModel(Integer id,
 						 String customerName,
-						 String streetHouseNumber,
+			 			 String street, 
+			 			 String houseNumber,
+						 String address2,
 						 String plz,
 						 String city,
 						 Integer nummer,
@@ -94,7 +125,9 @@ public class RechnungModel {
 		this();
 		this.id = id;
 		this.customerName = customerName;
-		this.streetHouseNumber = streetHouseNumber;
+		this.street = street;
+		this.houseNumber = houseNumber;
+		this.address2 = address2;
 		this.plz = plz;
 		this.city = city;
 		this.nummer = nummer;
@@ -126,14 +159,31 @@ public class RechnungModel {
 		this.customerName = customerName;
 	}
 
-	public String getStreetHouseNumber() {
-		return streetHouseNumber;
+	public String getStreet() {
+		return street;
 	}
 
-	public void setStreetHouseNumber(String streetHouseNumber) {
-		this.streetHouseNumber = streetHouseNumber;
+	public void setStreet(String street) {
+		this.street = street;
 	}
 
+	public String getHouseNumber() {
+		return houseNumber;
+	}
+
+	public void setHouseNumber(String houseNumber) {
+		this.houseNumber = houseNumber;
+	}
+
+
+	public String getAddress2() {
+		return address2;
+	}
+
+	public void setAddress2(String address2) {
+		this.address2 = address2;
+	}
+	
 	public String getPlz() {
 		return plz;
 	}
@@ -224,11 +274,11 @@ public class RechnungModel {
 	public RechnungEntity toEntity() {
 		RechnungEntity entity = null;
 		if(id != null) {
-			entity = new RechnungEntity(id, customerName, streetHouseNumber, plz, city, nummer, rechnungCreate,
+			entity = new RechnungEntity(id, customerName, street, houseNumber, address2, plz, city, nummer, rechnungCreate,
 										liferDate, status.getValue(), Timestamp.valueOf(this.created), Timestamp.valueOf(this.updated));
 		} 
 		else {
-			entity = new RechnungEntity(customerName, streetHouseNumber, plz, city, nummer, rechnungCreate, liferDate, status.getValue());
+			entity = new RechnungEntity(customerName, street, houseNumber, address2, plz, city, nummer, rechnungCreate, liferDate, status.getValue());
 		}
 		
 		for(RechnungItemModel item: items) {

@@ -4,6 +4,10 @@ import de.seifi.rechnung_manager_app.models.QuittungItemModel;
 import de.seifi.rechnung_manager_app.models.RechnungItemModel;
 
 import javax.persistence.*;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import java.sql.Timestamp;
 
 @Entity
@@ -16,7 +20,7 @@ public class QuittungItemEntity extends EntityBase {
 
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
-	//@JoinColumn(name = "rechnung_id")
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JoinColumn(foreignKey = @ForeignKey(name = "quittung_item_rechnung_fkey"))
 	private QuittungEntity quittung;
 

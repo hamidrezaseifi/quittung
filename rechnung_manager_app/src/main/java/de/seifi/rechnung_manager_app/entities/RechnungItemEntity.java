@@ -4,6 +4,9 @@ import java.sql.Timestamp;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import de.seifi.rechnung_manager_app.models.RechnungItemModel;
 
 @Entity
@@ -16,7 +19,7 @@ public class RechnungItemEntity extends EntityBase {
 
 	  
 	@ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
-	//@JoinColumn(name = "rechnung_id")
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JoinColumn(foreignKey = @ForeignKey(name = "rechnung_item_rechnung_fkey"))
 	private RechnungEntity rechnung;
     

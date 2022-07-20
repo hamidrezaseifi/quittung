@@ -33,6 +33,14 @@
     -fx-font-weight: bold;
 }
 
+
+.rechnung-text-field{
+    -fx-font-family: Arial, Helvetica, sans-serif;
+    -fx-font-size: 14px;
+    -fx-font-weight: normal;
+}
+
+
 #showItemsTableView.table-view .table-column{
     -fx-alignment:center;
     -fx-font-size:14px;

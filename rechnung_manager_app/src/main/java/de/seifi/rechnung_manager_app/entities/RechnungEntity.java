@@ -21,8 +21,12 @@ public class RechnungEntity extends EntityBase {
 	@Column(name="customer_name")
 	private String customerName;
 
-	@Column(name="street_house_number")
-	private String streetHouseNumber;
+	private String street;
+
+	@Column(name="house_number")
+	private String houseNumber;
+
+	private String address2;
 
 	private String plz;
 
@@ -51,7 +55,9 @@ public class RechnungEntity extends EntityBase {
     }
 
 	public RechnungEntity(String customerName,
-						  String streetHouseNumber,
+						  String street,
+						  String houseNumber,
+						  String address2,
 						  String plz,
 						  String city,
 						  Integer nummer,
@@ -60,7 +66,9 @@ public class RechnungEntity extends EntityBase {
 						  int status) {
 		this();
 		this.customerName = customerName;
-		this.streetHouseNumber = streetHouseNumber;
+		this.street = street;
+		this.houseNumber = houseNumber;
+		this.address2 = address2;
 		this.plz = plz;
 		this.city = city;
 		this.nummer = nummer;
@@ -71,7 +79,9 @@ public class RechnungEntity extends EntityBase {
 
 	public RechnungEntity(Integer id,
 						  String customerName,
-						  String streetHouseNumber,
+						  String street,
+						  String houseNumber,
+						  String address2,
 						  String plz,
 						  String city,
 						  Integer nummer,
@@ -83,7 +93,9 @@ public class RechnungEntity extends EntityBase {
 		this();
 		this.id = id;
 		this.customerName = customerName;
-		this.streetHouseNumber = streetHouseNumber;
+		this.street = street;
+		this.houseNumber = houseNumber;
+		this.address2 = address2;
 		this.plz = plz;
 		this.city = city;
 		this.nummer = nummer;
@@ -110,13 +122,29 @@ public class RechnungEntity extends EntityBase {
 	public void setCustomerName(String customerName) {
 		this.customerName = customerName;
 	}
-
-	public String getStreetHouseNumber() {
-		return streetHouseNumber;
+	
+	public String getStreet() {
+		return street;
 	}
 
-	public void setStreetHouseNumber(String streetHouseNumber) {
-		this.streetHouseNumber = streetHouseNumber;
+	public void setStreet(String street) {
+		this.street = street;
+	}
+
+	public String getHouseNumber() {
+		return houseNumber;
+	}
+
+	public void setHouseNumber(String houseNumber) {
+		this.houseNumber = houseNumber;
+	}
+
+	public String getAddress2() {
+		return address2;
+	}
+
+	public void setAddress2(String address2) {
+		this.address2 = address2;
 	}
 
 	public String getPlz() {
@@ -214,7 +242,7 @@ public class RechnungEntity extends EntityBase {
 
 
 	public RechnungModel toModel() {
-		RechnungModel model = new RechnungModel(id, customerName, streetHouseNumber, plz, city, nummer,
+		RechnungModel model = new RechnungModel(id, customerName, street, houseNumber, address2, plz, city, nummer,
 												rechnungCreate, liferDate, status, created.toLocalDateTime(),
 												updated.toLocalDateTime());
 		for(RechnungItemEntity item: items) {

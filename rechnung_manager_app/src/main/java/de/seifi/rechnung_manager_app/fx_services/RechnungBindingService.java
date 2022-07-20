@@ -147,7 +147,7 @@ public class RechnungBindingService {
 
         int lastNummer = this.rechnungDataHelper.getLastActiveRechnungNummer();
 
-        savingModel = new RechnungModel("", "", "", "", lastNummer + 1, date, time, RechnungStatus.ACTIVE);
+        savingModel = new RechnungModel(lastNummer + 1, date, time, RechnungStatus.ACTIVE);
 
         rechnungNummer.set(String.valueOf(lastNummer + 1));
         rechnungDatum.set(date);
@@ -325,29 +325,28 @@ public class RechnungBindingService {
     }
 
     public void setCustomerNameValue(String newValue) {
-        savingModel.setCustomerName(newValue);
+        savingModel.setCustomerName(newValue.trim());
     }
 
     public void setStreetValue(String newValue) {
 
-        savingModel.setStreetHouseNumber(newValue);
+        savingModel.setStreet(newValue.trim());
     }
 
     public void setPlzValue(String newValue) {
-        newValue = newValue.trim();
-        if(newValue.isEmpty()){
-            savingModel.setPlz("");
-            savingModel.setCity("");
-            return;
-        }
-        int index = newValue.trim().indexOf(" ");
-        if(index == -1){
-            savingModel.setPlz(newValue);
-            savingModel.setCity("");
-            return;
-        }
-        savingModel.setPlz(newValue.substring(0, index).trim());
-        savingModel.setCity(newValue.substring(index).trim());
+         savingModel.setPlz(newValue.trim());
 
     }
+
+	public void setAddress2Value(String newValue) {
+		savingModel.setAddress2(newValue.trim());
+	}
+
+	public void setCityValue(String newValue) {
+		savingModel.setCity(newValue.trim());
+	}
+
+	public void setHausValue(String newValue) {
+		savingModel.setHouseNumber(newValue.trim());
+	}
 }
