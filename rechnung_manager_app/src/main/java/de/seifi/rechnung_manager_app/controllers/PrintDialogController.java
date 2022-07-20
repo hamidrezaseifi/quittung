@@ -1,55 +1,37 @@
 package de.seifi.rechnung_manager_app.controllers;
 
 
-import de.seifi.rechnung_manager_app.models.RechnungItemPrintProperty;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.print.*;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.transform.Scale;
 
-import java.net.URL;
 import java.util.List;
-import java.util.ResourceBundle;
 
 import de.seifi.rechnung_manager_app.RechnungManagerFxApp;
-import de.seifi.rechnung_manager_app.fx_services.RechnungBindingPrintService;
-import de.seifi.rechnung_manager_app.models.RechnungModel;
-import de.seifi.rechnung_manager_app.ui.FloatGeldLabel;
 
-public class PrintDialogController implements Initializable {
+public abstract class PrintDialogController<T> {
 
-    @FXML private FloatGeldLabel lblNetto;
 
-    @FXML private FloatGeldLabel lblMvst;
+    protected abstract void setModelList(List<T> modelList);
 
-    @FXML private FloatGeldLabel lblGesamt;
+    protected abstract void setPrintingIndex(int index);
 
-    @FXML private TableView<RechnungItemPrintProperty> printTableView;
+    protected abstract boolean hasPrintingPage();
 
-    @FXML private GridPane rootPane;
+    protected abstract boolean increasePrintingIndex();
 
-    @FXML private Label lblRechnungNummer;
+    protected abstract boolean hasMorePrintingPage();
 
-    @FXML private Label lblRechnungDatum;
+    protected abstract boolean increateIfMorePrintingPage();
 
-    @FXML private Label lblLiferdatum;
-
-    private RechnungBindingPrintService rechnungBindingService;
-
-    @Override
-    public void initialize(URL url,
-                           ResourceBundle resourceBundle) {
-        rechnungBindingService = new RechnungBindingPrintService();
-
-    }
-
-    public void printRechnungList(List<RechnungModel> rechnungModelList){
+    protected abstract GridPane getRootPane();
+    
+    protected abstract boolean startPrint(PrinterJob job, PageLayout pageLayout);
+   
+    public void printRechnungList(List<T> modelList){
         //Rechnung_print
-        this.rechnungBindingService.setRechnungModelList(rechnungModelList);
-        rechnungBindingService.setPrintingIndex(0);
+        this.setModelList(modelList);
+        this.setPrintingIndex(0);
         PrinterJob job = PrinterJob.createPrinterJob();
         if (job != null) {
             Printer printer = job.getPrinter();
@@ -64,10 +46,10 @@ public class PrintDialogController implements Initializable {
     private void preparePrint(PrinterJob job, PageLayout pageLayout) {
     	boolean isPrinted = false;
     	
-        if(this.rechnungBindingService.hasPrintingPage()){
+        if(this.hasPrintingPage()){
             
-            double w = rootPane.getPrefWidth();
-            double h = rootPane.getPrefHeight();
+            double w = getRootPane().getPrefWidth();
+            double h = getRootPane().getPrefHeight();
 
             double pagePrintableWidth = pageLayout.getPrintableWidth(); 
             double pagePrintableHeight = pageLayout.getPrintableHeight();
@@ -77,12 +59,12 @@ public class PrintDialogController implements Initializable {
 
             Scale scale = new Scale(scaleX, scaleY);
 
-            rootPane.getTransforms().add(scale);
+            getRootPane().getTransforms().add(scale);
             if(this.startPrintItemPage(job, pageLayout)) {
             	isPrinted = true;
             }
 
-            while (this.rechnungBindingService.increasePrintingIndex()){
+            while (this.increasePrintingIndex()){
             	if(this.startPrintItemPage(job, pageLayout)) {
                 	isPrinted = true;
                 }
@@ -101,38 +83,18 @@ public class PrintDialogController implements Initializable {
     private boolean startPrintItemPage(PrinterJob job, PageLayout pageLayout) {
     	
     	boolean isPrinted = false;
-    	if(rechnungBindingService.hasMorePrintingPage()) {
+    	if(this.hasMorePrintingPage()) {
     		if(this.startPrint(job, pageLayout)){
     			isPrinted = true;
     		}
     		
-    		while(rechnungBindingService.increateIfMorePrintingPage()) {
+    		while(this.increateIfMorePrintingPage()) {
     			this.startPrint(job, pageLayout);
     		}
     	}
         
     	return isPrinted;
     	
-    }
-
-    private boolean startPrint(PrinterJob job, PageLayout pageLayout) {
-    	
-    	if(rechnungBindingService.hasMorePrintingPage()) {
-    		printTableView.setItems(rechnungBindingService.getRechnungPrintItems());
-            lblNetto.setText(rechnungBindingService.getNettoSumme());
-            lblMvst.setText(rechnungBindingService.getMvstSumme());
-            lblGesamt.setText(rechnungBindingService.getGesamtSumme());
-
-            lblRechnungNummer.setText(rechnungBindingService.getRechnungNummer());
-            lblRechnungDatum.setText(rechnungBindingService.getLiferDatum());
-            lblLiferdatum.setText(rechnungBindingService.getLiferDatum());
-
-            boolean success = job.printPage(pageLayout, rootPane);
-            
-            return success;
-    	}
-        return false;
-
     }
 
 }

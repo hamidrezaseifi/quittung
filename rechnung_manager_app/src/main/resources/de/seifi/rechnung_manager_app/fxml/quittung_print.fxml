@@ -18,7 +18,7 @@
 <?import de.seifi.rechnung_manager_app.ui.FloatGeldLabel?>
 <?import javafx.scene.shape.Line?>
 <GridPane alignment="TOP_LEFT" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
-          fx:controller="de.seifi.rechnung_manager_app.controllers.RechnungPrintDialogController" prefWidth="570" prefHeight="817" fx:id="rootPane">
+          fx:controller="de.seifi.rechnung_manager_app.controllers.PrintDialogController" prefWidth="570" prefHeight="817" fx:id="rootPane">
     <columnConstraints>
         <ColumnConstraints hgrow="ALWAYS" />
     </columnConstraints>
@@ -54,7 +54,7 @@
                	<Label text="Liferdatum" GridPane.columnIndex="1" GridPane.rowIndex="3" styleClass="summe-label" textAlignment="LEFT" style="-fx-font-size: 10px;" />
                	<Label fx:id="lblLiferdatum" GridPane.columnIndex="2" GridPane.rowIndex="3" styleClass="summe-label" textAlignment="LEFT" style="-fx-font-size: 10px;" />
 
-                <Label text="Rechnung" GridPane.columnIndex="0" GridPane.rowIndex="4" textAlignment="LEFT" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+                <Label text="Quittung" GridPane.columnIndex="0" GridPane.rowIndex="4" textAlignment="LEFT" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
 
             </children>
         </GridPane>

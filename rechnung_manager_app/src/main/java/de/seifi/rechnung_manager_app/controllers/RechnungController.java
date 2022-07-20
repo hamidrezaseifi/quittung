@@ -283,7 +283,21 @@ public class RechnungController implements Initializable, ControllerBse {
 
 			btnSave.setVisible(false);
 			btnReset.setVisible(false);
-
+			
+			txtName.setEditable(false);
+			txtStreet.setEditable(false);
+			txtPlz.setEditable(false);
+			txtAddress2.setEditable(false);
+			txtCity.setEditable(false);
+			txtHaus.setEditable(false);
+			
+			txtName.setText(rechnungModel.getCustomerName());
+			txtStreet.setText(rechnungModel.getStreet());
+			txtPlz.setText(rechnungModel.getPlz());
+			txtAddress2.setText(rechnungModel.getAddress2());
+			txtCity.setText(rechnungModel.getCity());
+			txtHaus.setText(rechnungModel.getHouseNumber());
+			
 		}
 	}
 

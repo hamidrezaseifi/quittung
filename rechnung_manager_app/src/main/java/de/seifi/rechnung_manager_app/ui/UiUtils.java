@@ -7,6 +7,7 @@ import java.util.List;
 import de.seifi.rechnung_manager_app.RechnungManagerFxApp;
 import de.seifi.rechnung_manager_app.controllers.PrintDialogController;
 import de.seifi.rechnung_manager_app.controllers.RechnungController;
+import de.seifi.rechnung_manager_app.controllers.RechnungPrintDialogController;
 import de.seifi.rechnung_manager_app.models.QuittungModel;
 import de.seifi.rechnung_manager_app.models.RechnungModel;
 import javafx.fxml.FXMLLoader;
@@ -37,7 +38,7 @@ public class UiUtils {
 			Pair<Parent, FXMLLoader> pair = RechnungManagerFxApp.loadFXMLLoader("rechnung_print");
 			GridPane printPane = (GridPane)pair.getKey();
 			FXMLLoader fxmlLoader = pair.getValue();
-			PrintDialogController dialogController = fxmlLoader.<PrintDialogController>getController();
+			RechnungPrintDialogController dialogController = fxmlLoader.<RechnungPrintDialogController>getController();
 			dialogController.printRechnungList(rechnungModelList);
 		} catch (IOException e) {
 
@@ -59,7 +60,7 @@ public class UiUtils {
 	        dialogController.loadModel(rechnungModel, false, stage);
 	        rechnungPane.setPadding(new Insets(10));
 	        
-	        Scene scene = new Scene(rechnungPane, 800, 800);
+	        Scene scene = new Scene(rechnungPane, 1000, 800);
 			scene.getStylesheets().add(getMainStyle());
 
 	        stage.initModality(Modality.APPLICATION_MODAL);

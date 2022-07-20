@@ -58,7 +58,7 @@
 	               	<TextField fx:id="txtHaus" styleClass="rechnung-text-field" prefWidth="90" />
 				</HBox>
 				
-				<Label text="zusätzliche Adresse" GridPane.columnIndex="1" GridPane.rowIndex="2" styleClass="summe-label" textAlignment="LEFT" />
+				<Label text="zus. Adresse" GridPane.columnIndex="1" GridPane.rowIndex="2" styleClass="summe-label" textAlignment="LEFT" />
                	<TextField fx:id="txtAddress2" GridPane.columnIndex="2" GridPane.rowIndex="2" styleClass="rechnung-text-field"/>
 				
                	<Label text="Plz / Stadt" GridPane.columnIndex="1" GridPane.rowIndex="3" styleClass="summe-label" textAlignment="LEFT" />
