@@ -8,7 +8,7 @@ import de.seifi.rechnung_manager_app.models.ProduktModel;
 
 
 @Entity
-@Table(name = "produkt_last_presi")
+@Table(name = "produkt_last_preis")
 public class ProduktEntity extends EntityBase {
 	
 	@Id

@@ -1,7 +1,9 @@
 package de.seifi.rechnung_manager_app;
 
-import de.seifi.rechnung_manager_app.controllers.ControllerBse;
+import de.seifi.rechnung_manager_app.controllers.ControllerBase;
 import de.seifi.rechnung_manager_app.controllers.MainController;
+import de.seifi.rechnung_manager_app.controllers.RechnungControllerBase;
+import de.seifi.rechnung_manager_app.enums.RechnungType;
 import de.seifi.rechnung_manager_app.ui.UiUtils;
 import it.sauronsoftware.junique.AlreadyLockedException;
 import it.sauronsoftware.junique.JUnique;
@@ -15,7 +17,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -48,7 +49,7 @@ public class RechnungManagerFxApp extends Application implements Runnable {
 
     private static MainController mainController;
     
-    private static ControllerBse currentController;
+    private static ControllerBase currentController;
 
 
     public static void main(String[] args) {
@@ -203,13 +204,21 @@ public class RechnungManagerFxApp extends Application implements Runnable {
 
     public static GridPane getRechnungPane() throws IOException {
 
-        GridPane rechnungPane = (GridPane)loadFXML("rechnung");
+        URL fxmlResource = RechnungManagerFxApp.class.getResource("fxml/rechnung_base.fxml");
+        FXMLLoader fxmlLoader = new FXMLLoader(fxmlResource);
+        fxmlLoader.setController(new RechnungControllerBase(RechnungType.RECHNUNG));
+        GridPane rechnungPane = (GridPane)fxmlLoader.load();
+
         return rechnungPane;
     }
 
     public static GridPane getQuittungPane() throws IOException {
 
-        GridPane rechnungPane = (GridPane)loadFXML("quittung");
+        URL fxmlResource = RechnungManagerFxApp.class.getResource("fxml/rechnung_base.fxml");
+        FXMLLoader fxmlLoader = new FXMLLoader(fxmlResource);
+        fxmlLoader.setController(new RechnungControllerBase(RechnungType.QUITTUNG));
+        GridPane rechnungPane = (GridPane)fxmlLoader.load();
+
         return rechnungPane;
     }
 
@@ -251,7 +260,7 @@ public class RechnungManagerFxApp extends Application implements Runnable {
         RechnungManagerFxApp.mainController = mainController;
     }
 
-	public static ControllerBse getCurrentController() {
+	public static ControllerBase getCurrentController() {
 		return currentController;
 	}
 
@@ -259,7 +268,7 @@ public class RechnungManagerFxApp extends Application implements Runnable {
 		return currentController != null? currentController.isDirty() : false;
 	}
 
-	public static void setCurrentController(ControllerBse currentController) {
+	public static void setCurrentController(ControllerBase currentController) {
 		RechnungManagerFxApp.currentController = currentController;
 	}
     

@@ -7,28 +7,21 @@ import java.util.List;
 
 import de.seifi.rechnung_manager_app.entities.RechnungEntity;
 import de.seifi.rechnung_manager_app.enums.RechnungStatus;
+import de.seifi.rechnung_manager_app.enums.RechnungType;
 
 public class RechnungModel {
 	
     private Integer id;
 
-	private String customerName;
-
-	private String street;
-
-	private String houseNumber;
-
-	private String address2;
-
-	private String plz;
-
-	private String city;
+	private Integer customerId;
 
 	private Integer nummer;
 	   
 	private String rechnungCreate;
 	   
 	private String liferDate;
+
+	private RechnungType rechnungType;
 
 	private RechnungStatus status;
 
@@ -41,6 +34,7 @@ public class RechnungModel {
     public RechnungModel() {
     	super();
     	id = null;
+		customerId = -1;
     	items = new ArrayList<>();
 
     }
@@ -48,91 +42,63 @@ public class RechnungModel {
 	public RechnungModel(Integer nummer,
 						 String rechnungCreate,
 						 String liferDate,
+						 RechnungType rechnungType,
 						 RechnungStatus status) {
 		this();
-		this.customerName = "";
-		this.street = "";
-		this.houseNumber = "";
-		this.address2 = "";
-		this.plz = "";
-		this.city = "";
 		this.nummer = nummer;
 		this.rechnungCreate = rechnungCreate;
 		this.liferDate = liferDate;
+		this.rechnungType = rechnungType;
 		this.status = status;
 	}
 
-	public RechnungModel(String customerName, 
-			 			 String street, 
-			 			 String houseNumber,
-						 String address2,
-						 String plz,
-						 String city,
+	public RechnungModel(Integer customerId,
 						 Integer nummer,
 						 String rechnungCreate,
 						 String liferDate,
+						 int rechnungType,
 						 int status) {
 		this();
-		this.customerName = customerName;
-		this.street = street;
-		this.houseNumber = houseNumber;
-		this.address2 = address2;
-		this.plz = plz;
-		this.city = city;
+		this.customerId = customerId;
 		this.nummer = nummer;
 		this.rechnungCreate = rechnungCreate;
 		this.liferDate = liferDate;
+		this.rechnungType = RechnungType.ofValue(rechnungType);
 		this.status = RechnungStatus.ofValue(status);
 	}
 
-	public RechnungModel(String customerName,
-			 			 String street, 
-			 			 String houseNumber,
-						 String address2,
-						 String plz,
-						 String city,
+	public RechnungModel(Integer customerId,
 						 Integer nummer,
 						 String rechnungCreate,
 						 String liferDate,
+						 RechnungType rechnungType,
 						 RechnungStatus status) {
 		this();
-		this.customerName = customerName;
-		this.street = street;
-		this.houseNumber = houseNumber;
-		this.address2 = address2;
-		this.plz = plz;
-		this.city = city;
+		this.customerId = customerId;
 		this.nummer = nummer;
 		this.rechnungCreate = rechnungCreate;
 		this.liferDate = liferDate;
+		this.rechnungType = rechnungType;
 		this.status = status;
 	}
 
 
 	public RechnungModel(Integer id,
-						 String customerName,
-			 			 String street, 
-			 			 String houseNumber,
-						 String address2,
-						 String plz,
-						 String city,
+						 Integer customerId,
 						 Integer nummer,
 						 String rechnungCreate,
 						 String liferDate,
+						 int rechnungType,
 						 int status,
 						 LocalDateTime created,
 						 LocalDateTime updated) {
 		this();
 		this.id = id;
-		this.customerName = customerName;
-		this.street = street;
-		this.houseNumber = houseNumber;
-		this.address2 = address2;
-		this.plz = plz;
-		this.city = city;
+		this.customerId = customerId;
 		this.nummer = nummer;
 		this.rechnungCreate = rechnungCreate;
 		this.liferDate = liferDate;
+		this.rechnungType = RechnungType.ofValue(rechnungType);
 		this.status = RechnungStatus.ofValue(status);
         this.created = created;
         this.updated = updated;
@@ -151,53 +117,12 @@ public class RechnungModel {
 		this.id = id;
 	}
 
-	public String getCustomerName() {
-		return customerName;
+	public Integer getCustomerId() {
+		return customerId;
 	}
 
-	public void setCustomerName(String customerName) {
-		this.customerName = customerName;
-	}
-
-	public String getStreet() {
-		return street;
-	}
-
-	public void setStreet(String street) {
-		this.street = street;
-	}
-
-	public String getHouseNumber() {
-		return houseNumber;
-	}
-
-	public void setHouseNumber(String houseNumber) {
-		this.houseNumber = houseNumber;
-	}
-
-
-	public String getAddress2() {
-		return address2;
-	}
-
-	public void setAddress2(String address2) {
-		this.address2 = address2;
-	}
-	
-	public String getPlz() {
-		return plz;
-	}
-
-	public void setPlz(String plz) {
-		this.plz = plz;
-	}
-
-	public String getCity() {
-		return city;
-	}
-
-	public void setCity(String city) {
-		this.city = city;
+	public void setCustomerId(Integer customerId) {
+		this.customerId = customerId;
 	}
 
 	public Integer getNummer() {
@@ -237,6 +162,14 @@ public class RechnungModel {
 		this.items = items;
 	}
 
+	public RechnungType getRechnungType() {
+		return rechnungType;
+	}
+
+	public void setRechnungType(RechnungType rechnungType) {
+		this.rechnungType = rechnungType;
+	}
+
 	public RechnungStatus getStatus() {
 		return status;
 	}
@@ -274,11 +207,13 @@ public class RechnungModel {
 	public RechnungEntity toEntity() {
 		RechnungEntity entity = null;
 		if(id != null) {
-			entity = new RechnungEntity(id, customerName, street, houseNumber, address2, plz, city, nummer, rechnungCreate,
-										liferDate, status.getValue(), Timestamp.valueOf(this.created), Timestamp.valueOf(this.updated));
+			entity = new RechnungEntity(id, customerId, nummer, rechnungCreate, liferDate,
+										rechnungType.getValue(), status.getValue(), Timestamp.valueOf(this.created),
+										Timestamp.valueOf(this.updated));
 		} 
 		else {
-			entity = new RechnungEntity(customerName, street, houseNumber, address2, plz, city, nummer, rechnungCreate, liferDate, status.getValue());
+			entity = new RechnungEntity(customerId, nummer, rechnungCreate, liferDate,
+										rechnungType.getValue(), status.getValue());
 		}
 		
 		for(RechnungItemModel item: items) {

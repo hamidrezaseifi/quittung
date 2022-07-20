@@ -4,6 +4,8 @@ package de.seifi.rechnung_manager_app.fx_services;
 import de.seifi.rechnung_manager_app.data_service.IRechnungDataHelper;
 import de.seifi.rechnung_manager_app.entities.RechnungEntity;
 import de.seifi.rechnung_manager_app.enums.RechnungStatus;
+import de.seifi.rechnung_manager_app.enums.RechnungType;
+import de.seifi.rechnung_manager_app.models.CustomerModel;
 import de.seifi.rechnung_manager_app.models.ProduktModel;
 import de.seifi.rechnung_manager_app.models.RechnungModel;
 import de.seifi.rechnung_manager_app.repositories.RechnungRepository;
@@ -16,6 +18,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -42,17 +45,35 @@ public class RechnungBindingService {
     private BooleanProperty disableSave;
     private BooleanProperty disablePrint;
 
+    private RechnungModel rechnungSavingModel = new RechnungModel();
 
-    
-    private RechnungModel savingModel = new RechnungModel();
-        
+    private CustomerModel customerSavingModel = new CustomerModel();
+
     private boolean isDirty;
     private boolean isView = false;
 
-    public RechnungBindingService(final RechnungRepository rechnungRepository, IRechnungDataHelper rechnungDataHelper) {
+    private final RechnungType rechnungType;
+
+
+    private int activeBerechnenZiel;
+
+    private float berechnenFaktorBasis = 1.4f;
+
+    private List<Float> berechnenFaktorZielList = Arrays.asList(1.4f, 1.2f);
+
+    private List<String> berechnenFaktorZielColorList = Arrays.asList("-fx-background-color: white", "-fx-background-color: #f7fbff");
+    private StringProperty bannerBackColor;
+
+
+    public RechnungBindingService(final RechnungType rechnungType, final RechnungRepository rechnungRepository,
+                                  final IRechnungDataHelper rechnungDataHelper) {
     	
     	CURRENT_INSTANCE = this;
 
+        this.activeBerechnenZiel = 0;
+        this.bannerBackColor = new SimpleStringProperty(this.berechnenFaktorZielColorList.get(this.activeBerechnenZiel));
+
+        this.rechnungType = rechnungType;
         this.rechnungRepository = rechnungRepository;
         this.rechnungDataHelper = rechnungDataHelper;
 
@@ -72,7 +93,25 @@ public class RechnungBindingService {
         reset();
 
     }
-    
+
+    public void toggleActiveBerechnenZiel(){
+        this.activeBerechnenZiel = this.activeBerechnenZiel == 0 ? 1 : 0;
+        this.bannerBackColor.set(this.berechnenFaktorZielColorList.get(this.activeBerechnenZiel));
+
+    }
+
+    public String getBannerBackColor() {
+        return bannerBackColor.get();
+    }
+
+    public StringProperty bannerBackColorProperty() {
+        return bannerBackColor;
+    }
+
+    public float getBerechnenFaktorZiel() {
+        return this.berechnenFaktorZielList.get(this.activeBerechnenZiel);
+    }
+
     public void calculateRechnungSumme() {
         float netto = 0;
 
@@ -129,6 +168,8 @@ public class RechnungBindingService {
 		
 		float netto = GerldCalculator.bruttoToNetto(value);
 
+        netto = (netto * getBerechnenFaktorZiel()) / berechnenFaktorBasis;
+
 		return netto;
 	}
 
@@ -147,7 +188,7 @@ public class RechnungBindingService {
 
         int lastNummer = this.rechnungDataHelper.getLastActiveRechnungNummer();
 
-        savingModel = new RechnungModel(lastNummer + 1, date, time, RechnungStatus.ACTIVE);
+        rechnungSavingModel = new RechnungModel(lastNummer + 1, date, time, rechnungType, RechnungStatus.ACTIVE);
 
         rechnungNummer.set(String.valueOf(lastNummer + 1));
         rechnungDatum.set(date);
@@ -157,11 +198,11 @@ public class RechnungBindingService {
 	}
 
 	public int getCurrentRechnungNummer() {
-		return savingModel.getNummer();
+		return rechnungSavingModel.getNummer();
 	}
 
-    public RechnungModel getSavingModel() {
-        return savingModel;
+    public RechnungModel getRechnungSavingModel() {
+        return rechnungSavingModel;
     }
 
     public StringProperty getRechnungNummerProperty() {
@@ -210,15 +251,16 @@ public class RechnungBindingService {
 
 	public boolean save() {
 
-        savingModel.getItems().clear();
-        savingModel.getItems().addAll(this.rechnungItems.stream().filter(qi -> qi.canSaved()).map(qi -> qi.toModel()).collect(Collectors.toList()));
+        rechnungSavingModel.getItems().clear();
+        rechnungSavingModel
+                .getItems().addAll(this.rechnungItems.stream().filter(qi -> qi.canSaved()).map(qi -> qi.toModel()).collect(Collectors.toList()));
 
-        RechnungEntity savingEntity = savingModel.toEntity();
+        RechnungEntity savingEntity = rechnungSavingModel.toEntity();
 
         rechnungRepository.save(savingEntity);
         Optional<RechnungEntity> savedEntityOptional = rechnungRepository.findById(savingEntity.getId());
         if(savedEntityOptional.isPresent()) {
-            savingModel = savedEntityOptional.get().toModel();
+            rechnungSavingModel = savedEntityOptional.get().toModel();
             List<RechnungItemProperty> items = this.rechnungItems.stream().filter(qi -> qi.canSaved()).collect(Collectors.toList());
 
             for(RechnungItemProperty item: items) {
@@ -304,9 +346,12 @@ public class RechnungBindingService {
 		addNewRowIntern(new RechnungItemProperty());
 	}
 
-	public void setRechnungModel(RechnungModel rechnungModel) {
-		savingModel = rechnungModel;
+	public void setRechnungModel(RechnungModel rechnungModel, CustomerModel customerModel) {
+        rechnungSavingModel = rechnungModel;
 		rechnungItems.clear();
+
+        this.rechnungSavingModel = rechnungModel;
+        this.customerSavingModel = customerModel;
 		
 		rechnungModel.getItems().forEach(r -> addNewRowIntern(new RechnungItemProperty(r)));
 
@@ -325,28 +370,28 @@ public class RechnungBindingService {
     }
 
     public void setCustomerNameValue(String newValue) {
-        savingModel.setCustomerName(newValue.trim());
+        customerSavingModel.setCustomerName(newValue.trim());
     }
 
     public void setStreetValue(String newValue) {
 
-        savingModel.setStreet(newValue.trim());
+        customerSavingModel.setStreet(newValue.trim());
     }
 
     public void setPlzValue(String newValue) {
-         savingModel.setPlz(newValue.trim());
+        customerSavingModel.setPlz(newValue.trim());
 
     }
 
 	public void setAddress2Value(String newValue) {
-		savingModel.setAddress2(newValue.trim());
+        customerSavingModel.setAddress2(newValue.trim());
 	}
 
 	public void setCityValue(String newValue) {
-		savingModel.setCity(newValue.trim());
+        customerSavingModel.setCity(newValue.trim());
 	}
 
 	public void setHausValue(String newValue) {
-		savingModel.setHouseNumber(newValue.trim());
+        customerSavingModel.setHouseNumber(newValue.trim());
 	}
 }

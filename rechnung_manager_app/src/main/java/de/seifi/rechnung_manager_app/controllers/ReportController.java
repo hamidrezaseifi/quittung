@@ -2,8 +2,6 @@ package de.seifi.rechnung_manager_app.controllers;
 
 import java.io.IOException;
 import java.net.URL;
-import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -16,23 +14,18 @@ import de.seifi.rechnung_manager_app.models.ProduktModel;
 import de.seifi.rechnung_manager_app.models.ReportItemModel;
 import de.seifi.rechnung_manager_app.repositories.ProduktRepository;
 import de.seifi.rechnung_manager_app.repositories.RechnungRepository;
-import de.seifi.rechnung_manager_app.ui.FloatTextField;
 import de.seifi.rechnung_manager_app.ui.IntegerTextField;
 import de.seifi.rechnung_manager_app.ui.TextObserverDatePicker;
 import de.seifi.rechnung_manager_app.ui.UiUtils;
-import de.seifi.rechnung_manager_app.models.RechnungItemProperty;
 import de.seifi.rechnung_manager_app.models.RechnungModel;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.RowConstraints;
-import javafx.util.Pair;
 
-public class ReportController implements Initializable, ControllerBse {
+public class ReportController implements Initializable, ControllerBase {
 
     @FXML private TableView<ReportItemModel> reportTableView;
 

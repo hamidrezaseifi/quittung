@@ -5,10 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import de.seifi.rechnung_manager_app.RechnungManagerFxApp;
-import de.seifi.rechnung_manager_app.controllers.PrintDialogController;
 import de.seifi.rechnung_manager_app.controllers.RechnungController;
 import de.seifi.rechnung_manager_app.controllers.RechnungPrintDialogController;
-import de.seifi.rechnung_manager_app.models.QuittungModel;
 import de.seifi.rechnung_manager_app.models.RechnungModel;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -43,10 +41,6 @@ public class UiUtils {
 		} catch (IOException e) {
 
 		}
-	}
-
-	public static void printQuittungItems(List<QuittungModel> rechnungModelList) {
-
 	}
 
     public static void showRechnungDialog(RechnungModel rechnungModel) {

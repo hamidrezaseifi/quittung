@@ -22,8 +22,6 @@ public class RechnungItemEntity extends EntityBase {
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JoinColumn(foreignKey = @ForeignKey(name = "rechnung_item_rechnung_fkey"))
 	private RechnungEntity rechnung;
-    
-	//private Integer rechnung_id;
 
 	private String produkt;
     

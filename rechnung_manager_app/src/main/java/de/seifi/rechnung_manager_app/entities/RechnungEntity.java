@@ -9,6 +9,8 @@ import java.util.Set;
 import javax.persistence.*;
 
 import de.seifi.rechnung_manager_app.models.RechnungModel;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name = "rechnung")
@@ -18,30 +20,22 @@ public class RechnungEntity extends EntityBase {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-	@Column(name="customer_name")
-	private String customerName;
-
-	private String street;
-
-	@Column(name="house_number")
-	private String houseNumber;
-
-	private String address2;
-
-	private String plz;
-
-	private String city;
+	@Column(name="customer_id")
+	private Integer customerId;
 
 	private Integer nummer;
-	   
+
 	@Column(name="rechnung_create")
 	private String rechnungCreate;
 	   
 	@Column(name="lifer_date")
 	private String liferDate;
 
+	@Column(name="rechnung_type")
+	private Integer rechnungType;
+
 	private Integer status;
-    
+
 	private Timestamp created;
 	
 	private Timestamp updated;
@@ -54,54 +48,38 @@ public class RechnungEntity extends EntityBase {
     	items = new HashSet<>();
     }
 
-	public RechnungEntity(String customerName,
-						  String street,
-						  String houseNumber,
-						  String address2,
-						  String plz,
-						  String city,
+	public RechnungEntity(Integer customerId,
 						  Integer nummer,
 						  String rechnungCreate,
 						  String liferDate,
+						  int rechnungType,
 						  int status) {
 		this();
-		this.customerName = customerName;
-		this.street = street;
-		this.houseNumber = houseNumber;
-		this.address2 = address2;
-		this.plz = plz;
-		this.city = city;
+		this.customerId = customerId;
 		this.nummer = nummer;
 		this.rechnungCreate = rechnungCreate;
 		this.liferDate = liferDate;
 		this.status = status;
+		this.rechnungType = rechnungType;
 	}
 
 	public RechnungEntity(Integer id,
-						  String customerName,
-						  String street,
-						  String houseNumber,
-						  String address2,
-						  String plz,
-						  String city,
+						  Integer customerId,
 						  Integer nummer,
 						  String rechnungCreate,
 						  String liferDate,
+						  int rechnungType,
 						  int status,
 						  Timestamp created,
 						  Timestamp updated) {
 		this();
 		this.id = id;
-		this.customerName = customerName;
-		this.street = street;
-		this.houseNumber = houseNumber;
-		this.address2 = address2;
-		this.plz = plz;
-		this.city = city;
+		this.customerId = customerId;
 		this.nummer = nummer;
 		this.rechnungCreate = rechnungCreate;
 		this.liferDate = liferDate;
 		this.status = status;
+		this.rechnungType = rechnungType;
 		this.created = created;
 		this.updated = updated;
 	}
@@ -115,52 +93,12 @@ public class RechnungEntity extends EntityBase {
 		this.id = id;
 	}
 
-	public String getCustomerName() {
-		return customerName;
+	public Integer getCustomerId() {
+		return customerId;
 	}
 
-	public void setCustomerName(String customerName) {
-		this.customerName = customerName;
-	}
-	
-	public String getStreet() {
-		return street;
-	}
-
-	public void setStreet(String street) {
-		this.street = street;
-	}
-
-	public String getHouseNumber() {
-		return houseNumber;
-	}
-
-	public void setHouseNumber(String houseNumber) {
-		this.houseNumber = houseNumber;
-	}
-
-	public String getAddress2() {
-		return address2;
-	}
-
-	public void setAddress2(String address2) {
-		this.address2 = address2;
-	}
-
-	public String getPlz() {
-		return plz;
-	}
-
-	public void setPlz(String plz) {
-		this.plz = plz;
-	}
-
-	public String getCity() {
-		return city;
-	}
-
-	public void setCity(String city) {
-		this.city = city;
+	public void setCustomerId(Integer customerId) {
+		this.customerId = customerId;
 	}
 
 	public Integer getNummer() {
@@ -211,6 +149,14 @@ public class RechnungEntity extends EntityBase {
 		
 	}
 
+	public Integer getRechnungType() {
+		return rechnungType;
+	}
+
+	public void setRechnungType(Integer rechnungType) {
+		this.rechnungType = rechnungType;
+	}
+
 	public Integer getStatus() {
 		return status;
 	}
@@ -242,8 +188,8 @@ public class RechnungEntity extends EntityBase {
 
 
 	public RechnungModel toModel() {
-		RechnungModel model = new RechnungModel(id, customerName, street, houseNumber, address2, plz, city, nummer,
-												rechnungCreate, liferDate, status, created.toLocalDateTime(),
+		RechnungModel model = new RechnungModel(id, customerId, nummer, rechnungCreate, liferDate,
+												rechnungType, status, created.toLocalDateTime(),
 												updated.toLocalDateTime());
 		for(RechnungItemEntity item: items) {
 			model.getItems().add(item.toModel());
