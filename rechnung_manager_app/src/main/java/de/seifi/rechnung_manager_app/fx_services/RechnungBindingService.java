@@ -2,12 +2,15 @@ package de.seifi.rechnung_manager_app.fx_services;
 
 
 import de.seifi.rechnung_manager_app.data_service.IRechnungDataHelper;
+import de.seifi.rechnung_manager_app.entities.CustomerEntity;
 import de.seifi.rechnung_manager_app.entities.RechnungEntity;
 import de.seifi.rechnung_manager_app.enums.RechnungStatus;
 import de.seifi.rechnung_manager_app.enums.RechnungType;
 import de.seifi.rechnung_manager_app.models.CustomerModel;
+import de.seifi.rechnung_manager_app.models.CustomerModelProperty;
 import de.seifi.rechnung_manager_app.models.ProduktModel;
 import de.seifi.rechnung_manager_app.models.RechnungModel;
+import de.seifi.rechnung_manager_app.repositories.CustomerRepository;
 import de.seifi.rechnung_manager_app.repositories.RechnungRepository;
 import de.seifi.rechnung_manager_app.utils.GeneralUtils;
 import de.seifi.rechnung_manager_app.utils.GerldCalculator;
@@ -31,8 +34,11 @@ public class RechnungBindingService {
 
     private final RechnungRepository rechnungRepository;
     private final IRechnungDataHelper rechnungDataHelper;
+    private final CustomerRepository customerRepository;
 
     private ObservableList<RechnungItemProperty> rechnungItems;
+    
+    private CustomerModelProperty customerModelProperty;
 
     private FloatProperty gesamtSumme;
     private FloatProperty nettoSumme;
@@ -65,8 +71,10 @@ public class RechnungBindingService {
     private StringProperty bannerBackColor;
 
 
-    public RechnungBindingService(final RechnungType rechnungType, final RechnungRepository rechnungRepository,
-                                  final IRechnungDataHelper rechnungDataHelper) {
+    public RechnungBindingService(final RechnungType rechnungType, 
+    							  final RechnungRepository rechnungRepository,
+                                  final IRechnungDataHelper rechnungDataHelper,
+                                  final CustomerRepository customerRepository) {
     	
     	CURRENT_INSTANCE = this;
 
@@ -76,6 +84,7 @@ public class RechnungBindingService {
         this.rechnungType = rechnungType;
         this.rechnungRepository = rechnungRepository;
         this.rechnungDataHelper = rechnungDataHelper;
+        this.customerRepository = customerRepository;
 
         gesamtSumme = new SimpleFloatProperty(0);
         nettoSumme = new SimpleFloatProperty(0);
@@ -180,6 +189,8 @@ public class RechnungBindingService {
         }
         calculateRechnungSumme();
         
+        customerModelProperty = new CustomerModelProperty();
+        
 
         LocalDateTime ldt = LocalDateTime.now();
 
@@ -195,6 +206,12 @@ public class RechnungBindingService {
         liferDatum.set(date);
         
         isDirty = false;
+	}
+	
+	
+
+	public CustomerModelProperty getCustomerModelProperty() {
+		return customerModelProperty;
 	}
 
 	public int getCurrentRechnungNummer() {
@@ -250,7 +267,9 @@ public class RechnungBindingService {
 	}
 
 	public boolean save() {
-
+		
+		customerSavingModel = customerModelProperty.toModel();
+		
         rechnungSavingModel.getItems().clear();
         rechnungSavingModel
                 .getItems().addAll(this.rechnungItems.stream().filter(qi -> qi.canSaved()).map(qi -> qi.toModel()).collect(Collectors.toList()));
@@ -346,12 +365,21 @@ public class RechnungBindingService {
 		addNewRowIntern(new RechnungItemProperty());
 	}
 
-	public void setRechnungModel(RechnungModel rechnungModel, CustomerModel customerModel) {
+	public void setRechnungModel(RechnungModel rechnungModel) {
+		
+        Optional<CustomerEntity> customerEntityOptional = this.customerRepository.findById(rechnungModel.getCustomerId());
+        if(customerEntityOptional.isEmpty()){
+        	throw new RuntimeException("Der Kunde von der Rechnung nicht gefunden!");
+        }
+
+        this.customerSavingModel = customerEntityOptional.get().toModel();
+        
         rechnungSavingModel = rechnungModel;
 		rechnungItems.clear();
 
         this.rechnungSavingModel = rechnungModel;
-        this.customerSavingModel = customerModel;
+        
+        this.customerModelProperty.setModel(this.customerSavingModel);
 		
 		rechnungModel.getItems().forEach(r -> addNewRowIntern(new RechnungItemProperty(r)));
 
@@ -369,29 +397,5 @@ public class RechnungBindingService {
         return isView;
     }
 
-    public void setCustomerNameValue(String newValue) {
-        customerSavingModel.setCustomerName(newValue.trim());
-    }
-
-    public void setStreetValue(String newValue) {
-
-        customerSavingModel.setStreet(newValue.trim());
-    }
-
-    public void setPlzValue(String newValue) {
-        customerSavingModel.setPlz(newValue.trim());
-
-    }
-
-	public void setAddress2Value(String newValue) {
-        customerSavingModel.setAddress2(newValue.trim());
-	}
-
-	public void setCityValue(String newValue) {
-        customerSavingModel.setCity(newValue.trim());
-	}
-
-	public void setHausValue(String newValue) {
-        customerSavingModel.setHouseNumber(newValue.trim());
-	}
+    
 }

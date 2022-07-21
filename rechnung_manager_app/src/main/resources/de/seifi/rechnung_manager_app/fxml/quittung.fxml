@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<?import javafx.scene.layout.*?>
-
-<HBox xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="de.seifi.rechnung_manager_app.controllers.QuittungController">
-    <fx:include source="rechnung_base.fxml" fx:id="rootPane" />
-</HBox>

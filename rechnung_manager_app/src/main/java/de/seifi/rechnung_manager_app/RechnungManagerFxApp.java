@@ -2,7 +2,7 @@ package de.seifi.rechnung_manager_app;
 
 import de.seifi.rechnung_manager_app.controllers.ControllerBase;
 import de.seifi.rechnung_manager_app.controllers.MainController;
-import de.seifi.rechnung_manager_app.controllers.RechnungControllerBase;
+import de.seifi.rechnung_manager_app.controllers.RechnungController;
 import de.seifi.rechnung_manager_app.enums.RechnungType;
 import de.seifi.rechnung_manager_app.ui.UiUtils;
 import it.sauronsoftware.junique.AlreadyLockedException;
@@ -45,7 +45,6 @@ public class RechnungManagerFxApp extends Application implements Runnable {
     
     private static String[] startArgs = null;
 
-    private static Stage stage;
 
     private static MainController mainController;
     
@@ -146,8 +145,6 @@ public class RechnungManagerFxApp extends Application implements Runnable {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 	    
-		RechnungManagerFxApp.stage = primaryStage;
-		
 		showSplash(primaryStage);
 		
 		Platform.runLater(this);
@@ -194,7 +191,7 @@ public class RechnungManagerFxApp extends Application implements Runnable {
     public static Pair<Parent, FXMLLoader> loadFXMLLoader(String fxml) throws IOException {
         URL fxmlResource = RechnungManagerFxApp.class.getResource("fxml/" + fxml + ".fxml");
         FXMLLoader fxmlLoader = new FXMLLoader(fxmlResource);
-        return new Pair(fxmlLoader.load(), fxmlLoader) ;
+        return new Pair<Parent, FXMLLoader>(fxmlLoader.load(), fxmlLoader) ;
     }
 
     public static URL loadResource(String resourcePath) throws IOException {
@@ -206,7 +203,7 @@ public class RechnungManagerFxApp extends Application implements Runnable {
 
         URL fxmlResource = RechnungManagerFxApp.class.getResource("fxml/rechnung_base.fxml");
         FXMLLoader fxmlLoader = new FXMLLoader(fxmlResource);
-        fxmlLoader.setController(new RechnungControllerBase(RechnungType.RECHNUNG));
+        fxmlLoader.setController(new RechnungController(RechnungType.RECHNUNG));
         GridPane rechnungPane = (GridPane)fxmlLoader.load();
 
         return rechnungPane;
@@ -216,7 +213,7 @@ public class RechnungManagerFxApp extends Application implements Runnable {
 
         URL fxmlResource = RechnungManagerFxApp.class.getResource("fxml/rechnung_base.fxml");
         FXMLLoader fxmlLoader = new FXMLLoader(fxmlResource);
-        fxmlLoader.setController(new RechnungControllerBase(RechnungType.QUITTUNG));
+        fxmlLoader.setController(new RechnungController(RechnungType.QUITTUNG));
         GridPane rechnungPane = (GridPane)fxmlLoader.load();
 
         return rechnungPane;
