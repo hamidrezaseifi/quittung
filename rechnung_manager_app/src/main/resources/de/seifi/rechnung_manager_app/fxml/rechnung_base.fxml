@@ -38,8 +38,8 @@
 		    </rowConstraints>
 		    <children>
                	<Label text="Name" GridPane.columnIndex="1" GridPane.rowIndex="0" styleClass="summe-label" textAlignment="LEFT" />
-               	<TextField fx:id="txtName" GridPane.columnIndex="2" GridPane.rowIndex="0" styleClass="rechnung-text-field"/>
-
+               	<ComboBox fx:id="cmbName" GridPane.columnIndex="2" GridPane.rowIndex="0" styleClass="rechnung-text-field"></ComboBox>
+               	
                	<Label text="Straße / Haus No." GridPane.columnIndex="1" GridPane.rowIndex="1" styleClass="summe-label" textAlignment="LEFT" />
                	
 				<HBox GridPane.columnIndex="2" GridPane.rowIndex="1" spacing="5">

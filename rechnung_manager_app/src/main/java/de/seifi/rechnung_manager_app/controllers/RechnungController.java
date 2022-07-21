@@ -69,7 +69,7 @@ public class RechnungController implements Initializable, ControllerBase {
 
     @FXML private GridPane bannerPane;
 
-    @FXML private TextField txtName;
+    @FXML private ComboBox<CustomerSelectModel> cmbName;
 
     @FXML private TextField txtStreet;
 

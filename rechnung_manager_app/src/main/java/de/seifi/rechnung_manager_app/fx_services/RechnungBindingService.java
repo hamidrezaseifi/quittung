@@ -4,10 +4,12 @@ package de.seifi.rechnung_manager_app.fx_services;
 import de.seifi.rechnung_manager_app.data_service.IRechnungDataHelper;
 import de.seifi.rechnung_manager_app.entities.CustomerEntity;
 import de.seifi.rechnung_manager_app.entities.RechnungEntity;
+import de.seifi.rechnung_manager_app.enums.CustomerStatus;
 import de.seifi.rechnung_manager_app.enums.RechnungStatus;
 import de.seifi.rechnung_manager_app.enums.RechnungType;
 import de.seifi.rechnung_manager_app.models.CustomerModel;
 import de.seifi.rechnung_manager_app.models.CustomerModelProperty;
+import de.seifi.rechnung_manager_app.models.CustomerSelectModel;
 import de.seifi.rechnung_manager_app.models.ProduktModel;
 import de.seifi.rechnung_manager_app.models.RechnungModel;
 import de.seifi.rechnung_manager_app.repositories.CustomerRepository;
@@ -37,6 +39,7 @@ public class RechnungBindingService {
     private final CustomerRepository customerRepository;
 
     private ObservableList<RechnungItemProperty> rechnungItems;
+    private ObservableList<CustomerSelectModel> customerSelectItems;
     
     private CustomerModelProperty customerModelProperty;
 
@@ -98,6 +101,7 @@ public class RechnungBindingService {
         disablePrint = new SimpleBooleanProperty(false);
         
         this.rechnungItems = FXCollections.observableArrayList();
+        this.customerSelectItems = FXCollections.observableArrayList();
 
         reset();
 
@@ -201,6 +205,10 @@ public class RechnungBindingService {
 
         rechnungSavingModel = new RechnungModel(lastNummer + 1, date, time, rechnungType, RechnungStatus.ACTIVE);
 
+        List<CustomerEntity> allCustomers = this.customerRepository.findAll();
+        
+        this.customerSelectItems.addAll(allCustomers.stream().filter(c -> c.getStatus() == CustomerStatus.ACTIVE.getValue()).map(c -> new CustomerSelectModel(c.getId(), c.getCustomerName())).collect(Collectors.toList()));
+        
         rechnungNummer.set(String.valueOf(lastNummer + 1));
         rechnungDatum.set(date);
         liferDatum.set(date);
@@ -208,6 +216,11 @@ public class RechnungBindingService {
         isDirty = false;
 	}
 	
+	
+
+	public ObservableList<CustomerSelectModel> getCustomerListProperty() {
+		return this.customerSelectItems;
+	}
 	
 
 	public CustomerModelProperty getCustomerModelProperty() {
