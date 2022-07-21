@@ -390,12 +390,15 @@ public class RechnungBindingService {
 
 	public void setRechnungModel(RechnungModel rechnungModel) {
 		
-        Optional<CustomerEntity> customerEntityOptional = this.customerRepository.findById(rechnungModel.getCustomerId());
-        if(customerEntityOptional.isEmpty()){
-        	throw new RuntimeException("Der Kunde von der Rechnung nicht gefunden!");
-        }
+		if(rechnungType == RechnungType.RECHNUNG) {
+	        Optional<CustomerEntity> customerEntityOptional = this.customerRepository.findById(rechnungModel.getCustomerId());
+	        if(customerEntityOptional.isEmpty()){
+	        	throw new RuntimeException("Der Kunde von der Rechnung nicht gefunden!");
+	        }
 
-        this.customerSavingModel = customerEntityOptional.get().toModel();
+	        this.customerSavingModel = customerEntityOptional.get().toModel();
+			
+		}
         
         rechnungSavingModel = rechnungModel;
 		rechnungItems.clear();
@@ -423,6 +426,11 @@ public class RechnungBindingService {
 	public void setCurrentCustomer(Integer id) {
 		this.customerSavingModel = this.customerList.get(id);
 		this.customerModelProperty.setModel(this.customerSavingModel);
+		
+	}
+
+	public void test() {
+		this.customerModelProperty.setCustomerName("test name");
 		
 	}
 

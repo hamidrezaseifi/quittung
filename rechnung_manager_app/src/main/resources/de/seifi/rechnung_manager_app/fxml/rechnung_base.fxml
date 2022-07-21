@@ -38,22 +38,22 @@
 		    </rowConstraints>
 		    <children>
                	<Label text="Name" GridPane.columnIndex="1" GridPane.rowIndex="0" styleClass="summe-label" textAlignment="LEFT" />
-               	<ComboBox fx:id="cmbName" prefWidth="250" GridPane.columnIndex="2" GridPane.rowIndex="0" styleClass="rechnung-text-field"></ComboBox>
+               	<Label fx:id="lblName" prefWidth="250" textAlignment="LEFT" GridPane.columnIndex="2" onMouseClicked="#selectCustomer" GridPane.rowIndex="0" styleClass="rechnung-customer-label-name"></Label>
                	
                	<Label text="Straße / Haus No." GridPane.columnIndex="1" GridPane.rowIndex="1" styleClass="summe-label" textAlignment="LEFT" />
                	
 				<HBox GridPane.columnIndex="2" GridPane.rowIndex="1" spacing="5">
-	               	<TextField fx:id="txtStreet" styleClass="rechnung-text-field" />
-	               	<TextField fx:id="txtHaus" styleClass="rechnung-text-field" prefWidth="90" />
+	               	<Label fx:id="lblStreet" styleClass="rechnung-customer-label" prefWidth="160" />
+	               	<Label fx:id="lblHaus" styleClass="rechnung-customer-label" prefWidth="90" />
 				</HBox>
 				
 				<Label text="zus. Adresse" GridPane.columnIndex="1" GridPane.rowIndex="2" styleClass="summe-label" textAlignment="LEFT" />
-               	<TextField fx:id="txtAddress2" GridPane.columnIndex="2" GridPane.rowIndex="2" styleClass="rechnung-text-field"/>
+               	<Label fx:id="lblAddress2" GridPane.columnIndex="2" GridPane.rowIndex="2" prefWidth="250" styleClass="rechnung-customer-label"/>
 				
                	<Label text="Plz / Stadt" GridPane.columnIndex="1" GridPane.rowIndex="3" styleClass="summe-label" textAlignment="LEFT" />
 				<HBox GridPane.columnIndex="2" GridPane.rowIndex="3" spacing="5">
-	               	<TextField fx:id="txtPlz" styleClass="rechnung-text-field" prefWidth="120"  />
-	               	<TextField fx:id="txtCity" styleClass="rechnung-text-field"  />
+	               	<Label fx:id="lblPlz" styleClass="rechnung-customer-label" prefWidth="120"  />
+	               	<Label fx:id="lblCity" styleClass="rechnung-customer-label" prefWidth="130"  />
 				</HBox>
 
                 <Label text="Rechnung Nr." GridPane.columnIndex="4" GridPane.rowIndex="0" styleClass="summe-label" textAlignment="LEFT" />

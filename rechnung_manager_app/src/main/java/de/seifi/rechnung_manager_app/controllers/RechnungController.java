@@ -16,6 +16,7 @@ import de.seifi.rechnung_manager_app.ui.FloatGeldLabel;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
@@ -70,17 +71,17 @@ public class RechnungController implements Initializable, ControllerBase {
 
     @FXML private GridPane bannerPane;
 
-    @FXML private ComboBox<CustomerSelectModel> cmbName;
+    @FXML private Label lblName;
 
-    @FXML private TextField txtStreet;
+    @FXML private Label lblStreet;
 
-    @FXML private TextField txtPlz;
+    @FXML private Label lblPlz;
 
-    @FXML private TextField txtCity;
+    @FXML private Label lblCity;
 
-    @FXML private TextField txtHaus;
+    @FXML private Label lblHaus;
 
-    @FXML private TextField txtAddress2;
+    @FXML private Label lblAddress2;
 
     @FXML private HBox toggleStatusBox;
 
@@ -138,21 +139,21 @@ public class RechnungController implements Initializable, ControllerBase {
     	}
     }
 
+    @FXML
+    private void selectCustomer() throws IOException {
+    	//rechnungBindingService.test();
+    	
+    	SelectCustomerDialog dialog = new SelectCustomerDialog(stage);
+    	dialog.showAndWait().ifPresent(model -> {
+    	    
+    	});
+    }
+    
+    
     private void doReloadData() {
     	showItemsTableView.setItems(null);
     	rechnungBindingService.reset();
         showItemsTableView.setItems(rechnungBindingService.getRechnungItems());
-
-        txtPlz.setText("");
-        
-        //cmbName.getEditor().setText("");
-        cmbName.getSelectionModel().select(null);
-        txtStreet.setText("");
-        txtAddress2.setText("");
-        txtCity.setText("");
-        txtHaus.setText("");
-        
-        cmbName.requestFocus();
         //cmbName.getEditor().setFocusTraversable(true);
     }
     
@@ -277,18 +278,22 @@ public class RechnungController implements Initializable, ControllerBase {
 
         if(this.rechnungType == RechnungType.RECHNUNG){
         	
-        	cmbName.getItems().addAll(rechnungBindingService.getCustomerList());
+        	/*cmbName.getItems().addAll(rechnungBindingService.getCustomerList());
         	//cmbName.getEditor().textProperty().bindBidirectional(rechnungBindingService.getCustomerModelProperty().getCustomerName());
         	cmbName.getSelectionModel().selectedItemProperty().addListener((ov, oldValue, newValue) -> {
         		System.out.println(newValue.toString());
         		rechnungBindingService.setCurrentCustomer(newValue.getId());
-        	});
+        	});*/
             //txtName.textProperty().bindBidirectional(rechnungBindingService.getCustomerModelProperty().getCustomerName());
-            txtStreet.textProperty().bindBidirectional(rechnungBindingService.getCustomerModelProperty().getStreet());
-            txtPlz.textProperty().bindBidirectional(rechnungBindingService.getCustomerModelProperty().getPlz());
-            txtAddress2.textProperty().bindBidirectional(rechnungBindingService.getCustomerModelProperty().getAddress2());
-            txtCity.textProperty().bindBidirectional(rechnungBindingService.getCustomerModelProperty().getCity());
-            txtHaus.textProperty().bindBidirectional(rechnungBindingService.getCustomerModelProperty().getHouseNumber());
+        	
+        	lblName.setCursor(Cursor.HAND);
+        	
+            lblName.textProperty().bind(rechnungBindingService.getCustomerModelProperty().getCustomerName());
+            lblStreet.textProperty().bind(rechnungBindingService.getCustomerModelProperty().getStreet());
+            lblPlz.textProperty().bind(rechnungBindingService.getCustomerModelProperty().getPlz());
+            lblAddress2.textProperty().bind(rechnungBindingService.getCustomerModelProperty().getAddress2());
+            lblCity.textProperty().bind(rechnungBindingService.getCustomerModelProperty().getCity());
+            lblHaus.textProperty().bind(rechnungBindingService.getCustomerModelProperty().getHouseNumber());
 
             toggleStatusBox.setVisible(false);
         }
@@ -322,12 +327,12 @@ public class RechnungController implements Initializable, ControllerBase {
 			btnReset.setVisible(false);
 
             if(this.rechnungType == RechnungType.RECHNUNG){
-                cmbName.setEditable(false);
+                /*cmbName.setEditable(false);
                 txtStreet.setEditable(false);
                 txtPlz.setEditable(false);
                 txtAddress2.setEditable(false);
                 txtCity.setEditable(false);
-                txtHaus.setEditable(false);
+                txtHaus.setEditable(false);*/
 
             }
 

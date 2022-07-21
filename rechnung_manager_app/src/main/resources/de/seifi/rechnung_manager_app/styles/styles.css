@@ -33,11 +33,35 @@
     -fx-font-weight: bold;
 }
 
-
 .rechnung-text-field{
     -fx-font-family: Arial, Helvetica, sans-serif;
     -fx-font-size: 14px;
     -fx-font-weight: normal;
+}
+
+.rechnung-customer-label{
+    -fx-font-family: Arial, Helvetica, sans-serif;
+    -fx-font-size: 14px;
+    -fx-font-weight: normal;
+    -fx-padding: 5px; 
+    -fx-border-color:black; 
+    -fx-border-width: 1; 
+    -fx-border-style: solid;
+}
+
+.rechnung-customer-label-name{
+    -fx-font-family: Arial, Helvetica, sans-serif;
+    -fx-font-size: 14px;
+    -fx-font-weight: normal;
+    -fx-padding: 5px; 
+    -fx-border-color:black; 
+    -fx-border-width: 1; 
+    -fx-border-style: solid;
+    -fx-background-image: url('../images/select_multiple.png');
+    
+    -fx-background-size: 24 100%;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position:right center;   
 }
 
 
