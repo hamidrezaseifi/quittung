@@ -21,25 +21,76 @@
 <DialogPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" prefWidth="500" prefHeight="500">
 	          
 	<content>
-		<GridPane alignment="TOP_LEFT" fx:id="rootPane" styleClass="select-customer-pane">
-		    <columnConstraints>
-		        <ColumnConstraints hgrow="ALWAYS" />
-		    </columnConstraints>
-		    <rowConstraints>
-		        <RowConstraints vgrow="ALWAYS" />
-		    </rowConstraints>
-		    <children>
-		
-		    </children>
-		    <padding>
-		        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-		    </padding>
-		</GridPane>
-	
+		<TabPane fx:id="tabPane">
+			<tabs>
+				<Tab fx:id="tbNew" text="Neu" closable="false">
+					<GridPane alignment="TOP_LEFT" fx:id="rootPane">
+						<columnConstraints>
+							<ColumnConstraints halignment="LEFT" prefWidth="100" />
+							<ColumnConstraints hgrow="ALWAYS" />
+						</columnConstraints>
+						<rowConstraints>
+							<RowConstraints prefHeight="40" />
+							<RowConstraints prefHeight="40" />
+							<RowConstraints prefHeight="40" />
+							<RowConstraints prefHeight="40" />
+							<RowConstraints prefHeight="40" />
+							<RowConstraints prefHeight="40" />
+						</rowConstraints>
+						<children>
+							<Label text="Name" GridPane.columnIndex="0" GridPane.rowIndex="0"></Label>
+							<TextField fx:id="txtName" GridPane.columnIndex="1" GridPane.rowIndex="0"></TextField>
+
+							<Label text="Straße" GridPane.columnIndex="0" GridPane.rowIndex="1"></Label>
+							<TextField fx:id="txtStreet" GridPane.columnIndex="1" GridPane.rowIndex="1"></TextField>
+
+							<Label text="Haus Nr." GridPane.columnIndex="0" GridPane.rowIndex="2"></Label>
+							<TextField fx:id="txtHouse" GridPane.columnIndex="1" GridPane.rowIndex="2"></TextField>
+
+							<Label text="zus. Adresse" GridPane.columnIndex="0" GridPane.rowIndex="3"></Label>
+							<TextField fx:id="txtAddress2" GridPane.columnIndex="1" GridPane.rowIndex="3"></TextField>
+
+							<Label text="PLZ" GridPane.columnIndex="0" GridPane.rowIndex="4"></Label>
+							<TextField fx:id="txtPlz" GridPane.columnIndex="1" GridPane.rowIndex="4"></TextField>
+
+							<Label text="Stadt" GridPane.columnIndex="0" GridPane.rowIndex="5"></Label>
+							<TextField fx:id="txtCity" GridPane.columnIndex="1" GridPane.rowIndex="5"></TextField>
+
+						</children>
+						<padding>
+							<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+						</padding>
+					</GridPane>
+
+				</Tab>
+				<Tab fx:id="tbExisting" text="Vorhanden" closable="false">
+					<TableView editable="false" fx:id="twCustomers">
+						<columns>
+							<TableColumn fx:id="nameColumn" text="Name" prefWidth="90" sortable="false">
+								<cellValueFactory>
+									<PropertyValueFactory property="customerName" />
+								</cellValueFactory>
+
+							</TableColumn>
+							<TableColumn fx:id="addressColumn" text="Adresse" sortable="false">
+								<cellValueFactory>
+									<PropertyValueFactory property="address" />
+								</cellValueFactory>
+
+							</TableColumn>
+
+						</columns>
+
+					</TableView>
+
+				</Tab>
+			</tabs>
+		</TabPane>
+
+
 	</content>
 	<buttonTypes>
-        <ButtonType fx:id="obButton" text="OK" buttonData="OK_DONE"/>
+        <ButtonType fx:id="okButtonType" text="OK" buttonData="OK_DONE"/>
         <ButtonType text="Abbrechen" buttonData="CANCEL_CLOSE"/>
-	
 	</buttonTypes>
 </DialogPane>

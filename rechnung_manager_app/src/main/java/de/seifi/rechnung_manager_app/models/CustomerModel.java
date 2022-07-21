@@ -36,7 +36,13 @@ public class CustomerModel {
     public CustomerModel() {
     	super();
     	id = null;
-
+		this.customerName = "";
+		this.street = "";
+		this.houseNumber = "";
+		this.address2 = "";
+		this.plz = "";
+		this.city = "";
+		this.status = CustomerStatus.ACTIVE;
     }
 
 	public CustomerModel(String customerName,
@@ -181,6 +187,12 @@ public class CustomerModel {
 
 	public void setUpdated(LocalDateTime updated) {
 		this.updated = updated;
+	}
+
+	public String getAddress() {
+		String addr2 = address2 == null || address2.isBlank() ? "" : address2 + ", ";
+		String address = String.format("%s %s, %s%s %s", street, houseNumber, addr2, plz, city);
+		return address;
 	}
 
 	public CustomerEntity toEntity() {

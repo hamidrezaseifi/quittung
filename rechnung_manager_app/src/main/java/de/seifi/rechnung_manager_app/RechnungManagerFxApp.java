@@ -188,8 +188,11 @@ public class RechnungManagerFxApp extends Application implements Runnable {
         }
     }
 
-    public static Pair<Parent, FXMLLoader> getSelectCustomerDialog() throws IOException {
-    	return loadFXMLLoader("select_customer");
+    public static FXMLLoader getSelectCustomerDialog() throws IOException {
+        URL fxmlResource = RechnungManagerFxApp.class.getResource("fxml/select_customer.fxml");
+        FXMLLoader fxmlLoader = new FXMLLoader(fxmlResource);
+
+    	return fxmlLoader;
     }
     
     public static Pair<Parent, FXMLLoader> loadFXMLLoader(String fxml) throws IOException {

@@ -3,11 +3,8 @@ package de.seifi.rechnung_manager_app.controllers;
 import de.seifi.rechnung_manager_app.RechnungManagerFxApp;
 import de.seifi.rechnung_manager_app.RechnungManagerSpringApp;
 import de.seifi.rechnung_manager_app.data_service.IRechnungDataHelper;
-import de.seifi.rechnung_manager_app.entities.CustomerEntity;
 import de.seifi.rechnung_manager_app.enums.RechnungType;
 import de.seifi.rechnung_manager_app.fx_services.RechnungBindingService;
-import de.seifi.rechnung_manager_app.models.CustomerModel;
-import de.seifi.rechnung_manager_app.models.CustomerSelectModel;
 import de.seifi.rechnung_manager_app.models.RechnungItemProperty;
 import de.seifi.rechnung_manager_app.models.RechnungModel;
 import de.seifi.rechnung_manager_app.repositories.CustomerRepository;
@@ -143,10 +140,13 @@ public class RechnungController implements Initializable, ControllerBase {
     private void selectCustomer() throws IOException {
     	//rechnungBindingService.test();
     	
-    	SelectCustomerDialog dialog = new SelectCustomerDialog(stage);
+    	SelectCustomerDialog dialog = new SelectCustomerDialog(stage,
+                                                               this.rechnungBindingService.getCustomerList(),
+                                                               this.rechnungBindingService.getCustomerModel());
     	dialog.showAndWait().ifPresent(model -> {
-    	    
+    	    rechnungBindingService.setCustomerModel(model);
     	});
+
     }
     
     

@@ -23,7 +23,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -215,25 +214,30 @@ public class RechnungBindingService {
         
         isDirty = false;
 	}
-	
-	
 
-	public List<CustomerSelectModel> getCustomerList() {
-       List<CustomerEntity> allCustomers = this.customerRepository.findAll();
-        
-       this.customerList.clear();
-       List<CustomerModel> modelList = allCustomers.stream().filter(c -> c.getStatus() == CustomerStatus.ACTIVE.getValue()).map(c -> c.toModel()).collect(Collectors.toList());
-       for(CustomerModel model: modelList) {
-    	   this.customerList.put(model.getId(), model);
-       }
-       
-       List<CustomerSelectModel> selectList = modelList.stream().map(c -> new CustomerSelectModel(c.getId(), c.getCustomerName())).collect(Collectors.toList());
+    public List<CustomerSelectModel> getCustomerSelectList() {
 
-		return selectList;
-	}
-	
+        this.customerList.clear();
+        List<CustomerModel> modelList = getCustomerList();
+        for(CustomerModel model: modelList) {
+            this.customerList.put(model.getId(), model);
+        }
 
-	public CustomerModelProperty getCustomerModelProperty() {
+        List<CustomerSelectModel> selectList = modelList.stream().map(c -> new CustomerSelectModel(c.getId(), c.getCustomerName())).collect(Collectors.toList());
+
+        return selectList;
+    }
+
+    public List<CustomerModel> getCustomerList() {
+        List<CustomerEntity> allCustomers = this.customerRepository.findAll();
+
+        List<CustomerModel> modelList = allCustomers.stream().filter(c -> c.getStatus() == CustomerStatus.ACTIVE.getValue()).map(c -> c.toModel()).collect(Collectors.toList());
+
+        return modelList;
+    }
+
+
+    public CustomerModelProperty getCustomerModelProperty() {
 		return customerModelProperty;
 	}
 
@@ -423,11 +427,21 @@ public class RechnungBindingService {
         return isView;
     }
 
-	public void setCurrentCustomer(Integer id) {
-		this.customerSavingModel = this.customerList.get(id);
-		this.customerModelProperty.setModel(this.customerSavingModel);
-		
-	}
+    public void setCurrentCustomer(Integer id) {
+        this.customerSavingModel = this.customerList.get(id);
+        this.customerModelProperty.setModel(this.customerSavingModel);
+
+    }
+
+    public void setCustomerModel(CustomerModel customerModel) {
+        this.customerSavingModel = customerModel;
+        this.customerModelProperty.setModel(customerModel);
+
+    }
+
+    public CustomerModel getCustomerModel() {
+        return this.customerSavingModel;
+    }
 
 	public void test() {
 		this.customerModelProperty.setCustomerName("test name");

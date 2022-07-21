@@ -132,8 +132,18 @@ public class CustomerModelProperty {
 		this.plz.set(customerModel.getPlz());
 		this.city.set(customerModel.getCity());
 
+		this.customerName.notify();
+		this.street.notify();
+		this.houseNumber.notify();
+		this.address2.notify();
+		this.plz.notify();
+		this.city.notify();
+
 	}
 
-    
 
+	public boolean isInvalid() {
+		return this.customerName.get().isBlank() || this.street.get().isBlank() || this.houseNumber.get().isBlank()
+			   || this.plz.get().isBlank() || this.city.get().isBlank();
+	}
 }
