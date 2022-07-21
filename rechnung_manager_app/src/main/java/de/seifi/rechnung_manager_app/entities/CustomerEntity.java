@@ -1,13 +1,15 @@
 package de.seifi.rechnung_manager_app.entities;
 
 import de.seifi.rechnung_manager_app.models.CustomerModel;
-import de.seifi.rechnung_manager_app.models.RechnungModel;
+
+import java.time.LocalDateTime;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 
 @Entity
 @Table(name = "customer")
@@ -20,22 +22,35 @@ public class CustomerEntity extends EntityBase {
 	@Column(name="customer_name")
 	private String customerName;
 
+	@Column(nullable = false) 
+	@ColumnDefault("''")
 	private String street;
 
 	@Column(name="house_number")
 	private String houseNumber;
 
+	@Column(nullable = false) 
+	@ColumnDefault("''")
 	private String address2;
 
+	@Column(nullable = false) 
+	@ColumnDefault("''")
 	private String plz;
 
+	@Column(nullable = false) 
+	@ColumnDefault("''")
 	private String city;
 
+	@Column(nullable = false) 
 	private Integer status;
 
-	private Timestamp created;
-
-	private Timestamp updated;
+	@CreationTimestamp
+	@ColumnDefault("CURRENT_TIMESTAMP")
+	private LocalDateTime created;
+	
+	@UpdateTimestamp
+	@ColumnDefault("CURRENT_TIMESTAMP")
+	private LocalDateTime updated;
 
 	public CustomerEntity() {
     	super();
@@ -67,8 +82,7 @@ public class CustomerEntity extends EntityBase {
                           String plz,
                           String city,
                           int status,
-                          Timestamp created,
-                          Timestamp updated) {
+                          LocalDateTime updated) {
 		this();
 		this.id = id;
 		this.customerName = customerName;
@@ -78,7 +92,6 @@ public class CustomerEntity extends EntityBase {
 		this.plz = plz;
 		this.city = city;
 		this.status = status;
-		this.created = created;
 		this.updated = updated;
 	}
 
@@ -149,29 +162,29 @@ public class CustomerEntity extends EntityBase {
 
 
 	@Override
-	public Timestamp getCreated() {
+	public LocalDateTime getCreated() {
 		return created;
 	}
 
 	@Override
-	public void setCreated(Timestamp created) {
+	public void setCreated(LocalDateTime created) {
 		this.created = created;
 	}
 
 	@Override
-	public Timestamp getUpdated() {
+	public LocalDateTime getUpdated() {
 		return updated;
 	}
 
 	@Override
-	public void setUpdated(Timestamp updated) {
+	public void setUpdated(LocalDateTime updated) {
 		this.updated = updated;
 	}
 
 
 	public CustomerModel toModel() {
 		CustomerModel model = new CustomerModel(id, customerName, street, houseNumber, address2, plz, city, status,
-												created.toLocalDateTime(), updated.toLocalDateTime());
+				created, updated);
 		return model;
 	}
 

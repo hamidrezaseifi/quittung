@@ -23,8 +23,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -37,10 +40,10 @@ public class RechnungBindingService {
     private final RechnungRepository rechnungRepository;
     private final IRechnungDataHelper rechnungDataHelper;
     private final CustomerRepository customerRepository;
-
-    private ObservableList<RechnungItemProperty> rechnungItems;
-    private ObservableList<CustomerSelectModel> customerSelectItems;
     
+    private final Map<Integer, CustomerModel> customerList;
+
+    private ObservableList<RechnungItemProperty> rechnungItems;   
     private CustomerModelProperty customerModelProperty;
 
     private FloatProperty gesamtSumme;
@@ -88,6 +91,8 @@ public class RechnungBindingService {
         this.rechnungRepository = rechnungRepository;
         this.rechnungDataHelper = rechnungDataHelper;
         this.customerRepository = customerRepository;
+        
+        this.customerList = new HashMap<>();
 
         gesamtSumme = new SimpleFloatProperty(0);
         nettoSumme = new SimpleFloatProperty(0);
@@ -101,8 +106,7 @@ public class RechnungBindingService {
         disablePrint = new SimpleBooleanProperty(false);
         
         this.rechnungItems = FXCollections.observableArrayList();
-        this.customerSelectItems = FXCollections.observableArrayList();
-
+        
         reset();
 
     }
@@ -204,10 +208,6 @@ public class RechnungBindingService {
         int lastNummer = this.rechnungDataHelper.getLastActiveRechnungNummer();
 
         rechnungSavingModel = new RechnungModel(lastNummer + 1, date, time, rechnungType, RechnungStatus.ACTIVE);
-
-        List<CustomerEntity> allCustomers = this.customerRepository.findAll();
-        
-        this.customerSelectItems.addAll(allCustomers.stream().filter(c -> c.getStatus() == CustomerStatus.ACTIVE.getValue()).map(c -> new CustomerSelectModel(c.getId(), c.getCustomerName())).collect(Collectors.toList()));
         
         rechnungNummer.set(String.valueOf(lastNummer + 1));
         rechnungDatum.set(date);
@@ -218,8 +218,18 @@ public class RechnungBindingService {
 	
 	
 
-	public ObservableList<CustomerSelectModel> getCustomerListProperty() {
-		return this.customerSelectItems;
+	public List<CustomerSelectModel> getCustomerList() {
+       List<CustomerEntity> allCustomers = this.customerRepository.findAll();
+        
+       this.customerList.clear();
+       List<CustomerModel> modelList = allCustomers.stream().filter(c -> c.getStatus() == CustomerStatus.ACTIVE.getValue()).map(c -> c.toModel()).collect(Collectors.toList());
+       for(CustomerModel model: modelList) {
+    	   this.customerList.put(model.getId(), model);
+       }
+       
+       List<CustomerSelectModel> selectList = modelList.stream().map(c -> new CustomerSelectModel(c.getId(), c.getCustomerName())).collect(Collectors.toList());
+
+		return selectList;
 	}
 	
 
@@ -409,6 +419,12 @@ public class RechnungBindingService {
     public boolean isView() {
         return isView;
     }
+
+	public void setCurrentCustomer(Integer id) {
+		this.customerSavingModel = this.customerList.get(id);
+		this.customerModelProperty.setModel(this.customerSavingModel);
+		
+	}
 
     
 }

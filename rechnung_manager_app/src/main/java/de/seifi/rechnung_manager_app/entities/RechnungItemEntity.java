@@ -1,11 +1,14 @@
 package de.seifi.rechnung_manager_app.entities;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import de.seifi.rechnung_manager_app.models.RechnungItemModel;
 
@@ -23,18 +26,25 @@ public class RechnungItemEntity extends EntityBase {
 	@JoinColumn(foreignKey = @ForeignKey(name = "rechnung_item_rechnung_fkey"))
 	private RechnungEntity rechnung;
 
+	@Column(nullable = false) 
 	private String produkt;
     
-	@Column(name="artikel_nummer")
+	@Column(name="artikel_nummer", nullable = false)
 	private String artikelNummer;
     
-	private int menge;
+	@Column(nullable = false) 
+	private Integer menge;
     
-	private float preis;
+	@Column(nullable = false) 
+	private Float preis;
     
-	private Timestamp created;
+	@CreationTimestamp
+	@ColumnDefault("CURRENT_TIMESTAMP")
+	private LocalDateTime created;
 	
-	private Timestamp updated;
+	@UpdateTimestamp
+	@ColumnDefault("CURRENT_TIMESTAMP")
+	private LocalDateTime updated;
 
     public RechnungItemEntity() {
     	super();
@@ -42,8 +52,8 @@ public class RechnungItemEntity extends EntityBase {
 
     public RechnungItemEntity(String produkt,
                              String artikelNummer,
-                             int menge,
-                             float preis) {
+                             Integer menge,
+                             Float preis) {
     	super();
         this.produkt = produkt;
         this.artikelNummer = artikelNummer;
@@ -54,17 +64,15 @@ public class RechnungItemEntity extends EntityBase {
     public RechnungItemEntity(Integer id,
     						String produkt,
                             String artikelNummer,
-                            int menge,
-                            float preis,
-                 			Timestamp created,
-                			Timestamp updated) {
+                            Integer menge,
+                            Float preis,
+                            LocalDateTime updated) {
     	super();
         this.id = id;
         this.produkt = produkt;
         this.artikelNummer = artikelNummer;
         this.menge = menge;
         this.preis = preis;
-        this.created = created;
         this.updated = updated;
    }
 
@@ -77,23 +85,23 @@ public class RechnungItemEntity extends EntityBase {
         this.produkt = produkt;
     }
 
-    public int getMenge() {
+    public Integer getMenge() {
         return menge;
     }
 
-    public void setMenge(int menge) {
+    public void setMenge(Integer menge) {
         this.menge = menge;
     }
 
-    public float getPreis() {
+    public Float getPreis() {
         return preis;
     }
 
-    public void setPreis(float preis) {
+    public void setPreis(Float preis) {
         this.preis = preis;
     }
 
-    public float getGesmt() {
+    public Float getGesmt() {
         return preis * menge;
     }
 
@@ -125,27 +133,27 @@ public class RechnungItemEntity extends EntityBase {
 	
 
 	@Override
-	public Timestamp getCreated() {
+	public LocalDateTime getCreated() {
 		return created;
 	}
 
 	@Override
-	public void setCreated(Timestamp created) {
+	public void setCreated(LocalDateTime created) {
 		this.created = created;
 	}
 
 	@Override
-	public Timestamp getUpdated() {
+	public LocalDateTime getUpdated() {
 		return updated;
 	}
 
 	@Override
-	public void setUpdated(Timestamp updated) {
+	public void setUpdated(LocalDateTime updated) {
 		this.updated = updated;
 	}
 
 	public RechnungItemModel toModel() {
-		RechnungItemModel model = new RechnungItemModel(id, produkt, artikelNummer, menge, preis, created.toLocalDateTime(), updated.toLocalDateTime());
+		RechnungItemModel model = new RechnungItemModel(id, produkt, artikelNummer, menge, preis, created, updated);
 		
 		return model;
 	}

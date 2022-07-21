@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.seifi.rechnung_manager_app.entities.EntityBase;
 import de.seifi.rechnung_manager_app.entities.RechnungEntity;
 import de.seifi.rechnung_manager_app.enums.RechnungStatus;
 import de.seifi.rechnung_manager_app.enums.RechnungType;
@@ -208,8 +209,7 @@ public class RechnungModel {
 		RechnungEntity entity = null;
 		if(id != null) {
 			entity = new RechnungEntity(id, customerId, nummer, rechnungCreate, liferDate,
-										rechnungType.getValue(), status.getValue(), Timestamp.valueOf(this.created),
-										Timestamp.valueOf(this.updated));
+										rechnungType.getValue(), status.getValue(), this.updated);
 		} 
 		else {
 			entity = new RechnungEntity(customerId, nummer, rechnungCreate, liferDate,

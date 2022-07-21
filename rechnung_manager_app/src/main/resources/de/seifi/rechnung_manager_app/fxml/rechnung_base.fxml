@@ -38,7 +38,7 @@
 		    </rowConstraints>
 		    <children>
                	<Label text="Name" GridPane.columnIndex="1" GridPane.rowIndex="0" styleClass="summe-label" textAlignment="LEFT" />
-               	<ComboBox fx:id="cmbName" GridPane.columnIndex="2" GridPane.rowIndex="0" styleClass="rechnung-text-field"></ComboBox>
+               	<ComboBox fx:id="cmbName" prefWidth="250" GridPane.columnIndex="2" GridPane.rowIndex="0" styleClass="rechnung-text-field"></ComboBox>
                	
                	<Label text="Straße / Haus No." GridPane.columnIndex="1" GridPane.rowIndex="1" styleClass="summe-label" textAlignment="LEFT" />
                	

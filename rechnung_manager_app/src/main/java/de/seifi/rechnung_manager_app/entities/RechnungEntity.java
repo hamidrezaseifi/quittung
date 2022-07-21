@@ -1,7 +1,6 @@
 package de.seifi.rechnung_manager_app.entities;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -9,8 +8,10 @@ import java.util.Set;
 import javax.persistence.*;
 
 import de.seifi.rechnung_manager_app.models.RechnungModel;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 @Table(name = "rechnung")
@@ -20,25 +21,31 @@ public class RechnungEntity extends EntityBase {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-	@Column(name="customer_id")
+	@Column(name="customer_id", nullable = false)
 	private Integer customerId;
 
+	@Column(nullable = false) 
 	private Integer nummer;
 
-	@Column(name="rechnung_create")
+	@Column(name="rechnung_create", nullable = false)
 	private String rechnungCreate;
 	   
-	@Column(name="lifer_date")
+	@Column(name="lifer_date", nullable = false)
 	private String liferDate;
 
-	@Column(name="rechnung_type")
+	@Column(name="rechnung_type", nullable = false)
 	private Integer rechnungType;
 
+	@Column(nullable = false) 
 	private Integer status;
 
-	private Timestamp created;
+	@CreationTimestamp
+	@ColumnDefault("CURRENT_TIMESTAMP")
+	private LocalDateTime created;
 	
-	private Timestamp updated;
+	@UpdateTimestamp
+	@ColumnDefault("CURRENT_TIMESTAMP")
+	private LocalDateTime updated;
 
 	@OneToMany(mappedBy = "rechnung", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	private Set<RechnungItemEntity> items;
@@ -70,8 +77,7 @@ public class RechnungEntity extends EntityBase {
 						  String liferDate,
 						  int rechnungType,
 						  int status,
-						  Timestamp created,
-						  Timestamp updated) {
+						  LocalDateTime updated) {
 		this();
 		this.id = id;
 		this.customerId = customerId;
@@ -80,7 +86,6 @@ public class RechnungEntity extends EntityBase {
 		this.liferDate = liferDate;
 		this.status = status;
 		this.rechnungType = rechnungType;
-		this.created = created;
 		this.updated = updated;
 	}
 
@@ -167,30 +172,29 @@ public class RechnungEntity extends EntityBase {
 
 
 	@Override
-	public Timestamp getCreated() {
+	public LocalDateTime getCreated() {
 		return created;
 	}
 
 	@Override
-	public void setCreated(Timestamp created) {
+	public void setCreated(LocalDateTime created) {
 		this.created = created;
 	}
 
 	@Override
-	public Timestamp getUpdated() {
+	public LocalDateTime getUpdated() {
 		return updated;
 	}
 
 	@Override
-	public void setUpdated(Timestamp updated) {
+	public void setUpdated(LocalDateTime updated) {
 		this.updated = updated;
 	}
 
 
 	public RechnungModel toModel() {
 		RechnungModel model = new RechnungModel(id, customerId, nummer, rechnungCreate, liferDate,
-												rechnungType, status, created.toLocalDateTime(),
-												updated.toLocalDateTime());
+												rechnungType, status, created, updated);
 		for(RechnungItemEntity item: items) {
 			model.getItems().add(item.toModel());
 		}

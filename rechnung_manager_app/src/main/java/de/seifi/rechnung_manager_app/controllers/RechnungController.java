@@ -144,13 +144,16 @@ public class RechnungController implements Initializable, ControllerBase {
         showItemsTableView.setItems(rechnungBindingService.getRechnungItems());
 
         txtPlz.setText("");
-        txtName.setText("");
+        
+        //cmbName.getEditor().setText("");
+        cmbName.getSelectionModel().select(null);
         txtStreet.setText("");
         txtAddress2.setText("");
         txtCity.setText("");
         txtHaus.setText("");
         
-        txtName.setFocusTraversable(true);
+        cmbName.requestFocus();
+        //cmbName.getEditor().setFocusTraversable(true);
     }
     
     @FXML
@@ -274,7 +277,13 @@ public class RechnungController implements Initializable, ControllerBase {
 
         if(this.rechnungType == RechnungType.RECHNUNG){
         	
-            txtName.textProperty().bindBidirectional(rechnungBindingService.getCustomerModelProperty().getCustomerName());
+        	cmbName.getItems().addAll(rechnungBindingService.getCustomerList());
+        	//cmbName.getEditor().textProperty().bindBidirectional(rechnungBindingService.getCustomerModelProperty().getCustomerName());
+        	cmbName.getSelectionModel().selectedItemProperty().addListener((ov, oldValue, newValue) -> {
+        		System.out.println(newValue.toString());
+        		rechnungBindingService.setCurrentCustomer(newValue.getId());
+        	});
+            //txtName.textProperty().bindBidirectional(rechnungBindingService.getCustomerModelProperty().getCustomerName());
             txtStreet.textProperty().bindBidirectional(rechnungBindingService.getCustomerModelProperty().getStreet());
             txtPlz.textProperty().bindBidirectional(rechnungBindingService.getCustomerModelProperty().getPlz());
             txtAddress2.textProperty().bindBidirectional(rechnungBindingService.getCustomerModelProperty().getAddress2());
@@ -313,7 +322,7 @@ public class RechnungController implements Initializable, ControllerBase {
 			btnReset.setVisible(false);
 
             if(this.rechnungType == RechnungType.RECHNUNG){
-                txtName.setEditable(false);
+                cmbName.setEditable(false);
                 txtStreet.setEditable(false);
                 txtPlz.setEditable(false);
                 txtAddress2.setEditable(false);

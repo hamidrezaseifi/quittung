@@ -1,7 +1,7 @@
 package de.seifi.rechnung_manager_app.enums;
 
 public enum CustomerStatus {
-    ACTIVE(0),
+    ACTIVE(1),
     ARCHIVED(10);
 
     private final int value;

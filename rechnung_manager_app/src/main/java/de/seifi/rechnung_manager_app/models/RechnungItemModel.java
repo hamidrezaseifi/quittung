@@ -3,6 +3,7 @@ package de.seifi.rechnung_manager_app.models;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
+import de.seifi.rechnung_manager_app.entities.EntityBase;
 import de.seifi.rechnung_manager_app.entities.RechnungItemEntity;
 
 public class RechnungItemModel {
@@ -118,7 +119,7 @@ public class RechnungItemModel {
 	public RechnungItemEntity toEntity() {
 		RechnungItemEntity entity = null;
 		if(id != null) {
-			entity = new RechnungItemEntity(id, produkt, artikelNummer, menge, preis, Timestamp.valueOf(this.created), Timestamp.valueOf(this.updated));
+			entity = new RechnungItemEntity(id, produkt, artikelNummer, menge, preis, updated);
 		} 
 		else {
 			entity = new RechnungItemEntity(produkt, artikelNummer, menge, preis);

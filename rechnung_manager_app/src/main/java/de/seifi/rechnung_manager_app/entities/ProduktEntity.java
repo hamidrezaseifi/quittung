@@ -1,29 +1,37 @@
 package de.seifi.rechnung_manager_app.entities;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import javax.persistence.*;
+
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import de.seifi.rechnung_manager_app.models.ProduktModel;
 
 
 @Entity
-@Table(name = "produkt_last_preis")
+@Table(name = "produkt")
 public class ProduktEntity extends EntityBase {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@Column(name="produkt_name")
+	@Column(name="produkt_name", nullable = false)
 	private String produktName;
 	
-	@Column(name="last_preis")
+	@Column(name="last_preis", nullable = false)
 	private float lastPreis;
     
-	private Timestamp created;
+	@CreationTimestamp
+	@ColumnDefault("CURRENT_TIMESTAMP")
+	private LocalDateTime created;
 	
-	private Timestamp updated;
+	@UpdateTimestamp
+	@ColumnDefault("CURRENT_TIMESTAMP")
+	private LocalDateTime updated;
 
 	public ProduktEntity() {
 		super();
@@ -40,13 +48,11 @@ public class ProduktEntity extends EntityBase {
 	public ProduktEntity(Integer id, 
 			String produktName, 
 			float lastPreis,
-            Timestamp created,
-            Timestamp updated) {
+			LocalDateTime updated) {
 		super();
 		this.id = id;
 		this.produktName = produktName;
 		this.lastPreis = lastPreis;
-        this.created = created;
         this.updated = updated;
 	}
 
@@ -78,27 +84,27 @@ public class ProduktEntity extends EntityBase {
 	}
 
 	@Override
-	public Timestamp getCreated() {
+	public LocalDateTime getCreated() {
 		return created;
 	}
 
 	@Override
-	public void setCreated(Timestamp created) {
+	public void setCreated(LocalDateTime created) {
 		this.created = created;
 	}
 
 	@Override
-	public Timestamp getUpdated() {
+	public LocalDateTime getUpdated() {
 		return updated;
 	}
 
 	@Override
-	public void setUpdated(Timestamp updated) {
+	public void setUpdated(LocalDateTime updated) {
 		this.updated = updated;
 	}
 	
 	public ProduktModel toModel() {
-		ProduktModel model = new ProduktModel(id, produktName, lastPreis, created.toLocalDateTime(), updated.toLocalDateTime());
+		ProduktModel model = new ProduktModel(id, produktName, lastPreis, created, updated);
 		
 		return model;
 	}

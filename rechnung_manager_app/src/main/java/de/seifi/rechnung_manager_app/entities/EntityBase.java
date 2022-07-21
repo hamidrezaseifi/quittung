@@ -1,7 +1,6 @@
 package de.seifi.rechnung_manager_app.entities;
 
-import java.sql.Timestamp;
-import java.util.UUID;
+import java.time.LocalDateTime;
 
 
 public abstract class EntityBase {
@@ -9,24 +8,23 @@ public abstract class EntityBase {
     
     public EntityBase() {
 		this.setId(null);
-		this.setCreated(new Timestamp(System.currentTimeMillis()));
-		this.setUpdated(new Timestamp(System.currentTimeMillis()));
+		this.setCreated(LocalDateTime.now());
+		this.setUpdated(LocalDateTime.now());
     }
 
 	public abstract void setId(Integer id);
 
 
-	public abstract Timestamp getCreated();
+	public abstract LocalDateTime getCreated();
 
 
-	public abstract  void setCreated(Timestamp created);
+	public abstract  void setCreated(LocalDateTime created);
 
 
-	public abstract Timestamp getUpdated();
+	public abstract LocalDateTime getUpdated();
 
 
-	public abstract  void setUpdated(Timestamp updated);
-
-    
-
+	public abstract  void setUpdated(LocalDateTime updated);
+	   
+	
 }
