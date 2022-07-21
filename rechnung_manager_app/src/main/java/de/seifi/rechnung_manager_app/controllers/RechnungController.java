@@ -7,6 +7,7 @@ import de.seifi.rechnung_manager_app.entities.CustomerEntity;
 import de.seifi.rechnung_manager_app.enums.RechnungType;
 import de.seifi.rechnung_manager_app.fx_services.RechnungBindingService;
 import de.seifi.rechnung_manager_app.models.CustomerModel;
+import de.seifi.rechnung_manager_app.models.CustomerSelectModel;
 import de.seifi.rechnung_manager_app.models.RechnungItemProperty;
 import de.seifi.rechnung_manager_app.models.RechnungModel;
 import de.seifi.rechnung_manager_app.repositories.CustomerRepository;
