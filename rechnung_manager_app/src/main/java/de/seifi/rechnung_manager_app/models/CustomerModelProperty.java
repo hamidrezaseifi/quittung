@@ -132,13 +132,6 @@ public class CustomerModelProperty {
 		this.plz.set(customerModel.getPlz());
 		this.city.set(customerModel.getCity());
 
-		this.customerName.notify();
-		this.street.notify();
-		this.houseNumber.notify();
-		this.address2.notify();
-		this.plz.notify();
-		this.city.notify();
-
 	}
 
 

@@ -5,11 +5,13 @@ import de.seifi.rechnung_manager_app.RechnungManagerSpringApp;
 import de.seifi.rechnung_manager_app.data_service.IRechnungDataHelper;
 import de.seifi.rechnung_manager_app.enums.RechnungType;
 import de.seifi.rechnung_manager_app.fx_services.RechnungBindingService;
+import de.seifi.rechnung_manager_app.models.CustomerModel;
 import de.seifi.rechnung_manager_app.models.RechnungItemProperty;
 import de.seifi.rechnung_manager_app.models.RechnungModel;
 import de.seifi.rechnung_manager_app.repositories.CustomerRepository;
 import de.seifi.rechnung_manager_app.repositories.RechnungRepository;
 import de.seifi.rechnung_manager_app.ui.FloatGeldLabel;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -143,9 +145,15 @@ public class RechnungController implements Initializable, ControllerBase {
     	SelectCustomerDialog dialog = new SelectCustomerDialog(stage,
                                                                this.rechnungBindingService.getCustomerList(),
                                                                this.rechnungBindingService.getCustomerModel());
-    	dialog.showAndWait().ifPresent(model -> {
-    	    rechnungBindingService.setCustomerModel(model);
-    	});
+
+        Optional<CustomerModel> result = dialog.showAndWait();
+        if(result.isPresent()){
+
+            Platform.runLater(()->{
+                CustomerModel model = result.get();
+                rechnungBindingService.setCustomerModel(model);
+            });
+        }
 
     }
     
@@ -154,7 +162,6 @@ public class RechnungController implements Initializable, ControllerBase {
     	showItemsTableView.setItems(null);
     	rechnungBindingService.reset();
         showItemsTableView.setItems(rechnungBindingService.getRechnungItems());
-        //cmbName.getEditor().setFocusTraversable(true);
     }
     
     @FXML
@@ -277,15 +284,6 @@ public class RechnungController implements Initializable, ControllerBase {
         }
 
         if(this.rechnungType == RechnungType.RECHNUNG){
-        	
-        	/*cmbName.getItems().addAll(rechnungBindingService.getCustomerList());
-        	//cmbName.getEditor().textProperty().bindBidirectional(rechnungBindingService.getCustomerModelProperty().getCustomerName());
-        	cmbName.getSelectionModel().selectedItemProperty().addListener((ov, oldValue, newValue) -> {
-        		System.out.println(newValue.toString());
-        		rechnungBindingService.setCurrentCustomer(newValue.getId());
-        	});*/
-            //txtName.textProperty().bindBidirectional(rechnungBindingService.getCustomerModelProperty().getCustomerName());
-        	
         	lblName.setCursor(Cursor.HAND);
         	
             lblName.textProperty().bind(rechnungBindingService.getCustomerModelProperty().getCustomerName());
@@ -327,12 +325,7 @@ public class RechnungController implements Initializable, ControllerBase {
 			btnReset.setVisible(false);
 
             if(this.rechnungType == RechnungType.RECHNUNG){
-                /*cmbName.setEditable(false);
-                txtStreet.setEditable(false);
-                txtPlz.setEditable(false);
-                txtAddress2.setEditable(false);
-                txtCity.setEditable(false);
-                txtHaus.setEditable(false);*/
+                lblName.setCursor(Cursor.DEFAULT);
 
             }
 

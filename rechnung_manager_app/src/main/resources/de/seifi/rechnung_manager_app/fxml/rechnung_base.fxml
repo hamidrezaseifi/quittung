@@ -38,7 +38,11 @@
 		    </rowConstraints>
 		    <children>
                	<Label text="Name" GridPane.columnIndex="1" GridPane.rowIndex="0" styleClass="summe-label" textAlignment="LEFT" />
-               	<Label fx:id="lblName" prefWidth="250" textAlignment="LEFT" GridPane.columnIndex="2" onMouseClicked="#selectCustomer" GridPane.rowIndex="0" styleClass="rechnung-customer-label-name"></Label>
+                <HBox spacing="0">
+                    <Label fx:id="lblName" prefWidth="220" textAlignment="LEFT" GridPane.columnIndex="2" onMouseClicked="#selectCustomer" GridPane.rowIndex="0" styleClass="rechnung-customer-label-name"></Label>
+                    <Button
+                </HBox>
+
                	
                	<Label text="Straße / Haus No." GridPane.columnIndex="1" GridPane.rowIndex="1" styleClass="summe-label" textAlignment="LEFT" />
                	

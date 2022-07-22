@@ -35,13 +35,13 @@ public class RechnungManagerFxApp extends Application implements Runnable {
 
 	private static final int SPLASH_HEIGHT = 770;
 
-	private static Scene scene;
+    public static Scene mainScene;
 	
-	private Stage splashStage;
+	private static Stage splashStage;
 	
-	private GridPane splashPane;
+	private static GridPane splashPane;
 	
-	private Stage mainStage;
+	public static Stage mainStage;
     
     private static String[] startArgs = null;
 
@@ -118,13 +118,13 @@ public class RechnungManagerFxApp extends Application implements Runnable {
     	mainStage = new Stage(StageStyle.DECORATED);
         mainStage.setTitle("FX Experience");
         mainStage.setIconified(true);
-        
-        scene = new Scene(loadFXML("main"));
-        scene.getStylesheets().add(getMainStyle());
-        
-        mainStage.setScene(scene);
 
-        scene.getWindow().addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, this::closeWindowEvent);
+        mainScene = new Scene(loadFXML("main"));
+        mainScene.getStylesheets().add(getMainStyle());
+        
+        mainStage.setScene(mainScene);
+
+        mainScene.getWindow().addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, this::closeWindowEvent);
         
         mainStage.show();
         
@@ -153,7 +153,7 @@ public class RechnungManagerFxApp extends Application implements Runnable {
 
 	
     public static Window getWindow() {
-    	return scene.getWindow();
+    	return mainScene.getWindow();
     }
 
     public static String getMainStyle() {
@@ -171,7 +171,7 @@ public class RechnungManagerFxApp extends Application implements Runnable {
     }
 
     public static void setRoot(String fxml) throws IOException {
-        scene.setRoot(loadFXML(fxml));
+        mainScene.setRoot(loadFXML(fxml));
     }
 
     public static Parent loadFXML(String fxml) throws IOException {
