@@ -103,7 +103,6 @@ public class CustomerModel {
         this.updated = updated;
 	}
 
-	
 	public boolean isNew() {
 		return id == null;
 	}

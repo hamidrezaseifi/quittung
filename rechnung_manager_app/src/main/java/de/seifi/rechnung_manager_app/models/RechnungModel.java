@@ -104,12 +104,11 @@ public class RechnungModel {
         this.created = created;
         this.updated = updated;
 	}
-
 	
 	public boolean isNew() {
 		return id == null;
 	}
-	
+
 	public Integer getId() {
 		return id;
 	}

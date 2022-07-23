@@ -73,8 +73,8 @@ public class ReportBindingService {
 
 	public void search() {
 		rechnungItems.clear();
-		Timestamp tsFrom = Timestamp.valueOf(searchFilterProperty.getFrom().atStartOfDay());
-		Timestamp tsTo = Timestamp.valueOf(searchFilterProperty.getTo().atTime(23, 59, 59));
+		LocalDateTime tsFrom = searchFilterProperty.getFrom().atStartOfDay();
+        LocalDateTime tsTo = searchFilterProperty.getTo().atTime(23, 59, 59);
         List<RechnungEntity> entityList;
         Integer nummer = null;
         try {

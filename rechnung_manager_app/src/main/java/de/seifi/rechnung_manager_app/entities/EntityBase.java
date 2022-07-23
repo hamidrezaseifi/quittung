@@ -12,7 +12,13 @@ public abstract class EntityBase {
 		this.setUpdated(LocalDateTime.now());
     }
 
+	public boolean isNew() {
+		return getId() == null;
+	}
+
 	public abstract void setId(Integer id);
+
+	public abstract Integer getId();
 
 
 	public abstract LocalDateTime getCreated();

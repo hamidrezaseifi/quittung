@@ -294,9 +294,20 @@ public class RechnungBindingService {
 	}
 
 	public boolean save() {
-		
-		customerSavingModel = customerModelProperty.toModel();
-		
+        if(this.rechnungType == RechnungType.RECHNUNG){
+            CustomerEntity customerEntity = customerSavingModel.toEntity();
+            if(customerEntity.isNew()){
+                customerRepository.save(customerEntity);
+                customerSavingModel = customerEntity.toModel();
+            }
+
+            rechnungSavingModel.setCustomerId(customerEntity.getId());
+        }
+        if(this.rechnungType == RechnungType.QUITTUNG){
+
+            rechnungSavingModel.setCustomerId(-1);
+        }
+
         rechnungSavingModel.getItems().clear();
         rechnungSavingModel
                 .getItems().addAll(this.rechnungItems.stream().filter(qi -> qi.canSaved()).map(qi -> qi.toModel()).collect(Collectors.toList()));

@@ -11,6 +11,7 @@ import de.seifi.rechnung_manager_app.models.RechnungModel;
 import de.seifi.rechnung_manager_app.repositories.CustomerRepository;
 import de.seifi.rechnung_manager_app.repositories.RechnungRepository;
 import de.seifi.rechnung_manager_app.ui.FloatGeldLabel;
+import de.seifi.rechnung_manager_app.ui.UiUtils;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -65,6 +66,8 @@ public class RechnungController implements Initializable, ControllerBase {
     @FXML private Button btnReset;
 
     @FXML private Button btnClose;
+
+    @FXML private Button btnSelectCsutomer;
 
     @FXML private Button btnPrint;
 
@@ -167,14 +170,11 @@ public class RechnungController implements Initializable, ControllerBase {
     @FXML
     private void printRechnung() throws IOException {
 
+
     	showItemsTableView.setEditable(false);
     	showItemsTableView.edit(-1, null);
-    	
-        Pair<Parent, FXMLLoader> pair = RechnungManagerFxApp.loadFXMLLoader("rechnung_print");
-        GridPane printPane = (GridPane)pair.getKey();
-        FXMLLoader fxmlLoader = pair.getValue();
-        PrintDialogController dialogController = fxmlLoader.<PrintDialogController>getController();
-        dialogController.printRechnungList(Arrays.asList(rechnungBindingService.getRechnungSavingModel()));
+
+        UiUtils.printRechnungItems(Arrays.asList(rechnungBindingService.getRechnungSavingModel()));
         showItemsTableView.setEditable(true);
 
     }
@@ -323,6 +323,7 @@ public class RechnungController implements Initializable, ControllerBase {
 
 			btnSave.setVisible(false);
 			btnReset.setVisible(false);
+            btnSelectCsutomer.setVisible(false);
 
             if(this.rechnungType == RechnungType.RECHNUNG){
                 lblName.setCursor(Cursor.DEFAULT);

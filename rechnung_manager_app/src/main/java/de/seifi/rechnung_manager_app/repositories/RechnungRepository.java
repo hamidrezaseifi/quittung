@@ -1,6 +1,7 @@
 package de.seifi.rechnung_manager_app.repositories;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,10 +21,10 @@ public interface RechnungRepository extends JpaRepository<RechnungEntity, Intege
 	Optional<RechnungEntity> findTopByOrderByNummerDesc();
 
 	@Query("SELECT r FROM RechnungEntity r where r.created between :from and :to  order by r.nummer desc")
-	List<RechnungEntity> search(@Param("from") Timestamp from, @Param("to") Timestamp to);
+	List<RechnungEntity> search(@Param("from") LocalDateTime from, @Param("to") LocalDateTime to);
 
 	@Query("SELECT r FROM RechnungEntity r where r.created between :from and :to and r.nummer=:nummer  order by r.nummer desc")
-	List<RechnungEntity> search(@Param("from") Timestamp from, @Param("to") Timestamp to, @Param("nummer") Integer nummer);
+	List<RechnungEntity> search(@Param("from") LocalDateTime from, @Param("to") LocalDateTime to, @Param("nummer") Integer nummer);
 
 	@Query("SELECT max(r.nummer) FROM RechnungEntity r where r.status=:status")
 	Optional<Integer> getMaxNummer(@Param("status") int status);

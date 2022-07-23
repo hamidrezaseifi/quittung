@@ -206,6 +206,14 @@ public class RechnungManagerFxApp extends Application implements Runnable {
         return resourceUrl;
     }
 
+    public static FXMLLoader getRechnungFxmlLoader() throws IOException {
+
+        URL fxmlResource = RechnungManagerFxApp.class.getResource("fxml/rechnung_base.fxml");
+        FXMLLoader fxmlLoader = new FXMLLoader(fxmlResource);
+
+        return fxmlLoader;
+    }
+
     public static GridPane getRechnungPane() throws IOException {
 
         URL fxmlResource = RechnungManagerFxApp.class.getResource("fxml/rechnung_base.fxml");

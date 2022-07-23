@@ -7,6 +7,7 @@ import java.util.List;
 import de.seifi.rechnung_manager_app.RechnungManagerFxApp;
 import de.seifi.rechnung_manager_app.controllers.RechnungController;
 import de.seifi.rechnung_manager_app.controllers.RechnungPrintDialogController;
+import de.seifi.rechnung_manager_app.enums.RechnungType;
 import de.seifi.rechnung_manager_app.models.RechnungModel;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -46,12 +47,12 @@ public class UiUtils {
     public static void showRechnungDialog(RechnungModel rechnungModel) {
     	try {
 			Stage stage = new Stage();
+			FXMLLoader fxmlLoader = RechnungManagerFxApp.getRechnungFxmlLoader();
+			RechnungController controller = new RechnungController(rechnungModel.getRechnungType());
+			fxmlLoader.setController(controller);
 
-			Pair<Parent, FXMLLoader> pair = RechnungManagerFxApp.loadFXMLLoader("rechnung");
-			GridPane rechnungPane = (GridPane)pair.getKey();
-	        FXMLLoader fxmlLoader = pair.getValue();
-	        RechnungController dialogController = fxmlLoader.<RechnungController>getController();
-	        dialogController.loadModel(rechnungModel, false, stage);
+			GridPane rechnungPane = fxmlLoader.load();
+			controller.loadModel(rechnungModel, false, stage);
 	        rechnungPane.setPadding(new Insets(10));
 	        
 	        Scene scene = new Scene(rechnungPane, 1000, 800);
@@ -64,7 +65,7 @@ public class UiUtils {
 
 	        
 		} catch (IOException e) {
-			
+			e.printStackTrace();
 		}
     }
     
