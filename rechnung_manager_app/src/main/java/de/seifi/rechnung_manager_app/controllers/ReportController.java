@@ -12,6 +12,7 @@ import de.seifi.rechnung_manager_app.RechnungManagerSpringApp;
 import de.seifi.rechnung_manager_app.fx_services.ReportBindingService;
 import de.seifi.rechnung_manager_app.models.ProduktModel;
 import de.seifi.rechnung_manager_app.models.ReportItemModel;
+import de.seifi.rechnung_manager_app.repositories.CustomerRepository;
 import de.seifi.rechnung_manager_app.repositories.ProduktRepository;
 import de.seifi.rechnung_manager_app.repositories.RechnungRepository;
 import de.seifi.rechnung_manager_app.ui.IntegerTextField;
@@ -34,6 +35,8 @@ public class ReportController implements Initializable, ControllerBase {
     @FXML private TableColumn<ReportItemModel, String> nummerColumn;
 
     @FXML private TableColumn<ReportItemModel, String> zeitColumn;
+
+    @FXML private TableColumn<ReportItemModel, String> rechnungColumn;
 
     @FXML private TableColumn<ReportItemModel, String> produktListColumn;
 
@@ -66,13 +69,16 @@ public class ReportController implements Initializable, ControllerBase {
     private final ProduktRepository produktRepository;
    
     private final RechnungRepository rechnungRepository;
-    
-    
+
+    private final CustomerRepository customerRepository;
+
+
 
     public ReportController() {
 		
     	this.rechnungRepository = RechnungManagerSpringApp.applicationContext.getBean(RechnungRepository.class);
     	this.produktRepository = RechnungManagerSpringApp.applicationContext.getBean(ProduktRepository.class);
+        this.customerRepository = RechnungManagerSpringApp.applicationContext.getBean(CustomerRepository.class);
 
 	}
 
@@ -93,8 +99,9 @@ public class ReportController implements Initializable, ControllerBase {
     	if(reportBindingService.getReportItems().isEmpty()) {
     		return;
     	}
+
         List<RechnungModel> modelList = reportBindingService.getReportItems().stream().map(r -> r.getRechnungModel()).collect(Collectors.toList());
-        UiUtils.printRechnungItems(modelList);
+        UiUtils.printRechnungItems(modelList, reportTableView.getScene().getWindow());
 
     }
 
@@ -131,7 +138,8 @@ public class ReportController implements Initializable, ControllerBase {
 
         reportBindingService = new ReportBindingService(
         		this.produktRepository,
-        		this.rechnungRepository);
+        		this.rechnungRepository,
+                this.customerRepository);
 
 
         dtTo.valueProperty().bindBidirectional(reportBindingService.getSearchFilterProperty().toProperty());
@@ -152,10 +160,11 @@ public class ReportController implements Initializable, ControllerBase {
                 reportTableView.widthProperty().subtract(
                         datumColumn.widthProperty()).subtract(
                         nummerColumn.widthProperty()).subtract(
-                                zeitColumn.widthProperty()).subtract(
-                                		toolsColumn.widthProperty()).subtract(
-                                            gesamtColumn.widthProperty()).subtract(5)
-                                                                       );
+                        zeitColumn.widthProperty()).subtract(
+                            rechnungColumn.widthProperty()).subtract(
+                                            toolsColumn.widthProperty()).subtract(
+                                                gesamtColumn.widthProperty()).subtract(5)
+                                                                           );
 
         reportTableView.setItems(reportBindingService.getReportItems());
         reportTableView.setUserData(reportBindingService);

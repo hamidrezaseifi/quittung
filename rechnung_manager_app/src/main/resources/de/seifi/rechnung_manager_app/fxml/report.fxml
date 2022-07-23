@@ -37,19 +37,25 @@
 
         <TableView fx:id="reportTableView" GridPane.columnIndex="0" GridPane.rowIndex="2" editable="false">
             <columns>
-                <TableColumn fx:id="datumColumn" editable="false" prefWidth="120.0" sortable="false" text="Rechnung-Datum">
+                <TableColumn fx:id="datumColumn" editable="false" sortable="false" prefWidth="120.0" text="Rechnung-Datum">
                     <cellValueFactory>
                         <PropertyValueFactory property="rechnungDatum" />
                     </cellValueFactory>
 
                 </TableColumn>
-                <TableColumn fx:id="nummerColumn" editable="false" sortable="false" text="Nummer">
+                <TableColumn fx:id="nummerColumn" editable="false" sortable="false" prefWidth="80.0" text="Nummer">
                     <cellValueFactory>
                         <PropertyValueFactory property="nummer" />
                     </cellValueFactory>
 
                 </TableColumn>
-                <TableColumn fx:id="zeitColumn" prefWidth="110" text="Erstellen-Zeit" editable="false" sortable="false">
+                <TableColumn fx:id="rechnungColumn" editable="false" sortable="false" prefWidth="150.0" text="Rechnung">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="typeDetails" />
+                    </cellValueFactory>
+
+                </TableColumn>
+                <TableColumn fx:id="zeitColumn" text="Zeit" editable="false" sortable="false" prefWidth="90">
                     <cellValueFactory>
                         <PropertyValueFactory property="rechnungZeit" />
                     </cellValueFactory>
@@ -64,7 +70,7 @@
                     </cellFactory>
 
                 </TableColumn>
-                <TableColumn fx:id="gesamtColumn" editable="false" prefWidth="180" text="Endsumme" sortable="false">
+                <TableColumn fx:id="gesamtColumn" editable="false" text="Endsumme" sortable="false" prefWidth="120">
                     <cellValueFactory>
                         <PropertyValueFactory property="bruttoGesamt" />
                     </cellValueFactory>

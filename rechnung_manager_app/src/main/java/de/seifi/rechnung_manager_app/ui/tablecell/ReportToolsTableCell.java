@@ -1,27 +1,17 @@
 package de.seifi.rechnung_manager_app.ui.tablecell;
 
-import java.io.IOException;
 import java.util.Arrays;
 
-import de.seifi.rechnung_manager_app.RechnungManagerFxApp;
-import de.seifi.rechnung_manager_app.controllers.PrintDialogController;
-import de.seifi.rechnung_manager_app.fx_services.RechnungBindingService;
 import de.seifi.rechnung_manager_app.fx_services.ReportBindingService;
-import de.seifi.rechnung_manager_app.models.RechnungItemProperty;
 import de.seifi.rechnung_manager_app.models.RechnungModel;
 import de.seifi.rechnung_manager_app.models.ReportItemModel;
-import de.seifi.rechnung_manager_app.ui.TableUtils;
 import de.seifi.rechnung_manager_app.ui.UiUtils;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.Tooltip;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.util.Pair;
 
 public class ReportToolsTableCell extends TableCell<ReportItemModel, String> {
 	
@@ -43,7 +33,8 @@ public class ReportToolsTableCell extends TableCell<ReportItemModel, String> {
 		
 		btnPrint.setOnAction((ActionEvent event) -> {
 			
-			UiUtils.printRechnungItems(Arrays.asList(getCurrentRechnungModel()));
+			UiUtils.printRechnungItems(Arrays.asList(getCurrentRechnungModel()),
+                                       this.getScene().getWindow());
 			
         });
 		

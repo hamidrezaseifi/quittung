@@ -19,11 +19,10 @@ public class RechnungBindingPrintService {
     private String gesamtSumme;
     private String nettoSumme;
     private String mvstSumme;
-    private List<RechnungModel> rechnungModelList = new ArrayList<>();
+    private RechnungModel rechnungModel = null;
     
     ObservableList<RechnungItemPrintProperty> printPropertyList;
 
-    private int printingIndex = 0;
     private int printingItemPageIndex = 0;
     private int printingItemPageCount = 0;
 
@@ -32,31 +31,12 @@ public class RechnungBindingPrintService {
     }
 
 
-    public void setRechnungModelList(List<RechnungModel> rechnungModelList) {
-        this.rechnungModelList = rechnungModelList;
+    public void setRechnungModelList(RechnungModel model) {
+        this.rechnungModel = model;
         this.printPropertyList = FXCollections.observableArrayList();
-        
-        if(!rechnungModelList.isEmpty()){
-            setPrintingIndex(0);
-            
-        }
 
-    }
-
-    public boolean increasePrintingIndex() {
-        if(this.printingIndex >= rechnungModelList.size() - 1){
-            return false;
-        }
-        this.printingIndex += 1;
-        setPrintingIndex(this.printingIndex);
-        calculateRechnungSumme();
-        return true;
-    }
-
-    public void setPrintingIndex(int printingIndex) {
-        this.printingIndex = printingIndex;
         preparePrintPropertyList();
-        calculateRechnungSumme();
+
     }
     
     public boolean increateIfMorePrintingPage() {
@@ -76,7 +56,8 @@ public class RechnungBindingPrintService {
     }
     
     private void preparePrintPropertyList() {
-    	List<RechnungItemModel> modelItems = rechnungModelList.get(printingIndex).getItems();
+        calculateRechnungSumme();
+    	List<RechnungItemModel> modelItems = rechnungModel.getItems();
     	this.printPropertyList.clear();
 
         //for(int k= 0; k< 5; k++){
@@ -111,7 +92,7 @@ public class RechnungBindingPrintService {
     }
 
     public String getRechnungNummer() {
-        return String.valueOf(rechnungModelList.get(printingIndex).getNummer());
+        return String.valueOf(rechnungModel.getNummer());
     }
 
     public String getGesamtSumme() {
@@ -119,31 +100,23 @@ public class RechnungBindingPrintService {
     }
 
     public String getRechnungDatum() {
-        return rechnungModelList.get(printingIndex).getRechnungCreate();
+        return rechnungModel.getRechnungCreate();
     }
 
     public String getLiferDatum() {
-        return rechnungModelList.get(printingIndex).getLiferDate();
+        return rechnungModel.getLiferDate();
     }
 
     private void calculateRechnungSumme() {
         float netto = 0;
 
-        for(RechnungItemModel i:rechnungModelList.get(printingIndex).getItems()){
+        for(RechnungItemModel i:rechnungModel.getItems()){
             netto += i.getGesmt();
         }
 
         nettoSumme = TableUtils.formatGeld(netto);
         mvstSumme = TableUtils.formatGeld(netto * 19 / 100);
         gesamtSumme = TableUtils.formatGeld(netto + (netto * 19 / 100));
-    }
-
-    public boolean hasPrintingPage() {
-        if(this.printingIndex >= rechnungModelList.size()){
-            return false;
-        }
-
-        return true;
     }
 
 }

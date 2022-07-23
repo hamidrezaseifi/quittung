@@ -22,6 +22,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
@@ -88,6 +89,8 @@ public class RechnungController implements Initializable, ControllerBase {
     @FXML private HBox toggleStatusBox;
 
     @FXML private Label lblStatusChange;
+
+    @FXML private HBox nameBox;
 
 
     private RechnungBindingService rechnungBindingService;
@@ -174,7 +177,8 @@ public class RechnungController implements Initializable, ControllerBase {
     	showItemsTableView.setEditable(false);
     	showItemsTableView.edit(-1, null);
 
-        UiUtils.printRechnungItems(Arrays.asList(rechnungBindingService.getRechnungSavingModel()));
+        UiUtils.printRechnungItems(Arrays.asList(rechnungBindingService.getRechnungSavingModel()),
+                                   showItemsTableView.getScene().getWindow());
         showItemsTableView.setEditable(true);
 
     }
@@ -284,8 +288,7 @@ public class RechnungController implements Initializable, ControllerBase {
         }
 
         if(this.rechnungType == RechnungType.RECHNUNG){
-        	lblName.setCursor(Cursor.HAND);
-        	
+
             lblName.textProperty().bind(rechnungBindingService.getCustomerModelProperty().getCustomerName());
             lblStreet.textProperty().bind(rechnungBindingService.getCustomerModelProperty().getStreet());
             lblPlz.textProperty().bind(rechnungBindingService.getCustomerModelProperty().getPlz());
@@ -320,14 +323,21 @@ public class RechnungController implements Initializable, ControllerBase {
         this.stage = stage;
 
 		if(!editable) {
+            Pane parent = (Pane)btnReset.getParent();
+            parent.getChildren().remove(btnSave);
+            parent.getChildren().remove(btnReset);
 
-			btnSave.setVisible(false);
-			btnReset.setVisible(false);
-            btnSelectCsutomer.setVisible(false);
+            parent = (Pane)toggleStatusBox.getParent();
+            parent.getChildren().remove(toggleStatusBox);
+
+			//btnSave.setVisible(false);
+			//btnReset.setVisible(false);
+            //btnSelectCsutomer.setVisible(false);
 
             if(this.rechnungType == RechnungType.RECHNUNG){
-                lblName.setCursor(Cursor.DEFAULT);
-
+                //lblName.setCursor(Cursor.DEFAULT);
+                lblName.prefWidthProperty().bind(nameBox.widthProperty());
+                nameBox.getChildren().remove(btnSelectCsutomer);
             }
 
             if(this.rechnungType == RechnungType.QUITTUNG){

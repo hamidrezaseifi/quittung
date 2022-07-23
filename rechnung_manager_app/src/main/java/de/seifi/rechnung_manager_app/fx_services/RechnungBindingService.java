@@ -229,9 +229,9 @@ public class RechnungBindingService {
     }
 
     public List<CustomerModel> getCustomerList() {
-        List<CustomerEntity> allCustomers = this.customerRepository.findAll();
+        List<CustomerEntity> allCustomers = this.customerRepository.findAllByStatus(CustomerStatus.ACTIVE.getValue());
 
-        List<CustomerModel> modelList = allCustomers.stream().filter(c -> c.getStatus() == CustomerStatus.ACTIVE.getValue()).map(c -> c.toModel()).collect(Collectors.toList());
+        List<CustomerModel> modelList = allCustomers.stream().map(c -> c.toModel()).collect(Collectors.toList());
 
         return modelList;
     }
@@ -305,7 +305,7 @@ public class RechnungBindingService {
         }
         if(this.rechnungType == RechnungType.QUITTUNG){
 
-            rechnungSavingModel.setCustomerId(-1);
+            rechnungSavingModel.setCustomerId(RechnungModel.QUITTUNG_CUSTOMER_ID);
         }
 
         rechnungSavingModel.getItems().clear();

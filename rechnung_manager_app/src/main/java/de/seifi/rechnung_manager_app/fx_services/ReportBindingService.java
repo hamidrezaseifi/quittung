@@ -1,23 +1,21 @@
 package de.seifi.rechnung_manager_app.fx_services;
 
 
+import de.seifi.rechnung_manager_app.entities.CustomerEntity;
 import de.seifi.rechnung_manager_app.entities.ProduktEntity;
 import de.seifi.rechnung_manager_app.entities.RechnungEntity;
+import de.seifi.rechnung_manager_app.enums.CustomerStatus;
 import de.seifi.rechnung_manager_app.models.*;
+import de.seifi.rechnung_manager_app.repositories.CustomerRepository;
 import de.seifi.rechnung_manager_app.repositories.ProduktRepository;
 import de.seifi.rechnung_manager_app.repositories.RechnungRepository;
-import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Sort;
@@ -31,7 +29,8 @@ public class ReportBindingService {
     private final ProduktRepository produktRepository;
     
     private final RechnungRepository rechnungRepository;
-    
+
+    private final CustomerRepository customerRepository;
 	    
     private Map<String, ProduktModel> produktMap;
     private List<ProduktModel> produktList;
@@ -43,12 +42,14 @@ public class ReportBindingService {
     private SearchFilterProperty searchFilterProperty;
     
     public ReportBindingService(ProduktRepository produktRepository,
-    		final RechnungRepository rechnungRepository) {
+                                final RechnungRepository rechnungRepository,
+                                CustomerRepository customerRepository) {
     	
     	CURRENT_INSTANCE = this;
 
     	this.produktRepository = produktRepository;
     	this.rechnungRepository = rechnungRepository;
+        this.customerRepository = customerRepository;
         
         rechnungItems = FXCollections.observableArrayList();
 
@@ -72,6 +73,10 @@ public class ReportBindingService {
     }
 
 	public void search() {
+        List<CustomerEntity> allCustomersList = this.customerRepository.findAllByStatus(CustomerStatus.ACTIVE.getValue());
+        Map<Integer, CustomerModel> allCustomers = allCustomersList.stream().collect(Collectors.toMap(c -> c.getId(), c -> c.toModel()));
+        allCustomers.put(RechnungModel.QUITTUNG_CUSTOMER_ID, null);
+
 		rechnungItems.clear();
 		LocalDateTime tsFrom = searchFilterProperty.getFrom().atStartOfDay();
         LocalDateTime tsTo = searchFilterProperty.getTo().atTime(23, 59, 59);
@@ -90,7 +95,7 @@ public class ReportBindingService {
             entityList = this.rechnungRepository.search(tsFrom, tsTo);
         }
 
-        List<ReportItemModel> modelList = entityList.stream().map(e -> new ReportItemModel(e.toModel())).collect(Collectors.toList());
+        List<ReportItemModel> modelList = entityList.stream().map(e -> new ReportItemModel(e.toModel(), allCustomers.get(e.getCustomerId()))).collect(Collectors.toList());
 
         rechnungItems.addAll(modelList);
 

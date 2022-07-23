@@ -33,7 +33,7 @@ public class ProduktListTableCell extends TableCell<ReportItemModel, Object> {
 
                 for(int i=0;i<list.size();i++) {
                     RechnungItemModel item = list.get(i);
-                    Label lbl = new Label(item.getProdukt() + ": " + item.getArtikelNummer());
+                    Label lbl = new Label( String.format("%s (%d): %s", item.getProdukt(), item.getMenge(), item.getArtikelNummer()));
                     lbl.setPadding(new Insets(5));
                     lbl.setBackground(new Background(new BackgroundFill(fxColors[i % fxColors.length], new CornerRadii(0), new Insets(0))));
                     lbl.setTextFill(Color.BLACK);

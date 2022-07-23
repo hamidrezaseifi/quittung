@@ -11,7 +11,9 @@ import de.seifi.rechnung_manager_app.enums.RechnungStatus;
 import de.seifi.rechnung_manager_app.enums.RechnungType;
 
 public class RechnungModel {
-	
+
+	public static final Integer QUITTUNG_CUSTOMER_ID = -1;
+
     private Integer id;
 
 	private Integer customerId;
