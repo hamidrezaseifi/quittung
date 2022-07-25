@@ -251,11 +251,13 @@ public class RechnungManagerFxApp extends Application implements Runnable {
     }
 
     public static GridPane getReportPane() throws IOException {
-    	/*if(reportPane == null) {
-    		reportPane =  (GridPane)loadFXML("report");
-    	}*/
-    	GridPane reportPane =  (GridPane)loadFXML("report");
-    	return reportPane;
+        GridPane reportPane =  (GridPane)loadFXML("report");
+        return reportPane;
+    }
+
+    public static GridPane getCustomersPane() throws IOException {
+        GridPane reportPane =  (GridPane)loadFXML("customers");
+        return reportPane;
     }
 
     public static GridPane getAdminPane() throws IOException {

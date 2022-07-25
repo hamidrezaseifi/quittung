@@ -46,12 +46,12 @@ public class CustomerModel {
     }
 
 	public CustomerModel(String customerName,
-                         String street,
-                         String houseNumber,
-                         String address2,
-                         String plz,
-                         String city,
-                         int status) {
+						 String street,
+						 String houseNumber,
+						 String address2,
+						 String plz,
+						 String city,
+						 int status) {
 		this();
 		this.customerName = customerName;
 		this.street = street;
@@ -60,6 +60,11 @@ public class CustomerModel {
 		this.plz = plz;
 		this.city = city;
 		this.status = CustomerStatus.ofValue(status);
+	}
+
+	public CustomerModel(String customerName) {
+		this();
+		this.customerName = customerName;
 	}
 
 	public CustomerModel(String customerName,
@@ -200,6 +205,11 @@ public class CustomerModel {
 		String addr2 = address2 == null || address2.isBlank() ? "" : address2 + ", ";
 		String address = String.format("%s %s, %s%s %s", street, houseNumber, addr2, plz, city);
 		return address;
+	}
+
+	@Override
+	public String toString(){
+		return customerName + (status == CustomerStatus.ACTIVE ? ": aktiv" : ": inaktive");
 	}
 
 	public CustomerEntity toEntity() {

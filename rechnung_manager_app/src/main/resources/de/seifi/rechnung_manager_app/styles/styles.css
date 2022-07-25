@@ -141,7 +141,34 @@
     -fx-background-repeat: no-repeat;
     -fx-background-position: 5px;
     -fx-font-size: 14px;
+}
 
+.customer-button {
+
+    -fx-background-image: url('../images/customer.png');
+
+    -fx-background-size: 30 30;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 3px center;
+    -fx-font-size: 14px;
+}
+
+.add-customer-button {
+
+    -fx-background-image: url('../images/add.png');
+
+    -fx-background-size: 24 24;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+
+.remove-customer-button {
+
+    -fx-background-image: url('../images/trash.png');
+
+    -fx-background-size: 24 24;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
 }
 
 .search-button {
