@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class ProduktUtils {
+public class ProduktHelper {
     private static Map<String, ProduktModel> produktMap;
     private static List<ProduktModel> produktList;
 
@@ -46,10 +46,11 @@ public class ProduktUtils {
     }
 
     public static void add(String produkt, float preis){
-        Optional<String> foundProdukt = ProduktUtils.getProduktMap().keySet().stream().filter(k -> k.toLowerCase().equals(produkt.toLowerCase())).findAny();
+        Optional<String> foundProdukt = ProduktHelper
+                .getProduktMap().keySet().stream().filter(k -> k.toLowerCase().equals(produkt.toLowerCase())).findAny();
         ProduktEntity produktEntity = null;
         if(foundProdukt.isPresent()) {
-            produktEntity = ProduktUtils.getProduktMap().get(foundProdukt.get()).toEntity();
+            produktEntity = ProduktHelper.getProduktMap().get(foundProdukt.get()).toEntity();
             produktEntity.setLastPreis(preis);
         }
         else {

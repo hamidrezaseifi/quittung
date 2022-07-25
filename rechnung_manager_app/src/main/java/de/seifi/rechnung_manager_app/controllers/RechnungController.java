@@ -97,8 +97,6 @@ public class RechnungController implements Initializable, ControllerBase {
 
     private final RechnungRepository rechnungRepository;
 
-    private final CustomerRepository customerRepository;
-
     private final IRechnungDataHelper rechnungDataHelper;
 
     private Stage stage;
@@ -110,7 +108,6 @@ public class RechnungController implements Initializable, ControllerBase {
         this.rechnungType = rechnungType;
         this.rechnungRepository = RechnungManagerSpringApp.applicationContext.getBean(RechnungRepository.class);
         this.rechnungDataHelper = RechnungManagerSpringApp.applicationContext.getBean(IRechnungDataHelper.class);
-        this.customerRepository = RechnungManagerSpringApp.applicationContext.getBean(CustomerRepository.class);
 
 	}
 
@@ -148,9 +145,7 @@ public class RechnungController implements Initializable, ControllerBase {
     private void selectCustomer() throws IOException {
     	//rechnungBindingService.test();
     	
-    	SelectCustomerDialog dialog = new SelectCustomerDialog(stage,
-                                                               this.rechnungBindingService.getCustomerList(),
-                                                               this.rechnungBindingService.getCustomerModel());
+    	SelectCustomerDialog dialog = new SelectCustomerDialog(stage, this.rechnungBindingService.getCustomerModel());
 
         Optional<CustomerModel> result = dialog.showAndWait();
         if(result.isPresent()){
@@ -220,8 +215,7 @@ public class RechnungController implements Initializable, ControllerBase {
 
         rechnungBindingService = new RechnungBindingService(this.rechnungType,
                                                             this.rechnungRepository,
-                                                            this.rechnungDataHelper,
-                                                            this.customerRepository);
+                                                            this.rechnungDataHelper);
 
 
         bannerPane.styleProperty().bind(rechnungBindingService.bannerBackColorProperty());

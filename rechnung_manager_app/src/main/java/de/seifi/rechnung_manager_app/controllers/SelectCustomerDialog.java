@@ -6,6 +6,7 @@ import java.util.List;
 import de.seifi.rechnung_manager_app.RechnungManagerFxApp;
 import de.seifi.rechnung_manager_app.models.CustomerModel;
 import de.seifi.rechnung_manager_app.models.CustomerModelProperty;
+import de.seifi.rechnung_manager_app.utils.CustomerHelper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -48,10 +49,9 @@ public class SelectCustomerDialog extends Dialog<CustomerModel> {
     private final ObservableList<CustomerModel> filteredCustomerList;
 
     public SelectCustomerDialog(Window owner,
-                                List<CustomerModel> allCustomerList,
                                 CustomerModel inCustomerModel) throws IOException {
 
-        this.allCustomerList = allCustomerList;
+        this.allCustomerList = CustomerHelper.getCustomerList();
 
         FXMLLoader loader = RechnungManagerFxApp.getSelectCustomerDialog();
 		

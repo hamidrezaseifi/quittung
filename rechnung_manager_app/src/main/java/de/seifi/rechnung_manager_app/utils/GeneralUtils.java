@@ -19,9 +19,4 @@ public class GeneralUtils {
         String date = dateFormatter.format(ldt);
         return date;
     }
-
-    public static String formatTime(LocalDateTime ldt){
-        String time = timeFormatter.format(ldt);
-        return time;
-    }
 }

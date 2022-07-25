@@ -1,10 +1,14 @@
 package de.seifi.rechnung_manager_app.controllers;
 
 
+import de.seifi.rechnung_manager_app.RechnungManagerFxApp;
+import de.seifi.rechnung_manager_app.enums.RechnungType;
 import de.seifi.rechnung_manager_app.fx_services.RechnungBindingPrintService;
+import de.seifi.rechnung_manager_app.models.CustomerModel;
 import de.seifi.rechnung_manager_app.models.RechnungItemPrintProperty;
 import de.seifi.rechnung_manager_app.models.RechnungModel;
 import de.seifi.rechnung_manager_app.ui.FloatGeldLabel;
+import de.seifi.rechnung_manager_app.utils.GeneralUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.print.*;
@@ -14,15 +18,12 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.transform.Scale;
 
 import java.net.URL;
-import java.util.List;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
-
-import de.seifi.rechnung_manager_app.RechnungManagerFxApp;
 
 public class PrintRechnungDialogController implements Initializable {
 
-    @FXML
-    private FloatGeldLabel lblNetto;
+    @FXML private FloatGeldLabel lblNetto;
 
     @FXML private FloatGeldLabel lblMvst;
 
@@ -38,19 +39,38 @@ public class PrintRechnungDialogController implements Initializable {
 
     @FXML private Label lblLiferdatum;
 
-    private RechnungBindingPrintService rechnungBindingService;
+    @FXML private Label lblDatum;
+
+    @FXML private Label lblCustomerName;
+
+    @FXML private Label lblStreetNo;
+
+    @FXML private Label lblPlzCity;
+
+    @FXML private Label lblPrintType;
+
+    private final RechnungType rechnungType;
+
+    private final RechnungBindingPrintService rechnungBindingService;
+
+    public PrintRechnungDialogController(RechnungType rechnungType) {
+        this.rechnungType = rechnungType;
+        rechnungBindingService = new RechnungBindingPrintService();
+    }
 
 
     @Override
     public void initialize(URL url,
                            ResourceBundle resourceBundle) {
-        rechnungBindingService = new RechnungBindingPrintService();
+
 
     }
 
-    public void printRechnungList(RechnungModel model, PrinterJob job){
+    public void printRechnungList(RechnungModel model, CustomerModel customerModel, PrinterJob job){
         //Rechnung_print
-        this.rechnungBindingService.setRechnungModelList(model);
+
+        this.rechnungBindingService.setRechnungModel(model, customerModel);
+
         if (job != null) {
             Printer printer = job.getPrinter();
             PageLayout pageLayout = printer.createPageLayout(Paper.A4, PageOrientation.PORTRAIT, 50,50,40,40);
@@ -63,7 +83,6 @@ public class PrintRechnungDialogController implements Initializable {
 
     private void preparePrint(PrinterJob job, PageLayout pageLayout) {
     	boolean isPrinted = false;
-    	
 
         double w = this.rootPane.getPrefWidth();
         double h = this.rootPane.getPrefHeight();
@@ -117,12 +136,33 @@ public class PrintRechnungDialogController implements Initializable {
             lblGesamt.setText(rechnungBindingService.getGesamtSumme());
 
             lblRechnungNummer.setText(rechnungBindingService.getRechnungNummer());
-            lblRechnungDatum.setText(rechnungBindingService.getLiferDatum());
+            lblRechnungDatum.setText(rechnungBindingService.getRechnungDatum());
             lblLiferdatum.setText(rechnungBindingService.getLiferDatum());
 
-            boolean success = job.printPage(pageLayout, rootPane);
+            lblDatum.setText(GeneralUtils.formatDate(LocalDate.now()));
 
-            return success;
+            lblPrintType.setText(this.rechnungType.getTitle());
+
+            if(this.rechnungType == RechnungType.RECHNUNG){
+                lblCustomerName.setText(rechnungBindingService.getCustomerModel().getCustomerName());
+
+                lblStreetNo.setText(rechnungBindingService.getCustomerModel().getStreetHouseNumber());
+
+                lblPlzCity.setText(rechnungBindingService.getCustomerModel().getPlzCity());
+            }
+
+            if(this.rechnungType == RechnungType.QUITTUNG){
+                lblCustomerName.setVisible(false);
+
+                lblStreetNo.setVisible(false);
+
+                lblPlzCity.setVisible(false);
+            }
+
+
+            job.printPage(pageLayout, rootPane);
+
+            return true;
         }
         return false;
 

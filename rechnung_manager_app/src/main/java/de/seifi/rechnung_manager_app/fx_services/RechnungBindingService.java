@@ -14,10 +14,11 @@ import de.seifi.rechnung_manager_app.models.ProduktModel;
 import de.seifi.rechnung_manager_app.models.RechnungModel;
 import de.seifi.rechnung_manager_app.repositories.CustomerRepository;
 import de.seifi.rechnung_manager_app.repositories.RechnungRepository;
+import de.seifi.rechnung_manager_app.utils.CustomerHelper;
 import de.seifi.rechnung_manager_app.utils.GeneralUtils;
 import de.seifi.rechnung_manager_app.utils.GerldCalculator;
 import de.seifi.rechnung_manager_app.models.RechnungItemProperty;
-import de.seifi.rechnung_manager_app.utils.ProduktUtils;
+import de.seifi.rechnung_manager_app.utils.ProduktHelper;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -38,7 +39,7 @@ public class RechnungBindingService {
 
     private final RechnungRepository rechnungRepository;
     private final IRechnungDataHelper rechnungDataHelper;
-    private final CustomerRepository customerRepository;
+    //private final CustomerRepository customerRepository;
     
     private final Map<Integer, CustomerModel> customerList;
 
@@ -78,8 +79,7 @@ public class RechnungBindingService {
 
     public RechnungBindingService(final RechnungType rechnungType, 
     							  final RechnungRepository rechnungRepository,
-                                  final IRechnungDataHelper rechnungDataHelper,
-                                  final CustomerRepository customerRepository) {
+                                  final IRechnungDataHelper rechnungDataHelper) {
     	
     	CURRENT_INSTANCE = this;
 
@@ -89,8 +89,7 @@ public class RechnungBindingService {
         this.rechnungType = rechnungType;
         this.rechnungRepository = rechnungRepository;
         this.rechnungDataHelper = rechnungDataHelper;
-        this.customerRepository = customerRepository;
-        
+
         this.customerList = new HashMap<>();
 
         gesamtSumme = new SimpleFloatProperty(0);
@@ -202,11 +201,10 @@ public class RechnungBindingService {
         LocalDateTime ldt = LocalDateTime.now();
 
         String date = GeneralUtils.formatDate(ldt);
-        String time = GeneralUtils.formatTime(ldt);
 
         int lastNummer = this.rechnungDataHelper.getLastActiveRechnungNummer();
 
-        rechnungSavingModel = new RechnungModel(lastNummer + 1, date, time, rechnungType, RechnungStatus.ACTIVE);
+        rechnungSavingModel = new RechnungModel(lastNummer + 1, date, date, rechnungType, RechnungStatus.ACTIVE);
         
         rechnungNummer.set(String.valueOf(lastNummer + 1));
         rechnungDatum.set(date);
@@ -218,7 +216,7 @@ public class RechnungBindingService {
     public List<CustomerSelectModel> getCustomerSelectList() {
 
         this.customerList.clear();
-        List<CustomerModel> modelList = getCustomerList();
+        List<CustomerModel> modelList = CustomerHelper.getCustomerList();
         for(CustomerModel model: modelList) {
             this.customerList.put(model.getId(), model);
         }
@@ -227,15 +225,6 @@ public class RechnungBindingService {
 
         return selectList;
     }
-
-    public List<CustomerModel> getCustomerList() {
-        List<CustomerEntity> allCustomers = this.customerRepository.findAllByStatus(CustomerStatus.ACTIVE.getValue());
-
-        List<CustomerModel> modelList = allCustomers.stream().map(c -> c.toModel()).collect(Collectors.toList());
-
-        return modelList;
-    }
-
 
     public CustomerModelProperty getCustomerModelProperty() {
 		return customerModelProperty;
@@ -297,7 +286,7 @@ public class RechnungBindingService {
         if(this.rechnungType == RechnungType.RECHNUNG){
             CustomerEntity customerEntity = customerSavingModel.toEntity();
             if(customerEntity.isNew()){
-                customerRepository.save(customerEntity);
+                CustomerHelper.save(customerEntity);
                 customerSavingModel = customerEntity.toModel();
             }
 
@@ -321,10 +310,10 @@ public class RechnungBindingService {
             List<RechnungItemProperty> items = this.rechnungItems.stream().filter(qi -> qi.canSaved()).collect(Collectors.toList());
 
             for(RechnungItemProperty item: items) {
-                ProduktUtils.add(item.getProdukt(), item.getBrutoPreis());
+                ProduktHelper.add(item.getProdukt(), item.getBrutoPreis());
 
             }
-            ProduktUtils.retreiveProduktList();
+            ProduktHelper.retreiveProduktList();
         }
 
 
@@ -370,11 +359,12 @@ public class RechnungBindingService {
             calculateRechnungSumme();
             setDirty(true);
 
-            Optional<String> foundProdukt = ProduktUtils.getProduktMap().keySet().stream().filter(k -> k.toLowerCase().equals(value.toLowerCase())).findAny();
+            Optional<String> foundProdukt = ProduktHelper
+                    .getProduktMap().keySet().stream().filter(k -> k.toLowerCase().equals(value.toLowerCase())).findAny();
             
             if(foundProdukt.isPresent()) {
             	
-            	ProduktModel produktModel = ProduktUtils.getProduktMap().get(foundProdukt.get());
+            	ProduktModel produktModel = ProduktHelper.getProduktMap().get(foundProdukt.get());
             	prop.setBrutoPreis(produktModel.getLastPreis());
             }
 
@@ -406,7 +396,7 @@ public class RechnungBindingService {
 	public void setRechnungModel(RechnungModel rechnungModel) {
 		
 		if(rechnungType == RechnungType.RECHNUNG) {
-	        Optional<CustomerEntity> customerEntityOptional = this.customerRepository.findById(rechnungModel.getCustomerId());
+	        Optional<CustomerEntity> customerEntityOptional = CustomerHelper.getById(rechnungModel.getCustomerId());
 	        if(customerEntityOptional.isEmpty()){
 	        	throw new RuntimeException("Der Kunde von der Rechnung nicht gefunden!");
 	        }
@@ -424,7 +414,7 @@ public class RechnungBindingService {
 		
 		rechnungModel.getItems().forEach(r -> addNewRowIntern(new RechnungItemProperty(r)));
 
-        ProduktUtils.retreiveProduktList();
+        ProduktHelper.retreiveProduktList();
 		
 		isDirty = false;
 	}

@@ -17,48 +17,72 @@
 <?import de.seifi.rechnung_manager_app.ui.FloatTextField?>
 <?import de.seifi.rechnung_manager_app.ui.FloatGeldLabel?>
 <?import javafx.scene.shape.Line?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
 <GridPane alignment="TOP_LEFT" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
           prefWidth="570" prefHeight="817" fx:id="rootPane">
     <columnConstraints>
         <ColumnConstraints hgrow="ALWAYS" />
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints prefHeight="140" vgrow="NEVER" />
-        <RowConstraints prefHeight="467" vgrow="NEVER" />
+        <RowConstraints prefHeight="320" vgrow="NEVER" />
+        <RowConstraints prefHeight="287" vgrow="NEVER" />
         <RowConstraints prefHeight="120" vgrow="NEVER" />
         <RowConstraints prefHeight="90" vgrow="NEVER" />
         
     </rowConstraints>
     <children>
             
-    	<GridPane GridPane.columnIndex="0" GridPane.rowIndex="0" styleClass="rechnung-banner" stylesheets="@../styles/print_styles.css">
+    	<GridPane GridPane.columnIndex="0" GridPane.rowIndex="0" styleClass="rechnung-banner" vgap="5" stylesheets="@../styles/print_styles.css">
 			<columnConstraints>
 		        <ColumnConstraints hgrow="ALWAYS" />
 		        <ColumnConstraints hgrow="NEVER" prefWidth="150" />
 		        <ColumnConstraints hgrow="NEVER" prefWidth="150" />
 		    </columnConstraints>
 		    <rowConstraints>
-		        <RowConstraints prefHeight="30" vgrow="NEVER" />
-		        <RowConstraints prefHeight="20" vgrow="NEVER" />
-		        <RowConstraints prefHeight="20" vgrow="NEVER" />
+                <RowConstraints prefHeight="10" vgrow="NEVER" />
+                <RowConstraints prefHeight="190" vgrow="NEVER" />
+ 		        <RowConstraints prefHeight="20" vgrow="NEVER" />
                 <RowConstraints prefHeight="20" vgrow="NEVER" />
+                <RowConstraints prefHeight="20" vgrow="NEVER" />
+                <RowConstraints prefHeight="16" vgrow="NEVER" />
+                <RowConstraints prefHeight="16" vgrow="NEVER" />
+                <RowConstraints prefHeight="16" vgrow="NEVER" />
                 <RowConstraints prefHeight="50" vgrow="NEVER" />
 		    </rowConstraints>
 		    <children>
-               	<Label text="Rechnung Nr." GridPane.columnIndex="1" GridPane.rowIndex="1" styleClass="summe-label" textAlignment="LEFT" style="-fx-font-size: 10px;" />
-               	<Label fx:id="lblRechnungNummer" GridPane.columnIndex="2" GridPane.rowIndex="1" styleClass="summe-label" textAlignment="LEFT" style="-fx-font-size: 10px;" />
+                <ImageView id="imgBanner" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.columnSpan="2" fitWidth="290" fitHeight="180">
+                    <image>
+                        <Image url="@../photos/photo_print.jpg" />
+                    </image>
+                </ImageView>
+                <Label text="Rechnung Nr." GridPane.columnIndex="1" GridPane.rowIndex="2" styleClass="summe-label" textAlignment="LEFT" style="-fx-font-size: 10px;" />
+               	<Label fx:id="lblRechnungNummer" GridPane.columnIndex="2" GridPane.rowIndex="2" styleClass="summe-label" textAlignment="LEFT" style="-fx-font-size: 10px;" />
 
-               	<Label text="Rechnungdatunm" GridPane.columnIndex="1" GridPane.rowIndex="2" styleClass="summe-label" textAlignment="LEFT" style="-fx-font-size: 10px;" />
-               	<Label fx:id="lblRechnungDatum" GridPane.columnIndex="2" GridPane.rowIndex="2" styleClass="summe-label" textAlignment="LEFT" style="-fx-font-size: 10px;" />
+                <Label text="Rechnungdatunm" GridPane.columnIndex="1" GridPane.rowIndex="3" styleClass="summe-label" textAlignment="LEFT" style="-fx-font-size: 10px;" />
+                <Label fx:id="lblRechnungDatum" GridPane.columnIndex="2" GridPane.rowIndex="3" styleClass="summe-label" textAlignment="LEFT" style="-fx-font-size: 10px;" />
 
-               	<Label text="Liferdatum" GridPane.columnIndex="1" GridPane.rowIndex="3" styleClass="summe-label" textAlignment="LEFT" style="-fx-font-size: 10px;" />
-               	<Label fx:id="lblLiferdatum" GridPane.columnIndex="2" GridPane.rowIndex="3" styleClass="summe-label" textAlignment="LEFT" style="-fx-font-size: 10px;" />
+                <Label text="Liferdatum" GridPane.columnIndex="1" GridPane.rowIndex="4" styleClass="summe-label" textAlignment="LEFT" style="-fx-font-size: 10px;" />
+                <Label fx:id="lblLiferdatum" GridPane.columnIndex="2" GridPane.rowIndex="4" styleClass="summe-label" textAlignment="LEFT" style="-fx-font-size: 10px;" />
 
-                <Label text="Rechnung" GridPane.columnIndex="0" GridPane.rowIndex="4" textAlignment="LEFT" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+                <Label fx:id="lblCustomerName" GridPane.columnIndex="0" GridPane.rowIndex="2" styleClass="summe-label" textAlignment="LEFT" style="-fx-font-size: 10px; -fx-font-weight: bold;" />
+                <Label fx:id="lblStreetNo" GridPane.columnIndex="0" GridPane.rowIndex="3" styleClass="summe-label" textAlignment="LEFT" style="-fx-font-size: 10px;" />
+                <Label fx:id="lblPlzCity" GridPane.columnIndex="0" GridPane.rowIndex="4" styleClass="summe-label" textAlignment="LEFT" style="-fx-font-size: 10px;" />
+
+                <Label text="Tel." GridPane.columnIndex="1" GridPane.rowIndex="5" styleClass="summe-label" textAlignment="LEFT" style="-fx-font-size: 10px;" />
+                <Label text="0511/86022365" GridPane.columnIndex="2" GridPane.rowIndex="5" styleClass="summe-label" textAlignment="LEFT" style="-fx-font-size: 10px;" />
+
+                <Label text="Fax." GridPane.columnIndex="1" GridPane.rowIndex="6" styleClass="summe-label" textAlignment="LEFT" style="-fx-font-size: 10px;" />
+                <Label text="0511/86022367" GridPane.columnIndex="2" GridPane.rowIndex="6" styleClass="summe-label" textAlignment="LEFT" style="-fx-font-size: 10px;" />
+
+                <Label text="Datum" GridPane.columnIndex="1" GridPane.rowIndex="7" styleClass="summe-label" textAlignment="LEFT" style="-fx-font-size: 10px;" />
+                <Label fx:id="lblDatum" GridPane.columnIndex="2" GridPane.rowIndex="7" styleClass="summe-label" textAlignment="LEFT" style="-fx-font-size: 10px;" />
+
+                <Label  fx:id="lblPrintType" GridPane.rowSpan="2" GridPane.columnIndex="0" GridPane.rowIndex="6" textAlignment="LEFT" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
 
             </children>
         </GridPane>
-        <TableView fx:id="printTableView"  GridPane.columnIndex="0" GridPane.rowIndex="1" prefHeight="467" prefWidth="570"
+        <TableView fx:id="printTableView"  GridPane.columnIndex="0" GridPane.rowIndex="1" prefHeight="287" prefWidth="390"
                    styleClass="print-table" stylesheets="@../styles/print_styles.css" editable="false">
             <columns>
                 <TableColumn editable="false" prefWidth="20" sortable="false" text="#">

@@ -2,13 +2,15 @@ package de.seifi.rechnung_manager_app.ui;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 import de.seifi.rechnung_manager_app.RechnungManagerFxApp;
-import de.seifi.rechnung_manager_app.controllers.PrintQuittungDialogController;
 import de.seifi.rechnung_manager_app.controllers.PrintRechnungDialogController;
 import de.seifi.rechnung_manager_app.controllers.RechnungController;
+import de.seifi.rechnung_manager_app.entities.CustomerEntity;
 import de.seifi.rechnung_manager_app.enums.RechnungType;
 import de.seifi.rechnung_manager_app.models.RechnungModel;
+import de.seifi.rechnung_manager_app.utils.CustomerHelper;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.print.PrinterJob;
@@ -35,29 +37,38 @@ public class UiUtils {
 	public static void printRechnungItems(List<RechnungModel> rechnungModelList,
 										  Window window) {
 		try {
-			PrinterJob job = PrinterJob.createPrinterJob();
-			if (job != null && job.showPrintDialog(window)){
-				boolean goforward = job.showPageSetupDialog(window);
-
-				FXMLLoader rechnungPrintLoader = RechnungManagerFxApp.getRechnungPrintFxmlLoader();
-				PrintRechnungDialogController rechnungPringController = new PrintRechnungDialogController();
-				rechnungPrintLoader.setController(rechnungPringController);
-				GridPane rechnungPrintPane = rechnungPrintLoader.load();
-
-				FXMLLoader quittungPrintLoader = RechnungManagerFxApp.getQuittungPrintFxmlLoader();
-				PrintQuittungDialogController quittungPringController = new PrintQuittungDialogController();
-				quittungPrintLoader.setController(quittungPringController);
-				GridPane quittungPrintPane = quittungPrintLoader.load();
-
 				for(RechnungModel model: rechnungModelList){
-					if(model.getRechnungType() == RechnungType.RECHNUNG){
-						rechnungPringController.printRechnungList(model, job);
-					}
-					if(model.getRechnungType() == RechnungType.QUITTUNG){
-						quittungPringController.printRechnungList(model, job);
+					PrinterJob job = PrinterJob.createPrinterJob();
+					if (job != null){
+						// && job.showPrintDialog(window)
+						//boolean goforward = job.showPageSetupDialog(window);
+
+						if(model.getRechnungType() == RechnungType.RECHNUNG){
+							FXMLLoader rechnungPrintLoader = RechnungManagerFxApp.getQuittungPrintFxmlLoader();
+							PrintRechnungDialogController rechnungPringController = new PrintRechnungDialogController(RechnungType.RECHNUNG);
+							rechnungPrintLoader.setController(rechnungPringController);
+							GridPane rechnungPrintPane = rechnungPrintLoader.load();
+
+							Optional<CustomerEntity>
+									customerEntityOptional = CustomerHelper.getById(model.getCustomerId());
+							if(customerEntityOptional.isEmpty()){
+								throw new RuntimeException("Der Kunde von der Rechnung nicht gefunden!");
+							}
+							rechnungPringController.printRechnungList(model, customerEntityOptional.get().toModel(), job);
+						}
+						if(model.getRechnungType() == RechnungType.QUITTUNG){
+							FXMLLoader quittungPrintLoader = RechnungManagerFxApp.getQuittungPrintFxmlLoader();
+							PrintRechnungDialogController quittungPringController = new PrintRechnungDialogController(RechnungType.QUITTUNG);
+							quittungPrintLoader.setController(quittungPringController);
+							GridPane quittungPrintPane = quittungPrintLoader.load();
+
+							quittungPringController.printRechnungList(model, null, job);
+						}
+
+						job.endJob();
 					}
 				}
-			}
+
 
 
 		} catch (IOException e) {

@@ -1,5 +1,6 @@
 package de.seifi.rechnung_manager_app.fx_services;
 
+import de.seifi.rechnung_manager_app.models.CustomerModel;
 import de.seifi.rechnung_manager_app.models.RechnungItemModel;
 import de.seifi.rechnung_manager_app.models.RechnungItemPrintProperty;
 import de.seifi.rechnung_manager_app.models.RechnungModel;
@@ -7,10 +8,7 @@ import de.seifi.rechnung_manager_app.ui.TableUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 public class RechnungBindingPrintService {
 
@@ -20,6 +18,7 @@ public class RechnungBindingPrintService {
     private String nettoSumme;
     private String mvstSumme;
     private RechnungModel rechnungModel = null;
+    private CustomerModel customerModel = null;
     
     ObservableList<RechnungItemPrintProperty> printPropertyList;
 
@@ -31,8 +30,10 @@ public class RechnungBindingPrintService {
     }
 
 
-    public void setRechnungModelList(RechnungModel model) {
+    public void setRechnungModel(RechnungModel model,
+                                 CustomerModel customerModel) {
         this.rechnungModel = model;
+        this.customerModel = customerModel;
         this.printPropertyList = FXCollections.observableArrayList();
 
         preparePrintPropertyList();
@@ -105,6 +106,10 @@ public class RechnungBindingPrintService {
 
     public String getLiferDatum() {
         return rechnungModel.getLiferDate();
+    }
+
+    public CustomerModel getCustomerModel() {
+        return customerModel;
     }
 
     private void calculateRechnungSumme() {

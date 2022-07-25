@@ -188,6 +188,14 @@ public class CustomerModel {
 		this.updated = updated;
 	}
 
+	public String getStreetHouseNumber() {
+		return street + " " + houseNumber;
+	}
+
+	public String getPlzCity() {
+		return plz + " " + city;
+	}
+
 	public String getAddress() {
 		String addr2 = address2 == null || address2.isBlank() ? "" : address2 + ", ";
 		String address = String.format("%s %s, %s%s %s", street, houseNumber, addr2, plz, city);
