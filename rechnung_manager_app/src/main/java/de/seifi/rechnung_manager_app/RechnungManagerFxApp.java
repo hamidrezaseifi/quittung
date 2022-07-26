@@ -74,9 +74,9 @@ public class RechnungManagerFxApp extends Application implements Runnable {
 	    	
 			
 	    } else {
-	        for (int i = 0; i < args.length; i++) {
-	            JUnique.sendMessage(appId, args[0]);
-	        }
+	    	JUnique.sendMessage(appId, "Anwendung läuft bereits");
+	    	System.exit(-1);
+	        
 	    }
 	    
     }
@@ -286,8 +286,20 @@ public class RechnungManagerFxApp extends Application implements Runnable {
 		return currentController;
 	}
 
-	public static boolean isCurrentControllerDirty() {
+	private static boolean isCurrentControllerDirty() {
+		
 		return currentController != null? currentController.isDirty() : false;
+	}
+
+
+	public static boolean cannCurrentControllerClosed() {
+		if(isCurrentControllerDirty()){
+            UiUtils.showError("Niche gespeicherte Änderungen ...", currentController.getDirtyMessage());
+
+            return false;
+        }
+		
+		return true;
 	}
 
 	public static void setCurrentController(ControllerBase currentController) {

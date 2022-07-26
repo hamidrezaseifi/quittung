@@ -30,73 +30,67 @@ public class MainController implements Initializable {
 	@FXML
 	private void showQuitting() throws IOException {
 
-		if(RechnungManagerFxApp.isCurrentControllerDirty()) {
-			return;
-		}
+		if(RechnungManagerFxApp.cannCurrentControllerClosed()) {
+    		clearChildren();
+        	
+        	childBox.getChildren().add(RechnungManagerFxApp.getQuittungPane());
+    	}
 
-		clearChildren();
-
-		childBox.getChildren().add(RechnungManagerFxApp.getQuittungPane());
 	}
 
 	@FXML
 	private void showRechnung() throws IOException {
 
-		if(RechnungManagerFxApp.isCurrentControllerDirty()) {
-			return;
-		}
+		if(RechnungManagerFxApp.cannCurrentControllerClosed()) {
+    		clearChildren();
+        	
+        	childBox.getChildren().add(RechnungManagerFxApp.getRechnungPane());
+    	}
 
-		clearChildren();
-
-		childBox.getChildren().add(RechnungManagerFxApp.getRechnungPane());
 	}
 
     @FXML
     public void showHome() throws IOException {
     	
-    	if(RechnungManagerFxApp.isCurrentControllerDirty()) {
-    		return;
+		if(RechnungManagerFxApp.cannCurrentControllerClosed()) {
+    		clearChildren();
+        	
+        	childBox.getChildren().add(RechnungManagerFxApp.getHomePane());
     	}
-
-    	clearChildren();
     	
-    	childBox.getChildren().add(RechnungManagerFxApp.getHomePane());
     }
 
 	@FXML
 	private void showReport() throws IOException {
 
-		if(RechnungManagerFxApp.isCurrentControllerDirty()) {
-			return;
-		}
+		if(RechnungManagerFxApp.cannCurrentControllerClosed()) {
+    		clearChildren();
+        	
+        	childBox.getChildren().add(RechnungManagerFxApp.getReportPane());
+    	}
 
-		clearChildren();
-
-		childBox.getChildren().add(RechnungManagerFxApp.getReportPane());
 	}
 
 	@FXML
 	private void showCustomers() throws IOException {
 
-		if(RechnungManagerFxApp.isCurrentControllerDirty()) {
-			return;
-		}
+		if(RechnungManagerFxApp.cannCurrentControllerClosed()) {
+    		clearChildren();
+        	
+        	childBox.getChildren().add(RechnungManagerFxApp.getCustomersPane());
+    	}
 
-		clearChildren();
-
-		childBox.getChildren().add(RechnungManagerFxApp.getCustomersPane());
 	}
 	
     @FXML
     private void showAdmin() throws IOException {
     	
-    	if(RechnungManagerFxApp.isCurrentControllerDirty()) {
-    		return;
+    	if(RechnungManagerFxApp.cannCurrentControllerClosed()) {
+    		clearChildren();
+        	
+        	childBox.getChildren().add(RechnungManagerFxApp.getAdminPane());
     	}
-	
-    	clearChildren();
     	
-    	childBox.getChildren().add(RechnungManagerFxApp.getAdminPane());
     }
     
     private void clearChildren() {

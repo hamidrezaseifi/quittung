@@ -20,14 +20,14 @@ public class CustomerHelper {
 
     public static List<CustomerModel> getCustomerList() {
         if(customerList == null){
-            retreiveCustomerList();
+            reloadCustomerList();
         }
         return customerList;
     }
 
     public static Map<Integer, CustomerModel> getCustomerMap() {
         if(customerMap == null){
-            retreiveCustomerList();
+            reloadCustomerList();
         }
         return customerMap;
     }
@@ -36,10 +36,16 @@ public class CustomerHelper {
 
         return getCustomerRepository().findById(id);
     }
+    
     public static Optional<CustomerEntity> save(CustomerEntity entity){
         getCustomerRepository().save(entity);
 
         return getCustomerRepository().findById(entity.getId());
+    } 
+    
+    public static void delete(CustomerEntity entity){
+        getCustomerRepository().delete(entity);
+
     }
 
     private static CustomerRepository getCustomerRepository() {
@@ -50,7 +56,7 @@ public class CustomerHelper {
     }
 
 
-    private static void retreiveCustomerList() {
+    public static void reloadCustomerList() {
         List<CustomerEntity> entityList = getCustomerRepository().findAllByStatus(CustomerStatus.ACTIVE.getValue());
         customerList = entityList.stream().map(e -> e.toModel()).collect(Collectors.toList());
 

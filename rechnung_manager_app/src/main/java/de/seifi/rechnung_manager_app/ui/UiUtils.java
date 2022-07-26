@@ -16,6 +16,7 @@ import javafx.geometry.Insets;
 import javafx.print.PrinterJob;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -31,7 +32,14 @@ public class UiUtils {
         alert.setHeaderText(message);
         alert.setContentText(null);
         alert.showAndWait();
+    }
 
+    public static Optional<ButtonType> showAsking(String title, String message){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(message);
+        alert.setContentText(null);
+        return alert.showAndWait();
     }
 
 	public static void printRechnungItems(List<RechnungModel> rechnungModelList,
