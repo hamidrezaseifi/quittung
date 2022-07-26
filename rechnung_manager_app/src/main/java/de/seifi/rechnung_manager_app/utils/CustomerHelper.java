@@ -2,9 +2,11 @@ package de.seifi.rechnung_manager_app.utils;
 
 import de.seifi.rechnung_manager_app.RechnungManagerSpringApp;
 import de.seifi.rechnung_manager_app.entities.CustomerEntity;
+import de.seifi.rechnung_manager_app.entities.RechnungEntity;
 import de.seifi.rechnung_manager_app.enums.CustomerStatus;
 import de.seifi.rechnung_manager_app.models.CustomerModel;
 import de.seifi.rechnung_manager_app.repositories.CustomerRepository;
+import de.seifi.rechnung_manager_app.repositories.RechnungRepository;
 
 import java.util.List;
 import java.util.Map;
@@ -16,6 +18,8 @@ public class CustomerHelper {
     private static List<CustomerModel> customerList;
 
     private static CustomerRepository customerRepository = null;
+    
+    private static RechnungRepository rechnungRepository = null;
 
 
     public static List<CustomerModel> getCustomerList() {
@@ -44,8 +48,16 @@ public class CustomerHelper {
     } 
     
     public static void delete(CustomerEntity entity){
+    	
         getCustomerRepository().delete(entity);
 
+    }
+    
+    public static boolean hasRechnung(CustomerEntity entity){
+    	
+    	List<RechnungEntity> list = getRechnungRepository().findAllByCustomer(entity.getId());
+
+    	return list.isEmpty() == false;
     }
 
     private static CustomerRepository getCustomerRepository() {
@@ -53,6 +65,14 @@ public class CustomerHelper {
             customerRepository = RechnungManagerSpringApp.applicationContext.getBean(CustomerRepository.class);
         }
         return customerRepository;
+    }
+
+
+    private static RechnungRepository getRechnungRepository() {
+        if(rechnungRepository == null){
+        	rechnungRepository = RechnungManagerSpringApp.applicationContext.getBean(RechnungRepository.class);
+        }
+        return rechnungRepository;
     }
 
 

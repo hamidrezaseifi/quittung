@@ -29,4 +29,9 @@ public interface RechnungRepository extends JpaRepository<RechnungEntity, Intege
 	@Query("SELECT max(r.nummer) FROM RechnungEntity r where r.status=:status")
 	Optional<Integer> getMaxNummer(@Param("status") int status);
 
+	@Query("SELECT r FROM RechnungEntity r where r.customerId=:customerId")
+	List<RechnungEntity> findAllByCustomer(@Param("customerId") int customerId);
+	
+	
+
 }

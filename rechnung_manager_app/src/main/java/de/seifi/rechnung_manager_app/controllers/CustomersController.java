@@ -1,6 +1,7 @@
 package de.seifi.rechnung_manager_app.controllers;
 
 import de.seifi.rechnung_manager_app.RechnungManagerFxApp;
+import de.seifi.rechnung_manager_app.entities.CustomerEntity;
 import de.seifi.rechnung_manager_app.models.CustomerModel;
 import de.seifi.rechnung_manager_app.models.CustomerModelProperty;
 import de.seifi.rechnung_manager_app.ui.UiUtils;
@@ -87,10 +88,17 @@ public class CustomersController implements Initializable, ControllerBase {
         		return;
         	}
         	
+        	CustomerEntity entity = selectedModel.toEntity();
+        	
+        	if(CustomerHelper.hasRechnung(entity)) {
+        		UiUtils.showError("Kunde Löschen ...", String.format("Für den Kunde '%s' ist Rechnungen erstellt und kann nicht gelöscht werden!", selectedModel.getCustomerName()));
+        		return;
+        	}
+        	
         	Optional<ButtonType> result = UiUtils.showAsking("Kunde Löschen ...", 
         			String.format("Wollen Sie der Kunde '%s' löschen?", selectedModel.getCustomerName()));
         	if(result.isPresent() && result.get() == ButtonType.OK) {
-        		CustomerHelper.delete(selectedModel.toEntity());
+        		CustomerHelper.delete(entity);
             	reload(null);
         	}
         	
