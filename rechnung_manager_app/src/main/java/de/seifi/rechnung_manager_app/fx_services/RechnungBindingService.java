@@ -56,6 +56,7 @@ public class RechnungBindingService {
     
     private BooleanProperty disableSave;
     private BooleanProperty disablePrint;
+    private BooleanProperty visbleToggleStatusBox;
 
     private RechnungModel rechnungSavingModel = new RechnungModel();
 
@@ -73,7 +74,7 @@ public class RechnungBindingService {
 
     private List<Float> berechnenFaktorZielList = Arrays.asList(1.4f, 1.2f);
 
-    private List<String> berechnenFaktorZielColorList = Arrays.asList("-fx-background-color: white", "-fx-background-color: #f7fbff");
+    private List<String> berechnenFaktorZielColorList = Arrays.asList("-fx-background-color: white", "-fx-background-color: #f2f6ff");
     private StringProperty bannerBackColor;
 
 
@@ -102,6 +103,7 @@ public class RechnungBindingService {
         
         disableSave = new SimpleBooleanProperty(true);
         disablePrint = new SimpleBooleanProperty(false);
+        visbleToggleStatusBox = new SimpleBooleanProperty(rechnungType == RechnungType.QUITTUNG);
         
         this.rechnungItems = FXCollections.observableArrayList();
         
@@ -210,7 +212,8 @@ public class RechnungBindingService {
         rechnungDatum.set(date);
         liferDatum.set(date);
         
-        isDirty = false;
+        setDirty(false);
+        this.visbleToggleStatusBox.set(true);
 	}
 
     public List<CustomerSelectModel> getCustomerSelectList() {
@@ -265,9 +268,14 @@ public class RechnungBindingService {
 			else {
 				this.disableSave.set(!isAnyValidArtikelToSave());
 			}
+			
 		}
 		
 		this.disablePrint.set(isDirty);
+		if(this.visbleToggleStatusBox.get()) {
+			this.visbleToggleStatusBox.set(this.disableSave.get());
+		}
+		
 	}
 	
 	private boolean isAnyValidArtikelToSave() {
@@ -280,6 +288,14 @@ public class RechnungBindingService {
 
 	public BooleanProperty getDisablePrintProperty() {
 		return disablePrint;
+	}
+
+	public BooleanProperty getVisbleToggleStatusBox() {
+		return visbleToggleStatusBox;
+	}
+
+	public void setVisbleToggleStatusBox(boolean visible) {
+		visbleToggleStatusBox.set(visible);;
 	}
 
 	public boolean save() {

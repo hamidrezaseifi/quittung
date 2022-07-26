@@ -188,6 +188,15 @@
     -fx-padding: 0;
 }
 
+.clear-table-button{
+    -fx-background-image: url('../images/trash.png');
+
+    -fx-background-size: 18 18;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position:4px center;
+	
+}
+
 .tools-edit-button {
 	         
     -fx-background-image: url('../images/view.png');

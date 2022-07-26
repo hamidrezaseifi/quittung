@@ -56,6 +56,8 @@ public class RechnungController implements Initializable, ControllerBase {
 
     @FXML private GridPane rootPane;
 
+    @FXML private Label lblQuittung;
+    
     @FXML private Label lblRechnungNummer;
 
     @FXML private Label lblRechnungDatum;
@@ -242,6 +244,7 @@ public class RechnungController implements Initializable, ControllerBase {
             final Float value = event.getNewValue();
             TablePosition<RechnungItemProperty,?> tPos = event.getTablePosition();
             rechnungBindingService.setNewBrutoPreisValue(tPos.getRow(), value);
+            rechnungBindingService.setVisbleToggleStatusBox(false);
         });
 
         produktColumn.setOnEditCommit(event -> {
@@ -267,6 +270,7 @@ public class RechnungController implements Initializable, ControllerBase {
 
         btnSave.disableProperty().bind(rechnungBindingService.getDisableSaveProperty());
         btnPrint.disableProperty().bind(rechnungBindingService.getDisablePrintProperty());
+        toggleStatusBox.visibleProperty().bind(rechnungBindingService.getVisbleToggleStatusBox());
 
         if(this.rechnungType == RechnungType.QUITTUNG){
         	
@@ -277,8 +281,8 @@ public class RechnungController implements Initializable, ControllerBase {
         		
         	}
             
-
-            toggleStatusBox.setVisible(true);
+        	lblQuittung.setVisible(true);
+            //toggleStatusBox.setVisible(true);
         }
 
         if(this.rechnungType == RechnungType.RECHNUNG){
@@ -290,7 +294,8 @@ public class RechnungController implements Initializable, ControllerBase {
             lblCity.textProperty().bind(rechnungBindingService.getCustomerModelProperty().getCity());
             lblHaus.textProperty().bind(rechnungBindingService.getCustomerModelProperty().getHouseNumber());
 
-            toggleStatusBox.setVisible(false);
+            //toggleStatusBox.setVisible(false);
+            lblQuittung.setVisible(false);
         }
 
     }

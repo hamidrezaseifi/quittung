@@ -4,9 +4,11 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -72,6 +74,16 @@ public class DatabaseConfigUtils {
 	private String datasourceDriverClassName;
 	
 	
+	
+	
+	public DatabaseConfigUtils() {
+		
+	}
+	
+	public DatabaseConfigUtils(String datasourceDriverClassName) {
+		this.datasourceDriverClassName = datasourceDriverClassName;
+	}
+
 	@Bean
     public DataSource dataSource() {
 		
@@ -203,6 +215,82 @@ public class DatabaseConfigUtils {
 	
 	public List<TableModel> getTableModelList(){
 		return existingTables;
+	}
+	
+	public String getTableInfo(TableModel model) throws SQLException {
+		
+		String sql = String.format("select count(*) AS COUNT from %s", model.getName());
+		
+        Connection conn = null;
+        int rowCount = 0;
+		try {
+			DataSource dataSource = getCurrentDataSource();
+			conn = dataSource.getConnection();
+	        
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(sql);
+	        
+	        while(rs.next()) {
+	            System.out.println("The count is " + rs.getInt("COUNT"));
+	            rowCount = rs.getInt("COUNT");
+	        }
+
+		} catch (SQLException e) {
+			throw e;
+		}
+		finally {
+			try {
+				if(conn != null && !conn.isClosed()) {
+					conn.close();
+				}
+			}
+			catch(Exception e) {
+				
+			}
+			
+		}
+        
+        return String.format("Daten-Zahl: %d", rowCount);
+        
+	}
+	
+	public boolean clearTable(TableModel model) throws SQLException {
+		String sql = String.format("delete from %s", model.getName());
+		
+        Connection conn = null;
+		try {
+			DataSource dataSource = getCurrentDataSource();
+			conn = dataSource.getConnection();
+	        
+	        Statement statement = conn.createStatement();
+			statement.executeUpdate(sql);
+
+		} catch (SQLException e) {
+			throw e;
+		}
+		finally {
+			try {
+				if(conn != null && !conn.isClosed()) {
+					conn.close();
+				}
+			}
+			catch(Exception e) {
+				
+			}
+			
+		}
+		
+		return true;
+	}
+	
+	private DataSource getCurrentDataSource() {
+		HikariDataSource dataSource = new HikariDataSource();
+        dataSource.setDriverClassName(this.datasourceDriverClassName);
+        dataSource.setJdbcUrl(this.datasourceUrl);
+        dataSource.setUsername(this.datasourceUsername);
+        dataSource.setPassword(this.datasourcePassword);
+        
+        return dataSource;
 	}
 
 }

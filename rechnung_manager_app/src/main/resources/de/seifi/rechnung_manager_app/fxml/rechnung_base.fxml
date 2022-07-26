@@ -44,7 +44,7 @@
                	<Label text="Name" GridPane.columnIndex="1" GridPane.rowIndex="0" styleClass="summe-label" textAlignment="LEFT" />
                 <HBox spacing="0" GridPane.columnIndex="2" GridPane.rowIndex="0" fx:id="nameBox">
                     <Label fx:id="lblName" prefWidth="220" textAlignment="LEFT" styleClass="rechnung-customer-label"></Label>
-                    <Button fx:id="btnSelectCsutomer" prefWidth="30" onAction="#selectCustomer"></Button>
+                    <Button fx:id="btnSelectCsutomer" prefWidth="30" styleClass="select-customer-button" onAction="#selectCustomer"></Button>
 
                 </HBox>
 
@@ -64,6 +64,9 @@
 	               	<Label fx:id="lblPlz" styleClass="rechnung-customer-label" prefWidth="120"  />
 	               	<Label fx:id="lblCity" styleClass="rechnung-customer-label" prefWidth="130"  />
 				</HBox>
+				
+				<Label text="Quittung" fx:id="lblQuittung" GridPane.columnIndex="2" GridPane.rowIndex="2" GridPane.rowSpan="3" GridPane.columnSpan="2" styleClass="quittung-label" visible="false" textAlignment="LEFT" />
+				
 
                 <Label text="Rechnung Nr." GridPane.columnIndex="4" GridPane.rowIndex="0" styleClass="summe-label" textAlignment="LEFT" />
                 <Label fx:id="lblRechnungNummer" GridPane.columnIndex="5" GridPane.rowIndex="0" styleClass="summe-label" textAlignment="LEFT" />

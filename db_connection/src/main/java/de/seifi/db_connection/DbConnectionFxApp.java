@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import javafx.stage.WindowEvent;
@@ -46,9 +47,14 @@ public class DbConnectionFxApp extends Application {
         
     }
 
-    public static Parent loadFXML(String fxml) throws IOException {
+    public static FXMLLoader loadFXMLLoader(String fxml) throws IOException {
         URL fxmlResource = DbConnectionFxApp.class.getResource("fxml/" + fxml + ".fxml");
         FXMLLoader fxmlLoader = new FXMLLoader(fxmlResource);
+        return fxmlLoader;
+    }
+
+    public static Parent loadFXML(String fxml) throws IOException {
+        FXMLLoader fxmlLoader = loadFXMLLoader(fxml);
         return fxmlLoader.load();
     }
 
@@ -79,5 +85,13 @@ public class DbConnectionFxApp extends Application {
 	    }
     }
 
+    public static void showError(String title, String message){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(message);
+        alert.setContentText(null);
+        alert.showAndWait();
+
+    }
     
 }

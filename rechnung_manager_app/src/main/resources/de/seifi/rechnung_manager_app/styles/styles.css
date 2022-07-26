@@ -33,6 +33,12 @@
     -fx-font-weight: bold;
 }
 
+.quittung-label{
+    -fx-font-family: Arial, Helvetica, sans-serif;
+    -fx-font-size: 30px;
+    -fx-font-weight: bold;
+}
+
 .rechnung-text-field{
     -fx-font-family: Arial, Helvetica, sans-serif;
     -fx-font-size: 14px;
@@ -51,7 +57,7 @@
 
 .select-customer-button{
     -fx-background-image: url('../images/select_multiple_1.png');
-    
+    -fx-background-position:center;  
     -fx-background-size: 90% 90%;
     -fx-background-repeat: no-repeat;
 }
