@@ -2,13 +2,14 @@ package de.seifi.rechnung_manager_app.models;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import de.seifi.rechnung_manager_app.entities.EntityBase;
 import de.seifi.rechnung_manager_app.entities.RechnungItemEntity;
 
 public class RechnungItemModel {
 	
-	private Integer id;
+	private UUID id;
     
 	private String produkt;
     
@@ -38,7 +39,7 @@ public class RechnungItemModel {
         this.preis = preis;
     }
 
-    public RechnungItemModel(Integer id,
+    public RechnungItemModel(UUID id,
     						String produkt,
                              String artikelNummer,
                              int menge,
@@ -92,11 +93,11 @@ public class RechnungItemModel {
         this.artikelNummer = artikelNummer;
     }
 
-	public Integer getId() {
+	public UUID getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(UUID id) {
 		this.id = id;
 	}
 

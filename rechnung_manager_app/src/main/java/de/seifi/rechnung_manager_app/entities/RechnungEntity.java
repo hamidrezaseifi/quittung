@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.persistence.*;
 
@@ -18,11 +19,11 @@ import org.hibernate.annotations.UpdateTimestamp;
 public class RechnungEntity extends EntityBase {
 	
 	@Id	
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+	@GeneratedValue
+    private UUID id;
 
 	@Column(name="customer_id", nullable = false)
-	private Integer customerId;
+	private UUID customerId;
 
 	@Column(nullable = false) 
 	private Integer nummer;
@@ -55,7 +56,7 @@ public class RechnungEntity extends EntityBase {
     	items = new HashSet<>();
     }
 
-	public RechnungEntity(Integer customerId,
+	public RechnungEntity(UUID customerId,
 						  Integer nummer,
 						  String rechnungCreate,
 						  String liferDate,
@@ -70,8 +71,8 @@ public class RechnungEntity extends EntityBase {
 		this.rechnungType = rechnungType;
 	}
 
-	public RechnungEntity(Integer id,
-						  Integer customerId,
+	public RechnungEntity(UUID id,
+						  UUID customerId,
 						  Integer nummer,
 						  String rechnungCreate,
 						  String liferDate,
@@ -89,20 +90,20 @@ public class RechnungEntity extends EntityBase {
 		this.updated = updated;
 	}
 
-	public Integer getId() {
+	public UUID getId() {
 		return id;
 	}
 
 	@Override
-	public void setId(Integer id) {
+	public void setId(UUID id) {
 		this.id = id;
 	}
 
-	public Integer getCustomerId() {
+	public UUID getCustomerId() {
 		return customerId;
 	}
 
-	public void setCustomerId(Integer customerId) {
+	public void setCustomerId(UUID customerId) {
 		this.customerId = customerId;
 	}
 

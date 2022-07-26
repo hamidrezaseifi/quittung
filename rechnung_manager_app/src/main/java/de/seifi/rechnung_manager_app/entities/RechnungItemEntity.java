@@ -1,6 +1,7 @@
 package de.seifi.rechnung_manager_app.entities;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import javax.persistence.*;
 
@@ -17,10 +18,9 @@ import de.seifi.rechnung_manager_app.models.RechnungItemModel;
 public class RechnungItemEntity extends EntityBase {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	@GeneratedValue
+	private UUID id;
 
-	  
 	@ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JoinColumn(foreignKey = @ForeignKey(name = "rechnung_item_rechnung_fkey"))
@@ -61,7 +61,7 @@ public class RechnungItemEntity extends EntityBase {
         this.preis = preis;
     }
 
-    public RechnungItemEntity(Integer id,
+    public RechnungItemEntity(UUID id,
     						String produkt,
                             String artikelNummer,
                             Integer menge,
@@ -113,12 +113,12 @@ public class RechnungItemEntity extends EntityBase {
         this.artikelNummer = artikelNummer;
     }
 
-	public Integer getId() {
+	public UUID getId() {
 		return id;
 	}
 
 	@Override
-	public void setId(Integer id) {
+	public void setId(UUID id) {
 		this.id = id;
 	}
 

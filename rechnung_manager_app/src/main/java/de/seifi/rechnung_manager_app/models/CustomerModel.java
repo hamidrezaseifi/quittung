@@ -10,10 +10,11 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class CustomerModel {
 
-    private Integer id;
+    private UUID id;
 
 	private String customerName;
 
@@ -85,7 +86,7 @@ public class CustomerModel {
 	}
 
 
-	public CustomerModel(Integer id,
+	public CustomerModel(UUID id,
                          String customerName,
                          String street,
                          String houseNumber,
@@ -112,11 +113,11 @@ public class CustomerModel {
 		return id == null;
 	}
 	
-	public Integer getId() {
+	public UUID getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(UUID id) {
 		this.id = id;
 	}
 

@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import de.seifi.rechnung_manager_app.entities.EntityBase;
 import de.seifi.rechnung_manager_app.entities.RechnungEntity;
@@ -12,11 +13,11 @@ import de.seifi.rechnung_manager_app.enums.RechnungType;
 
 public class RechnungModel {
 
-	public static final Integer QUITTUNG_CUSTOMER_ID = -1;
+	public static final UUID QUITTUNG_CUSTOMER_ID = null;
 
-    private Integer id;
+    private UUID id;
 
-	private Integer customerId;
+	private UUID customerId;
 
 	private Integer nummer;
 	   
@@ -37,7 +38,7 @@ public class RechnungModel {
     public RechnungModel() {
     	super();
     	id = null;
-		customerId = -1;
+		customerId = null;
     	items = new ArrayList<>();
 
     }
@@ -55,7 +56,7 @@ public class RechnungModel {
 		this.status = status;
 	}
 
-	public RechnungModel(Integer customerId,
+	public RechnungModel(UUID customerId,
 						 Integer nummer,
 						 String rechnungCreate,
 						 String liferDate,
@@ -70,7 +71,7 @@ public class RechnungModel {
 		this.status = RechnungStatus.ofValue(status);
 	}
 
-	public RechnungModel(Integer customerId,
+	public RechnungModel(UUID customerId,
 						 Integer nummer,
 						 String rechnungCreate,
 						 String liferDate,
@@ -86,8 +87,8 @@ public class RechnungModel {
 	}
 
 
-	public RechnungModel(Integer id,
-						 Integer customerId,
+	public RechnungModel(UUID id,
+						 UUID customerId,
 						 Integer nummer,
 						 String rechnungCreate,
 						 String liferDate,
@@ -111,19 +112,19 @@ public class RechnungModel {
 		return id == null;
 	}
 
-	public Integer getId() {
+	public UUID getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(UUID id) {
 		this.id = id;
 	}
 
-	public Integer getCustomerId() {
+	public UUID getCustomerId() {
 		return customerId;
 	}
 
-	public void setCustomerId(Integer customerId) {
+	public void setCustomerId(UUID customerId) {
 		this.customerId = customerId;
 	}
 

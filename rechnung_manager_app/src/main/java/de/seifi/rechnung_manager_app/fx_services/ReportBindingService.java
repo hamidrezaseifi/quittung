@@ -16,6 +16,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Sort;
@@ -74,7 +75,7 @@ public class ReportBindingService {
 
 	public void search() {
         List<CustomerEntity> allCustomersList = this.customerRepository.findAllByStatus(CustomerStatus.ACTIVE.getValue());
-        Map<Integer, CustomerModel> allCustomers = allCustomersList.stream().collect(Collectors.toMap(c -> c.getId(), c -> c.toModel()));
+        Map<UUID, CustomerModel> allCustomers = allCustomersList.stream().collect(Collectors.toMap(c -> c.getId(), c -> c.toModel()));
         allCustomers.put(RechnungModel.QUITTUNG_CUSTOMER_ID, null);
 
 		rechnungItems.clear();

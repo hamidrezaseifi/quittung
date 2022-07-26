@@ -1,5 +1,7 @@
 package de.seifi.rechnung_manager_app;
 
+import de.seifi.rechnung_common.utils.ISingleInstanceRunnable;
+import de.seifi.rechnung_common.utils.RunSingleInstance;
 import de.seifi.rechnung_manager_app.controllers.ControllerBase;
 import de.seifi.rechnung_manager_app.controllers.MainController;
 import de.seifi.rechnung_manager_app.controllers.RechnungController;
@@ -29,7 +31,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
-public class RechnungManagerFxApp extends Application implements Runnable {
+public class RechnungManagerFxApp extends Application implements Runnable, ISingleInstanceRunnable {
 
     private static final int SPLASH_WIDTH = 770;
 
@@ -51,34 +53,15 @@ public class RechnungManagerFxApp extends Application implements Runnable {
     private static ControllerBase currentController;
 
 
-    public static void main(String[] args) {
-    	
-    	String appId = "RechnungManagerAppId";
-	    boolean alreadyRunning;
-	    try {
-	        JUnique.acquireLock(appId, new MessageHandler() {
-	            public String handle(String message) {
-	                // A brand new argument received! Handle it!
-	                return null;
-	            }
-	        });
-	        alreadyRunning = false;
-	    } catch (AlreadyLockedException e) {
-	        alreadyRunning = true;
-	    }
-	    if (!alreadyRunning) {
-	    	
+    @Override
+    public void runInstance(String[] args) {
+        RechnungManagerFxApp.startArgs = args;
+        Application.launch(args);
+    }
 
-	    	RechnungManagerFxApp.startArgs = args;
-	        Application.launch(args);
-	    	
-			
-	    } else {
-	    	JUnique.sendMessage(appId, "Anwendung läuft bereits");
-	    	System.exit(-1);
-	        
-	    }
-	    
+    public static void main(String[] args) {
+
+        RunSingleInstance.runInstance(args, new RechnungManagerFxApp(), "RechnungManagerAppId");
     }
     
     public void run(){
@@ -98,10 +81,6 @@ public class RechnungManagerFxApp extends Application implements Runnable {
     	splashStage = initStage;
     	
 		splashPane = RechnungManagerFxApp.getSplashPane();
-        /*ImageView imageView = new ImageView();
-        Image image = loadLoadingImage();
-        imageView.setImage(image);
-        splashPane.add(imageView, 0, 1);*/
 
         Scene splashScene = new Scene(splashPane, SPLASH_WIDTH, SPLASH_HEIGHT);
         splashScene.getStylesheets().add(getMainStyle());
@@ -305,6 +284,5 @@ public class RechnungManagerFxApp extends Application implements Runnable {
 	public static void setCurrentController(ControllerBase currentController) {
 		RechnungManagerFxApp.currentController = currentController;
 	}
-    
-    
+
 }

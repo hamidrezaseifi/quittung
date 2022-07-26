@@ -35,6 +35,12 @@
 		    <version>0.5.2</version>
 		</dependency>
 
+		<dependency>
+			<groupId>it.sauronsoftware</groupId>
+			<artifactId>junique</artifactId>
+			<version>1.0.4</version>
+		</dependency>
+
 	</dependencies>
 
 	<repositories>

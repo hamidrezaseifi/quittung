@@ -2,6 +2,7 @@ package de.seifi.rechnung_manager_app.models;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import de.seifi.rechnung_manager_app.entities.EntityBase;
 import de.seifi.rechnung_manager_app.entities.ProduktEntity;
@@ -9,7 +10,7 @@ import de.seifi.rechnung_manager_app.entities.ProduktEntity;
 public class ProduktModel {
 	
 
-	private Integer id;
+	private UUID id;
 	
 	private String produktName;
 	
@@ -31,11 +32,11 @@ public class ProduktModel {
 	}
 	
 
-	public ProduktModel(Integer id, 
-			String produktName, 
-			float lastPreis,
-            LocalDateTime created,
-            LocalDateTime updated) {
+	public ProduktModel(UUID id,
+						String produktName,
+						float lastPreis,
+						LocalDateTime created,
+						LocalDateTime updated) {
 		this();
 		this.id = id;
 		this.produktName = produktName;
@@ -45,12 +46,12 @@ public class ProduktModel {
 	}
 
 	
-	public Integer getId() {
+	public UUID getId() {
 		return id;
 	}
 
 
-	public void setId(Integer id) {
+	public void setId(UUID id) {
 		this.id = id;
 	}
 

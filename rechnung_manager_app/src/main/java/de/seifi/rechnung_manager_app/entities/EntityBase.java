@@ -1,11 +1,11 @@
 package de.seifi.rechnung_manager_app.entities;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 
 public abstract class EntityBase {
-	
-    
+
     public EntityBase() {
 		this.setId(null);
 		this.setCreated(LocalDateTime.now());
@@ -16,9 +16,9 @@ public abstract class EntityBase {
 		return getId() == null;
 	}
 
-	public abstract void setId(Integer id);
+	public abstract void setId(UUID id);
 
-	public abstract Integer getId();
+	public abstract UUID getId();
 
 
 	public abstract LocalDateTime getCreated();

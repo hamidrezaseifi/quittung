@@ -1,6 +1,7 @@
 package de.seifi.rechnung_manager_app.entities;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import javax.persistence.*;
 
@@ -16,8 +17,8 @@ import de.seifi.rechnung_manager_app.models.ProduktModel;
 public class ProduktEntity extends EntityBase {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	@GeneratedValue
+	private UUID id;
 	
 	@Column(name="produkt_name", nullable = false)
 	private String produktName;
@@ -45,7 +46,7 @@ public class ProduktEntity extends EntityBase {
 	}
 	
 
-	public ProduktEntity(Integer id, 
+	public ProduktEntity(UUID id,
 			String produktName, 
 			float lastPreis,
 			LocalDateTime updated) {
@@ -57,12 +58,12 @@ public class ProduktEntity extends EntityBase {
 	}
 
 	
-	public Integer getId() {
+	public UUID getId() {
 		return id;
 	}
 
 	@Override
-	public void setId(Integer id) {
+	public void setId(UUID id) {
 		this.id = id;
 	}
 

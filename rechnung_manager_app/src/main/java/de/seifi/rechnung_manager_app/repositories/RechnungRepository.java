@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -13,7 +14,7 @@ import de.seifi.rechnung_manager_app.entities.RechnungEntity;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface RechnungRepository extends JpaRepository<RechnungEntity, Integer> {
+public interface RechnungRepository extends JpaRepository<RechnungEntity, UUID> {
 
 	@Query("SELECT r FROM RechnungEntity r order by r.nummer")
 	Optional<RechnungEntity> findMaxLastNummer();
@@ -30,7 +31,7 @@ public interface RechnungRepository extends JpaRepository<RechnungEntity, Intege
 	Optional<Integer> getMaxNummer(@Param("status") int status);
 
 	@Query("SELECT r FROM RechnungEntity r where r.customerId=:customerId")
-	List<RechnungEntity> findAllByCustomer(@Param("customerId") int customerId);
+	List<RechnungEntity> findAllByCustomer(@Param("customerId") UUID customerId);
 	
 	
 

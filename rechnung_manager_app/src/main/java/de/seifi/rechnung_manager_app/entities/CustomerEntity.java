@@ -3,6 +3,7 @@ package de.seifi.rechnung_manager_app.entities;
 import de.seifi.rechnung_manager_app.models.CustomerModel;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import javax.persistence.*;
 
@@ -16,8 +17,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 public class CustomerEntity extends EntityBase {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+	@GeneratedValue
+    private UUID id;
 
 	@Column(name="customer_name")
 	private String customerName;
@@ -74,7 +75,7 @@ public class CustomerEntity extends EntityBase {
 		this.status = status;
 	}
 
-	public CustomerEntity(Integer id,
+	public CustomerEntity(UUID id,
                           String customerName,
                           String street,
                           String houseNumber,
@@ -95,12 +96,12 @@ public class CustomerEntity extends EntityBase {
 		this.updated = updated;
 	}
 
-	public Integer getId() {
+	public UUID getId() {
 		return id;
 	}
 
 	@Override
-	public void setId(Integer id) {
+	public void setId(UUID id) {
 		this.id = id;
 	}
 

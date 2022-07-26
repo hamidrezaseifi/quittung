@@ -1,7 +1,9 @@
 package de.seifi.rechnung_manager_app.models;
 
+import java.util.UUID;
+
 public class CustomerSelectModel {
-    private Integer id;
+    private UUID id;
 
 	private String customerName;
 
@@ -9,17 +11,17 @@ public class CustomerSelectModel {
 		
 	}
 
-	public CustomerSelectModel(Integer id, String customerName) {
+	public CustomerSelectModel(UUID id, String customerName) {
 		super();
 		this.id = id;
 		this.customerName = customerName;
 	}
 
-	public Integer getId() {
+	public UUID getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(UUID id) {
 		this.id = id;
 	}
 

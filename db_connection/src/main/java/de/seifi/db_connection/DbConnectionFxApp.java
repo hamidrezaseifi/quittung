@@ -1,5 +1,7 @@
 package de.seifi.db_connection;
 
+import de.seifi.rechnung_common.utils.ISingleInstanceRunnable;
+import de.seifi.rechnung_common.utils.RunSingleInstance;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -16,15 +18,24 @@ import it.sauronsoftware.junique.AlreadyLockedException;
 import it.sauronsoftware.junique.JUnique;
 import it.sauronsoftware.junique.MessageHandler;
 
-public class DbConnectionFxApp extends Application {
+public class DbConnectionFxApp extends Application implements ISingleInstanceRunnable {
 
     private static Scene scene;
     
     private static Stage stage;
     
-    
     public static void closeApp() {
     	stage.close();
+    }
+
+    @Override
+    public void runInstance(String[] args) {
+        Application.launch(args);
+    }
+
+    public static void main(String[] args) {
+        RunSingleInstance.runInstance(args, new DbConnectionFxApp(), "DbConnectionFxAppId");
+
     }
 
     @Override
@@ -58,33 +69,6 @@ public class DbConnectionFxApp extends Application {
         return fxmlLoader.load();
     }
 
-    public static void main(String[] args) {
-    	String appId = "DbConnectionFxAppId";
-	    boolean alreadyRunning;
-	    try {
-	        JUnique.acquireLock(appId, new MessageHandler() {
-	            public String handle(String message) {
-	                // A brand new argument received! Handle it!
-	                return null;
-	            }
-	        });
-	        alreadyRunning = false;
-	    } catch (AlreadyLockedException e) {
-	        alreadyRunning = true;
-	    }
-	    if (!alreadyRunning) {
-	    	
-
-	    	Application.launch(args);
-	    	
-			
-	    } else {
-	        for (int i = 0; i < args.length; i++) {
-	            JUnique.sendMessage(appId, args[0]);
-	        }
-	    }
-    }
-
     public static void showError(String title, String message){
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
@@ -93,5 +77,4 @@ public class DbConnectionFxApp extends Application {
         alert.showAndWait();
 
     }
-    
 }

@@ -24,11 +24,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class RechnungBindingService {
@@ -41,7 +37,7 @@ public class RechnungBindingService {
     private final IRechnungDataHelper rechnungDataHelper;
     //private final CustomerRepository customerRepository;
     
-    private final Map<Integer, CustomerModel> customerList;
+    private final Map<UUID, CustomerModel> customerList;
 
     private ObservableList<RechnungItemProperty> rechnungItems;   
     private CustomerModelProperty customerModelProperty;

@@ -11,10 +11,11 @@ import de.seifi.rechnung_manager_app.repositories.RechnungRepository;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class CustomerHelper {
-    private static Map<Integer, CustomerModel> customerMap;
+    private static Map<UUID, CustomerModel> customerMap;
     private static List<CustomerModel> customerList;
 
     private static CustomerRepository customerRepository = null;
@@ -29,14 +30,14 @@ public class CustomerHelper {
         return customerList;
     }
 
-    public static Map<Integer, CustomerModel> getCustomerMap() {
+    public static Map<UUID, CustomerModel> getCustomerMap() {
         if(customerMap == null){
             reloadCustomerList();
         }
         return customerMap;
     }
 
-    public static Optional<CustomerEntity> getById(Integer id){
+    public static Optional<CustomerEntity> getById(UUID id){
 
         return getCustomerRepository().findById(id);
     }
