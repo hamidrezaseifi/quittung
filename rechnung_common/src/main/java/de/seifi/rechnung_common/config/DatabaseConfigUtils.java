@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.sql.DataSource;
 
@@ -20,6 +21,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.zaxxer.hikari.HikariDataSource;
+
+import de.seifi.rechnung_common.models.TableModel;
 
 @Configuration
 public class DatabaseConfigUtils {
@@ -53,7 +56,11 @@ public class DatabaseConfigUtils {
 	private static final String CONFIG_DEFAULT_VALUE_QUITTUNG_DATASOURCE_USERNAME = "postgres";
 	
 
-	private static final List<String> existingTables = Arrays.asList("produkt_last_presi", "rechnung", "rechnung_item");
+	private static final List<TableModel> existingTables = 
+			Arrays.asList(new TableModel("produkt", "Produkte"), 
+					new TableModel("rechnung", "Rechnungen"), 
+					new TableModel("rechnung_item", "Rechnung-Produkte"), 
+					new TableModel("customer", "Kunden"));
 	
 	private String datasourceUrl;
 	
@@ -94,7 +101,7 @@ public class DatabaseConfigUtils {
         ResultSet rs = mData.getTables(null, null, "%", null);
         
         List<String> checkingTables = new ArrayList<String>();
-        checkingTables.addAll(existingTables);
+        checkingTables.addAll(existingTables.stream().map(t -> t.getName()).collect(Collectors.toList()));
         while (rs.next()) {
         	if(rs.getString("TABLE_TYPE")!= null && rs.getString("TABLE_TYPE").toLowerCase().equals("table")) {
         		String tableName = rs.getString("TABLE_NAME");
@@ -192,6 +199,10 @@ public class DatabaseConfigUtils {
 		Path configPath = Paths.get(s, "config.cfg");
 		
 		return configPath.toFile();
+	}
+	
+	public List<TableModel> getTableModelList(){
+		return existingTables;
 	}
 
 }
