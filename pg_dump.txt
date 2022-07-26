@@ -1,0 +1,12 @@
+.\pg_dump.exe --host localhost --port 5432 --username postgres -d rechnung -Fc -t customer > E:\Hamid\Projects\java\quittung\file.out
+
+
+.\pg_dump.exe --host localhost --port 5432 -Ft -U postgres | gzip > E:\Hamid\Projects\java\quittung\backup.tar.gz
+
+E:\PostgreSQL\12\bin\pg_dump.exe --host localhost --port 5432 --dbname=rechnung -Fp -U postgres > E:\Hamid\Projects\java\quittung\backup.sql
+
+E:\PostgreSQL\12\bin\pg_dump.exe  -U postgres --no-password --dbname=rechnung > E:\Hamid\Projects\java\quittung\backup.sql
+
+$env:PGPASSWORD=7342; E:\PostgreSQL\12\bin\pg_dump.exe  -U postgres --no-password --dbname=rechnung > E:\Hamid\Projects\java\quittung\backup.sql
+
+
