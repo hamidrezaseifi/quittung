@@ -226,28 +226,28 @@ public class DatabaseConfigUtils extends ConfigReader {
         return dataSource;
 	}
 
-	
-    private String getDatasourcePassword() {
+
+	public String getDatasourcePassword() {
 
 		return getValue(CONFIG_KEY_QUITTUNG_DATASOURCE_PASSWORD);
 	}
 
-	private String getDatasourceUsername() {
+	public String getDatasourceUsername() {
 
 		return getValue(CONFIG_KEY_QUITTUNG_DATASOURCE_USERNAME);	
 	}
 
-	private String getDatabase() {
+	public String getDatabase() {
 
 		return getValue(CONFIG_KEY_QUITTUNG_DATASOURCE_DATABASE);
 	}
 
-	private String getPort() {
+	public String getPort() {
 		
 		return getValue(CONFIG_KEY_QUITTUNG_DATASOURCE_PORT);
 	}
 
-	private String getServer() {
+	public String getServer() {
 		
 		return getValue(CONFIG_KEY_QUITTUNG_DATASOURCE_SERVER);
 	}

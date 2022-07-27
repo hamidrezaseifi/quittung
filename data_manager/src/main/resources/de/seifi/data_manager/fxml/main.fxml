@@ -106,7 +106,7 @@
 						<VBox spacing="10" fillWidth="true" styleClass="pg_dump-label" fx:id="processBackupBox">
 							<HBox>
 								<Label text="Backup Datei" prefWidth="100" prefHeight="24" />
-								<Label fx:id="lblBackupPath" prefWidth="500" prefHeight="24" styleClass="pg_dump-label" />
+								<Label fx:id="lblBackupPath" prefWidth="500" text="" prefHeight="24" styleClass="pg_dump-label" />
 								<Button text="..." onAction="#selectBackupPath" />
 							</HBox>
 							<HBox spacing="10">

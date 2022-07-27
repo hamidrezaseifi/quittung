@@ -1,7 +1,9 @@
 package de.seifi.data_manager.controllers;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
@@ -28,6 +30,7 @@ public class DbConnectionController implements Initializable {
 	@FXML public Button btnCancelBackup;
 	@FXML public VBox processBackupBox;
 	@FXML public VBox backupInfoBox;
+	@FXML public ListView<String> lstBackupLogs;
 	@FXML private TextField txtServer;
 	@FXML private TextField txtPort;
 	@FXML private TextField txtDatabase;
@@ -111,40 +114,62 @@ public class DbConnectionController implements Initializable {
 	}
 
 	public void startBackup(ActionEvent actionEvent) {
+
 		String backupCommand = "%  -U postgres --no-password --dbname=rechnung > %s";
 		String env = "PGPASSWORD=7342";
 
-		ProcessBuilder builder = new ProcessBuilder(DataManagerFxApp.appConfig.getPostgresDumpAppPath());
-		builder.environment().put("PGPASSWORD", "7342");
-		builder.ar
+		String[] commands = new String[]{DataManagerFxApp.appConfig.getPostgresDumpAppPath(),
+										 "--username",
+										 databaseConfig.getDatasourceUsername(),
+										 "--host",
+										 databaseConfig.getServer(),
+										 "--port",
+										 databaseConfig.getPort(),
+										 "--no-password",
+										 "--verbose",
+										 "--dbname=" + databaseConfig.getDatabase(),
+										 "--file",
+										 lblBackupPath.getText().replace(".zip", ".sql")};
 
-		Thread taskThread = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				double progress = 0;
-				for(int i=0; i<10; i++){
+		String testCommand = String.join(" ", commands);
 
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-
-					progress += 0.1;
-					final double reportedProgress = progress;
-
-					Platform.runLater(new Runnable() {
-						@Override
-						public void run() {
-							//progressBar.setProgress(reportedProgress);
-						}
-					});
-				}
-			}
-		});
+		ProcessBuilder builder = new ProcessBuilder(commands);
+		builder.environment().put("PGPASSWORD", databaseConfig.getDatasourcePassword());
+		builder.redirectOutput(ProcessBuilder.Redirect.PIPE);
+		builder.redirectError(ProcessBuilder.Redirect.PIPE);
 
 		btnCancelBackup.setDisable(false);
 		btnStartBackup.setDisable(true);
+
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				try
+				{
+					Process process = builder.start();
+					BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(), "ISO-8859-1"));
+					BufferedReader error = new BufferedReader(new InputStreamReader(process.getErrorStream(), "ISO-8859-1"));
+
+					String line = null;
+					while ((line = error.readLine()) != null) {
+						lstBackupLogs.getItems().add(line);
+					}
+
+				}
+				catch (Exception e)
+				{
+					e.printStackTrace();
+
+					btnCancelBackup.setDisable(true);
+					btnStartBackup.setDisable(false);
+				}
+
+				btnCancelBackup.setDisable(true);
+				btnStartBackup.setDisable(false);
+			}
+		});
+
+
 	}
 
 	public void cancelBackup(ActionEvent actionEvent) {
