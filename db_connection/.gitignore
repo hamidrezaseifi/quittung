@@ -34,3 +34,4 @@ build/
 /config.cfg
 /exec/*.log
 /exec/*.exe
+/db_config.cfg
