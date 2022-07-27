@@ -11,6 +11,7 @@ import java.util.ResourceBundle;
 import de.seifi.data_manager.DataManagerFxApp;
 import de.seifi.rechnung_common.config.DatabaseConfigUtils;
 import de.seifi.rechnung_common.models.TableModel;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -110,6 +111,38 @@ public class DbConnectionController implements Initializable {
 	}
 
 	public void startBackup(ActionEvent actionEvent) {
+		String backupCommand = "%  -U postgres --no-password --dbname=rechnung > %s";
+		String env = "PGPASSWORD=7342";
+
+		ProcessBuilder builder = new ProcessBuilder(DataManagerFxApp.appConfig.getPostgresDumpAppPath());
+		builder.environment().put("PGPASSWORD", "7342");
+		builder.ar
+
+		Thread taskThread = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				double progress = 0;
+				for(int i=0; i<10; i++){
+
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+
+					progress += 0.1;
+					final double reportedProgress = progress;
+
+					Platform.runLater(new Runnable() {
+						@Override
+						public void run() {
+							//progressBar.setProgress(reportedProgress);
+						}
+					});
+				}
+			}
+		});
+
 		btnCancelBackup.setDisable(false);
 		btnStartBackup.setDisable(true);
 	}
