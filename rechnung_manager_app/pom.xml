@@ -8,7 +8,7 @@
 		<version>0.0.1</version>
 	</parent>
 	<artifactId>rechnung_manager_app</artifactId>
-	<name>rechnung_manager</name>
+	<name>rechnung_manager_app</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>11</java.version>

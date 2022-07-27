@@ -20,6 +20,6 @@
 	<modules>
 		<module>rechnung_common</module>
 		<module>rechnung_manager_app</module>
-		<module>db_connection</module>
+		<module>data_manager</module>
 	</modules>
 </project>

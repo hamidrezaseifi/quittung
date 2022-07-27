@@ -7,9 +7,9 @@
 		<artifactId>rechnung_manager</artifactId>
 		<version>0.0.1</version>
 	</parent>
-	<artifactId>db_connection</artifactId>
-	<name>db_connection</name>
-	<description>db_connection</description>
+	<artifactId>data_manager</artifactId>
+	<name>data_manager</name>
+	<description>data manager</description>
 	<packaging>jar</packaging>
 	<properties>
 		<java.version>11</java.version>
@@ -41,7 +41,6 @@
 			<version>1.0.4</version>
 		</dependency>
 
-		
 		<dependency>
 			<groupId>de.seifi</groupId>
 			<artifactId>rechnung_common</artifactId>

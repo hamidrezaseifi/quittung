@@ -4,11 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -50,7 +46,10 @@ public class DatabaseConfigUtils extends ConfigReader {
 	private static final String CONFIG_DEFAULT_VALUE_QUITTUNG_DATASOURCE_PASSWORD = "7342";
 
 	private static final String CONFIG_DEFAULT_VALUE_QUITTUNG_DATASOURCE_USERNAME = "postgres";
-	
+
+	private static final String BACKUP_HISTORY_TABLE_NAME = "backup_history";
+
+
 	private static final List<IConfigItem> configItemList = Arrays.asList(
 			new ConfigItem(CONFIG_KEY_DATABASE_SECTOR, CONFIG_KEY_QUITTUNG_DATASOURCE_SERVER, CONFIG_DEFAULT_VALU_QUITTUNG_DATASOURCE_SERVER),
 			new ConfigItem(CONFIG_KEY_DATABASE_SECTOR, CONFIG_KEY_QUITTUNG_DATASOURCE_PORT, CONFIG_DEFAULT_VALU_QUITTUNG_DATASOURCE_PORT),
@@ -111,7 +110,6 @@ public class DatabaseConfigUtils extends ConfigReader {
         while (rs.next()) {
         	if(rs.getString("TABLE_TYPE")!= null && rs.getString("TABLE_TYPE").toLowerCase().equals("table")) {
         		String tableName = rs.getString("TABLE_NAME");
-        		System.out.println(tableName);
         		if(checkingTables.contains(tableName)) {
         			checkingTables.remove(tableName);
         		}
@@ -167,7 +165,6 @@ public class DatabaseConfigUtils extends ConfigReader {
 			ResultSet rs = stmt.executeQuery(sql);
 	        
 	        while(rs.next()) {
-	            System.out.println("The count is " + rs.getInt("COUNT"));
 	            rowCount = rs.getInt("COUNT");
 	        }
 
@@ -255,4 +252,51 @@ public class DatabaseConfigUtils extends ConfigReader {
 		return getValue(CONFIG_KEY_QUITTUNG_DATASOURCE_SERVER);
 	}
 
+    public List<String> getBackupInfo() {
+
+		String sql = String.format("select max(backup_ts) as ts, id, table_name, backup_result, updated  from backup_history " +
+								   "group by id, table_name, backup_result, updated order by table_name",
+								   BACKUP_HISTORY_TABLE_NAME);
+		List<String> results = new ArrayList<>();
+		Connection conn = null;
+		try {
+			DataSource dataSource = getCurrentDataSource();
+			conn = dataSource.getConnection();
+
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(sql);
+
+			while(rs.next()) {
+
+				Date ts = rs.getDate("ts");
+				String id = rs.getString("id");
+				String table_name = rs.getString("table_name");
+				String backup_result = rs.getString("backup_result");
+				Date updated = rs.getDate("updated");
+
+				results.add(String.format("%s: letzte Backup(%s)", table_name, ts));
+
+			}
+
+		} catch (SQLException e) {
+			results.add("Fehler beim Extrahieren von den Tabellen Info: " + e.getLocalizedMessage());
+		}
+		finally {
+			try {
+				if(conn != null && !conn.isClosed()) {
+					conn.close();
+				}
+			}
+			catch(Exception e) {
+
+			}
+
+		}
+
+		if(results.isEmpty()){
+			results.add("Keine Backup Historie!");
+		}
+		return results;
+
+	}
 }
