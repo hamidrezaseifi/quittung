@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Button?>
+<?import javafx.geometry.Insets?>
+
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.collections.FXCollections?>
+<?import de.seifi.rechnung_manager.ui.tablecell.*?>
+<?import de.seifi.rechnung_manager.ui.FloatTextField?>
+<?import de.seifi.rechnung_manager.ui.FloatGeldLabel?>
+<?import javafx.scene.shape.Line?>
+<GridPane alignment="TOP_LEFT" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="de.seifi.rechnung_manager.controllers.RechnungController" fx:id="rootPane">
+    <columnConstraints>
+        <ColumnConstraints hgrow="ALWAYS" />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints prefHeight="140" vgrow="NEVER" />
+        <RowConstraints prefHeight="40" vgrow="NEVER" />
+        <RowConstraints vgrow="ALWAYS" />
+        <RowConstraints prefHeight="90" vgrow="NEVER" />
+        <RowConstraints prefHeight="50" vgrow="NEVER" />
+    </rowConstraints>
+    <children>
+            
+    	<GridPane GridPane.columnIndex="0" GridPane.rowIndex="0" styleClass="rechnung-banner" fx:id="bannerPane">
+			<columnConstraints>
+		        <ColumnConstraints hgrow="ALWAYS" />
+		        <ColumnConstraints hgrow="NEVER" prefWidth="150" />
+		        <ColumnConstraints hgrow="NEVER" prefWidth="150" />
+		    </columnConstraints>
+		    <rowConstraints>
+		        <RowConstraints prefHeight="40" vgrow="NEVER" />
+		        <RowConstraints prefHeight="40" vgrow="NEVER" />
+                <RowConstraints vgrow="ALWAYS" />
+                <RowConstraints prefHeight="40" vgrow="NEVER" />
+                <RowConstraints prefHeight="24" vgrow="NEVER" />
+		    </rowConstraints>
+		    <children>
+               	<Label text="Rechnung Nr." GridPane.columnIndex="1" GridPane.rowIndex="0" styleClass="summe-label" textAlignment="LEFT" />
+               	<Label fx:id="lblRechnungNummer" GridPane.columnIndex="2" GridPane.rowIndex="0" styleClass="summe-label" textAlignment="LEFT" />
+
+               	<Label text="Rechnungdatunm" GridPane.columnIndex="1" GridPane.rowIndex="1" styleClass="summe-label" textAlignment="LEFT" />
+               	<Label fx:id="lblRechnungDatum" GridPane.columnIndex="2" GridPane.rowIndex="1" styleClass="summe-label" textAlignment="LEFT" />
+
+               	<Label text="Liferdatum" GridPane.columnIndex="1" GridPane.rowIndex="2" styleClass="summe-label" textAlignment="LEFT" />
+               	<Label fx:id="lblLiferdatum" GridPane.columnIndex="2" GridPane.rowIndex="2" styleClass="summe-label" textAlignment="LEFT" />
+			    
+			</children>        
+        </GridPane>
+
+        <HBox GridPane.columnIndex="0" GridPane.rowIndex="1" spacing="10" alignment="CENTER_RIGHT">
+            <Button styleClass="reload-button" fx:id="btnReset" text="Zurücksetzen" onAction="#reload" prefWidth="130" prefHeight="36" alignment="CENTER_RIGHT"></Button>
+            <Button styleClass="save-button" fx:id="btnSave" text="Speichern" onAction="#speichern" prefWidth="116" prefHeight="36" alignment="CENTER_RIGHT"></Button>
+            <Button styleClass="print-button" fx:id="btnPrint" text="Drucken" onAction="#printRechnung" prefWidth="116" prefHeight="36" alignment="CENTER_RIGHT"></Button>
+            <Button styleClass="cancel-button" fx:id="btnClose" text="Schließen" onAction="#closeRechnung" prefWidth="116" prefHeight="36" alignment="CENTER_RIGHT"></Button>
+
+        </HBox>
+        <TableView editable="true" GridPane.columnIndex="0" GridPane.rowIndex="2" fx:id="showItemsTableView">
+            <columns>
+                <TableColumn fx:id="mengeColumn" text="Menge" prefWidth="90" sortable="false">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="menge" />
+                    </cellValueFactory>
+                    <cellFactory>
+                        <IntegerTableCellFactory />
+                    </cellFactory>
+                </TableColumn>
+                <TableColumn fx:id="produktColumn" text="Produkt" sortable="false">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="produkt" />
+                    </cellValueFactory>
+                    <cellFactory>
+                        <ProduktTableCellFactory />
+                    </cellFactory>
+                </TableColumn>
+                <TableColumn fx:id="artikelNummerColumn" text="Artikel-Nr." prefWidth="110" sortable="false">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="artikelNummer" />
+                    </cellValueFactory>
+                    <cellFactory>
+                        <ArtikelNummerTableCellFactory />
+                    </cellFactory>
+                </TableColumn>
+                <TableColumn fx:id="bPreisColumn" text="Bruto-Preis" prefWidth="120" sortable="false">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="brutoPreis" />
+                    </cellValueFactory>
+                    <cellFactory>
+                        <GeldEditingTableCellFactory />
+                    </cellFactory>
+                </TableColumn>
+                <TableColumn fx:id="nPreisColumn" text="Einzelpreis" prefWidth="120" editable="false" sortable="false">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="preis" />
+                    </cellValueFactory>
+                    <cellFactory>
+                        <GeldLabelTableCellFactory />
+                    </cellFactory>
+                </TableColumn>
+                <TableColumn fx:id="gesamtColumn" text="Gesamtpreis" prefWidth="180" editable="false" sortable="false">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="gesamt" />
+                    </cellValueFactory>
+                    <cellFactory>
+                        <GeldLabelTableCellFactory />
+                    </cellFactory>
+                </TableColumn>
+            </columns>
+
+        </TableView>
+        <GridPane GridPane.columnIndex="0" GridPane.rowIndex="3" alignment="TOP_RIGHT">
+            <columnConstraints>
+                <ColumnConstraints hgrow="ALWAYS" />
+                <ColumnConstraints hgrow="NEVER" prefWidth="120" />
+                <ColumnConstraints hgrow="NEVER" prefWidth="180" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints prefHeight="20" vgrow="NEVER" />
+                <RowConstraints prefHeight="40" vgrow="NEVER" />
+                <RowConstraints prefHeight="40" vgrow="NEVER" />
+                <RowConstraints prefHeight="40" vgrow="NEVER" />
+                <RowConstraints prefHeight="40" vgrow="NEVER" />
+            </rowConstraints>
+            <children>
+                <Label text="Nettosumme" GridPane.columnIndex="1" GridPane.rowIndex="1" styleClass="summe-label" textAlignment="LEFT" />
+                <FloatGeldLabel fx:id="lblNetto" GridPane.columnIndex="2" GridPane.rowIndex="1" prefWidth="170" styleClass="summe-value" textAlignment="RIGHT" />
+                <Label text="Mwst 19,00 %" GridPane.columnIndex="1" GridPane.rowIndex="2" textAlignment="LEFT" styleClass="summe-label" />
+                <FloatGeldLabel fx:id="lblMvst" GridPane.columnIndex="2" GridPane.rowIndex="2" prefWidth="170" styleClass="summe-value" textAlignment="RIGHT" />
+                <Line GridPane.columnSpan="2" GridPane.columnIndex="1" GridPane.rowIndex="3" strokeWidth="2" startX="40.0" startY="56.0" endX="330.0" endY="56.0"/>
+                <Label text="Endsumme" GridPane.columnIndex="1" GridPane.rowIndex="4" textAlignment="LEFT" styleClass="summe-label" />
+                <FloatGeldLabel fx:id="lblGesamt" GridPane.columnIndex="2" GridPane.rowIndex="4" prefWidth="170" styleClass="summe-value" textAlignment="RIGHT" />
+            </children>
+
+        </GridPane>
+        <HBox GridPane.columnIndex="0" GridPane.rowIndex="4" spacing="10" alignment="CENTER_LEFT">
+            <Label text="Status: Bereit ..." fx:id="lblStatusChange" onMouseClicked="#toggleBrerechnenZiel" styleClass="toggle-label" prefWidth="280" prefHeight="36" alignment="CENTER"></Label>
+
+        </HBox>
+        
+    </children>
+</GridPane>

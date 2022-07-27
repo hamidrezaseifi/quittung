@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.seifi.rechnung_manager.ui.tablecell.*?>
+<?import javafx.scene.control.*?>
+<?import de.seifi.rechnung_manager.ui.TextObserverDatePicker?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.scene.layout.*?>
+
+<?import de.seifi.rechnung_manager.ui.IntegerTextField?>
+<GridPane fx:id="rootPane" alignment="TOP_LEFT" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.seifi.rechnung_manager.controllers.ReportController">
+    <columnConstraints>
+        <ColumnConstraints hgrow="ALWAYS" />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints prefHeight="40" vgrow="NEVER" />
+        <RowConstraints fx:id="filterRow" />
+        <RowConstraints vgrow="ALWAYS" />
+    </rowConstraints>
+    <children>
+            
+        <HBox alignment="CENTER_RIGHT" spacing="10" GridPane.columnIndex="0" fx:id="toolbarPane" GridPane.rowIndex="0" style="-fx-padding: 5px;">
+            <Button alignment="CENTER_RIGHT" onAction="#search" prefHeight="26" prefWidth="110" styleClass="search-button" text="Suchen" />
+            <Label fx:id="lblFilter" styleClass="filter-label"></Label>
+            <Button alignment="CENTER_RIGHT" onAction="#printRechnung" prefHeight="26" prefWidth="116" styleClass="print-button" text="Drucken" />
+            <Button alignment="CENTER_RIGHT" onAction="#closeRechnung" prefHeight="26" prefWidth="116" styleClass="cancel-button" text="Schließen" />
+
+        </HBox>
+        <HBox alignment="CENTER_LEFT" fx:id="filterPane" spacing="10" GridPane.columnIndex="0" GridPane.rowIndex="1" style="-fx-padding: 5px;" visible="false">
+            <Label text="Von"></Label>
+            <TextObserverDatePicker fx:id="dtFrom" prefHeight="26" prefWidth="130" ></TextObserverDatePicker>
+            <Label text="Bis"></Label>
+            <TextObserverDatePicker fx:id="dtTo" prefHeight="26" prefWidth="130" ></TextObserverDatePicker>
+            <Label text="Rechnungsnummer"></Label>
+            <IntegerTextField fx:id="txtNummer"></IntegerTextField>
+
+        </HBox>
+
+        <TableView fx:id="reportTableView" GridPane.columnIndex="0" GridPane.rowIndex="2" editable="false">
+            <columns>
+                <TableColumn fx:id="datumColumn" editable="false" prefWidth="120.0" sortable="false" text="Rechnung-Datum">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="rechnungDatum" />
+                    </cellValueFactory>
+
+                </TableColumn>
+                <TableColumn fx:id="nummerColumn" editable="false" sortable="false" text="Nummer">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="nummer" />
+                    </cellValueFactory>
+
+                </TableColumn>
+                <TableColumn fx:id="zeitColumn" prefWidth="110" text="Erstellen-Zeit" editable="false" sortable="false">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="rechnungZeit" />
+                    </cellValueFactory>
+
+                </TableColumn>
+                <TableColumn fx:id="produktListColumn" prefWidth="120" text="Produkte" editable="false" sortable="false">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="produktListItem" />
+                    </cellValueFactory>
+                    <cellFactory>
+                        <ProduktListTableCellFactory />
+                    </cellFactory>
+
+                </TableColumn>
+                <TableColumn fx:id="gesamtColumn" editable="false" prefWidth="180" text="Endsumme" sortable="false">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="bruttoGesamt" />
+                    </cellValueFactory>
+
+                </TableColumn>
+                <TableColumn fx:id="toolsColumn" text="..." prefWidth="100" editable="false" sortable="false">
+                    
+                    <cellFactory>
+                        <ReportToolsTableCellFactory />
+                    </cellFactory>
+                </TableColumn>
+            </columns>
+
+        </TableView>
+        
+    </children>
+</GridPane>
