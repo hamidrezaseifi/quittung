@@ -16,8 +16,6 @@ import java.util.stream.Collectors;
 
 import javax.sql.DataSource;
 
-import org.ini4j.Ini;
-import org.ini4j.InvalidFileFormatException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,12 +25,10 @@ import com.zaxxer.hikari.HikariDataSource;
 import de.seifi.rechnung_common.models.TableModel;
 
 @Configuration
-public class DatabaseConfigUtils {
+public class DatabaseConfigUtils extends ConfigReader {
 	
 	private static final String CONFIG_KEY_DATABASE_SECTOR = "database";
 
-
-	//private static final String CONFIG_KEY_QUITTUNG_DATASOURCE_URL = "quittung.datasource.url";
 
 	private static final String CONFIG_KEY_QUITTUNG_DATASOURCE_SERVER = "server";
 
@@ -45,8 +41,6 @@ public class DatabaseConfigUtils {
 	private static final String CONFIG_KEY_QUITTUNG_DATASOURCE_USERNAME = "username";
 
 	
-	//private static final String CONFIG_DEFAULT_VALUE_QUITTUNG_DATASOURCE_URL = "jdbc:postgresql://localhost:5432/rechnung";
-
 	private static final String CONFIG_DEFAULT_VALU_QUITTUNG_DATASOURCE_SERVER = "localhost";
 
 	private static final String CONFIG_DEFAULT_VALU_QUITTUNG_DATASOURCE_PORT = "5432";
@@ -57,6 +51,13 @@ public class DatabaseConfigUtils {
 
 	private static final String CONFIG_DEFAULT_VALUE_QUITTUNG_DATASOURCE_USERNAME = "postgres";
 	
+	private static final List<IConfigItem> configItemList = Arrays.asList(
+			new ConfigItem(CONFIG_KEY_DATABASE_SECTOR, CONFIG_KEY_QUITTUNG_DATASOURCE_SERVER, CONFIG_DEFAULT_VALU_QUITTUNG_DATASOURCE_SERVER),
+			new ConfigItem(CONFIG_KEY_DATABASE_SECTOR, CONFIG_KEY_QUITTUNG_DATASOURCE_PORT, CONFIG_DEFAULT_VALU_QUITTUNG_DATASOURCE_PORT),
+			new ConfigItem(CONFIG_KEY_DATABASE_SECTOR, CONFIG_KEY_QUITTUNG_DATASOURCE_DATABASE, CONFIG_DEFAULT_VALU_QUITTUNG_DATASOURCE_DATABASE),
+			new ConfigItem(CONFIG_KEY_DATABASE_SECTOR, CONFIG_KEY_QUITTUNG_DATASOURCE_PASSWORD, CONFIG_DEFAULT_VALUE_QUITTUNG_DATASOURCE_PASSWORD),
+			new ConfigItem(CONFIG_KEY_DATABASE_SECTOR, CONFIG_KEY_QUITTUNG_DATASOURCE_USERNAME, CONFIG_DEFAULT_VALUE_QUITTUNG_DATASOURCE_USERNAME));
+	
 
 	private static final List<TableModel> existingTables = 
 			Arrays.asList(new TableModel("produkt", "Produkte"), 
@@ -64,44 +65,37 @@ public class DatabaseConfigUtils {
 					new TableModel("rechnung_item", "Rechnung-Produkte"), 
 					new TableModel("customer", "Kunden"));
 	
-	private String datasourceUrl;
-	
-	private String datasourceUsername;
-	
-	private String datasourcePassword;
-	
 	@Value("${quittung.datasource.driver-class-name}")
 	private String datasourceDriverClassName;
 	
 	
-	
-	
 	public DatabaseConfigUtils() {
-		
+		super("db_config.cfg", configItemList);
 	}
 	
 	public DatabaseConfigUtils(String datasourceDriverClassName) {
+		super("db_config.cfg", configItemList);
+		
 		this.datasourceDriverClassName = datasourceDriverClassName;
 	}
 
 	@Bean
     public DataSource dataSource() {
-		
-		readDatabaseConfig();
+		readConfig();
 		
         HikariDataSource dataSource = new HikariDataSource();
         dataSource.setDriverClassName(datasourceDriverClassName);
-        dataSource.setJdbcUrl(datasourceUrl);
-        dataSource.setUsername(datasourceUsername);
-        dataSource.setPassword(datasourcePassword);
+        dataSource.setJdbcUrl(getDatasourceUrl());
+        dataSource.setUsername(getDatasourceUsername());
+        dataSource.setPassword(getDatasourcePassword());
         
 
         return dataSource;
     }
-	
-    public boolean testConnection(String driver, String server, String port, String database, String username, String password) throws SQLException, RuntimeException {
+
+	public boolean testConnection(String driver, String server, String port, String database, String username, String password) throws SQLException, RuntimeException {
 		
-		String dbUrl = createDatasourceUrl(server, port, database);
+		String dbUrl = getDatasourceUrl(server, port, database);
 		
         HikariDataSource dataSource = new HikariDataSource();
         dataSource.setDriverClassName(driver);
@@ -135,82 +129,24 @@ public class DatabaseConfigUtils {
 
 	
     public boolean saveConnection(File configFile, String server, String port, String database, String username, String password) throws IOException {
-    	if(configFile.exists() == false) {
-    		configFile.createNewFile();
-    	}
-    	
+
+		setValue(CONFIG_KEY_QUITTUNG_DATASOURCE_SERVER, server);
+		setValue(CONFIG_KEY_QUITTUNG_DATASOURCE_PORT, port);
+		setValue(CONFIG_KEY_QUITTUNG_DATASOURCE_DATABASE, database);
+		setValue(CONFIG_KEY_QUITTUNG_DATASOURCE_USERNAME, username);
+		setValue(CONFIG_KEY_QUITTUNG_DATASOURCE_PASSWORD, password);
+
 		
-		Ini ini = new Ini(configFile);
-		ini.put(CONFIG_KEY_DATABASE_SECTOR, CONFIG_KEY_QUITTUNG_DATASOURCE_SERVER, server);
-		ini.put(CONFIG_KEY_DATABASE_SECTOR, CONFIG_KEY_QUITTUNG_DATASOURCE_PORT, port);
-		ini.put(CONFIG_KEY_DATABASE_SECTOR, CONFIG_KEY_QUITTUNG_DATASOURCE_DATABASE, database);
-		ini.put(CONFIG_KEY_DATABASE_SECTOR, CONFIG_KEY_QUITTUNG_DATASOURCE_USERNAME, username);
-		ini.put(CONFIG_KEY_DATABASE_SECTOR, CONFIG_KEY_QUITTUNG_DATASOURCE_PASSWORD, password);
-		
-		ini.store();
-		
-		return true;
+		return saveConfig();
     }
-
-	public boolean readDatabaseConfig() {
-		File configFile = getConfigIniFile();
-		
-		try {
-			if(!configFile.exists()) {
-				initializeConfig(configFile);
-			}
-			readConfig(configFile);
-			
-			return true;
-
-		} catch (IOException e) {
-			
-			e.printStackTrace();
-			
-			return false;
-		}
-	}
 	
-	private void initializeConfig(File configFile) throws InvalidFileFormatException, IOException {
-		
-		saveConnection(configFile, 
-				CONFIG_DEFAULT_VALU_QUITTUNG_DATASOURCE_SERVER,
-				CONFIG_DEFAULT_VALU_QUITTUNG_DATASOURCE_PORT,
-				CONFIG_DEFAULT_VALU_QUITTUNG_DATASOURCE_DATABASE,
-				CONFIG_DEFAULT_VALUE_QUITTUNG_DATASOURCE_USERNAME,
-				CONFIG_DEFAULT_VALUE_QUITTUNG_DATASOURCE_PASSWORD);
-		
-	}
-	
-	private void readConfig(File configFile) throws InvalidFileFormatException, IOException {
-		Ini ini = new Ini(configFile);
-		String server = ini.get(CONFIG_KEY_DATABASE_SECTOR, CONFIG_KEY_QUITTUNG_DATASOURCE_SERVER, String.class);
-		String port = ini.get(CONFIG_KEY_DATABASE_SECTOR, CONFIG_KEY_QUITTUNG_DATASOURCE_PORT, String.class);
-		String database = ini.get(CONFIG_KEY_DATABASE_SECTOR, CONFIG_KEY_QUITTUNG_DATASOURCE_DATABASE, String.class);
-		this.datasourceUrl = createDatasourceUrl(server, port, database);
-		
-		ini.put(CONFIG_KEY_DATABASE_SECTOR, CONFIG_KEY_QUITTUNG_DATASOURCE_SERVER, CONFIG_DEFAULT_VALU_QUITTUNG_DATASOURCE_SERVER);
-		ini.put(CONFIG_KEY_DATABASE_SECTOR, CONFIG_KEY_QUITTUNG_DATASOURCE_PORT, CONFIG_DEFAULT_VALU_QUITTUNG_DATASOURCE_PORT);
-		ini.put(CONFIG_KEY_DATABASE_SECTOR, CONFIG_KEY_QUITTUNG_DATASOURCE_DATABASE, CONFIG_DEFAULT_VALU_QUITTUNG_DATASOURCE_DATABASE);
-
-		
-		this.datasourceUsername = ini.get(CONFIG_KEY_DATABASE_SECTOR, CONFIG_KEY_QUITTUNG_DATASOURCE_USERNAME, String.class);
-		this.datasourcePassword = ini.get(CONFIG_KEY_DATABASE_SECTOR, CONFIG_KEY_QUITTUNG_DATASOURCE_PASSWORD, String.class);
-		
-	}
-	
-	private String createDatasourceUrl(String server, String port, String database) {
+	private String getDatasourceUrl(String server, String port, String database) {
 		String url = String.format("jdbc:postgresql://%s:%s/%s", server, port, database);
 		return url;
 	}
-
-	public File getConfigIniFile() {
-		Path currentRelativePath = Paths.get("");
-		String s = currentRelativePath.toAbsolutePath().toString();
-		
-		Path configPath = Paths.get(s, "config.cfg");
-		
-		return configPath.toFile();
+	
+	private String getDatasourceUrl() {
+		return getDatasourceUrl(getServer(), getPort(), getDatabase());
 	}
 	
 	public List<TableModel> getTableModelList(){
@@ -286,11 +222,37 @@ public class DatabaseConfigUtils {
 	private DataSource getCurrentDataSource() {
 		HikariDataSource dataSource = new HikariDataSource();
         dataSource.setDriverClassName(this.datasourceDriverClassName);
-        dataSource.setJdbcUrl(this.datasourceUrl);
-        dataSource.setUsername(this.datasourceUsername);
-        dataSource.setPassword(this.datasourcePassword);
+        dataSource.setJdbcUrl(this.getDatasourceUrl());
+        dataSource.setUsername(this.getDatasourceUsername());
+        dataSource.setPassword(this.getDatasourcePassword());
         
         return dataSource;
+	}
+
+	
+    private String getDatasourcePassword() {
+
+		return getValue(CONFIG_KEY_QUITTUNG_DATASOURCE_PASSWORD);
+	}
+
+	private String getDatasourceUsername() {
+
+		return getValue(CONFIG_KEY_QUITTUNG_DATASOURCE_USERNAME);	
+	}
+
+	private String getDatabase() {
+
+		return getValue(CONFIG_KEY_QUITTUNG_DATASOURCE_DATABASE);
+	}
+
+	private String getPort() {
+		
+		return getValue(CONFIG_KEY_QUITTUNG_DATASOURCE_PORT);
+	}
+
+	private String getServer() {
+		
+		return getValue(CONFIG_KEY_QUITTUNG_DATASOURCE_SERVER);
 	}
 
 }

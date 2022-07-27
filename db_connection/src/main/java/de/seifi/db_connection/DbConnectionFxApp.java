@@ -1,5 +1,6 @@
 package de.seifi.db_connection;
 
+import de.seifi.db_connection.utils.AppConfig;
 import de.seifi.rechnung_common.utils.ISingleInstanceRunnable;
 import de.seifi.rechnung_common.utils.RunSingleInstance;
 import javafx.application.Application;
@@ -20,6 +21,9 @@ import it.sauronsoftware.junique.MessageHandler;
 
 public class DbConnectionFxApp extends Application implements ISingleInstanceRunnable {
 
+	public static final AppConfig appConfig = new AppConfig();
+	
+	
     private static Scene scene;
     
     private static Stage stage;

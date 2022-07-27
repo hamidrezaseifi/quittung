@@ -17,7 +17,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TitledPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -35,7 +34,8 @@ public class DbConnectionController implements Initializable {
 	@FXML private VBox tablesBox;
 
 	private final DatabaseConfigUtils databaseConfig = new DatabaseConfigUtils(POSTGRESQL_DRIVER);
-
+	
+	
 	@FXML
 	private void textConnectection() {
     	
@@ -81,7 +81,6 @@ public class DbConnectionController implements Initializable {
 		
 		cmnDriver.getItems().add(POSTGRESQL_DRIVER);
 		cmnDriver.getSelectionModel().select(0);
-		databaseConfig.readDatabaseConfig();
 		
 		List<TableModel> tableList = databaseConfig.getTableModelList();
 		for(TableModel tableModel: tableList) {
