@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 public class RechnungManagerSpringApp {
 	public static ConfigurableApplicationContext applicationContext;
 	
-	public static void main(String[] args) {
+	public static void start(String[] args) {
 		
 		applicationContext = SpringApplication.run(RechnungManagerSpringApp.class, args);
 	    

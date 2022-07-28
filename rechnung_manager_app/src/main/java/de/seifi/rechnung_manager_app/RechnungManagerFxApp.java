@@ -62,7 +62,7 @@ public class RechnungManagerFxApp extends Application implements Runnable, ISing
     }
     
     public void run(){
-        RechnungManagerSpringApp.main(startArgs);
+        RechnungManagerSpringApp.start(startArgs);
 		
 	    try {
 			showMainStage();
@@ -76,6 +76,7 @@ public class RechnungManagerFxApp extends Application implements Runnable, ISing
     private void showSplash(Stage initStage) throws IOException {
     	
     	splashStage = initStage;
+    	splashStage.setTitle("Rechnung Manager ...");
     	
 		splashPane = RechnungManagerFxApp.getSplashPane();
 
@@ -92,7 +93,7 @@ public class RechnungManagerFxApp extends Application implements Runnable, ISing
     private void showMainStage() throws IOException {
     	
     	mainStage = new Stage(StageStyle.DECORATED);
-        mainStage.setTitle("FX Experience");
+    	mainStage.setTitle("Rechnung Manager ...");
         mainStage.setIconified(true);
 
         mainScene = new Scene(loadFXML("main"));

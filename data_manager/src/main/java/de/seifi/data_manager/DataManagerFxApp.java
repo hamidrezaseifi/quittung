@@ -4,6 +4,7 @@ import de.seifi.data_manager.utils.AppConfig;
 import de.seifi.rechnung_common.utils.ISingleInstanceRunnable;
 import de.seifi.rechnung_common.utils.RunSingleInstance;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -14,14 +15,18 @@ import javafx.stage.WindowEvent;
 import java.io.IOException;
 import java.net.URL;
 
-public class DataManagerFxApp extends Application implements ISingleInstanceRunnable {
+public class DataManagerFxApp extends Application implements ISingleInstanceRunnable, Runnable {
 
 	public static final AppConfig appConfig = new AppConfig();
 	
 	
-    private static Scene scene;
+    private static Scene mainScene;
+
+    private static Scene loadingScene;
 
     public static Stage mainStage;
+    
+    private static String[] startArgs = null;
     
     public static void closeApp() {
     	mainStage.close();
@@ -33,6 +38,8 @@ public class DataManagerFxApp extends Application implements ISingleInstanceRunn
     }
 
     public static void main(String[] args) {
+    	DataManagerFxApp.startArgs = args;
+    	
         RunSingleInstance.runInstance(args, new DataManagerFxApp(), "DataManagerFxAppId");
 
     }
@@ -41,12 +48,42 @@ public class DataManagerFxApp extends Application implements ISingleInstanceRunn
     public void start(Stage stage) throws IOException {
 
         DataManagerFxApp.mainStage = stage;
-        scene = new Scene(loadFXML("main"));
-        scene.getStylesheets().add(getMainStyle());
-        stage.setScene(scene);
+        loadingScene = new Scene(loadFXML("loading"), 700, 600);
+        loadingScene.getStylesheets().add(getMainStyle());
+        stage.setScene(loadingScene);
 
-        scene.getWindow().addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, this::closeWindowEvent);
+        loadingScene.getWindow().addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, this::closeWindowEvent);
+        stage.setTitle("Daten Manager ...");
         stage.show();
+        
+        //Platform.runLater(this);
+        
+        DataManagerFxApp fxApp = this;
+        Thread thread = new Thread(){
+            public void run(){
+            	System.out.println("Thread Running");
+            	
+            	DataManageSpringApp.start(DataManagerFxApp.startArgs, fxApp);
+            }
+        };
+
+        thread.start();
+          
+    }
+
+	@Override
+	public void run() {
+		DataManageSpringApp.start(DataManagerFxApp.startArgs, this);
+		
+	}
+
+
+    public void loadMainScene() throws IOException {
+    	mainScene = new Scene(loadFXML("main"), 700, 600);
+		mainScene.getStylesheets().add(getMainStyle());
+		mainStage.setScene(mainScene);
+
+        mainScene.getWindow().addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, this::closeWindowEvent);
     }
 
     public static String getMainStyle() {
