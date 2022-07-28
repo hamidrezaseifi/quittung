@@ -1,9 +1,10 @@
-package de.seifi.rechnung_manager_app.repositories;
+package de.seifi.rechnung_common.repositories;
 
-import de.seifi.rechnung_manager_app.entities.CustomerEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
+import de.seifi.rechnung_common.entities.CustomerEntity;
 
 import java.time.LocalDateTime;
 import java.util.List;

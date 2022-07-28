@@ -1,4 +1,4 @@
-package de.seifi.rechnung_manager_app.entities;
+package de.seifi.rechnung_common.entities;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -11,7 +11,6 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import de.seifi.rechnung_manager_app.models.RechnungItemModel;
 
 @Entity
 @Table(name = "rechnung_item")
@@ -150,12 +149,6 @@ public class RechnungItemEntity extends EntityBase {
 	@Override
 	public void setUpdated(LocalDateTime updated) {
 		this.updated = updated;
-	}
-
-	public RechnungItemModel toModel() {
-		RechnungItemModel model = new RechnungItemModel(id, produkt, artikelNummer, menge, preis, created, updated);
-		
-		return model;
 	}
 	
 	@Override

@@ -7,14 +7,14 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
+import de.seifi.rechnung_common.repositories.CustomerRepository;
+import de.seifi.rechnung_common.repositories.ProduktRepository;
+import de.seifi.rechnung_common.repositories.RechnungRepository;
 import de.seifi.rechnung_manager_app.RechnungManagerFxApp;
 import de.seifi.rechnung_manager_app.RechnungManagerSpringApp;
 import de.seifi.rechnung_manager_app.fx_services.ReportBindingService;
 import de.seifi.rechnung_manager_app.models.ProduktModel;
 import de.seifi.rechnung_manager_app.models.ReportItemModel;
-import de.seifi.rechnung_manager_app.repositories.CustomerRepository;
-import de.seifi.rechnung_manager_app.repositories.ProduktRepository;
-import de.seifi.rechnung_manager_app.repositories.RechnungRepository;
 import de.seifi.rechnung_manager_app.ui.IntegerTextField;
 import de.seifi.rechnung_manager_app.ui.TextObserverDatePicker;
 import de.seifi.rechnung_manager_app.ui.UiUtils;

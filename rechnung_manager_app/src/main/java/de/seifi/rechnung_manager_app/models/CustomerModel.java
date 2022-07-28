@@ -1,15 +1,8 @@
 package de.seifi.rechnung_manager_app.models;
 
-import de.seifi.rechnung_manager_app.entities.CustomerEntity;
-import de.seifi.rechnung_manager_app.entities.EntityBase;
-import de.seifi.rechnung_manager_app.entities.RechnungEntity;
 import de.seifi.rechnung_manager_app.enums.CustomerStatus;
-import de.seifi.rechnung_manager_app.enums.RechnungStatus;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 public class CustomerModel {
@@ -211,20 +204,6 @@ public class CustomerModel {
 	@Override
 	public String toString(){
 		return customerName + (status == CustomerStatus.ACTIVE ? ": aktiv" : ": inaktive");
-	}
-
-	public CustomerEntity toEntity() {
-		CustomerEntity entity = null;
-		if(id != null) {
-			entity = new CustomerEntity(id, customerName, street, houseNumber, address2, plz, city, status.getValue(), updated);
-		} 
-		else {
-			entity = new CustomerEntity(customerName, street, houseNumber, address2, plz, city, status.getValue());
-		}
-
-		return entity;
-	}
-
-    
+	}    
 
 }

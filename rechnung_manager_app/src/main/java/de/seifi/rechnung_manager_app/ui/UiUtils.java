@@ -4,10 +4,11 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
+import de.seifi.rechnung_common.entities.CustomerEntity;
 import de.seifi.rechnung_manager_app.RechnungManagerFxApp;
+import de.seifi.rechnung_manager_app.adapter.CustomerAdapter;
 import de.seifi.rechnung_manager_app.controllers.PrintRechnungDialogController;
 import de.seifi.rechnung_manager_app.controllers.RechnungController;
-import de.seifi.rechnung_manager_app.entities.CustomerEntity;
 import de.seifi.rechnung_manager_app.enums.RechnungType;
 import de.seifi.rechnung_manager_app.models.RechnungModel;
 import de.seifi.rechnung_manager_app.utils.CustomerHelper;
@@ -44,6 +45,9 @@ public class UiUtils {
 
 	public static void printRechnungItems(List<RechnungModel> rechnungModelList,
 										  Window window) {
+		
+		CustomerAdapter customerAdapter = new CustomerAdapter(); 
+		
 		try {
 				for(RechnungModel model: rechnungModelList){
 					PrinterJob job = PrinterJob.createPrinterJob();
@@ -62,7 +66,7 @@ public class UiUtils {
 							if(customerEntityOptional.isEmpty()){
 								throw new RuntimeException("Der Kunde von der Rechnung nicht gefunden!");
 							}
-							rechnungPringController.printRechnungList(model, customerEntityOptional.get().toModel(), job);
+							rechnungPringController.printRechnungList(model, customerAdapter.toModel(customerEntityOptional.get()), job);
 						}
 						if(model.getRechnungType() == RechnungType.QUITTUNG){
 							FXMLLoader quittungPrintLoader = RechnungManagerFxApp.getQuittungPrintFxmlLoader();

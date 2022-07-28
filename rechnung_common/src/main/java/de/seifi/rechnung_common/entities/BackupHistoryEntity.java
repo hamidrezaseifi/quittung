@@ -1,4 +1,4 @@
-package de.seifi.rechnung_manager_app.entities;
+package de.seifi.rechnung_common.entities;
 
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;

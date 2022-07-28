@@ -1,9 +1,11 @@
 package de.seifi.rechnung_manager_app.utils;
 
+import de.seifi.rechnung_common.entities.ProduktEntity;
+import de.seifi.rechnung_common.repositories.ProduktRepository;
 import de.seifi.rechnung_manager_app.RechnungManagerSpringApp;
-import de.seifi.rechnung_manager_app.entities.ProduktEntity;
+import de.seifi.rechnung_manager_app.adapter.ProduktAdapter;
 import de.seifi.rechnung_manager_app.models.ProduktModel;
-import de.seifi.rechnung_manager_app.repositories.ProduktRepository;
+
 import org.springframework.data.domain.Sort;
 
 import java.util.List;
@@ -16,6 +18,9 @@ public class ProduktHelper {
     private static List<ProduktModel> produktList;
 
     private static ProduktRepository produktRepository = null;
+    
+    private static final ProduktAdapter produktAdapter = new ProduktAdapter();
+    
 
     public static List<ProduktModel> getProduktList() {
         if(produktList == null){
@@ -33,7 +38,7 @@ public class ProduktHelper {
 
     public static void retreiveProduktList() {
         List<ProduktEntity> entityList = getProduktRepository().findAll(Sort.by(Sort.Direction.ASC, "produktName"));
-        produktList = entityList.stream().map(e -> e.toModel()).collect(Collectors.toList());
+        produktList = entityList.stream().map(e -> produktAdapter.toModel(e)).collect(Collectors.toList());
 
         produktMap = produktList.stream().collect(Collectors.toMap(p -> p.getProduktName(), p -> p));
     }
@@ -50,7 +55,8 @@ public class ProduktHelper {
                 .getProduktMap().keySet().stream().filter(k -> k.toLowerCase().equals(produkt.toLowerCase())).findAny();
         ProduktEntity produktEntity = null;
         if(foundProdukt.isPresent()) {
-            produktEntity = ProduktHelper.getProduktMap().get(foundProdukt.get()).toEntity();
+        	ProduktModel model = ProduktHelper.getProduktMap().get(foundProdukt.get());
+            produktEntity = produktAdapter.toEntity(model);
             produktEntity.setLastPreis(preis);
         }
         else {

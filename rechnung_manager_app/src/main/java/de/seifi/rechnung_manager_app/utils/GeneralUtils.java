@@ -8,8 +8,6 @@ public class GeneralUtils {
 
     private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyy");
 
-    private static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-
     public static String formatDate(LocalDate ldt){
         String date = dateFormatter.format(ldt);
         return date;

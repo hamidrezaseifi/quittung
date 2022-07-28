@@ -1,8 +1,8 @@
-package de.seifi.rechnung_manager_app.repositories;
+package de.seifi.rechnung_common.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import de.seifi.rechnung_manager_app.entities.RechnungItemEntity;
+import de.seifi.rechnung_common.entities.RechnungItemEntity;
 
 import java.util.UUID;
 

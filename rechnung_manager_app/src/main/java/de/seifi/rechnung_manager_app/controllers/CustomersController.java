@@ -1,7 +1,8 @@
 package de.seifi.rechnung_manager_app.controllers;
 
+import de.seifi.rechnung_common.entities.CustomerEntity;
 import de.seifi.rechnung_manager_app.RechnungManagerFxApp;
-import de.seifi.rechnung_manager_app.entities.CustomerEntity;
+import de.seifi.rechnung_manager_app.adapter.CustomerAdapter;
 import de.seifi.rechnung_manager_app.models.CustomerModel;
 import de.seifi.rechnung_manager_app.models.CustomerModelProperty;
 import de.seifi.rechnung_manager_app.ui.UiUtils;
@@ -13,7 +14,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -63,7 +63,7 @@ public class CustomersController implements Initializable, ControllerBase {
 	
 	private CustomerModel selectedModel = null;
 	
-	private int currentEditingIndex = -1;
+	private final CustomerAdapter customerAdapter = new CustomerAdapter();
 
     public CustomersController() {
         
@@ -88,7 +88,7 @@ public class CustomersController implements Initializable, ControllerBase {
         		return;
         	}
         	
-        	CustomerEntity entity = selectedModel.toEntity();
+        	CustomerEntity entity = customerAdapter.toEntity(selectedModel);
         	
         	if(CustomerHelper.hasRechnung(entity)) {
         		UiUtils.showError("Kunde Löschen ...", String.format("Für den Kunde '%s' ist Rechnungen erstellt und kann nicht gelöscht werden!", selectedModel.getCustomerName()));
@@ -110,7 +110,7 @@ public class CustomersController implements Initializable, ControllerBase {
     	CustomerModel editingModel = this.currentEditingModel.toModel();
     	editingModel.setId(this.selectedModel.getId());
     	
-    	CustomerHelper.save(editingModel.toEntity());
+    	CustomerHelper.save(customerAdapter.toEntity(editingModel));
         
     	reload(null);
     }
@@ -166,7 +166,6 @@ public class CustomersController implements Initializable, ControllerBase {
 		}
 		
 		this.currentEditingModel.setModel(model);
-		this.currentEditingIndex = index;
 		this.selectedModel = model;
 
         txtName.textProperty().bindBidirectional(this.currentEditingModel.getCustomerName());

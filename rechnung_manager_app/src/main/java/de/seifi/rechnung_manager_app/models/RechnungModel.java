@@ -1,13 +1,10 @@
 package de.seifi.rechnung_manager_app.models;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import de.seifi.rechnung_manager_app.entities.EntityBase;
-import de.seifi.rechnung_manager_app.entities.RechnungEntity;
 import de.seifi.rechnung_manager_app.enums.RechnungStatus;
 import de.seifi.rechnung_manager_app.enums.RechnungType;
 
@@ -206,24 +203,6 @@ public class RechnungModel {
 
 		return gesamt;
 	}
-
-	public RechnungEntity toEntity() {
-		RechnungEntity entity = null;
-		if(id != null) {
-			entity = new RechnungEntity(id, customerId, nummer, rechnungCreate, liferDate,
-										rechnungType.getValue(), status.getValue(), this.updated);
-		} 
-		else {
-			entity = new RechnungEntity(customerId, nummer, rechnungCreate, liferDate,
-										rechnungType.getValue(), status.getValue());
-		}
-		
-		for(RechnungItemModel item: items) {
-			entity.addItem(item.toEntity());
-		}
-		return entity;
-	}
-
     
 
 }

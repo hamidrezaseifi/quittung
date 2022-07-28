@@ -1,4 +1,4 @@
-package de.seifi.rechnung_manager_app.entities;
+package de.seifi.rechnung_common.entities;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -8,8 +8,6 @@ import javax.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-
-import de.seifi.rechnung_manager_app.models.ProduktModel;
 
 
 @Entity
@@ -102,12 +100,6 @@ public class ProduktEntity extends EntityBase {
 	@Override
 	public void setUpdated(LocalDateTime updated) {
 		this.updated = updated;
-	}
-	
-	public ProduktModel toModel() {
-		ProduktModel model = new ProduktModel(id, produktName, lastPreis, created, updated);
-		
-		return model;
 	}
 
 }

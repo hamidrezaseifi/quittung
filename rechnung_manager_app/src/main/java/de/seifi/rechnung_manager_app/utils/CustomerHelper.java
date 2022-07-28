@@ -1,12 +1,13 @@
 package de.seifi.rechnung_manager_app.utils;
 
+import de.seifi.rechnung_common.entities.CustomerEntity;
+import de.seifi.rechnung_common.entities.RechnungEntity;
+import de.seifi.rechnung_common.repositories.CustomerRepository;
+import de.seifi.rechnung_common.repositories.RechnungRepository;
 import de.seifi.rechnung_manager_app.RechnungManagerSpringApp;
-import de.seifi.rechnung_manager_app.entities.CustomerEntity;
-import de.seifi.rechnung_manager_app.entities.RechnungEntity;
+import de.seifi.rechnung_manager_app.adapter.CustomerAdapter;
 import de.seifi.rechnung_manager_app.enums.CustomerStatus;
 import de.seifi.rechnung_manager_app.models.CustomerModel;
-import de.seifi.rechnung_manager_app.repositories.CustomerRepository;
-import de.seifi.rechnung_manager_app.repositories.RechnungRepository;
 
 import java.util.List;
 import java.util.Map;
@@ -22,7 +23,8 @@ public class CustomerHelper {
     
     private static RechnungRepository rechnungRepository = null;
 
-
+    private static final CustomerAdapter customerAdapter = new CustomerAdapter(); 
+    
     public static List<CustomerModel> getCustomerList() {
         if(customerList == null){
             reloadCustomerList();
@@ -79,7 +81,7 @@ public class CustomerHelper {
 
     public static void reloadCustomerList() {
         List<CustomerEntity> entityList = getCustomerRepository().findAllByStatus(CustomerStatus.ACTIVE.getValue());
-        customerList = entityList.stream().map(e -> e.toModel()).collect(Collectors.toList());
+        customerList = entityList.stream().map(e -> customerAdapter.toModel(e)).collect(Collectors.toList());
 
         customerMap = customerList.stream().collect(Collectors.toMap(p -> p.getId(), p -> p));
     }

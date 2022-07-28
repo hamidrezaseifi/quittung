@@ -1,6 +1,5 @@
-package de.seifi.rechnung_manager_app.entities;
+package de.seifi.rechnung_common.entities;
 
-import de.seifi.rechnung_manager_app.models.CustomerModel;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -181,14 +180,5 @@ public class CustomerEntity extends EntityBase {
 	public void setUpdated(LocalDateTime updated) {
 		this.updated = updated;
 	}
-
-
-	public CustomerModel toModel() {
-		CustomerModel model = new CustomerModel(id, customerName, street, houseNumber, address2, plz, city, status,
-				created, updated);
-		return model;
-	}
-
-    
 
 }

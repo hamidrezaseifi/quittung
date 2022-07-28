@@ -1,4 +1,4 @@
-package de.seifi.rechnung_manager_app.entities;
+package de.seifi.rechnung_common.entities;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -7,8 +7,6 @@ import java.util.Set;
 import java.util.UUID;
 
 import javax.persistence.*;
-
-import de.seifi.rechnung_manager_app.models.RechnungModel;
 
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
@@ -192,17 +190,5 @@ public class RechnungEntity extends EntityBase {
 		this.updated = updated;
 	}
 
-
-	public RechnungModel toModel() {
-		RechnungModel model = new RechnungModel(id, customerId, nummer, rechnungCreate, liferDate,
-												rechnungType, status, created, updated);
-		for(RechnungItemEntity item: items) {
-			model.getItems().add(item.toModel());
-		}
-		
-		return model;
-	}
-
-    
 
 }

@@ -7,7 +7,6 @@ import java.util.ResourceBundle;
 import de.seifi.rechnung_manager_app.RechnungManagerFxApp;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 
 

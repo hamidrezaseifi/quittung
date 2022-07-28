@@ -1,16 +1,10 @@
 package de.seifi.rechnung_manager_app.models;
 
-import de.seifi.rechnung_manager_app.entities.CustomerEntity;
-import de.seifi.rechnung_manager_app.entities.RechnungEntity;
+import de.seifi.rechnung_common.entities.CustomerEntity;
 import de.seifi.rechnung_manager_app.enums.CustomerStatus;
-import de.seifi.rechnung_manager_app.enums.RechnungStatus;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 public class CustomerModelProperty {
 

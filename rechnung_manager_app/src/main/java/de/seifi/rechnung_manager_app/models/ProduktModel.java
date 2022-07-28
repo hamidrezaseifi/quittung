@@ -1,11 +1,8 @@
 package de.seifi.rechnung_manager_app.models;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import de.seifi.rechnung_manager_app.entities.EntityBase;
-import de.seifi.rechnung_manager_app.entities.ProduktEntity;
 
 public class ProduktModel {
 	
@@ -91,19 +88,9 @@ public class ProduktModel {
 	public void setUpdated(LocalDateTime updated) {
 		this.updated = updated;
 	}
-	
 
-	public ProduktEntity toEntity() {
-		ProduktEntity entity = null;
-		if(id != null) {
-			entity = new ProduktEntity(id, produktName, lastPreis, updated);
-		} 
-		else {
-			entity = new ProduktEntity(produktName, lastPreis);
-		}
-		
-		
-		return entity;
+	public boolean isNew() {
+		return id == null;
 	}
 
 

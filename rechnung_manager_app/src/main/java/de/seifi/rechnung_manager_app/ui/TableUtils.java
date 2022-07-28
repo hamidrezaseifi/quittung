@@ -2,7 +2,6 @@ package de.seifi.rechnung_manager_app.ui;
 
 import de.seifi.rechnung_manager_app.fx_services.RechnungBindingService;
 import de.seifi.rechnung_manager_app.models.RechnungItemProperty;
-import de.seifi.rechnung_manager_app.models.ReportItemModel;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;

@@ -1,14 +1,17 @@
 package de.seifi.rechnung_manager_app.fx_services;
 
 
-import de.seifi.rechnung_manager_app.entities.CustomerEntity;
-import de.seifi.rechnung_manager_app.entities.ProduktEntity;
-import de.seifi.rechnung_manager_app.entities.RechnungEntity;
+import de.seifi.rechnung_common.entities.CustomerEntity;
+import de.seifi.rechnung_common.entities.ProduktEntity;
+import de.seifi.rechnung_common.entities.RechnungEntity;
+import de.seifi.rechnung_common.repositories.CustomerRepository;
+import de.seifi.rechnung_common.repositories.ProduktRepository;
+import de.seifi.rechnung_common.repositories.RechnungRepository;
+import de.seifi.rechnung_manager_app.adapter.CustomerAdapter;
+import de.seifi.rechnung_manager_app.adapter.ProduktAdapter;
+import de.seifi.rechnung_manager_app.adapter.RechnungAdapter;
 import de.seifi.rechnung_manager_app.enums.CustomerStatus;
 import de.seifi.rechnung_manager_app.models.*;
-import de.seifi.rechnung_manager_app.repositories.CustomerRepository;
-import de.seifi.rechnung_manager_app.repositories.ProduktRepository;
-import de.seifi.rechnung_manager_app.repositories.RechnungRepository;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -24,9 +27,7 @@ import org.springframework.data.domain.Sort;
 public class ReportBindingService {
 	
 	public static ReportBindingService CURRENT_INSTANCE = null;
-	
-    private int INITIAL_ITEMS = 10;
-    
+	    
     private final ProduktRepository produktRepository;
     
     private final RechnungRepository rechnungRepository;
@@ -34,6 +35,7 @@ public class ReportBindingService {
     private final CustomerRepository customerRepository;
 	    
     private Map<String, ProduktModel> produktMap;
+    
     private List<ProduktModel> produktList;
 
     private ObservableList<ReportItemModel> rechnungItems;
@@ -41,6 +43,12 @@ public class ReportBindingService {
     private boolean isDirty;
 
     private SearchFilterProperty searchFilterProperty;
+    
+    private final ProduktAdapter produktAdapter = new ProduktAdapter();
+    
+    private final CustomerAdapter customerAdapter = new CustomerAdapter(); 
+    
+    private final RechnungAdapter rechnungAdapter = new RechnungAdapter(); 
     
     public ReportBindingService(ProduktRepository produktRepository,
                                 final RechnungRepository rechnungRepository,
@@ -64,7 +72,7 @@ public class ReportBindingService {
 
     private void retreiveProduktMap() {
     	List<ProduktEntity> entityList = produktRepository.findAll(Sort.by(Sort.Direction.ASC, "produktName"));
-    	produktList = entityList.stream().map(e -> e.toModel()).collect(Collectors.toList());
+    	produktList = produktAdapter.toModelList(entityList);
     	
     	produktMap = produktList.stream().collect(Collectors.toMap(p -> p.getProduktName(), p -> p));
     }
@@ -75,7 +83,7 @@ public class ReportBindingService {
 
 	public void search() {
         List<CustomerEntity> allCustomersList = this.customerRepository.findAllByStatus(CustomerStatus.ACTIVE.getValue());
-        Map<UUID, CustomerModel> allCustomers = allCustomersList.stream().collect(Collectors.toMap(c -> c.getId(), c -> c.toModel()));
+        Map<UUID, CustomerModel> allCustomers = allCustomersList.stream().collect(Collectors.toMap(c -> c.getId(), c -> customerAdapter.toModel(c)));
         allCustomers.put(RechnungModel.QUITTUNG_CUSTOMER_ID, null);
 
 		rechnungItems.clear();
@@ -96,7 +104,7 @@ public class ReportBindingService {
             entityList = this.rechnungRepository.search(tsFrom, tsTo);
         }
 
-        List<ReportItemModel> modelList = entityList.stream().map(e -> new ReportItemModel(e.toModel(), allCustomers.get(e.getCustomerId()))).collect(Collectors.toList());
+        List<ReportItemModel> modelList = entityList.stream().map(e -> new ReportItemModel(rechnungAdapter.toModel(e), allCustomers.get(e.getCustomerId()))).collect(Collectors.toList());
 
         rechnungItems.addAll(modelList);
 

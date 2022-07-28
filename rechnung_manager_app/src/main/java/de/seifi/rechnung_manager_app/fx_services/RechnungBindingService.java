@@ -1,10 +1,12 @@
 package de.seifi.rechnung_manager_app.fx_services;
 
 
+import de.seifi.rechnung_common.entities.CustomerEntity;
+import de.seifi.rechnung_common.entities.RechnungEntity;
+import de.seifi.rechnung_common.repositories.RechnungRepository;
+import de.seifi.rechnung_manager_app.adapter.CustomerAdapter;
+import de.seifi.rechnung_manager_app.adapter.RechnungAdapter;
 import de.seifi.rechnung_manager_app.data_service.IRechnungDataHelper;
-import de.seifi.rechnung_manager_app.entities.CustomerEntity;
-import de.seifi.rechnung_manager_app.entities.RechnungEntity;
-import de.seifi.rechnung_manager_app.enums.CustomerStatus;
 import de.seifi.rechnung_manager_app.enums.RechnungStatus;
 import de.seifi.rechnung_manager_app.enums.RechnungType;
 import de.seifi.rechnung_manager_app.models.CustomerModel;
@@ -12,8 +14,6 @@ import de.seifi.rechnung_manager_app.models.CustomerModelProperty;
 import de.seifi.rechnung_manager_app.models.CustomerSelectModel;
 import de.seifi.rechnung_manager_app.models.ProduktModel;
 import de.seifi.rechnung_manager_app.models.RechnungModel;
-import de.seifi.rechnung_manager_app.repositories.CustomerRepository;
-import de.seifi.rechnung_manager_app.repositories.RechnungRepository;
 import de.seifi.rechnung_manager_app.utils.CustomerHelper;
 import de.seifi.rechnung_manager_app.utils.GeneralUtils;
 import de.seifi.rechnung_manager_app.utils.GerldCalculator;
@@ -71,7 +71,12 @@ public class RechnungBindingService {
     private List<Float> berechnenFaktorZielList = Arrays.asList(1.4f, 1.2f);
 
     private List<String> berechnenFaktorZielColorList = Arrays.asList("-fx-background-color: white", "-fx-background-color: #f2f6ff");
+    
     private StringProperty bannerBackColor;
+    
+    private final CustomerAdapter customerAdapter = new CustomerAdapter();
+
+    private final RechnungAdapter rechnungAdapter = new RechnungAdapter();
 
 
     public RechnungBindingService(final RechnungType rechnungType, 
@@ -296,10 +301,10 @@ public class RechnungBindingService {
 
 	public boolean save() {
         if(this.rechnungType == RechnungType.RECHNUNG){
-            CustomerEntity customerEntity = customerSavingModel.toEntity();
+            CustomerEntity customerEntity = customerAdapter.toEntity(customerSavingModel);
             if(customerEntity.isNew()){
                 CustomerHelper.save(customerEntity);
-                customerSavingModel = customerEntity.toModel();
+                customerSavingModel = customerAdapter.toModel(customerEntity);
             }
 
             rechnungSavingModel.setCustomerId(customerEntity.getId());
@@ -313,12 +318,12 @@ public class RechnungBindingService {
         rechnungSavingModel
                 .getItems().addAll(this.rechnungItems.stream().filter(qi -> qi.canSaved()).map(qi -> qi.toModel()).collect(Collectors.toList()));
 
-        RechnungEntity savingEntity = rechnungSavingModel.toEntity();
+        RechnungEntity savingEntity = rechnungAdapter.toEntity(rechnungSavingModel);
 
         rechnungRepository.save(savingEntity);
         Optional<RechnungEntity> savedEntityOptional = rechnungRepository.findById(savingEntity.getId());
         if(savedEntityOptional.isPresent()) {
-            rechnungSavingModel = savedEntityOptional.get().toModel();
+            rechnungSavingModel = rechnungAdapter.toModel(savedEntityOptional.get());
             List<RechnungItemProperty> items = this.rechnungItems.stream().filter(qi -> qi.canSaved()).collect(Collectors.toList());
 
             for(RechnungItemProperty item: items) {
@@ -413,7 +418,7 @@ public class RechnungBindingService {
 	        	throw new RuntimeException("Der Kunde von der Rechnung nicht gefunden!");
 	        }
 
-	        this.customerSavingModel = customerEntityOptional.get().toModel();
+	        this.customerSavingModel = customerAdapter.toModel(customerEntityOptional.get());
 			
 		}
         
@@ -440,7 +445,7 @@ public class RechnungBindingService {
         return isView;
     }
 
-    public void setCurrentCustomer(Integer id) {
+    public void setCurrentCustomer(UUID id) {
         this.customerSavingModel = this.customerList.get(id);
         this.customerModelProperty.setModel(this.customerSavingModel);
 
