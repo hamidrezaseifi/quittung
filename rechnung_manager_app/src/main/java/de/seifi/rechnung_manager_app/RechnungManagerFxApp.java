@@ -136,6 +136,10 @@ public class RechnungManagerFxApp extends Application implements Runnable, ISing
     public static String getMainStyle() {
         return RechnungManagerFxApp.class.getResource("styles/styles.css").toExternalForm();
     }
+    
+    public static String getPrintStyle() {
+        return RechnungManagerFxApp.class.getResource("styles/print_styles.css").toExternalForm();
+    }
 
     private void closeWindowEvent(WindowEvent event) {
         if(isCurrentControllerDirty()){

@@ -3,7 +3,7 @@
     -fx-background-color: transparent;
     -fx-boder-color: white;
     -fx-border-color: black;
-    -fx-border-width: 1px;
+    -fx-border-width: 2px;
     -fx-border-style: solid;
     -fx-padding: 0 0 1px 0;
 }
@@ -52,7 +52,7 @@
 
 
 .table-row-cell .table-cell {
-    -fx-border-width: 0 1px 0 1px;
+    -fx-border-width: 0 2px 0 2px;
     -fx-border-color: gray;
     -fx-padding: 0 0 0 0;
     -fx-border-insets: -1;
@@ -149,6 +149,34 @@
     -fx-padding: 5px;
 }
 
+.print-comments-label{
+	-fx-padding: 0px 0px 0px 0px;
+	-fx-font-size: 8px;
+	
+}
 
+.end-summe-label{
+	-fx-text-fill: white; 
+	-fx-font-weight: bold;
+}
 
+.rechnung-info-label{
+	
+	-fx-font-size: 10px;
+	
+}
+
+.summe-label{
+	-fx-font-size: 10px;
+	-fx-padding: 0 0 0 10px;
+}
+
+.summe-value{
+	-fx-font-size: 10px;
+	-fx-padding: 0 10px 0 10px;
+}
+
+.contact-data-label{
+	-fx-font-size: 10px;
+}
 
