@@ -18,6 +18,7 @@
 <?import de.seifi.rechnung_manager_app.ui.FloatGeldLabel?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
 <GridPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
           styleClass="splash-pane" alignment="CENTER">
     <columnConstraints>
@@ -28,7 +29,11 @@
         <RowConstraints prefHeight="210" vgrow="NEVER" valignment="TOP" />
     </rowConstraints>
 
-    <ImageView GridPane.columnIndex="0"  GridPane.rowIndex="1" fitWidth="110" fitHeight="110"></ImageView>
+    <ImageView GridPane.columnIndex="0"  GridPane.rowIndex="1" fitWidth="200" fitHeight="200" fx:id="loadingImageView">
+        <image>
+            <Image url="@../images/loading.gif" />
+        </image>
+    </ImageView>
     <padding>
         <Insets bottom="0" left="0" right="0" top="0" />
     </padding>

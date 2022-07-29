@@ -15,10 +15,14 @@
 <?import javafx.collections.FXCollections?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
 <VBox xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
-          fx:controller="de.seifi.data_manager.controllers.LoadingController" styleClass="" alignment="CENTER" spacing="20">
+      fx:controller="de.seifi.data_manager.controllers.LoadingController" styleClass="loading-page "
+      alignment="CENTER" spacing="20">
     <ImageView fitWidth="200" fitHeight="200" fx:id="loadingImageView">
-       
+       <image>
+           <Image url="@../images/loading.gif" />
+       </image>
     </ImageView>
 	
 	<Label text="Bitte warten ..." style="-fx-font-size: 30px;" />

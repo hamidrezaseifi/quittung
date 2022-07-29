@@ -28,7 +28,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
-public class RechnungManagerFxApp extends Application implements Runnable, ISingleInstanceRunnable {
+public class RechnungManagerFxApp extends Application implements ISingleInstanceRunnable {
 
     private static final int SPLASH_WIDTH = 770;
 
@@ -48,20 +48,21 @@ public class RechnungManagerFxApp extends Application implements Runnable, ISing
     private static MainController mainController;
     
     private static ControllerBase currentController;
+    private Image iconImage;
 
 
     @Override
     public void runInstance(String[] args) {
-        RechnungManagerFxApp.startArgs = args;
         Application.launch(args);
     }
 
     public static void main(String[] args) {
+        RechnungManagerFxApp.startArgs = args;
 
         RunSingleInstance.runInstance(args, new RechnungManagerFxApp(), "RechnungManagerAppId");
     }
     
-    public void run(){
+   /* public void run(){
         RechnungManagerSpringApp.start(startArgs);
 		
 	    try {
@@ -71,11 +72,14 @@ public class RechnungManagerFxApp extends Application implements Runnable, ISing
 			e.printStackTrace();
 		}
 
-    }
+    }*/
     
     private void showSplash(Stage initStage) throws IOException {
     	
     	splashStage = initStage;
+        splashStage.getIcons().clear();
+        splashStage.getIcons().add(iconImage);
+
     	splashStage.setTitle("Rechnung Manager ...");
     	
 		splashPane = RechnungManagerFxApp.getSplashPane();
@@ -90,11 +94,14 @@ public class RechnungManagerFxApp extends Application implements Runnable, ISing
         initStage.toFront();
     }
 
-    private void showMainStage() throws IOException {
+    public void showMainStage() throws IOException {
     	
     	mainStage = new Stage(StageStyle.DECORATED);
     	mainStage.setTitle("Rechnung Manager ...");
         mainStage.setIconified(true);
+        mainStage.getIcons().clear();
+        mainStage.getIcons().add(iconImage);
+
 
         mainScene = new Scene(loadFXML("main"));
         mainScene.getStylesheets().add(getMainStyle());
@@ -121,10 +128,20 @@ public class RechnungManagerFxApp extends Application implements Runnable, ISing
     
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-	    
+
+        URL logoUrl = RechnungManagerFxApp.class.getResource("images/logo_icon.png");
+        this.iconImage = new Image(logoUrl.toExternalForm());
+
 		showSplash(primaryStage);
-		
-		Platform.runLater(this);
+
+
+        RechnungManagerFxApp fxApp = this;
+        Thread thread = new Thread(() -> RechnungManagerSpringApp.start(RechnungManagerFxApp.startArgs, fxApp));
+
+        thread.start();
+
+
+        //Platform.runLater(this);
 		
 	}
 

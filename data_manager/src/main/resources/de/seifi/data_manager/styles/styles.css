@@ -244,3 +244,12 @@
     -fx-background-repeat: no-repeat;
     -fx-background-position: 3px center;
 }
+
+.loading-page {
+
+    -fx-background-image: url('../images/logo_normal_repair.png');
+
+    -fx-background-size: 100% 100%;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}

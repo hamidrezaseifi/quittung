@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -27,7 +28,7 @@ public class DataManagerFxApp extends Application implements ISingleInstanceRunn
     public static Stage mainStage;
     
     private static String[] startArgs = null;
-    
+
     public static void closeApp() {
     	mainStage.close();
     }
@@ -47,7 +48,14 @@ public class DataManagerFxApp extends Application implements ISingleInstanceRunn
     @Override
     public void start(Stage stage) throws IOException {
 
+        URL logoUrl = DataManagerFxApp.class.getResource("images/logo_icon_repair.png");
+        Image iconImage = new Image(logoUrl.toExternalForm());
+
         DataManagerFxApp.mainStage = stage;
+
+        DataManagerFxApp.mainStage.getIcons().clear();
+        DataManagerFxApp.mainStage.getIcons().add(iconImage);
+
         loadingScene = new Scene(loadFXML("loading"), 700, 600);
         loadingScene.getStylesheets().add(getMainStyle());
         stage.setScene(loadingScene);
@@ -59,13 +67,7 @@ public class DataManagerFxApp extends Application implements ISingleInstanceRunn
         //Platform.runLater(this);
         
         DataManagerFxApp fxApp = this;
-        Thread thread = new Thread(){
-            public void run(){
-            	System.out.println("Thread Running");
-            	
-            	DataManageSpringApp.start(DataManagerFxApp.startArgs, fxApp);
-            }
-        };
+        Thread thread = new Thread(() -> DataManageSpringApp.start(DataManagerFxApp.startArgs, fxApp));
 
         thread.start();
           

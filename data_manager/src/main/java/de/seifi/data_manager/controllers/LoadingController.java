@@ -14,10 +14,8 @@ public class LoadingController implements Initializable {
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		URL imageUrl = this.getClass().getResource("../images/loading.gif");
-		Image loadingImage = new Image(imageUrl.toExternalForm());
-		loadingImageView.setImage(loadingImage);
-		
+
+
 	}
 
 }
