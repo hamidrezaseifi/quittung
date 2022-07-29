@@ -2,6 +2,8 @@ package de.seifi.data_manager.controllers;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -9,6 +11,8 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import de.seifi.data_manager.DataManagerFxApp;
 import de.seifi.rechnung_common.config.DatabaseConfigUtils;
@@ -109,15 +113,17 @@ public class DbConnectionController implements Initializable {
 		File selectedFile = fileChooser.showSaveDialog(DataManagerFxApp.mainStage);
 		if(selectedFile != null){
 			lblBackupPath.setText(selectedFile.getAbsolutePath());
-
+			btnStartBackup.setDisable(false);
 		}
 	}
 
 	public void startBackup(ActionEvent actionEvent) {
 
-		String backupCommand = "%  -U postgres --no-password --dbname=rechnung > %s";
-		String env = "PGPASSWORD=7342";
-
+		//String backupCommand = "%  -U postgres --no-password --dbname=rechnung > %s";
+		//String env = "PGPASSWORD=7342";
+		String backupZipFilePath = lblBackupPath.getText();
+		String backupSqlFilePath = backupZipFilePath.replace(".zip", ".sql");
+		
 		String[] commands = new String[]{DataManagerFxApp.appConfig.getPostgresDumpAppPath(),
 										 "--username",
 										 databaseConfig.getDatasourceUsername(),
@@ -129,9 +135,9 @@ public class DbConnectionController implements Initializable {
 										 "--verbose",
 										 "--dbname=" + databaseConfig.getDatabase(),
 										 "--file",
-										 lblBackupPath.getText().replace(".zip", ".sql")};
+										 backupSqlFilePath};
 
-		String testCommand = String.join(" ", commands);
+		//String testCommand = String.join(" ", commands);
 
 		ProcessBuilder builder = new ProcessBuilder(commands);
 		builder.environment().put("PGPASSWORD", databaseConfig.getDatasourcePassword());
@@ -153,6 +159,32 @@ public class DbConnectionController implements Initializable {
 					String line = null;
 					while ((line = error.readLine()) != null) {
 						lstBackupLogs.getItems().add(line);
+					}
+					
+					while(process.isAlive()) {
+						process.wait();
+					}
+					
+					process.destroy();
+					
+					File backupSqlFile = new File(backupSqlFilePath);
+					if(backupSqlFile.exists()) {
+						FileOutputStream fos = new FileOutputStream(backupZipFilePath);
+				        ZipOutputStream zipOut = new ZipOutputStream(fos);
+				        
+				        FileInputStream fis = new FileInputStream(backupSqlFile);
+				        ZipEntry zipEntry = new ZipEntry(backupSqlFile.getName());
+				        zipOut.putNextEntry(zipEntry);
+				        byte[] bytes = new byte[1024];
+				        int length;
+				        while((length = fis.read(bytes)) >= 0) {
+				            zipOut.write(bytes, 0, length);
+				        }
+				        zipOut.close();
+				        fis.close();
+				        fos.close();
+				        
+				        backupSqlFile.delete();
 					}
 
 				}
@@ -202,6 +234,9 @@ public class DbConnectionController implements Initializable {
 		lblPgDumpPath.setText(DataManagerFxApp.appConfig.getPostgresDumpAppPath());
 		File pgDumpFile = new File(DataManagerFxApp.appConfig.getPostgresDumpAppPath());
 		processBackupBox.setVisible(pgDumpFile.exists());
+
+		btnCancelBackup.setDisable(true);
+		btnStartBackup.setDisable(true);
 
 		extractedLastBackupInfo();
 	}
