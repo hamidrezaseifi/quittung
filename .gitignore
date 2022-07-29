@@ -8,3 +8,4 @@
 /libs/java/
 /libs/*.cfg
 /libs/*.exe
+/libs/*.zip.*
