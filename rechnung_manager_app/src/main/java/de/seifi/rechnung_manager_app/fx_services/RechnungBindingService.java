@@ -326,8 +326,10 @@ public class RechnungBindingService {
             rechnungSavingModel = rechnungAdapter.toModel(savedEntityOptional.get());
             List<RechnungItemProperty> items = this.rechnungItems.stream().filter(qi -> qi.canSaved()).collect(Collectors.toList());
 
+            ProduktHelper.retreiveProduktList();
+            
             for(RechnungItemProperty item: items) {
-                ProduktHelper.add(item.getProdukt(), item.getBrutoPreis());
+            	ProduktHelper.add(item.getProdukt(), item.getBrutoPreis());
 
             }
             ProduktHelper.retreiveProduktList();

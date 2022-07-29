@@ -9,12 +9,12 @@ public class RechnungAdapter extends AdapterBase<RechnungEntity, RechnungModel> 
 	public RechnungEntity toEntity(RechnungModel model) {
 		RechnungEntity entity = null;
 		if(model.isNew()) {
-			entity = new RechnungEntity(model.getId(), model.getCustomerId(), model.getNummer(), model.getRechnungCreate(), model.getLiferDate(),
-					model.getRechnungType().getValue(), model.getStatus().getValue(), model.getUpdated());
-		} 
-		else {
 			entity = new RechnungEntity(model.getCustomerId(), model.getNummer(), model.getRechnungCreate(), model.getLiferDate(),
 					model.getRechnungType().getValue(), model.getStatus().getValue());
+		} 
+		else {
+			entity = new RechnungEntity(model.getId(), model.getCustomerId(), model.getNummer(), model.getRechnungCreate(), model.getLiferDate(),
+					model.getRechnungType().getValue(), model.getStatus().getValue(), model.getUpdated());
 		}
 		
 		RechnungItemAdapter itemAdapter = new RechnungItemAdapter();

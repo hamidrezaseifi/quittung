@@ -36,6 +36,14 @@ public class ProduktHelper {
         return produktMap;
     }
 
+    public static ProduktModel getProdukt(String produkt) {
+        if(produktMap == null){
+            retreiveProduktList();
+        }
+        
+        return produktMap.containsKey(produkt)? produktMap.get(produkt): null;
+    }
+
     public static void retreiveProduktList() {
         List<ProduktEntity> entityList = getProduktRepository().findAll(Sort.by(Sort.Direction.ASC, "produktName"));
         produktList = entityList.stream().map(e -> produktAdapter.toModel(e)).collect(Collectors.toList());
@@ -64,4 +72,9 @@ public class ProduktHelper {
         }
         getProduktRepository().save(produktEntity);
     }
+
+	public static void save(ProduktModel produktModel) {
+		// TODO Auto-generated method stub
+		
+	}
 }

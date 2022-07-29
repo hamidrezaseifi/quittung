@@ -20,7 +20,7 @@ public class RechnungEntity extends EntityBase {
 	@GeneratedValue
     private UUID id;
 
-	@Column(name="customer_id", nullable = false)
+	@Column(name="customer_id")
 	private UUID customerId;
 
 	@Column(nullable = false) 

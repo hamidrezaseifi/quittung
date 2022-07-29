@@ -9,10 +9,10 @@ public class ProduktAdapter extends AdapterBase<ProduktEntity, ProduktModel> {
 	public ProduktEntity toEntity(ProduktModel model) {
 		ProduktEntity entity = null;
 		if(model.isNew()) {
-			entity = new ProduktEntity(model.getId(), model.getProduktName(), model.getLastPreis(), model.getUpdated());
+			entity = new ProduktEntity(model.getProduktName(), model.getLastPreis());
 		} 
 		else {
-			entity = new ProduktEntity(model.getProduktName(), model.getLastPreis());
+			entity = new ProduktEntity(model.getId(), model.getProduktName(), model.getLastPreis(), model.getUpdated());
 		}
 		
 		

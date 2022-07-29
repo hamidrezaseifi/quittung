@@ -9,12 +9,12 @@ public class CustomerAdapter extends AdapterBase<CustomerEntity, CustomerModel> 
 	public CustomerEntity toEntity(CustomerModel model) {
 		CustomerEntity entity = null;
 		if(model.isNew() == false) {
-			entity = new CustomerEntity(model.getId(), model.getCustomerName(), model.getStreet(), model.getHouseNumber(), 
-					model.getAddress2(), model.getPlz(), model.getCity(), model.getStatus().getValue(), model.getUpdated());
-		} 
-		else {
 			entity = new CustomerEntity(model.getCustomerName(), model.getStreet(), model.getHouseNumber(), 
 					model.getAddress2(), model.getPlz(), model.getCity(), model.getStatus().getValue());
+		} 
+		else {
+			entity = new CustomerEntity(model.getId(), model.getCustomerName(), model.getStreet(), model.getHouseNumber(), 
+					model.getAddress2(), model.getPlz(), model.getCity(), model.getStatus().getValue(), model.getUpdated());
 		}
 
 		return entity;
