@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.32602.291
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "quittung", "quittung\quittung.vcxproj", "{844B57F7-9FF3-42E8-B7FA-C1B150920B7D}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rechnung_runner", "rechnung_runner\rechnung_runner.vcxproj", "{844B57F7-9FF3-42E8-B7FA-C1B150920B7D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

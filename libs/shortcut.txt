@@ -1,3 +1,3 @@
-E:\Hamid\Projects\java\quittung\libs\quittung.exe rechnung
+E:\Hamid\Projects\java\quittung\libs\rechnung_runner.exe rechnung
 
-E:\Hamid\Projects\java\quittung\libs\quittung.exe data_manager
+E:\Hamid\Projects\java\quittung\libs\rechnung_runner.exe data_manager
