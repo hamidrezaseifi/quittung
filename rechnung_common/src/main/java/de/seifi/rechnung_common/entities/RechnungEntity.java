@@ -38,6 +38,9 @@ public class RechnungEntity extends EntityBase {
 	@Column(nullable = false) 
 	private Integer status;
 
+	@Column(name="user_id")
+	private UUID userId;
+
 	@CreationTimestamp
 	@ColumnDefault("CURRENT_TIMESTAMP")
 	private LocalDateTime created;
@@ -59,13 +62,15 @@ public class RechnungEntity extends EntityBase {
 						  String rechnungCreate,
 						  String liferDate,
 						  int rechnungType,
-						  int status) {
+						  int status,
+						  UUID userId) {
 		this();
 		this.customerId = customerId;
 		this.nummer = nummer;
 		this.rechnungCreate = rechnungCreate;
 		this.liferDate = liferDate;
 		this.status = status;
+		this.userId = userId;
 		this.rechnungType = rechnungType;
 	}
 
@@ -76,6 +81,7 @@ public class RechnungEntity extends EntityBase {
 						  String liferDate,
 						  int rechnungType,
 						  int status,
+						  UUID userId,
 						  LocalDateTime updated) {
 		this();
 		this.id = id;
@@ -84,6 +90,7 @@ public class RechnungEntity extends EntityBase {
 		this.rechnungCreate = rechnungCreate;
 		this.liferDate = liferDate;
 		this.status = status;
+		this.userId = userId;
 		this.rechnungType = rechnungType;
 		this.updated = updated;
 	}
@@ -169,6 +176,13 @@ public class RechnungEntity extends EntityBase {
 		this.status = status;
 	}
 
+	public UUID getUserId() {
+		return userId;
+	}
+
+	public void setUserId(UUID userId) {
+		this.userId = userId;
+	}
 
 	@Override
 	public LocalDateTime getCreated() {

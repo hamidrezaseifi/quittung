@@ -23,23 +23,11 @@ import javafx.application.Platform;
 public class DataManageSpringApp {
 	public static ConfigurableApplicationContext applicationContext;
 	
-	public static void start(String[] args, DataManagerFxApp fxApp) {
+	public static void start(String[] args) {
 		
 		applicationContext = SpringApplication.run(DataManageSpringApp.class, args);
 	    
-		Platform.runLater(new Runnable() {
-			
-			@Override
-			public void run() {
-				try {
-					fxApp.loadMainScene();
-				} catch (IOException e) {
-					
-					throw new RuntimeException(e);
-				}
-				
-			}
-		});
+
 		
 		
 	}

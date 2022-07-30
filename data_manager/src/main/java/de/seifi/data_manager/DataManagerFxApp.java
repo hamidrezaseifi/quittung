@@ -16,7 +16,7 @@ import javafx.stage.WindowEvent;
 import java.io.IOException;
 import java.net.URL;
 
-public class DataManagerFxApp extends Application implements ISingleInstanceRunnable, Runnable {
+public class DataManagerFxApp extends Application implements ISingleInstanceRunnable {
 
 	public static final AppConfig appConfig = new AppConfig();
 	
@@ -48,6 +48,37 @@ public class DataManagerFxApp extends Application implements ISingleInstanceRunn
     @Override
     public void start(Stage stage) throws IOException {
 
+        createLoadingScene(stage);
+
+        DataManagerFxApp fxApp = this;
+        Thread thread = new Thread(() -> {
+
+            try {
+                DataManageSpringApp.start(DataManagerFxApp.startArgs);
+            }
+            catch (Exception ex){
+                Platform.runLater(() -> {
+                    showError("Anwendung starten ...", "Fehler beim Starten der Anwendung!");
+                });
+
+
+            }
+            Platform.runLater(() -> {
+                try {
+                    fxApp.loadMainScene();
+                } catch (IOException e) {
+
+                    throw new RuntimeException(e);
+                }
+
+            });
+        });
+
+        thread.start();
+          
+    }
+
+    private void createLoadingScene(Stage stage) throws IOException {
         URL logoUrl = DataManagerFxApp.class.getResource("images/logo_icon_repair.png");
         Image iconImage = new Image(logoUrl.toExternalForm());
 
@@ -63,22 +94,7 @@ public class DataManagerFxApp extends Application implements ISingleInstanceRunn
         loadingScene.getWindow().addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, this::closeWindowEvent);
         stage.setTitle("Daten Manager ...");
         stage.show();
-        
-        //Platform.runLater(this);
-        
-        DataManagerFxApp fxApp = this;
-        Thread thread = new Thread(() -> DataManageSpringApp.start(DataManagerFxApp.startArgs, fxApp));
-
-        thread.start();
-          
     }
-
-	@Override
-	public void run() {
-		DataManageSpringApp.start(DataManagerFxApp.startArgs, this);
-		
-	}
-
 
     public void loadMainScene() throws IOException {
     	mainScene = new Scene(loadFXML("main"), 700, 600);

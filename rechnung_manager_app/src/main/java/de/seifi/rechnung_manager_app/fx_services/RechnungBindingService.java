@@ -4,6 +4,7 @@ package de.seifi.rechnung_manager_app.fx_services;
 import de.seifi.rechnung_common.entities.CustomerEntity;
 import de.seifi.rechnung_common.entities.RechnungEntity;
 import de.seifi.rechnung_common.repositories.RechnungRepository;
+import de.seifi.rechnung_manager_app.RechnungManagerFxApp;
 import de.seifi.rechnung_manager_app.adapter.CustomerAdapter;
 import de.seifi.rechnung_manager_app.adapter.RechnungAdapter;
 import de.seifi.rechnung_manager_app.data_service.IRechnungDataHelper;
@@ -207,7 +208,8 @@ public class RechnungBindingService {
 
         int lastNummer = this.rechnungDataHelper.getLastActiveRechnungNummer();
 
-        rechnungSavingModel = new RechnungModel(lastNummer + 1, date, date, rechnungType, RechnungStatus.ACTIVE);
+        rechnungSavingModel = new RechnungModel(lastNummer + 1, date, date, rechnungType, RechnungStatus.ACTIVE,
+                                                RechnungManagerFxApp.loggedUser);
         
         rechnungNummer.set(String.valueOf(lastNummer + 1));
         rechnungDatum.set(date);

@@ -27,6 +27,7 @@ import javafx.util.Pair;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.UUID;
 
 public class RechnungManagerFxApp extends Application implements ISingleInstanceRunnable {
 
@@ -48,8 +49,10 @@ public class RechnungManagerFxApp extends Application implements ISingleInstance
     private static MainController mainController;
     
     private static ControllerBase currentController;
+
     private Image iconImage;
 
+    public static UUID loggedUser = null;
 
     @Override
     public void runInstance(String[] args) {

@@ -26,16 +26,19 @@ public class RechnungModel {
 
 	private RechnungStatus status;
 
+	private UUID userId;
+
 	private LocalDateTime created;
 	
 	private LocalDateTime updated;
 
 	private List<RechnungItemModel> items;
-    
+
     public RechnungModel() {
     	super();
     	id = null;
 		customerId = null;
+		this.userId = null;
     	items = new ArrayList<>();
 
     }
@@ -44,43 +47,15 @@ public class RechnungModel {
 						 String rechnungCreate,
 						 String liferDate,
 						 RechnungType rechnungType,
-						 RechnungStatus status) {
+						 RechnungStatus status,
+						 UUID userId) {
 		this();
 		this.nummer = nummer;
 		this.rechnungCreate = rechnungCreate;
 		this.liferDate = liferDate;
 		this.rechnungType = rechnungType;
 		this.status = status;
-	}
-
-	public RechnungModel(UUID customerId,
-						 Integer nummer,
-						 String rechnungCreate,
-						 String liferDate,
-						 int rechnungType,
-						 int status) {
-		this();
-		this.customerId = customerId;
-		this.nummer = nummer;
-		this.rechnungCreate = rechnungCreate;
-		this.liferDate = liferDate;
-		this.rechnungType = RechnungType.ofValue(rechnungType);
-		this.status = RechnungStatus.ofValue(status);
-	}
-
-	public RechnungModel(UUID customerId,
-						 Integer nummer,
-						 String rechnungCreate,
-						 String liferDate,
-						 RechnungType rechnungType,
-						 RechnungStatus status) {
-		this();
-		this.customerId = customerId;
-		this.nummer = nummer;
-		this.rechnungCreate = rechnungCreate;
-		this.liferDate = liferDate;
-		this.rechnungType = rechnungType;
-		this.status = status;
+		this.userId = userId;
 	}
 
 
@@ -91,6 +66,7 @@ public class RechnungModel {
 						 String liferDate,
 						 int rechnungType,
 						 int status,
+						 UUID userId,
 						 LocalDateTime created,
 						 LocalDateTime updated) {
 		this();
@@ -103,6 +79,7 @@ public class RechnungModel {
 		this.status = RechnungStatus.ofValue(status);
         this.created = created;
         this.updated = updated;
+		this.userId = userId;
 	}
 	
 	public boolean isNew() {
@@ -176,6 +153,14 @@ public class RechnungModel {
 
 	public void setStatus(RechnungStatus status) {
 		this.status = status;
+	}
+
+	public UUID getUserId() {
+		return userId;
+	}
+
+	public void setUserId(UUID userId) {
+		this.userId = userId;
 	}
 
 	public LocalDateTime getCreated() {
