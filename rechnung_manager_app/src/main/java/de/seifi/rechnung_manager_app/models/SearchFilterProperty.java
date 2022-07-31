@@ -1,6 +1,6 @@
 package de.seifi.rechnung_manager_app.models;
 
-import de.seifi.rechnung_manager_app.utils.GeneralUtils;
+import de.seifi.rechnung_manager_app.services.GeneralUtils;
 import javafx.beans.property.*;
 
 import java.time.LocalDate;

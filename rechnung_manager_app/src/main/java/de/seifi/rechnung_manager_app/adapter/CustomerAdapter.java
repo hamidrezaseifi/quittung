@@ -8,7 +8,7 @@ public class CustomerAdapter extends AdapterBase<CustomerEntity, CustomerModel> 
 	@Override
 	public CustomerEntity toEntity(CustomerModel model) {
 		CustomerEntity entity = null;
-		if(model.isNew() == false) {
+		if(model.isNew()) {
 			entity = new CustomerEntity(model.getCustomerName(), model.getStreet(), model.getHouseNumber(), 
 					model.getAddress2(), model.getPlz(), model.getCity(), model.getStatus().getValue());
 		} 

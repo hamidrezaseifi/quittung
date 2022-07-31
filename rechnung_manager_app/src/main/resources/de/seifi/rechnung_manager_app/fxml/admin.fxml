@@ -18,20 +18,20 @@
 <?import de.seifi.rechnung_manager_app.ui.FloatGeldLabel?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.image.ImageView?>
-<GridPane alignment="TOP_LEFT" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane alignment="TOP_LEFT" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="de.seifi.rechnung_manager_app.controllers.AdminController" fx:id="rootPane" >
+
     <columnConstraints>
         <ColumnConstraints hgrow="ALWAYS" />
     </columnConstraints>
-    <rowConstraints>
-        <RowConstraints vgrow="ALWAYS" />
-    </rowConstraints>
-    <children>
-    	
-        <Label GridPane.columnIndex="0" GridPane.rowIndex="0" text="Verwaltung">
-        	
-        </Label>
-      
-    </children>
+
+    <HBox styleClass="group-box">
+        <Label text="Standard Druker" prefWidth="100" prefHeight="25"></Label>
+        <ComboBox fx:id="cmbPrinter" prefWidth="300" prefHeight="25" />
+        <padding>
+            <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
+        </padding>
+    </HBox>
     <padding>
         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
     </padding>

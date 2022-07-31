@@ -6,7 +6,6 @@ import de.seifi.rechnung_manager_app.adapter.CustomerAdapter;
 import de.seifi.rechnung_manager_app.models.CustomerModel;
 import de.seifi.rechnung_manager_app.models.CustomerModelProperty;
 import de.seifi.rechnung_manager_app.ui.UiUtils;
-import de.seifi.rechnung_manager_app.utils.CustomerHelper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -88,9 +87,7 @@ public class CustomersController implements Initializable, ControllerBase {
         		return;
         	}
         	
-        	CustomerEntity entity = customerAdapter.toEntity(selectedModel);
-        	
-        	if(CustomerHelper.hasRechnung(entity)) {
+        	if(RechnungManagerFxApp.getCustomerService().hasRechnung(selectedModel)) {
         		UiUtils.showError("Kunde Löschen ...", String.format("Für den Kunde '%s' ist Rechnungen erstellt und kann nicht gelöscht werden!", selectedModel.getCustomerName()));
         		return;
         	}
@@ -98,7 +95,7 @@ public class CustomersController implements Initializable, ControllerBase {
         	Optional<ButtonType> result = UiUtils.showAsking("Kunde Löschen ...", 
         			String.format("Wollen Sie der Kunde '%s' löschen?", selectedModel.getCustomerName()));
         	if(result.isPresent() && result.get() == ButtonType.OK) {
-        		CustomerHelper.delete(entity);
+                RechnungManagerFxApp.getCustomerService().delete(selectedModel);
             	reload(null);
         	}
         	
@@ -109,8 +106,8 @@ public class CustomersController implements Initializable, ControllerBase {
     public void saveCutomer(ActionEvent actionEvent) {
     	CustomerModel editingModel = this.currentEditingModel.toModel();
     	editingModel.setId(this.selectedModel.getId());
-    	
-    	CustomerHelper.save(customerAdapter.toEntity(editingModel));
+
+        RechnungManagerFxApp.getCustomerService().save(editingModel);
         
     	reload(null);
     }
@@ -123,9 +120,9 @@ public class CustomersController implements Initializable, ControllerBase {
     
     @FXML
     public void reload(ActionEvent actionEvent) {
-    	CustomerHelper.reloadCustomerList();
+        RechnungManagerFxApp.getCustomerService().reloadCustomerList();
     	
-    	List<CustomerModel> allCustomerList = CustomerHelper.getCustomerList();
+    	List<CustomerModel> allCustomerList = RechnungManagerFxApp.getCustomerService().getCustomerList();
         this.customerList.clear();
         this.customerList.addAll(allCustomerList);
         

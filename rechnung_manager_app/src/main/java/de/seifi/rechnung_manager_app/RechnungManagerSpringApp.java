@@ -14,7 +14,8 @@ import java.io.IOException;
 @SpringBootApplication
 @ComponentScan(basePackages = {
 		"de.seifi.rechnung_common.config", 
-		"de.seifi.rechnung_manager_app.data_service.impl"})
+		"de.seifi.rechnung_manager_app.data_service.impl",
+		"de.seifi.rechnung_manager_app.services.impl"})
 @EnableJpaRepositories(basePackages="de.seifi.rechnung_common.repositories")
 @EnableTransactionManagement
 @EntityScan(basePackages="de.seifi.rechnung_common.entities")

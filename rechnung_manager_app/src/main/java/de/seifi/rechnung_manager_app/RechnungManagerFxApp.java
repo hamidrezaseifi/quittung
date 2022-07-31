@@ -6,6 +6,7 @@ import de.seifi.rechnung_manager_app.controllers.ControllerBase;
 import de.seifi.rechnung_manager_app.controllers.MainController;
 import de.seifi.rechnung_manager_app.controllers.RechnungController;
 import de.seifi.rechnung_manager_app.enums.RechnungType;
+import de.seifi.rechnung_manager_app.services.ICustomerService;
 import de.seifi.rechnung_manager_app.ui.UiUtils;
 import javafx.animation.FadeTransition;
 import javafx.application.Application;
@@ -53,6 +54,8 @@ public class RechnungManagerFxApp extends Application implements ISingleInstance
     private Image iconImage;
 
     public static UUID loggedUser = null;
+
+    private static ICustomerService customerService;
 
     @Override
     public void runInstance(String[] args) {
@@ -306,5 +309,12 @@ public class RechnungManagerFxApp extends Application implements ISingleInstance
 	public static void setCurrentController(ControllerBase currentController) {
 		RechnungManagerFxApp.currentController = currentController;
 	}
+
+    public static ICustomerService getCustomerService(){
+        if(RechnungManagerFxApp.customerService == null){
+            RechnungManagerFxApp.customerService = RechnungManagerSpringApp.applicationContext.getBean(ICustomerService.class);
+        }
+        return RechnungManagerFxApp.customerService;
+    }
 
 }

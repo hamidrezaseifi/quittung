@@ -1,4 +1,4 @@
-package de.seifi.rechnung_manager_app.utils;
+package de.seifi.rechnung_manager_app.services;
 
 import de.seifi.rechnung_common.entities.ProduktEntity;
 import de.seifi.rechnung_common.repositories.ProduktRepository;

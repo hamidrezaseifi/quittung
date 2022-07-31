@@ -15,11 +15,10 @@ import de.seifi.rechnung_manager_app.models.CustomerModelProperty;
 import de.seifi.rechnung_manager_app.models.CustomerSelectModel;
 import de.seifi.rechnung_manager_app.models.ProduktModel;
 import de.seifi.rechnung_manager_app.models.RechnungModel;
-import de.seifi.rechnung_manager_app.utils.CustomerHelper;
-import de.seifi.rechnung_manager_app.utils.GeneralUtils;
+import de.seifi.rechnung_manager_app.services.GeneralUtils;
 import de.seifi.rechnung_manager_app.utils.GerldCalculator;
 import de.seifi.rechnung_manager_app.models.RechnungItemProperty;
-import de.seifi.rechnung_manager_app.utils.ProduktHelper;
+import de.seifi.rechnung_manager_app.services.ProduktHelper;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -222,7 +221,7 @@ public class RechnungBindingService {
     public List<CustomerSelectModel> getCustomerSelectList() {
 
         this.customerList.clear();
-        List<CustomerModel> modelList = CustomerHelper.getCustomerList();
+        List<CustomerModel> modelList = RechnungManagerFxApp.getCustomerService().getCustomerList();
         for(CustomerModel model: modelList) {
             this.customerList.put(model.getId(), model);
         }
@@ -303,13 +302,13 @@ public class RechnungBindingService {
 
 	public boolean save() {
         if(this.rechnungType == RechnungType.RECHNUNG){
-            CustomerEntity customerEntity = customerAdapter.toEntity(customerSavingModel);
-            if(customerEntity.isNew()){
-                CustomerHelper.save(customerEntity);
-                customerSavingModel = customerAdapter.toModel(customerEntity);
+
+            if(customerSavingModel.isNew()){
+                Optional<CustomerModel> customerModelOptional = RechnungManagerFxApp.getCustomerService().save(customerSavingModel);
+                customerSavingModel = customerModelOptional.get();
             }
 
-            rechnungSavingModel.setCustomerId(customerEntity.getId());
+            rechnungSavingModel.setCustomerId(customerSavingModel.getId());
         }
         if(this.rechnungType == RechnungType.QUITTUNG){
 
@@ -417,12 +416,12 @@ public class RechnungBindingService {
 	public void setRechnungModel(RechnungModel rechnungModel) {
 		
 		if(rechnungType == RechnungType.RECHNUNG) {
-	        Optional<CustomerEntity> customerEntityOptional = CustomerHelper.getById(rechnungModel.getCustomerId());
+	        Optional<CustomerModel> customerEntityOptional = RechnungManagerFxApp.getCustomerService().getById(rechnungModel.getCustomerId());
 	        if(customerEntityOptional.isEmpty()){
 	        	throw new RuntimeException("Der Kunde von der Rechnung nicht gefunden!");
 	        }
 
-	        this.customerSavingModel = customerAdapter.toModel(customerEntityOptional.get());
+	        this.customerSavingModel = customerEntityOptional.get();
 			
 		}
         

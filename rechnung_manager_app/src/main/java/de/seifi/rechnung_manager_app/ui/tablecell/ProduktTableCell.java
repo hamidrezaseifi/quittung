@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 import de.seifi.rechnung_manager_app.models.ProduktModel;
 import de.seifi.rechnung_manager_app.ui.FilterComboBox;
-import de.seifi.rechnung_manager_app.utils.ProduktHelper;
+import de.seifi.rechnung_manager_app.services.ProduktHelper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.*;

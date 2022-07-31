@@ -4,14 +4,13 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-import de.seifi.rechnung_common.entities.CustomerEntity;
 import de.seifi.rechnung_manager_app.RechnungManagerFxApp;
 import de.seifi.rechnung_manager_app.adapter.CustomerAdapter;
 import de.seifi.rechnung_manager_app.controllers.PrintRechnungDialogController;
 import de.seifi.rechnung_manager_app.controllers.RechnungController;
 import de.seifi.rechnung_manager_app.enums.RechnungType;
+import de.seifi.rechnung_manager_app.models.CustomerModel;
 import de.seifi.rechnung_manager_app.models.RechnungModel;
-import de.seifi.rechnung_manager_app.utils.CustomerHelper;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.print.PrinterJob;
@@ -60,12 +59,11 @@ public class UiUtils {
 
 					if(model.getRechnungType() == RechnungType.RECHNUNG){
 
-						Optional<CustomerEntity>
-								customerEntityOptional = CustomerHelper.getById(model.getCustomerId());
+						Optional<CustomerModel> customerEntityOptional = RechnungManagerFxApp.getCustomerService().getById(model.getCustomerId());
 						if(customerEntityOptional.isEmpty()){
 							throw new RuntimeException("Der Kunde von der Rechnung nicht gefunden!");
 						}
-						rechnungPringController.printRechnungList(model, customerAdapter.toModel(customerEntityOptional.get()), job);
+						rechnungPringController.printRechnungList(model, customerEntityOptional.get(), job);
 					}
 					if(model.getRechnungType() == RechnungType.QUITTUNG){
 
