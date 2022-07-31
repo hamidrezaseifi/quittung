@@ -438,6 +438,8 @@ public class RechnungBindingService {
         ProduktHelper.retreiveProduktList();
 		
 		isDirty = false;
+
+        this.calculateRechnungSumme();
 	}
 
 
