@@ -2,6 +2,7 @@ package de.seifi.rechnung_manager_app.controllers;
 
 import de.seifi.rechnung_common.entities.CustomerEntity;
 import de.seifi.rechnung_manager_app.RechnungManagerFxApp;
+import de.seifi.rechnung_manager_app.RechnungManagerSpringApp;
 import de.seifi.rechnung_manager_app.adapter.CustomerAdapter;
 import de.seifi.rechnung_manager_app.models.CustomerModel;
 import de.seifi.rechnung_manager_app.models.CustomerModelProperty;
@@ -87,7 +88,7 @@ public class CustomersController implements Initializable, ControllerBase {
         		return;
         	}
         	
-        	if(RechnungManagerFxApp.getCustomerService().hasRechnung(selectedModel)) {
+        	if(RechnungManagerSpringApp.getCustomerService().hasRechnung(selectedModel)) {
         		UiUtils.showError("Kunde Löschen ...", String.format("Für den Kunde '%s' ist Rechnungen erstellt und kann nicht gelöscht werden!", selectedModel.getCustomerName()));
         		return;
         	}
@@ -95,7 +96,7 @@ public class CustomersController implements Initializable, ControllerBase {
         	Optional<ButtonType> result = UiUtils.showAsking("Kunde Löschen ...", 
         			String.format("Wollen Sie der Kunde '%s' löschen?", selectedModel.getCustomerName()));
         	if(result.isPresent() && result.get() == ButtonType.OK) {
-                RechnungManagerFxApp.getCustomerService().delete(selectedModel);
+                RechnungManagerSpringApp.getCustomerService().delete(selectedModel);
             	reload(null);
         	}
         	
@@ -107,7 +108,7 @@ public class CustomersController implements Initializable, ControllerBase {
     	CustomerModel editingModel = this.currentEditingModel.toModel();
     	editingModel.setId(this.selectedModel.getId());
 
-        RechnungManagerFxApp.getCustomerService().save(editingModel);
+        RechnungManagerSpringApp.getCustomerService().save(editingModel);
         
     	reload(null);
     }
@@ -120,9 +121,9 @@ public class CustomersController implements Initializable, ControllerBase {
     
     @FXML
     public void reload(ActionEvent actionEvent) {
-        RechnungManagerFxApp.getCustomerService().reloadCustomerList();
+        RechnungManagerSpringApp.getCustomerService().reloadCustomerList();
     	
-    	List<CustomerModel> allCustomerList = RechnungManagerFxApp.getCustomerService().getCustomerList();
+    	List<CustomerModel> allCustomerList = RechnungManagerSpringApp.getCustomerService().getCustomerList();
         this.customerList.clear();
         this.customerList.addAll(allCustomerList);
         

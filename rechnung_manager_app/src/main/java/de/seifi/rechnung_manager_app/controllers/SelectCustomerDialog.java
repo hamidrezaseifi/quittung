@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import de.seifi.rechnung_manager_app.RechnungManagerFxApp;
+import de.seifi.rechnung_manager_app.RechnungManagerSpringApp;
 import de.seifi.rechnung_manager_app.models.CustomerModel;
 import de.seifi.rechnung_manager_app.models.CustomerModelProperty;
 import javafx.collections.FXCollections;
@@ -50,7 +51,7 @@ public class SelectCustomerDialog extends Dialog<CustomerModel> {
     public SelectCustomerDialog(Window owner,
                                 CustomerModel inCustomerModel) throws IOException {
 
-        this.allCustomerList = RechnungManagerFxApp.getCustomerService().getCustomerList();
+        this.allCustomerList = RechnungManagerSpringApp.getCustomerService().getCustomerList();
 
         FXMLLoader loader = RechnungManagerFxApp.getSelectCustomerDialog();
 		

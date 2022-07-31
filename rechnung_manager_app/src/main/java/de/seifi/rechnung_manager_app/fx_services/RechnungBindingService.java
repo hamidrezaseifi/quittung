@@ -1,10 +1,10 @@
 package de.seifi.rechnung_manager_app.fx_services;
 
 
-import de.seifi.rechnung_common.entities.CustomerEntity;
 import de.seifi.rechnung_common.entities.RechnungEntity;
 import de.seifi.rechnung_common.repositories.RechnungRepository;
 import de.seifi.rechnung_manager_app.RechnungManagerFxApp;
+import de.seifi.rechnung_manager_app.RechnungManagerSpringApp;
 import de.seifi.rechnung_manager_app.adapter.CustomerAdapter;
 import de.seifi.rechnung_manager_app.adapter.RechnungAdapter;
 import de.seifi.rechnung_manager_app.data_service.IRechnungDataHelper;
@@ -15,10 +15,9 @@ import de.seifi.rechnung_manager_app.models.CustomerModelProperty;
 import de.seifi.rechnung_manager_app.models.CustomerSelectModel;
 import de.seifi.rechnung_manager_app.models.ProduktModel;
 import de.seifi.rechnung_manager_app.models.RechnungModel;
-import de.seifi.rechnung_manager_app.services.GeneralUtils;
+import de.seifi.rechnung_manager_app.utils.GeneralUtils;
 import de.seifi.rechnung_manager_app.utils.GerldCalculator;
 import de.seifi.rechnung_manager_app.models.RechnungItemProperty;
-import de.seifi.rechnung_manager_app.services.ProduktHelper;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -221,7 +220,7 @@ public class RechnungBindingService {
     public List<CustomerSelectModel> getCustomerSelectList() {
 
         this.customerList.clear();
-        List<CustomerModel> modelList = RechnungManagerFxApp.getCustomerService().getCustomerList();
+        List<CustomerModel> modelList = RechnungManagerSpringApp.getCustomerService().getCustomerList();
         for(CustomerModel model: modelList) {
             this.customerList.put(model.getId(), model);
         }
@@ -304,7 +303,7 @@ public class RechnungBindingService {
         if(this.rechnungType == RechnungType.RECHNUNG){
 
             if(customerSavingModel.isNew()){
-                Optional<CustomerModel> customerModelOptional = RechnungManagerFxApp.getCustomerService().save(customerSavingModel);
+                Optional<CustomerModel> customerModelOptional = RechnungManagerSpringApp.getCustomerService().save(customerSavingModel);
                 customerSavingModel = customerModelOptional.get();
             }
 
@@ -327,13 +326,13 @@ public class RechnungBindingService {
             rechnungSavingModel = rechnungAdapter.toModel(savedEntityOptional.get());
             List<RechnungItemProperty> items = this.rechnungItems.stream().filter(qi -> qi.canSaved()).collect(Collectors.toList());
 
-            ProduktHelper.retreiveProduktList();
+            RechnungManagerSpringApp.getProduktService().retreiveProduktList();
             
             for(RechnungItemProperty item: items) {
-            	ProduktHelper.add(item.getProdukt(), item.getBrutoPreis());
+            	RechnungManagerSpringApp.getProduktService().add(item.getProdukt(), item.getBrutoPreis());
 
             }
-            ProduktHelper.retreiveProduktList();
+            RechnungManagerSpringApp.getProduktService().retreiveProduktList();
         }
 
 
@@ -379,12 +378,12 @@ public class RechnungBindingService {
             calculateRechnungSumme();
             setDirty(true);
 
-            Optional<String> foundProdukt = ProduktHelper
-                    .getProduktMap().keySet().stream().filter(k -> k.toLowerCase().equals(value.toLowerCase())).findAny();
+            Optional<String> foundProdukt = RechnungManagerSpringApp.getProduktService().getProduktMap().keySet().stream().filter(k -> k.equalsIgnoreCase(
+                    value)).findAny();
             
             if(foundProdukt.isPresent()) {
             	
-            	ProduktModel produktModel = ProduktHelper.getProduktMap().get(foundProdukt.get());
+            	ProduktModel produktModel = RechnungManagerSpringApp.getProduktService().getProduktMap().get(foundProdukt.get());
             	prop.setBrutoPreis(produktModel.getLastPreis());
             }
 
@@ -416,7 +415,8 @@ public class RechnungBindingService {
 	public void setRechnungModel(RechnungModel rechnungModel) {
 		
 		if(rechnungType == RechnungType.RECHNUNG) {
-	        Optional<CustomerModel> customerEntityOptional = RechnungManagerFxApp.getCustomerService().getById(rechnungModel.getCustomerId());
+	        Optional<CustomerModel> customerEntityOptional = RechnungManagerSpringApp
+                    .getCustomerService().getById(rechnungModel.getCustomerId());
 	        if(customerEntityOptional.isEmpty()){
 	        	throw new RuntimeException("Der Kunde von der Rechnung nicht gefunden!");
 	        }
@@ -434,7 +434,7 @@ public class RechnungBindingService {
 		
 		rechnungModel.getItems().forEach(r -> addNewRowIntern(new RechnungItemProperty(r)));
 
-        ProduktHelper.retreiveProduktList();
+        RechnungManagerSpringApp.getProduktService().retreiveProduktList();
 		
 		isDirty = false;
 

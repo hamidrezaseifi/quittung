@@ -1,4 +1,4 @@
-package de.seifi.rechnung_manager_app.services;
+package de.seifi.rechnung_manager_app.utils;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

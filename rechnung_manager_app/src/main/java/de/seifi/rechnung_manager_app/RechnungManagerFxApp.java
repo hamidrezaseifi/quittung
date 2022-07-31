@@ -55,8 +55,6 @@ public class RechnungManagerFxApp extends Application implements ISingleInstance
 
     public static UUID loggedUser = null;
 
-    private static ICustomerService customerService;
-
     @Override
     public void runInstance(String[] args) {
         Application.launch(args);
@@ -309,12 +307,5 @@ public class RechnungManagerFxApp extends Application implements ISingleInstance
 	public static void setCurrentController(ControllerBase currentController) {
 		RechnungManagerFxApp.currentController = currentController;
 	}
-
-    public static ICustomerService getCustomerService(){
-        if(RechnungManagerFxApp.customerService == null){
-            RechnungManagerFxApp.customerService = RechnungManagerSpringApp.applicationContext.getBean(ICustomerService.class);
-        }
-        return RechnungManagerFxApp.customerService;
-    }
 
 }

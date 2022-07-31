@@ -8,7 +8,7 @@ import de.seifi.rechnung_manager_app.models.CustomerModel;
 import de.seifi.rechnung_manager_app.models.RechnungItemPrintProperty;
 import de.seifi.rechnung_manager_app.models.RechnungModel;
 import de.seifi.rechnung_manager_app.ui.FloatGeldLabel;
-import de.seifi.rechnung_manager_app.services.GeneralUtils;
+import de.seifi.rechnung_manager_app.utils.GeneralUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.print.*;

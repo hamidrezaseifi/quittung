@@ -3,9 +3,9 @@ package de.seifi.rechnung_manager_app.ui.tablecell;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import de.seifi.rechnung_manager_app.RechnungManagerSpringApp;
 import de.seifi.rechnung_manager_app.models.ProduktModel;
 import de.seifi.rechnung_manager_app.ui.FilterComboBox;
-import de.seifi.rechnung_manager_app.services.ProduktHelper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.*;
@@ -53,10 +53,12 @@ public class ProduktTableCell extends BaseEditbaleTableCell<String> {
     }
     
     private void reloadProdukts() {
-        editComboBox.setItems(obsProduktList);
-        List<ProduktModel> produktList = ProduktHelper.getProduktList();
+
+        List<ProduktModel> produktList = RechnungManagerSpringApp.getProduktService().getProduktList();
     	
-    	obsProduktList = FXCollections.observableArrayList(produktList.stream().map(p -> p.getProduktName()).collect(Collectors.toList()));
+    	obsProduktList = FXCollections.observableArrayList(produktList.stream().map(ProduktModel::getProduktName).collect(Collectors.toList()));
+
+        editComboBox.setItems(obsProduktList);
 
     }
 

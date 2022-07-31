@@ -1,5 +1,7 @@
 package de.seifi.rechnung_manager_app;
 
+import de.seifi.rechnung_manager_app.services.ICustomerService;
+import de.seifi.rechnung_manager_app.services.IProduktService;
 import javafx.application.Platform;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -21,7 +23,27 @@ import java.io.IOException;
 @EntityScan(basePackages="de.seifi.rechnung_common.entities")
 public class RechnungManagerSpringApp {
 	public static ConfigurableApplicationContext applicationContext;
-	
+
+
+	private static ICustomerService customerService = null;
+
+	private static IProduktService produktService = null;
+
+
+	public static ICustomerService getCustomerService(){
+		if(RechnungManagerSpringApp.customerService == null){
+			RechnungManagerSpringApp.customerService = RechnungManagerSpringApp.applicationContext.getBean(ICustomerService.class);
+		}
+		return RechnungManagerSpringApp.customerService;
+	}
+
+	public static IProduktService getProduktService(){
+		if(RechnungManagerSpringApp.produktService == null){
+			RechnungManagerSpringApp.produktService = RechnungManagerSpringApp.applicationContext.getBean(IProduktService.class);
+		}
+		return RechnungManagerSpringApp.produktService;
+	}
+
 	public static void start(String[] args, RechnungManagerFxApp fxApp) {
 		
 		applicationContext = SpringApplication.run(RechnungManagerSpringApp.class, args);

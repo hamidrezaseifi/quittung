@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import de.seifi.rechnung_manager_app.RechnungManagerFxApp;
+import de.seifi.rechnung_manager_app.RechnungManagerSpringApp;
 import de.seifi.rechnung_manager_app.adapter.CustomerAdapter;
 import de.seifi.rechnung_manager_app.controllers.PrintRechnungDialogController;
 import de.seifi.rechnung_manager_app.controllers.RechnungController;
@@ -59,7 +60,7 @@ public class UiUtils {
 
 					if(model.getRechnungType() == RechnungType.RECHNUNG){
 
-						Optional<CustomerModel> customerEntityOptional = RechnungManagerFxApp.getCustomerService().getById(model.getCustomerId());
+						Optional<CustomerModel> customerEntityOptional = RechnungManagerSpringApp.getCustomerService().getById(model.getCustomerId());
 						if(customerEntityOptional.isEmpty()){
 							throw new RuntimeException("Der Kunde von der Rechnung nicht gefunden!");
 						}
