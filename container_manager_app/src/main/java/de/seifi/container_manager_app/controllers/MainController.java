@@ -61,17 +61,16 @@ public class MainController implements Initializable {
 												 IllegalAccessException {
 
 		URL[] jarUrls = new URL[1];
-		File jarFile = new File("E:\\Hamid\\Projects\\java\\quittung\\plugings\\rechnung_manager_module-0.0.1-jar-with-dependencies.jar");
+		File jarFile = new File("E:\\Hamid\\Projects\\java\\quittung\\plugings\\rechnung_manager_module-0.0.1.jar");
 		jarUrls[0] = jarFile.toURI().toURL();
 		URLClassLoader urlClassLoader = new URLClassLoader(jarUrls, this.getClass().getClassLoader());
 		Thread.currentThread().setContextClassLoader(urlClassLoader);
 
 		Package[] packageList = urlClassLoader.getDefinedPackages();
-		Class loadedClass = urlClassLoader.loadClass("de.seifi.rechnung_manager_plugin.PluginInfo");
+		Class pluginInfoClass = urlClassLoader.loadClass("de.seifi.rechnung_manager_plugin.PluginInfo");
 
-		Class classToLoad = Class.forName("de.seifi.rechnung_manager_plugin.PluginInfo", true, urlClassLoader);
-		Method method = classToLoad.getDeclaredMethod("getIngo");
-		Object instance = classToLoad.getDeclaredConstructors()[0].newInstance();
+		Method method = pluginInfoClass.getDeclaredMethod("getIngo");
+		Object instance = pluginInfoClass.getDeclaredConstructors()[0].newInstance();
 		Object result = method.invoke(instance);
 
 		return Arrays.asList(result.toString());
