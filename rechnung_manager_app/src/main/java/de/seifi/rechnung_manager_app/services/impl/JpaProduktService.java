@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Service
+
 public class JpaProduktService implements IProduktService {
     private final Map<String, ProduktModel> produktMap;
     private final List<ProduktModel> produktList;

@@ -1,7 +1,10 @@
 package de.seifi.rechnung_manager_app;
 
+import de.seifi.rechnung_common.utils.RepositoryProvider;
 import de.seifi.rechnung_manager_app.services.ICustomerService;
 import de.seifi.rechnung_manager_app.services.IProduktService;
+import de.seifi.rechnung_manager_app.services.impl.JpaCustomerService;
+import de.seifi.rechnung_manager_app.services.impl.JpaProduktService;
 import javafx.application.Platform;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -32,14 +35,16 @@ public class RechnungManagerSpringApp {
 
 	public static ICustomerService getCustomerService(){
 		if(RechnungManagerSpringApp.customerService == null){
-			RechnungManagerSpringApp.customerService = RechnungManagerSpringApp.applicationContext.getBean(ICustomerService.class);
+			RechnungManagerSpringApp.customerService =
+					new JpaCustomerService(RepositoryProvider.getCustomerRepository(),
+										   RepositoryProvider.getRechnungRepository());
 		}
 		return RechnungManagerSpringApp.customerService;
 	}
 
 	public static IProduktService getProduktService(){
 		if(RechnungManagerSpringApp.produktService == null){
-			RechnungManagerSpringApp.produktService = RechnungManagerSpringApp.applicationContext.getBean(IProduktService.class);
+			RechnungManagerSpringApp.produktService = new JpaProduktService(RepositoryProvider.getProduktRepository());
 		}
 		return RechnungManagerSpringApp.produktService;
 	}
@@ -48,6 +53,7 @@ public class RechnungManagerSpringApp {
 		
 		applicationContext = SpringApplication.run(RechnungManagerSpringApp.class, args);
 
+		RepositoryProvider.setApplicationContext(applicationContext);
 		Platform.runLater(new Runnable() {
 
 			@Override

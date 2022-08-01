@@ -21,5 +21,7 @@
 		<module>rechnung_common</module>
 		<module>rechnung_manager_app</module>
 		<module>data_manager</module>
+		<module>rechnung_manager_module</module>
+		<module>container_manager_app</module>
 	</modules>
 </project>
