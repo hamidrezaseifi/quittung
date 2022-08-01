@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Button?>
+<?import javafx.geometry.Insets?>
+
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<GridPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
+          styleClass="splash-pane" alignment="CENTER">
+    <columnConstraints>
+        <ColumnConstraints hgrow="ALWAYS" halignment="CENTER" />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints vgrow="ALWAYS" />
+        <RowConstraints prefHeight="210" vgrow="NEVER" valignment="TOP" />
+    </rowConstraints>
+
+    <ImageView GridPane.columnIndex="0"  GridPane.rowIndex="1" fitWidth="200" fitHeight="200" fx:id="loadingImageView">
+        <image>
+            <Image url="@../images/loading.gif" />
+        </image>
+    </ImageView>
+    <padding>
+        <Insets bottom="0" left="0" right="0" top="0" />
+    </padding>
+</GridPane>

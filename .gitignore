@@ -9,3 +9,6 @@
 /libs/*.cfg
 /libs/*.exe
 /libs/*.zip.*
+/container_manager_app/exec/config.xml
+/container_manager_app/exec/config_home.xml
+/container_manager_app/exec/install-note.txt
