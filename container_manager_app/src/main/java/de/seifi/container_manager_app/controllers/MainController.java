@@ -1,7 +1,14 @@
 package de.seifi.container_manager_app.controllers;
 
+import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import de.seifi.container_manager_app.ContainerManagerFxApp;
@@ -28,14 +35,18 @@ public class MainController implements Initializable {
 
 		ContainerManagerFxApp.setMainController(this);
 
-		MenuItem menuItem1 = new MenuItem("menu item 1");
-		MenuItem menuItem2 = new MenuItem("menu item 2");
-		MenuItem menuItem3 = new MenuItem("menu item 3");
+		List<String> pluginNames = null;
+		try {
+			pluginNames = getPluginNames();
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 
-		// add menu items to menu
-		contextMenu.getItems().add(menuItem1);
-		contextMenu.getItems().add(menuItem2);
-		contextMenu.getItems().add(menuItem3);
+		for(String plugin: pluginNames){
+			MenuItem menuItem = new MenuItem(plugin);
+			contextMenu.getItems().add(menuItem);
+		}
+
 
 		try {
 			showHome();
@@ -43,6 +54,27 @@ public class MainController implements Initializable {
 			throw new RuntimeException(e);
 		}
 
+	}
+
+	private List<String> getPluginNames() throws MalformedURLException, ClassNotFoundException, NoSuchMethodException,
+												 InvocationTargetException, InstantiationException,
+												 IllegalAccessException {
+
+		URL[] jarUrls = new URL[1];
+		File jarFile = new File("E:\\Hamid\\Projects\\java\\quittung\\plugings\\rechnung_manager_module-0.0.1-jar-with-dependencies.jar");
+		jarUrls[0] = jarFile.toURI().toURL();
+		URLClassLoader urlClassLoader = new URLClassLoader(jarUrls, this.getClass().getClassLoader());
+		Thread.currentThread().setContextClassLoader(urlClassLoader);
+
+		Package[] packageList = urlClassLoader.getDefinedPackages();
+		Class loadedClass = urlClassLoader.loadClass("de.seifi.rechnung_manager_plugin.PluginInfo");
+
+		Class classToLoad = Class.forName("de.seifi.rechnung_manager_plugin.PluginInfo", true, urlClassLoader);
+		Method method = classToLoad.getDeclaredMethod("getIngo");
+		Object instance = classToLoad.getDeclaredConstructors()[0].newInstance();
+		Object result = method.invoke(instance);
+
+		return Arrays.asList(result.toString());
 	}
 
 	@FXML

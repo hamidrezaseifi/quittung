@@ -1,6 +1,6 @@
 package de.seifi.rechnung_manager_module.ui.tablecell;
 
-import de.seifi.rechnung_manager_app.models.RechnungItemModel;
+import de.seifi.rechnung_manager_module.models.RechnungItemModel;
 import de.seifi.rechnung_manager_module.models.ReportItemModel;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;

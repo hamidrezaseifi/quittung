@@ -1,7 +1,7 @@
 package de.seifi.rechnung_manager_module.models;
 
 import de.seifi.rechnung_common.utils.GerldCalculator;
-import de.seifi.rechnung_manager_app.models.RechnungItemModel;
+import de.seifi.rechnung_manager_module.models.RechnungItemModel;
 import de.seifi.rechnung_manager_module.enums.RechnungType;
 import de.seifi.rechnung_manager_module.ui.TableUtils;
 import javafx.beans.property.ListProperty;

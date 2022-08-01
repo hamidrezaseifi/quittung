@@ -13,13 +13,13 @@
 
 <?import javafx.scene.control.cell.PropertyValueFactory?>
 <?import javafx.collections.FXCollections?>
-<?import de.seifi.rechnung_manager_app.ui.tablecell.*?>
-<?import de.seifi.rechnung_manager_app.ui.FloatTextField?>
-<?import de.seifi.rechnung_manager_app.ui.FloatGeldLabel?>
+<?import de.seifi.rechnung_manager_module.ui.tablecell.*?>
+<?import de.seifi.rechnung_manager_module.ui.FloatTextField?>
+<?import de.seifi.rechnung_manager_module.ui.FloatGeldLabel?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.image.ImageView?>
 <GridPane alignment="TOP_LEFT" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="de.seifi.rechnung_manager_app.controllers.AdminController" fx:id="rootPane" >
+      fx:controller="de.seifi.rechnung_manager_module.controllers.AdminController" fx:id="rootPane" >
 
     <columnConstraints>
         <ColumnConstraints hgrow="ALWAYS" />

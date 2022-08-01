@@ -1,6 +1,6 @@
 package de.seifi.rechnung_manager_module.fx_services;
 
-import de.seifi.rechnung_manager_app.models.RechnungItemModel;
+import de.seifi.rechnung_manager_module.models.RechnungItemModel;
 import de.seifi.rechnung_manager_module.models.CustomerModel;
 import de.seifi.rechnung_manager_module.models.RechnungItemPrintProperty;
 import de.seifi.rechnung_manager_module.models.RechnungModel;

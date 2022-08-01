@@ -3,7 +3,7 @@ package de.seifi.rechnung_manager_module.ui.tablecell;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import de.seifi.rechnung_manager_app.ui.FilterComboBox;
+import de.seifi.rechnung_manager_module.ui.FilterComboBox;
 import de.seifi.rechnung_manager_module.models.ProduktModel;
 import de.seifi.rechnung_manager_module.services.RechnungManagerServiceProvider;
 import javafx.collections.FXCollections;

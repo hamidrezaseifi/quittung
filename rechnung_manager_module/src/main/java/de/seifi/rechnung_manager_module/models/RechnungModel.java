@@ -1,6 +1,5 @@
 package de.seifi.rechnung_manager_module.models;
 
-import de.seifi.rechnung_manager_app.models.RechnungItemModel;
 import de.seifi.rechnung_manager_module.enums.RechnungStatus;
 import de.seifi.rechnung_manager_module.enums.RechnungType;
 

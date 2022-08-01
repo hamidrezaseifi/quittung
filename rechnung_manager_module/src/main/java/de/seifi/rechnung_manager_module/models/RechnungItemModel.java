@@ -1,4 +1,4 @@
-package de.seifi.rechnung_manager_app.models;
+package de.seifi.rechnung_manager_module.models;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

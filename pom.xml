@@ -16,7 +16,15 @@
 		<version>2.7.1</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	
+
+	<properties>
+		<java.version>11</java.version>
+		<javafx.version>17.0.1</javafx.version>
+		<javafx.maven.plugin.version>0.0.8</javafx.maven.plugin.version>
+		<maven.compiler.release>11</maven.compiler.release>
+
+	</properties>
+
 	<modules>
 		<module>rechnung_common</module>
 		<module>rechnung_manager_app</module>
@@ -24,4 +32,25 @@
 		<module>rechnung_manager_module</module>
 		<module>container_manager_app</module>
 	</modules>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.openjfx</groupId>
+				<artifactId>javafx-controls</artifactId>
+				<version>${javafx.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.openjfx</groupId>
+				<artifactId>javafx-fxml</artifactId>
+				<version>${javafx.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.openjfx</groupId>
+				<artifactId>javafx-base</artifactId>
+				<version>${javafx.version}</version>
+			</dependency>
+		</dependencies>
+
+	</dependencyManagement>
 </project>

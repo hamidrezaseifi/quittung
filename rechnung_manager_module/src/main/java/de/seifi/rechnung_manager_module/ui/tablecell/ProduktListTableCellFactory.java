@@ -2,7 +2,7 @@ package de.seifi.rechnung_manager_module.ui.tablecell;
 
 import java.util.List;
 
-import de.seifi.rechnung_manager_app.models.RechnungItemModel;
+import de.seifi.rechnung_manager_module.models.RechnungItemModel;
 import de.seifi.rechnung_manager_module.models.ReportItemModel;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;

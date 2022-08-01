@@ -24,10 +24,7 @@
     <children>
         <HBox GridPane.columnIndex="0" GridPane.rowIndex="0" spacing="10" style="-fx-padding: 5px;">
             <Button styleClass="home-button" text="Home" onAction="#showHome" prefWidth="116" prefHeight="36" alignment="CENTER_RIGHT"></Button>
-            <Button styleClass="bill-button" text="Quittung" onAction="#showQuitting" prefWidth="116" prefHeight="36" alignment="CENTER_RIGHT"></Button>
-            <Button styleClass="receipt-button" text="Rechnung" onAction="#showRechnung" prefWidth="116" prefHeight="36" alignment="CENTER_RIGHT"></Button>
-            <Button styleClass="report-button" text="Bericht" onAction="#showReport" prefWidth="116" prefHeight="36" alignment="CENTER_RIGHT"></Button>
-            <Button styleClass="customer-button" text="Kunden-Verwaltung" onAction="#showCustomers" prefWidth="166" prefHeight="36" alignment="CENTER_RIGHT"></Button>
+            <Button styleClass="menu-button" fx:id="btnShowModule" text="Module" onAction="#showModule" prefWidth="116" prefHeight="36" alignment="CENTER_RIGHT"></Button>
             <Button styleClass="admin-button" text="Verwaltung" onAction="#showAdmin" prefWidth="116" prefHeight="36" alignment="CENTER_RIGHT"></Button>
 
         </HBox>

@@ -1,6 +1,5 @@
 package de.seifi.rechnung_manager_module.models;
 
-import de.seifi.rechnung_manager_app.models.RechnungItemModel;
 import javafx.beans.property.*;
 
 public class RechnungItemPrintProperty {

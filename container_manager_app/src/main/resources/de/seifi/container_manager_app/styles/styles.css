@@ -138,6 +138,16 @@
     -fx-font-size: 14px;
     
 }
+.menu-button {
+
+    -fx-background-image: url('../images/menu.png');
+
+    -fx-background-size: 30 30;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 5px;
+    -fx-font-size: 14px;
+    -fax-padding: 3px;
+}
 
 .report-button {
 
@@ -281,7 +291,7 @@
     -fx-background-image: url("../photos/photo_splash.jpg");
     -fx-background-repeat: no-repeat;
     -fx-background-size: 100% 100%;
-    -fx-background-position: left left;
+    -fx-background-position: left center;
 }
 
 

@@ -1,4 +1,4 @@
-package de.seifi.rechnung_manager_app.ui;
+package de.seifi.rechnung_manager_module.ui;
 
 import javafx.application.Platform;
 import javafx.collections.ObservableList;

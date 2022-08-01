@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import de.seifi.rechnung_manager_app.ui.tablecell.*?>
+<?import de.seifi.rechnung_manager_module.ui.tablecell.*?>
 <?import javafx.scene.control.*?>
-<?import de.seifi.rechnung_manager_app.ui.TextObserverDatePicker?>
+<?import de.seifi.rechnung_manager_module.ui.TextObserverDatePicker?>
 <?import javafx.scene.control.cell.*?>
 <?import javafx.scene.layout.*?>
 
-<?import de.seifi.rechnung_manager_app.ui.IntegerTextField?>
+<?import de.seifi.rechnung_manager_module.ui.IntegerTextField?>
 <GridPane fx:id="rootPane" alignment="TOP_LEFT" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
-          fx:controller="de.seifi.rechnung_manager_app.controllers.ReportController">
+          fx:controller="de.seifi.rechnung_manager_module.controllers.ReportController">
     <columnConstraints>
         <ColumnConstraints hgrow="ALWAYS" />
     </columnConstraints>
