@@ -138,9 +138,9 @@
     -fx-font-size: 14px;
     
 }
-.menu-button {
+.menu-tool-button {
 
-    -fx-background-image: url('../images/menu.png');
+    -fx-background-image: url('../images/menu_icon.png');
 
     -fx-background-size: 30 30;
     -fx-background-repeat: no-repeat;
@@ -232,17 +232,6 @@
     -fx-background-position:5px center;
     -fx-font-size: 14px;
     
-}
-
-.menu-button {
-	         
-    -fx-background-image: url('../images/menu.png');
-    
-    -fx-background-size: 30 26;
-    -fx-background-repeat: no-repeat;
-    -fx-background-position:left;   
-    -fx-font-size: 14px;
-    -fx-padding: 3px;
 }
 
 .admin-button {
@@ -363,3 +352,23 @@
     fx-border-radius: 5px;
 }
 
+
+.home-menu-item {
+    -fx-background-image: url("../images/home.png");
+}
+
+.exit-menu-item {
+    -fx-background-image: url("../images/exit.png");
+}
+
+.admin-menu-item {
+    -fx-background-image: url("../images/admin.png");
+}
+
+.menu-item{
+    -fx-background-size: 16 16;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 95% center;
+    -fx-padding: 3px 20px 3px 10px;
+
+}

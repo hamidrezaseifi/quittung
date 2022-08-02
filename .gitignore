@@ -12,5 +12,4 @@
 /container_manager_app/exec/config.xml
 /container_manager_app/exec/config_home.xml
 /container_manager_app/exec/install-note.txt
-/plugings/rechnung_manager_module-0.0.1.jar
-/plugings/rechnung_manager_module-0.0.1-jar-with-dependencies.jar
+/plugins/*.jar

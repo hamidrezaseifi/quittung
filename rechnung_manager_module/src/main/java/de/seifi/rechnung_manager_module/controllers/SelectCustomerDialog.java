@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.List;
 
 import de.seifi.rechnung_common.utils.UiUtils;
+import de.seifi.rechnung_manager_module.ModuleRootClass;
 import de.seifi.rechnung_manager_module.models.CustomerModel;
 import de.seifi.rechnung_manager_module.models.CustomerModelProperty;
 import de.seifi.rechnung_manager_module.services.RechnungManagerServiceProvider;
@@ -168,8 +169,7 @@ public class SelectCustomerDialog extends Dialog<CustomerModel> {
 
     }
     public FXMLLoader getSelectCustomerDialog() throws IOException {
-        URL fxmlResource = UiUtils.getMainAppProvider().loadResource("fxml/select_customer.fxml");
-        FXMLLoader fxmlLoader = new FXMLLoader(fxmlResource);
+        FXMLLoader fxmlLoader = ModuleRootClass.loadFxmlLoader("select_customer");
 
         return fxmlLoader;
     }

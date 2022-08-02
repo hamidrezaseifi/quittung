@@ -18,18 +18,29 @@
         <ColumnConstraints hgrow="ALWAYS" />
     </columnConstraints>
     <rowConstraints>
+        <RowConstraints prefHeight="30" vgrow="NEVER" />
         <RowConstraints prefHeight="40" vgrow="NEVER" />
         <RowConstraints vgrow="ALWAYS" />
     </rowConstraints>
     <children>
-        <HBox GridPane.columnIndex="0" GridPane.rowIndex="0" spacing="10" style="-fx-padding: 5px;">
+        <MenuBar fx:id="menuBar" GridPane.columnIndex="0" GridPane.rowIndex="0" >
+            <Menu text="File" fx:id="mnuFile">
+                <MenuItem text="Home" styleClass="home-menu-item" onAction="#showHome"></MenuItem>
+                <SeparatorMenuItem />
+                <MenuItem text="beenden" styleClass="exit-menu-item" ></MenuItem>
+            </Menu>
+            <Menu text="Verwaltung" fx:id="menuAdmin">
+                <MenuItem text="Optionen" styleClass="admin-menu-item" onAction="#showAdmin"></MenuItem>
+            </Menu>
+        </MenuBar>
+        <HBox GridPane.columnIndex="0" GridPane.rowIndex="1" spacing="10" style="-fx-padding: 5px;">
             <Button styleClass="home-button" text="Home" onAction="#showHome" prefWidth="116" prefHeight="36" alignment="CENTER_RIGHT"></Button>
-            <Button styleClass="menu-button" fx:id="btnShowModule" text="Module" onAction="#showModule" prefWidth="116" prefHeight="36" alignment="CENTER_RIGHT"></Button>
+            <Button styleClass="menu-tool-button" fx:id="btnShowModule" text="Module" onAction="#showModule" prefWidth="116" prefHeight="36" alignment="CENTER_RIGHT"></Button>
             <Button styleClass="admin-button" text="Verwaltung" onAction="#showAdmin" prefWidth="116" prefHeight="36" alignment="CENTER_RIGHT"></Button>
 
         </HBox>
 
-        <GridPane GridPane.columnIndex="0" GridPane.rowIndex="1" fx:id="childBox" style="-fx-background-color: rgb(230, 230, 230);">
+        <GridPane GridPane.columnIndex="0" GridPane.rowIndex="2" fx:id="childBox" style="-fx-background-color: rgb(230, 230, 230);">
 		     <columnConstraints>
 		        <ColumnConstraints hgrow="ALWAYS" />
 		    </columnConstraints>

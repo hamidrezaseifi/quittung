@@ -12,17 +12,23 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import de.seifi.container_manager_app.ContainerManagerFxApp;
+import de.seifi.container_manager_app.plugin.PluginItem;
+import de.seifi.container_manager_app.plugin.PluginLoader;
+import de.seifi.rechnung_common.controllers.ControllerBase;
+import de.seifi.rechnung_common.plugins.IViewLoader;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Side;
-import javafx.scene.control.Button;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.*;
 import javafx.scene.layout.*;
 
 
-public class MainController implements Initializable {
-	
+public class MainController implements Initializable, IViewLoader {
+
+	@FXML private MenuBar menuBar;
+	@FXML private Menu mnuFile;
+	@FXML private Menu menuAdmin;
+
 	@FXML private GridPane childBox;
 
 	@FXML private Button btnShowModule;
@@ -30,20 +36,27 @@ public class MainController implements Initializable {
 
 	private ContextMenu contextMenu = new ContextMenu();
 
+	private PluginLoader pluginLoader = new PluginLoader(this);
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
 		ContainerManagerFxApp.setMainController(this);
 
-		List<String> pluginNames = null;
 		try {
-			pluginNames = getPluginNames();
+			pluginLoader.reloadPluginList();
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 
-		for(String plugin: pluginNames){
-			MenuItem menuItem = new MenuItem(plugin);
+		for(String key: pluginLoader.getPluginKeys()){
+			PluginItem plugin = pluginLoader.getPlugin(key);
+
+			Menu topMenu = plugin.getTopMenu();
+			if(topMenu != null){
+				menuBar.getMenus().add(menuBar.getMenus().size() - 1, topMenu);
+			}
+			MenuItem menuItem = new MenuItem(plugin.getTitle());
 			contextMenu.getItems().add(menuItem);
 		}
 
@@ -54,26 +67,6 @@ public class MainController implements Initializable {
 			throw new RuntimeException(e);
 		}
 
-	}
-
-	private List<String> getPluginNames() throws MalformedURLException, ClassNotFoundException, NoSuchMethodException,
-												 InvocationTargetException, InstantiationException,
-												 IllegalAccessException {
-
-		URL[] jarUrls = new URL[1];
-		File jarFile = new File("E:\\Hamid\\Projects\\java\\quittung\\plugings\\rechnung_manager_module-0.0.1.jar");
-		jarUrls[0] = jarFile.toURI().toURL();
-		URLClassLoader urlClassLoader = new URLClassLoader(jarUrls, this.getClass().getClassLoader());
-		Thread.currentThread().setContextClassLoader(urlClassLoader);
-
-		Package[] packageList = urlClassLoader.getDefinedPackages();
-		Class pluginInfoClass = urlClassLoader.loadClass("de.seifi.rechnung_manager_plugin.PluginInfo");
-
-		Method method = pluginInfoClass.getDeclaredMethod("getIngo");
-		Object instance = pluginInfoClass.getDeclaredConstructors()[0].newInstance();
-		Object result = method.invoke(instance);
-
-		return Arrays.asList(result.toString());
 	}
 
 	@FXML
@@ -90,7 +83,7 @@ public class MainController implements Initializable {
 	@FXML
 	public void showModule() throws IOException {
 
-		contextMenu.show(btnShowModule, Side.RIGHT, -40, 0);
+		contextMenu.show(btnShowModule, Side.RIGHT, 0, 30);
 
 	}
 	
@@ -111,5 +104,14 @@ public class MainController implements Initializable {
     	}
     }
 
-    
+
+	@Override
+	public void loadView(Pane view, ControllerBase controller) {
+		if(ContainerManagerFxApp.cannCurrentControllerClosed()) {
+			clearChildren();
+
+			childBox.getChildren().add(view);
+			ContainerManagerFxApp.CURRENT_INSTANCE.setCurrentController(controller);
+		}
+	}
 }

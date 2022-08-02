@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 import de.seifi.rechnung_common.utils.UiUtils;
+import de.seifi.rechnung_manager_module.ModuleRootClass;
 import de.seifi.rechnung_manager_module.adapter.CustomerAdapter;
 import de.seifi.rechnung_manager_module.controllers.PrintRechnungDialogController;
 import de.seifi.rechnung_manager_module.controllers.RechnungController;
@@ -68,11 +69,12 @@ public class RechnungManagerUiUtils {
 	}
 	
 	private static PrintRechnungDialogController getPrintController(RechnungType rechnungType) throws IOException {
-		FXMLLoader rechnungPrintLoader = getFXMLLoader("rechnung_print");
+		//FXMLLoader rechnungPrintLoader = getFXMLLoader("rechnung_print");
+		FXMLLoader rechnungPrintLoader = ModuleRootClass.loadFxmlLoader("rechnung_print");
 		PrintRechnungDialogController rechnungPringController = new PrintRechnungDialogController(rechnungType);
 		rechnungPrintLoader.setController(rechnungPringController);
 		GridPane rechnungPrintPane = rechnungPrintLoader.load();
-		rechnungPrintPane.getStylesheets().add(getResourceAsString("print_styles"));
+		rechnungPrintPane.getStylesheets().add(ModuleRootClass.loadStyleResource("print_styles"));
 
 		return rechnungPringController;
 	}
@@ -80,7 +82,8 @@ public class RechnungManagerUiUtils {
     public static void showRechnungDialog(RechnungModel rechnungModel) {
     	try {
 			Stage stage = new Stage();
-			FXMLLoader fxmlLoader = getFXMLLoader("rechnung_base");
+			//FXMLLoader fxmlLoader = getFXMLLoader("rechnung_base");
+			FXMLLoader fxmlLoader = ModuleRootClass.loadFxmlLoader("rechnung_base");
 			RechnungController controller = new RechnungController(rechnungModel.getRechnungType());
 			fxmlLoader.setController(controller);
 
@@ -89,7 +92,7 @@ public class RechnungManagerUiUtils {
 	        rechnungPane.setPadding(new Insets(10));
 	        
 	        Scene scene = new Scene(rechnungPane, 1000, 800);
-			scene.getStylesheets().add(getResourceAsString("styles"));
+			scene.getStylesheets().add(ModuleRootClass.loadStyleResource("styles"));
 
 	        stage.initModality(Modality.APPLICATION_MODAL);
 	        stage.setScene(scene);
@@ -101,17 +104,5 @@ public class RechnungManagerUiUtils {
 			e.printStackTrace();
 		}
     }
-
-	public static FXMLLoader getFXMLLoader(String fxml) throws IOException {
-		URL fxmlResource = UiUtils.getMainAppProvider().loadResource("fxml/" + fxml + ".fxml");
-		FXMLLoader fxmlLoader = new FXMLLoader(fxmlResource);
-
-		return fxmlLoader;
-	}
-
-	public static String getResourceAsString(String resource) throws IOException {
-		URL fxmlResource = UiUtils.getMainAppProvider().loadResource("fxml/" + resource + ".fxml");
-		return fxmlResource.toExternalForm();
-	}
 
 }
