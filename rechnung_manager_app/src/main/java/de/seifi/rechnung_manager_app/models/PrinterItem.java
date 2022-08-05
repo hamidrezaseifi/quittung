@@ -15,4 +15,9 @@ public class PrinterItem {
     public String toString(){
         return this.printer.getName();
     }
+
+    public Printer getPrinter(){
+        return this.printer;
+    }
+
 }

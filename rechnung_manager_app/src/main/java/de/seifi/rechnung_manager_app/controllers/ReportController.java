@@ -101,7 +101,7 @@ public class ReportController implements Initializable, ControllerBase {
     	}
 
         List<RechnungModel> modelList = reportBindingService.getReportItems().stream().map(r -> r.getRechnungModel()).collect(Collectors.toList());
-        UiUtils.printRechnungItems(modelList, reportTableView.getScene().getWindow());
+        UiUtils.printRechnungItems(modelList, false);
 
     }
 

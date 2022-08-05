@@ -24,6 +24,8 @@ public class RechnungModel {
 
 	private RechnungType rechnungType;
 
+	private Integer rechnungVersion;
+
 	private RechnungStatus status;
 
 	private UUID userId;
@@ -36,16 +38,18 @@ public class RechnungModel {
 
     public RechnungModel() {
     	super();
-    	id = null;
-		customerId = null;
+    	this.id = null;
+		this.customerId = null;
 		this.userId = null;
-    	items = new ArrayList<>();
+		this.items = new ArrayList<>();
+		this.rechnungVersion = 1;
 
     }
 
 	public RechnungModel(Integer nummer,
 						 String rechnungCreate,
 						 String liferDate,
+						 int rechnungVersion,
 						 RechnungType rechnungType,
 						 RechnungStatus status,
 						 UUID userId) {
@@ -53,6 +57,7 @@ public class RechnungModel {
 		this.nummer = nummer;
 		this.rechnungCreate = rechnungCreate;
 		this.liferDate = liferDate;
+		this.rechnungVersion = rechnungVersion;
 		this.rechnungType = rechnungType;
 		this.status = status;
 		this.userId = userId;
@@ -64,6 +69,7 @@ public class RechnungModel {
 						 Integer nummer,
 						 String rechnungCreate,
 						 String liferDate,
+						 int rechnungVersion,
 						 int rechnungType,
 						 int status,
 						 UUID userId,
@@ -75,6 +81,7 @@ public class RechnungModel {
 		this.nummer = nummer;
 		this.rechnungCreate = rechnungCreate;
 		this.liferDate = liferDate;
+		this.rechnungVersion = rechnungVersion;
 		this.rechnungType = RechnungType.ofValue(rechnungType);
 		this.status = RechnungStatus.ofValue(status);
         this.created = created;
@@ -145,6 +152,14 @@ public class RechnungModel {
 
 	public void setRechnungType(RechnungType rechnungType) {
 		this.rechnungType = rechnungType;
+	}
+
+	public Integer getRechnungVersion() {
+		return rechnungVersion;
+	}
+
+	public void setRechnungVersion(Integer rechnungVersion) {
+		this.rechnungVersion = rechnungVersion;
 	}
 
 	public RechnungStatus getStatus() {

@@ -50,7 +50,7 @@ public class JpaProduktService implements IProduktService {
     }
 
     public void retreiveProduktList() {
-        List<ProduktEntity> entityList = this.produktRepository.findAll(Sort.by(Sort.Direction.ASC, "produktName"));
+        List<ProduktEntity> entityList = this.produktRepository.getLastProduktPreis();
 
         produktList.clear();
         produktList.addAll(entityList.stream().map(produktAdapter::toModel).collect(Collectors.toList()));

@@ -8,6 +8,7 @@ import de.seifi.rechnung_manager_app.controllers.RechnungController;
 import de.seifi.rechnung_manager_app.enums.RechnungType;
 import de.seifi.rechnung_manager_app.services.ICustomerService;
 import de.seifi.rechnung_manager_app.ui.UiUtils;
+import de.seifi.rechnung_manager_app.utils.RechnungManagerAppConfig;
 import javafx.animation.FadeTransition;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -30,7 +31,13 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.UUID;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
 public class RechnungManagerFxApp extends Application implements ISingleInstanceRunnable {
+
+    private static final Logger logger = LoggerFactory.getLogger(RechnungManagerFxApp.class);
 
     private static final int SPLASH_WIDTH = 770;
 
@@ -51,6 +58,7 @@ public class RechnungManagerFxApp extends Application implements ISingleInstance
     
     private static ControllerBase currentController;
 
+    public static RechnungManagerAppConfig appConfig = new RechnungManagerAppConfig();
     private Image iconImage;
 
     public static UUID loggedUser = null;
@@ -61,6 +69,8 @@ public class RechnungManagerFxApp extends Application implements ISingleInstance
     }
 
     public static void main(String[] args) {
+
+        logger.info("Start Main Application");
         RechnungManagerFxApp.startArgs = args;
 
         RunSingleInstance.runInstance(args, new RechnungManagerFxApp(), "RechnungManagerAppId");
@@ -99,8 +109,9 @@ public class RechnungManagerFxApp extends Application implements ISingleInstance
     }
 
     public void showMainStage() throws IOException {
-    	
-    	mainStage = new Stage(StageStyle.DECORATED);
+        logger.info("Start Main Stage");
+
+        mainStage = new Stage(StageStyle.DECORATED);
     	mainStage.setTitle("Rechnung Manager ...");
         mainStage.setIconified(true);
         mainStage.getIcons().clear();
@@ -138,6 +149,8 @@ public class RechnungManagerFxApp extends Application implements ISingleInstance
 
 		showSplash(primaryStage);
 
+
+        logger.info("Start Spring Application");
 
         RechnungManagerFxApp fxApp = this;
         Thread thread = new Thread(() -> RechnungManagerSpringApp.start(RechnungManagerFxApp.startArgs, fxApp));

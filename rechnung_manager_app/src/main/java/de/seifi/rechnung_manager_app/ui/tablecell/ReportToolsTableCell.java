@@ -33,8 +33,7 @@ public class ReportToolsTableCell extends TableCell<ReportItemModel, String> {
 		
 		btnPrint.setOnAction((ActionEvent event) -> {
 			
-			UiUtils.printRechnungItems(Arrays.asList(getCurrentRechnungModel()),
-                                       this.getScene().getWindow());
+			UiUtils.printRechnungItems(Arrays.asList(getCurrentRechnungModel()), false);
 			
         });
 		

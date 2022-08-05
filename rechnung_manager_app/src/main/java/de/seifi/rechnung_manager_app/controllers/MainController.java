@@ -8,10 +8,13 @@ import de.seifi.rechnung_manager_app.RechnungManagerFxApp;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class MainController implements Initializable {
-	
+	private static final Logger logger = LoggerFactory.getLogger(MainController.class);
+
 	@FXML private GridPane childBox;
 
 	@Override
@@ -28,6 +31,7 @@ public class MainController implements Initializable {
 
 	@FXML
 	private void showQuitting() throws IOException {
+		logger.debug("Show Quitting");
 
 		if(RechnungManagerFxApp.cannCurrentControllerClosed()) {
     		clearChildren();
@@ -39,6 +43,8 @@ public class MainController implements Initializable {
 
 	@FXML
 	private void showRechnung() throws IOException {
+
+		logger.debug("Show Rechnung");
 
 		if(RechnungManagerFxApp.cannCurrentControllerClosed()) {
     		clearChildren();
@@ -62,6 +68,8 @@ public class MainController implements Initializable {
 	@FXML
 	private void showReport() throws IOException {
 
+		logger.debug("Show Report");
+
 		if(RechnungManagerFxApp.cannCurrentControllerClosed()) {
     		clearChildren();
         	
@@ -73,6 +81,8 @@ public class MainController implements Initializable {
 	@FXML
 	private void showCustomers() throws IOException {
 
+		logger.debug("Show Customers");
+
 		if(RechnungManagerFxApp.cannCurrentControllerClosed()) {
     		clearChildren();
         	
@@ -83,8 +93,10 @@ public class MainController implements Initializable {
 	
     @FXML
     private void showAdmin() throws IOException {
-    	
-    	if(RechnungManagerFxApp.cannCurrentControllerClosed()) {
+
+		logger.debug("Show Admin");
+
+		if(RechnungManagerFxApp.cannCurrentControllerClosed()) {
     		clearChildren();
         	
         	childBox.getChildren().add(RechnungManagerFxApp.getAdminPane());

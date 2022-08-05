@@ -115,19 +115,22 @@ public class RechnungController implements Initializable, ControllerBase {
 
 	@FXML
     private void speichern() throws IOException {
-		showItemsTableView.setEditable(false);
+        if(!rechnungBindingService.verifySaving()){
+            return;
+        }
+		/*showItemsTableView.setEditable(false);
 		showItemsTableView.edit(-1, null);
 		showItemsTableView.setDisable(true);
 		
-		showItemsTableView.setItems(null);
+		showItemsTableView.setItems(null);*/
 		
         if(rechnungBindingService.save()){
 
         }
 		
-		showItemsTableView.setItems(rechnungBindingService.getRechnungItems());
+		/*showItemsTableView.setItems(rechnungBindingService.getRechnungItems());
         showItemsTableView.setEditable(true);
-        showItemsTableView.setDisable(false);
+        showItemsTableView.setDisable(false);*/
     }
 
     @FXML
@@ -169,8 +172,7 @@ public class RechnungController implements Initializable, ControllerBase {
     	showItemsTableView.setEditable(false);
     	showItemsTableView.edit(-1, null);
 
-        UiUtils.printRechnungItems(Arrays.asList(rechnungBindingService.getRechnungSavingModel()),
-                                   showItemsTableView.getScene().getWindow());
+        UiUtils.printRechnungItems(Arrays.asList(rechnungBindingService.getRechnungSavingModel()), true);
         showItemsTableView.setEditable(true);
 
     }

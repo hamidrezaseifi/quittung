@@ -18,7 +18,7 @@ public class ProduktEntity extends EntityBase {
 	@GeneratedValue
 	private UUID id;
 	
-	@Column(name="produkt_name", nullable = false)
+	@Column(name="produkt_name", nullable = false, unique = true)
 	private String produktName;
 	
 	@Column(name="last_preis", nullable = false)
@@ -42,17 +42,29 @@ public class ProduktEntity extends EntityBase {
 		this.produktName = produktName;
 		this.lastPreis = lastPreis;
 	}
-	
 
 	public ProduktEntity(UUID id,
-			String produktName, 
-			float lastPreis,
-			LocalDateTime updated) {
+						 String produktName,
+						 float lastPreis,
+						 LocalDateTime created,
+						 LocalDateTime updated) {
 		super();
 		this.id = id;
 		this.produktName = produktName;
 		this.lastPreis = lastPreis;
-        this.updated = updated;
+		this.created = created;
+		this.updated = updated;
+	}
+
+	public ProduktEntity(UUID id,
+						 String produktName,
+						 float lastPreis,
+						 LocalDateTime updated) {
+		super();
+		this.id = id;
+		this.produktName = produktName;
+		this.lastPreis = lastPreis;
+		this.updated = updated;
 	}
 
 	

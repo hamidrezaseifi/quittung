@@ -15,6 +15,7 @@ import javafx.print.*;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.transform.Scale;
 
 import java.net.URL;
@@ -49,9 +50,15 @@ public class PrintRechnungDialogController implements Initializable {
 
     @FXML private Label lblPrintType;
 
+    @FXML private Label lblThanks;
+
     private final RechnungType rechnungType;
 
     private final RechnungBindingPrintService rechnungBindingService;
+
+    private boolean forCustomer;
+
+    private Printer selectedPrinter = RechnungManagerFxApp.appConfig.getSelectedPrinter(true);
 
     public PrintRechnungDialogController(RechnungType rechnungType) {
         this.rechnungType = rechnungType;
@@ -66,22 +73,19 @@ public class PrintRechnungDialogController implements Initializable {
 
     }
 
-    public void printRechnungList(RechnungModel model, CustomerModel customerModel, PrinterJob job){
+    public void printRechnungList(RechnungModel model, CustomerModel customerModel, boolean forCustomer){
         //Rechnung_print
+        this.forCustomer = forCustomer;
 
         this.rechnungBindingService.setRechnungModel(model, customerModel);
 
-        if (job != null) {
-            Printer printer = job.getPrinter();
-            PageLayout pageLayout = printer.createPageLayout(Paper.A4, PageOrientation.PORTRAIT, 50,50,40,40);
-            job.showPrintDialog(RechnungManagerFxApp.getWindow());
-            job.showPageSetupDialog(RechnungManagerFxApp.getWindow());
-        	this.preparePrint(job, pageLayout);
-        }
+        PageLayout pageLayout = selectedPrinter.createPageLayout(Paper.A4, PageOrientation.PORTRAIT, 50,50,40,40);
+        this.preparePrint(pageLayout);
+
 
     }
 
-    private void preparePrint(PrinterJob job, PageLayout pageLayout) {
+    private void preparePrint(PageLayout pageLayout) {
     	boolean isPrinted = false;
 
         double w = this.rootPane.getPrefWidth();
@@ -96,30 +100,28 @@ public class PrintRechnungDialogController implements Initializable {
         Scale scale = new Scale(scaleX, scaleY);
 
         this.rootPane.getTransforms().add(scale);
-        if(this.startPrintItemPage(job, pageLayout)) {
+        if(this.startPrintItemPage(pageLayout)) {
             isPrinted = true;
         }
 
-        if(this.startPrintItemPage(job, pageLayout)) {
+        if(this.startPrintItemPage(pageLayout)) {
             isPrinted = true;
         }
 
-    	if (isPrinted) {
-            job.endJob();
-        }
+
     	
     }
 
-    private boolean startPrintItemPage(PrinterJob job, PageLayout pageLayout) {
+    private boolean startPrintItemPage(PageLayout pageLayout) {
     	
     	boolean isPrinted = false;
     	if(this.rechnungBindingService.hasMorePrintingPage()) {
-    		if(this.startPrint(job, pageLayout)){
+    		if(this.startPrint(pageLayout)){
     			isPrinted = true;
     		}
     		
     		while(this.rechnungBindingService.increateIfMorePrintingPage()) {
-    			this.startPrint(job, pageLayout);
+    			this.startPrint(pageLayout);
     		}
     	}
         
@@ -127,7 +129,7 @@ public class PrintRechnungDialogController implements Initializable {
     	
     }
 
-    protected boolean startPrint(PrinterJob job, PageLayout pageLayout) {
+    protected boolean startPrint(PageLayout pageLayout) {
 
         if(rechnungBindingService.hasMorePrintingPage()) {
             printTableView.setItems(rechnungBindingService.getRechnungPrintItems());
@@ -160,7 +162,26 @@ public class PrintRechnungDialogController implements Initializable {
             }
 
 
-            job.printPage(pageLayout, rootPane);
+            if(forCustomer){
+                PrinterJob job = PrinterJob.createPrinterJob();
+                job.setPrinter(RechnungManagerFxApp.appConfig.getSelectedPrinter(true));
+
+                job.printPage(pageLayout, rootPane);
+                job.endJob();
+                forCustomer = false;
+            }
+
+            if(!forCustomer){
+                lblThanks.setText("");
+                lblThanks.setPrefHeight(10);
+                VBox parentBox = (VBox)lblThanks.getParent();
+                parentBox.getChildren().remove(lblThanks);
+
+                PrinterJob job = PrinterJob.createPrinterJob();
+                job.setPrinter(RechnungManagerFxApp.appConfig.getSelectedPrinter(true));
+                job.printPage(pageLayout, rootPane);
+                job.endJob();
+            }
 
             return true;
         }

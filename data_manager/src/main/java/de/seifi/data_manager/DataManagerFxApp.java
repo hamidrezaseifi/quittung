@@ -1,6 +1,6 @@
 package de.seifi.data_manager;
 
-import de.seifi.data_manager.utils.AppConfig;
+import de.seifi.data_manager.utils.DataManagerConfig;
 import de.seifi.rechnung_common.utils.ISingleInstanceRunnable;
 import de.seifi.rechnung_common.utils.RunSingleInstance;
 import javafx.application.Application;
@@ -18,7 +18,7 @@ import java.net.URL;
 
 public class DataManagerFxApp extends Application implements ISingleInstanceRunnable {
 
-	public static final AppConfig appConfig = new AppConfig();
+	public static final DataManagerConfig appConfig = new DataManagerConfig();
 	
 	
     private static Scene mainScene;

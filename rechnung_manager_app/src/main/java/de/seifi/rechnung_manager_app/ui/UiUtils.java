@@ -42,40 +42,34 @@ public class UiUtils {
     }
 
 	public static void printRechnungItems(List<RechnungModel> rechnungModelList,
-										  Window window) {
-		
-		CustomerAdapter customerAdapter = new CustomerAdapter(); 
-		
+										  boolean forCustomer) {
+
 		try {
 			
-			PrintRechnungDialogController rechnungPringController = getPrintController(RechnungType.RECHNUNG);
+			PrintRechnungDialogController rechnungPringController = null;
 			
-			PrintRechnungDialogController quittungPringController = getPrintController(RechnungType.QUITTUNG);
+			PrintRechnungDialogController quittungPringController = null;
 			
 			for(RechnungModel model: rechnungModelList){
-				PrinterJob job = PrinterJob.createPrinterJob();
-				if (job != null){
-					// && job.showPrintDialog(window)
-					//boolean goforward = job.showPageSetupDialog(window);
+				if(model.getRechnungType() == RechnungType.RECHNUNG){
 
-					if(model.getRechnungType() == RechnungType.RECHNUNG){
-
-						Optional<CustomerModel> customerEntityOptional = RechnungManagerSpringApp.getCustomerService().getById(model.getCustomerId());
-						if(customerEntityOptional.isEmpty()){
-							throw new RuntimeException("Der Kunde von der Rechnung nicht gefunden!");
-						}
-						rechnungPringController.printRechnungList(model, customerEntityOptional.get(), job);
+					Optional<CustomerModel> customerEntityOptional = RechnungManagerSpringApp.getCustomerService().getById(model.getCustomerId());
+					if(customerEntityOptional.isEmpty()){
+						throw new RuntimeException("Der Kunde von der Rechnung nicht gefunden!");
 					}
-					if(model.getRechnungType() == RechnungType.QUITTUNG){
-
-						quittungPringController.printRechnungList(model, null, job);
+					if(rechnungPringController == null){
+						rechnungPringController = getPrintController(RechnungType.RECHNUNG);
+					}
+					rechnungPringController.printRechnungList(model, customerEntityOptional.get(), forCustomer);
+				}
+				if(model.getRechnungType() == RechnungType.QUITTUNG){
+					if(quittungPringController == null){
+						quittungPringController = getPrintController(RechnungType.QUITTUNG);
 					}
 
-					job.endJob();
+					quittungPringController.printRechnungList(model, null, forCustomer);
 				}
 			}
-
-
 
 		} catch (IOException e) {
 			e.printStackTrace();

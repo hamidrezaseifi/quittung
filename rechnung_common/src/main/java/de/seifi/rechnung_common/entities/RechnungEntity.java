@@ -20,7 +20,7 @@ public class RechnungEntity extends EntityBase {
 	@GeneratedValue
     private UUID id;
 
-	@Column(name="customer_id")
+	@Column(name="customer_id", nullable = true)
 	private UUID customerId;
 
 	@Column(nullable = false) 
@@ -35,8 +35,12 @@ public class RechnungEntity extends EntityBase {
 	@Column(name="rechnung_type", nullable = false)
 	private Integer rechnungType;
 
-	@Column(nullable = false) 
+	@Column(nullable = false)
 	private Integer status;
+
+	@Column(name="rechnung_version", nullable = false)
+	@ColumnDefault("1")
+	private Integer rechnungVersion;
 
 	@Column(name="user_id")
 	private UUID userId;
@@ -55,12 +59,14 @@ public class RechnungEntity extends EntityBase {
     public RechnungEntity() {
     	super();
     	items = new HashSet<>();
+		this.rechnungVersion = 1;
     }
 
 	public RechnungEntity(UUID customerId,
 						  Integer nummer,
 						  String rechnungCreate,
 						  String liferDate,
+						  int rechnungVersion,
 						  int rechnungType,
 						  int status,
 						  UUID userId) {
@@ -72,6 +78,7 @@ public class RechnungEntity extends EntityBase {
 		this.status = status;
 		this.userId = userId;
 		this.rechnungType = rechnungType;
+		this.rechnungVersion = rechnungVersion;
 	}
 
 	public RechnungEntity(UUID id,
@@ -79,6 +86,7 @@ public class RechnungEntity extends EntityBase {
 						  Integer nummer,
 						  String rechnungCreate,
 						  String liferDate,
+						  int rechnungVersion,
 						  int rechnungType,
 						  int status,
 						  UUID userId,
@@ -92,6 +100,7 @@ public class RechnungEntity extends EntityBase {
 		this.status = status;
 		this.userId = userId;
 		this.rechnungType = rechnungType;
+		this.rechnungVersion = rechnungVersion;
 		this.updated = updated;
 	}
 
@@ -166,6 +175,14 @@ public class RechnungEntity extends EntityBase {
 
 	public void setRechnungType(Integer rechnungType) {
 		this.rechnungType = rechnungType;
+	}
+
+	public Integer getRechnungVersion() {
+		return rechnungVersion;
+	}
+
+	public void setRechnungVersion(Integer rechnungVersion) {
+		this.rechnungVersion = rechnungVersion;
 	}
 
 	public Integer getStatus() {

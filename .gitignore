@@ -9,3 +9,6 @@
 /libs/*.cfg
 /libs/*.exe
 /libs/*.zip.*
+/plugings/
+/logs/
+/rechnung_manager_config.cfg

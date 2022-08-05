@@ -15,6 +15,7 @@ import de.seifi.rechnung_manager_app.models.CustomerModelProperty;
 import de.seifi.rechnung_manager_app.models.CustomerSelectModel;
 import de.seifi.rechnung_manager_app.models.ProduktModel;
 import de.seifi.rechnung_manager_app.models.RechnungModel;
+import de.seifi.rechnung_manager_app.ui.UiUtils;
 import de.seifi.rechnung_manager_app.utils.GeneralUtils;
 import de.seifi.rechnung_manager_app.utils.GerldCalculator;
 import de.seifi.rechnung_manager_app.models.RechnungItemProperty;
@@ -77,6 +78,7 @@ public class RechnungBindingService {
 
     private final RechnungAdapter rechnungAdapter = new RechnungAdapter();
 
+    private boolean isCustomerSelected = false;
 
     public RechnungBindingService(final RechnungType rechnungType, 
     							  final RechnungRepository rechnungRepository,
@@ -206,8 +208,8 @@ public class RechnungBindingService {
 
         int lastNummer = this.rechnungDataHelper.getLastActiveRechnungNummer();
 
-        rechnungSavingModel = new RechnungModel(lastNummer + 1, date, date, rechnungType, RechnungStatus.ACTIVE,
-                                                RechnungManagerFxApp.loggedUser);
+        rechnungSavingModel = new RechnungModel(lastNummer + 1, date, date, 1, rechnungType,
+                                                RechnungStatus.ACTIVE, RechnungManagerFxApp.loggedUser);
         
         rechnungNummer.set(String.valueOf(lastNummer + 1));
         rechnungDatum.set(date);
@@ -299,9 +301,23 @@ public class RechnungBindingService {
 		visbleToggleStatusBox.set(visible);;
 	}
 
-	public boolean save() {
-        if(this.rechnungType == RechnungType.RECHNUNG){
+    public boolean verifySaving() {
+        if(this.rechnungType == RechnungType.RECHNUNG) {
+            if (this.isCustomerSelected == false) {
+                UiUtils.showError("Rechnung-Speichern",
+                                  "Es ist kein Kunde ausgewählt. Bitte wählen Sie einen Kunden aus");
+                return false;
+            }
+        }
+        return true;
+    }
 
+            public boolean save() {
+        if(this.rechnungType == RechnungType.RECHNUNG){
+            if(this.isCustomerSelected == false){
+                UiUtils.showError("Rechnung-Speichern", "Es ist kein Kunde ausgewählt. Bitte wählen Sie einen Kunden aus");
+                return false;
+            }
             if(customerSavingModel.isNew()){
                 Optional<CustomerModel> customerModelOptional = RechnungManagerSpringApp.getCustomerService().save(customerSavingModel);
                 customerSavingModel = customerModelOptional.get();
@@ -459,6 +475,7 @@ public class RechnungBindingService {
     public void setCustomerModel(CustomerModel customerModel) {
         this.customerSavingModel = customerModel;
         this.customerModelProperty.setModel(customerModel);
+        this.isCustomerSelected = true;
 
     }
 

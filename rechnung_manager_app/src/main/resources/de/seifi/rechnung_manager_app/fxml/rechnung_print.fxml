@@ -26,8 +26,8 @@
     </columnConstraints>
     <rowConstraints>
         <RowConstraints prefHeight="270" vgrow="NEVER" />
-        <RowConstraints prefHeight="353" vgrow="NEVER" />
-        <RowConstraints prefHeight="120" vgrow="NEVER" />
+        <RowConstraints prefHeight="330" vgrow="NEVER" />
+        <RowConstraints prefHeight="132" vgrow="NEVER" />
         <RowConstraints prefHeight="74" vgrow="NEVER" />
         
     </rowConstraints>
@@ -52,7 +52,7 @@
 		    	<HBox GridPane.columnIndex="1" GridPane.rowIndex="0" GridPane.columnSpan="2" alignment="TOP_RIGHT">
 			    	<ImageView fitWidth="240" fitHeight="150">
 	                    <image>
-	                        <Image url="@../images/logo_larg.png" />
+	                        <Image url="@../images/logo_small_1065.png" />
 	                    </image>
 	                </ImageView>
 		    	</HBox>
@@ -133,17 +133,19 @@
                 <FloatGeldLabel fx:id="lblMvst" prefWidth="180" styleClass="summe-value" textAlignment="RIGHT" />
            	</HBox>
 
-           	<HBox style="-fx-background-color:black;">
+            <HBox style="-fx-background-color:black;">
                 <Label text="Endsumme" textAlignment="LEFT" style="-fx-padding: 3px 0 3px 10px; -fx-font-size: 12px; " styleClass="end-summe-label" prefWidth="370" />
                 <FloatGeldLabel fx:id="lblGesamt" prefWidth="180" style="-fx-padding: 0 10px 0 10px; -fx-font-size: 16px; " styleClass="end-summe-label" textAlignment="RIGHT" />
-           	</HBox>
-           	
+            </HBox>
+
+            <Label fx:id="lblThanks" text="Danke für Ihren Einkauf" textAlignment="CENTER" styleClass="tank-customer-label" prefWidth="370" />
+
             <VBox spacing="0">
                 <Label text="Waren-Rückgabe nur innerhalb 7 Werktagen gegen einen Gutschrift minus 15% Bearbeitungsgebühr" textAlignment="LEFT" prefWidth="570" styleClass="print-comments-label" />
                 <Label text="Elektronik oder Ausgepacjte Ware sind von Umtausch ausgeschlossen sowir Autoreifen" textAlignment="LEFT" prefWidth="570" styleClass="print-comments-label" />
                 <Label text="Bitte überweisen Sie den Betrag unter Angaben der Rechnungsnummer innerhalb von 8 Tagen auf das Untenstehende Konto." textAlignment="LEFT" prefWidth="570" styleClass="print-comments-label" />
                 <padding>
-					<Insets top="20" bottom="0" right="0" left="0" />
+					<Insets top="5" bottom="0" right="0" left="0" />
 				</padding>
            	</VBox>
                 
