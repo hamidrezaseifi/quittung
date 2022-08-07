@@ -22,10 +22,31 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class UiUtils {
+	private static final Logger logger = LoggerFactory.getLogger(UiUtils.class);
 
-    public static void showError(String title, String message){
+	private static PrintRechnungDialogController rechnungPringController = null;
+
+	private static PrintRechnungDialogController quittungPringController = null;
+
+
+	public static void loadPrintControllers() throws IOException {
+		logger.debug("Start loading print controllers ...");
+
+		if(rechnungPringController == null){
+			rechnungPringController = getPrintController(RechnungType.RECHNUNG);
+		}
+
+		if(quittungPringController == null){
+			quittungPringController = getPrintController(RechnungType.QUITTUNG);
+		}
+
+	}
+
+	public static void showError(String title, String message){
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
         alert.setHeaderText(message);
@@ -43,37 +64,28 @@ public class UiUtils {
 
 	public static void printRechnungItems(List<RechnungModel> rechnungModelList,
 										  boolean forCustomer) {
+		logger.debug("Start printing ...");
 
-		try {
-			
-			PrintRechnungDialogController rechnungPringController = null;
-			
-			PrintRechnungDialogController quittungPringController = null;
-			
-			for(RechnungModel model: rechnungModelList){
-				if(model.getRechnungType() == RechnungType.RECHNUNG){
 
-					Optional<CustomerModel> customerEntityOptional = RechnungManagerSpringApp.getCustomerService().getById(model.getCustomerId());
-					if(customerEntityOptional.isEmpty()){
-						throw new RuntimeException("Der Kunde von der Rechnung nicht gefunden!");
-					}
-					if(rechnungPringController == null){
-						rechnungPringController = getPrintController(RechnungType.RECHNUNG);
-					}
-					rechnungPringController.printRechnungList(model, customerEntityOptional.get(), forCustomer);
+		for(RechnungModel model: rechnungModelList){
+			if(model.getRechnungType() == RechnungType.RECHNUNG){
+
+				Optional<CustomerModel> customerEntityOptional = RechnungManagerSpringApp.getCustomerService().getById(model.getCustomerId());
+				if(customerEntityOptional.isEmpty()){
+					throw new RuntimeException("Der Kunde von der Rechnung nicht gefunden!");
 				}
-				if(model.getRechnungType() == RechnungType.QUITTUNG){
-					if(quittungPringController == null){
-						quittungPringController = getPrintController(RechnungType.QUITTUNG);
-					}
 
-					quittungPringController.printRechnungList(model, null, forCustomer);
-				}
+				rechnungPringController.printRechnungList(model, customerEntityOptional.get(), forCustomer);
 			}
-
-		} catch (IOException e) {
-			e.printStackTrace();
+			if(model.getRechnungType() == RechnungType.QUITTUNG){
+				quittungPringController.printRechnungList(model, null, forCustomer);
+			}
 		}
+
+
+		logger.debug("End printing.");
+
+
 	}
 	
 	private static PrintRechnungDialogController getPrintController(RechnungType rechnungType) throws IOException {
@@ -110,6 +122,5 @@ public class UiUtils {
 			e.printStackTrace();
 		}
     }
-    
-    
+
 }

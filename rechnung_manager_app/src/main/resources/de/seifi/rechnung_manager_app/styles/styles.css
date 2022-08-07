@@ -269,7 +269,7 @@
     -fx-background-image: url("../photos/photo_splash.jpg");
     -fx-background-repeat: no-repeat;
     -fx-background-size: 100% 100%;
-    -fx-background-position: left left;
+    -fx-background-position: left top;
 }
 
 

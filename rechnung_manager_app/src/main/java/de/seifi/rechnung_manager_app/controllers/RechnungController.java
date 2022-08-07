@@ -11,6 +11,7 @@ import de.seifi.rechnung_manager_app.models.RechnungItemProperty;
 import de.seifi.rechnung_manager_app.models.RechnungModel;
 import de.seifi.rechnung_manager_app.ui.FloatGeldLabel;
 import de.seifi.rechnung_manager_app.ui.UiUtils;
+import de.seifi.rechnung_manager_app.utils.GeneralUtils;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -23,6 +24,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -55,9 +57,9 @@ public class RechnungController implements Initializable, ControllerBase {
     
     @FXML private Label lblRechnungNummer;
 
-    @FXML private Label lblRechnungDatum;
+    @FXML private Label lblRechnungNummerTitle;
 
-    @FXML private Label lblLiferdatum;
+    @FXML private Label lblDatum;
 
     @FXML private Button btnSave;
 
@@ -262,8 +264,15 @@ public class RechnungController implements Initializable, ControllerBase {
         lblGesamt.valueProperty().bind(rechnungBindingService.gesamtSummeProperty());
         
         lblRechnungNummer.textProperty().bind(rechnungBindingService.getRechnungNummerProperty());
-        lblRechnungDatum.textProperty().bind(rechnungBindingService.getRechnungDatumProperty());
-        lblLiferdatum.textProperty().bind(rechnungBindingService.getLiferDatumProperty());
+
+        lblDatum.setText(GeneralUtils.formatDate(LocalDate.now()));
+
+        if(this.rechnungType == RechnungType.RECHNUNG){
+            lblRechnungNummerTitle.setText("Rechnung Nr.");
+        }
+        if(this.rechnungType == RechnungType.QUITTUNG){
+            lblRechnungNummerTitle.setText("Quittung Nr.");
+        }
 
         btnSave.disableProperty().bind(rechnungBindingService.getDisableSaveProperty());
         btnPrint.disableProperty().bind(rechnungBindingService.getDisablePrintProperty());

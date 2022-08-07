@@ -33,7 +33,7 @@
     </rowConstraints>
     <children>
             
-    	<GridPane GridPane.columnIndex="0" GridPane.rowIndex="0" styleClass="rechnung-banner" vgap="5">
+    	<GridPane fx:id="topPane" GridPane.columnIndex="0" GridPane.rowIndex="0" styleClass="rechnung-banner" vgap="5">
 			<columnConstraints>
 		        <ColumnConstraints hgrow="ALWAYS" />
 		        <ColumnConstraints hgrow="NEVER" prefWidth="150" />
@@ -57,56 +57,65 @@
 	                </ImageView>
 		    	</HBox>
                 
-                <Label text="Rechnung Nr." GridPane.columnIndex="1" GridPane.rowIndex="1" styleClass="rechnung-info-label" textAlignment="LEFT" style="" />
+                <Label fx:id="lblRechnungNummerTitle" GridPane.columnIndex="1" GridPane.rowIndex="1" text="Rechnung Nr." styleClass="rechnung-info-label" textAlignment="LEFT" style="" />
                	<Label fx:id="lblRechnungNummer" GridPane.columnIndex="2" GridPane.rowIndex="1" styleClass="rechnung-info-label" textAlignment="LEFT" style="" />
-
-                <Label text="Rechnungdatunm" GridPane.columnIndex="1" GridPane.rowIndex="2" styleClass="rechnung-info-label" textAlignment="LEFT" style="" />
-                <Label fx:id="lblRechnungDatum" GridPane.columnIndex="2" GridPane.rowIndex="2" styleClass="rechnung-info-label" textAlignment="LEFT" style="" />
-
-                <Label text="Liferdatum" GridPane.columnIndex="1" GridPane.rowIndex="3" styleClass="rechnung-info-label" textAlignment="LEFT" style="" />
-                <Label fx:id="lblLiferdatum" GridPane.columnIndex="2" GridPane.rowIndex="3" styleClass="rechnung-info-label" textAlignment="LEFT" style="" />
 
                 <Label fx:id="lblCustomerName" GridPane.columnIndex="0" GridPane.rowIndex="1" styleClass="rechnung-info-label" textAlignment="LEFT" style=" -fx-font-weight: bold;" />
                 <Label fx:id="lblStreetNo" GridPane.columnIndex="0" GridPane.rowIndex="2" styleClass="rechnung-info-label" textAlignment="LEFT" style="" />
                 <Label fx:id="lblPlzCity" GridPane.columnIndex="0" GridPane.rowIndex="3" styleClass="rechnung-info-label" textAlignment="LEFT" style="" />
 
-                <Label text="Datum" GridPane.columnIndex="1" GridPane.rowIndex="4" styleClass="rechnung-info-label" textAlignment="LEFT" style="" />
-                <Label fx:id="lblDatum" GridPane.columnIndex="2" GridPane.rowIndex="4" styleClass="rechnung-info-label" textAlignment="LEFT" style="" />
+                <Label text="Datum" GridPane.columnIndex="1" GridPane.rowIndex="2" styleClass="rechnung-info-label" textAlignment="LEFT" style="" />
+                <Label fx:id="lblDatum" GridPane.columnIndex="2" GridPane.rowIndex="2" styleClass="rechnung-info-label" textAlignment="LEFT" style="" />
+
+                <Label text="Seite" GridPane.columnIndex="1" GridPane.rowIndex="3" styleClass="rechnung-info-label" textAlignment="LEFT" style="" />
+                <Label fx:id="lblPageIndex" GridPane.columnIndex="2" GridPane.rowIndex="3" styleClass="rechnung-info-label" textAlignment="LEFT" style="" />
 
                 <Label  fx:id="lblPrintType" GridPane.rowSpan="2" GridPane.columnIndex="0" GridPane.rowIndex="4" textAlignment="LEFT" style="-fx-font-size: 22px; -fx-font-weight: bold;" />
 
             </children>
         </GridPane>
-        <TableView fx:id="printTableView"  GridPane.columnIndex="0" GridPane.rowIndex="1" prefHeight="287" prefWidth="390"
+        <TableView fx:id="printTableView"  GridPane.columnIndex="0" GridPane.rowIndex="1" prefWidth="390"
                    styleClass="print-table" stylesheets="@../styles/print_styles.css" editable="false">
             <columns>
-                <TableColumn editable="false" prefWidth="20" sortable="false" text="#">
+                <TableColumn editable="false" prefWidth="40" sortable="false" text="#">
                     <cellValueFactory>
                         <PropertyValueFactory property="index" />
                     </cellValueFactory>
+                    <cellFactory>
+                        <PrintTableGeneralCellFactory cellAllignment="CENTER" />
+                    </cellFactory>
                 </TableColumn>
 
-                <TableColumn editable="false" prefWidth="220" sortable="false" text="Produkt">
+                <TableColumn editable="false" prefWidth="200" sortable="false" text="Produkt">
                     <cellValueFactory>
                         <PropertyValueFactory property="produkt" />
                     </cellValueFactory>
+                    <cellFactory>
+                        <PrintTableGeneralCellFactory cellAllignment="CENTER_LEFT" />
+                    </cellFactory>
                 </TableColumn>
                 <TableColumn editable="false" prefWidth="90" sortable="false" text="Artikel-Nr.">
                     <cellValueFactory>
                         <PropertyValueFactory property="artikelNummer" />
                     </cellValueFactory>
+                    <cellFactory>
+                        <PrintTableGeneralCellFactory cellAllignment="CENTER_LEFT" />
+                    </cellFactory>
                 </TableColumn>
                 <TableColumn editable="false" prefWidth="60" sortable="false" text="Menge">
                     <cellValueFactory>
                         <PropertyValueFactory property="menge" />
                     </cellValueFactory>
+                    <cellFactory>
+                        <PrintTableGeneralCellFactory cellAllignment="CENTER" />
+                    </cellFactory>
                 </TableColumn>
                 <TableColumn editable="false" prefWidth="80" sortable="false" text="Einzelpreis">
                     <cellValueFactory>
                         <PropertyValueFactory property="einzelpreis" />
                     </cellValueFactory>
                     <cellFactory>
-                        <GeldLabelTableCellFactory />
+                        <PrintTableGeldCellFactory cellAllignment="CENTER_RIGHT" />
                     </cellFactory>
                 </TableColumn>
                 <TableColumn editable="false" prefWidth="100" sortable="false" text="Gesamtpreis" styleClass="print-table-last">
@@ -114,7 +123,7 @@
                         <PropertyValueFactory property="gesamtpreis" />
                     </cellValueFactory>
                     <cellFactory>
-                        <GeldLabelTableCellFactory />
+                        <PrintTableGeldCellFactory cellAllignment="CENTER_RIGHT" />
                     </cellFactory>
                 </TableColumn>
 
@@ -122,23 +131,21 @@
 
         </TableView>
 
-        <VBox GridPane.columnIndex="0" GridPane.rowIndex="2">
+        <VBox GridPane.columnIndex="0" GridPane.rowIndex="2" fx:id="commentsBox">
 
            	<HBox>
-                <Label text="Nettosumme" styleClass="summe-label" textAlignment="LEFT" prefWidth="370" />
+                <Label text="Nettosumme" styleClass="summe-label" textAlignment="LEFT" prefWidth="385" />
                 <FloatGeldLabel fx:id="lblNetto" prefWidth="180" styleClass="summe-value" textAlignment="RIGHT" />
            	</HBox>
            	<HBox>
-                <Label text="Mwst 19,00 %" textAlignment="LEFT" styleClass="summe-label" prefWidth="370" />
+                <Label text="Mwst 19,00 %" textAlignment="LEFT" styleClass="summe-label" prefWidth="385" />
                 <FloatGeldLabel fx:id="lblMvst" prefWidth="180" styleClass="summe-value" textAlignment="RIGHT" />
            	</HBox>
 
-            <HBox style="-fx-background-color:black;">
-                <Label text="Endsumme" textAlignment="LEFT" style="-fx-padding: 3px 0 3px 10px; -fx-font-size: 12px; " styleClass="end-summe-label" prefWidth="370" />
+            <HBox style="-fx-background-color:black;" fx:id="endsummeBox">
+                <Label text="Endsumme" textAlignment="LEFT" style="-fx-padding: 3px 0 3px 10px; -fx-font-size: 12px; " styleClass="end-summe-label" prefWidth="385" />
                 <FloatGeldLabel fx:id="lblGesamt" prefWidth="180" style="-fx-padding: 0 10px 0 10px; -fx-font-size: 16px; " styleClass="end-summe-label" textAlignment="RIGHT" />
             </HBox>
-
-            <Label fx:id="lblThanks" text="Danke für Ihren Einkauf" textAlignment="CENTER" styleClass="tank-customer-label" prefWidth="370" />
 
             <VBox spacing="0">
                 <Label text="Waren-Rückgabe nur innerhalb 7 Werktagen gegen einen Gutschrift minus 15% Bearbeitungsgebühr" textAlignment="LEFT" prefWidth="570" styleClass="print-comments-label" />

@@ -138,6 +138,14 @@ public class RechnungManagerFxApp extends Application implements ISingleInstance
             }
         });
         fadeSplash.play();
+        Platform.runLater(() -> {
+            try {
+                UiUtils.loadPrintControllers();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
     }
 
     

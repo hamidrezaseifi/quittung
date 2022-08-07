@@ -41,7 +41,6 @@
     -fx-background-color: white;
     -fx-text-fill: black;
     -fx-font-size:10px;
-    -fx-alignment:center;
 
     -fx-border-color: transparent;
     -fx-border-width: 0;
@@ -54,7 +53,7 @@
 .table-row-cell .table-cell {
     -fx-border-width: 0 2px 0 2px;
     -fx-border-color: black;
-    -fx-padding: 0 0 0 0;
+    -fx-padding: 0 5px 0 5px;
     -fx-border-insets: -1;
     -fx-font-size:10px;
 }
@@ -63,7 +62,7 @@
 .table-row-cell .table-cell.print-table-last {
     -fx-border-width: 0 0 0 2px;
     -fx-border-color: black;
-    -fx-padding: 0 0 0 0;
+    -fx-padding: 0 13px 0 5px;
     -fx-border-insets: -1;
     -fx-font-size:10px;
 }

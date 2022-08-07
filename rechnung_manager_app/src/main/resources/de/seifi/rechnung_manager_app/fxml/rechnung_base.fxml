@@ -65,19 +65,15 @@
 	               	<Label fx:id="lblCity" styleClass="rechnung-customer-label" prefWidth="130"  />
 				</HBox>
 				
-				<Label text="Quittung" fx:id="lblQuittung" GridPane.columnIndex="2" GridPane.rowIndex="2" GridPane.rowSpan="3" GridPane.columnSpan="2" styleClass="quittung-label" visible="false" textAlignment="LEFT" />
-				
+				<Label text="Quittung" fx:id="lblQuittung" GridPane.columnIndex="2" GridPane.rowIndex="0" GridPane.rowSpan="3" GridPane.columnSpan="2" styleClass="quittung-label" visible="false" textAlignment="LEFT" />
 
-                <Label text="Rechnung Nr." GridPane.columnIndex="4" GridPane.rowIndex="0" styleClass="summe-label" textAlignment="LEFT" />
+                <Label fx:id="lblRechnungNummerTitle" text="Rechnung Nr." GridPane.columnIndex="4" GridPane.rowIndex="0" styleClass="summe-label" textAlignment="LEFT" />
                 <Label fx:id="lblRechnungNummer" GridPane.columnIndex="5" GridPane.rowIndex="0" styleClass="summe-label" textAlignment="LEFT" />
 
-                <Label text="Rechnungdatunm" GridPane.columnIndex="4" GridPane.rowIndex="1" styleClass="summe-label" textAlignment="LEFT" />
-                <Label fx:id="lblRechnungDatum" GridPane.columnIndex="5" GridPane.rowIndex="1" styleClass="summe-label" textAlignment="LEFT" />
+                <Label text="Datum" GridPane.columnIndex="4" GridPane.rowIndex="1" styleClass="summe-label" textAlignment="LEFT" style="" />
+                <Label fx:id="lblDatum" GridPane.columnIndex="5" GridPane.rowIndex="1" styleClass="summe-label" textAlignment="LEFT" style="" />
 
-                <Label text="Liferdatum" GridPane.columnIndex="4" GridPane.rowIndex="2" styleClass="summe-label" textAlignment="LEFT" />
-                <Label fx:id="lblLiferdatum" GridPane.columnIndex="5" GridPane.rowIndex="2" styleClass="summe-label" textAlignment="LEFT" />
-
-			</children>        
+			</children>
         </GridPane>
 
         <HBox GridPane.columnIndex="0" GridPane.rowIndex="1" spacing="10" alignment="CENTER_RIGHT">

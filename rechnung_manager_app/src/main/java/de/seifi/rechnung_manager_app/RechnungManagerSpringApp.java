@@ -48,18 +48,14 @@ public class RechnungManagerSpringApp {
 		
 		applicationContext = SpringApplication.run(RechnungManagerSpringApp.class, args);
 
-		Platform.runLater(new Runnable() {
+		Platform.runLater(() -> {
+			try {
+				fxApp.showMainStage();
+			} catch (IOException e) {
 
-			@Override
-			public void run() {
-				try {
-					fxApp.showMainStage();
-				} catch (IOException e) {
-
-					throw new RuntimeException(e);
-				}
-
+				throw new RuntimeException(e);
 			}
+
 		});
 
 	}

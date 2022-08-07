@@ -1,5 +1,6 @@
 package de.seifi.rechnung_manager_app.fx_services;
 
+import de.seifi.rechnung_manager_app.enums.RechnungType;
 import de.seifi.rechnung_manager_app.models.CustomerModel;
 import de.seifi.rechnung_manager_app.models.RechnungItemModel;
 import de.seifi.rechnung_manager_app.models.RechnungItemPrintProperty;
@@ -8,25 +9,31 @@ import de.seifi.rechnung_manager_app.ui.TableUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class RechnungBindingPrintService {
 
-    private static int MAX_PRINT_LIST_ITEMS = 17;
+    //private static int MAX_PRINT_ROW_COUNT = 12;
+    Map<RechnungType, Integer> RECHNUNG_TYPE_MAX_ROW_COUNT =
+            Map.ofEntries(Map.entry(RechnungType.RECHNUNG,12), Map.entry(RechnungType.QUITTUNG,14));
+
 
     private String gesamtSumme;
     private String nettoSumme;
     private String mvstSumme;
     private RechnungModel rechnungModel = null;
     private CustomerModel customerModel = null;
+
+    private int itemPageCount = 0;
     
-    ObservableList<RechnungItemPrintProperty> printPropertyList;
+    List<ObservableList<RechnungItemPrintProperty>> printPropertyList;
 
-    private int printingItemPageIndex = 0;
-    private int printingItemPageCount = 0;
+    private final RechnungType rechnungType;
 
-    public RechnungBindingPrintService() {
-
+    public RechnungBindingPrintService(RechnungType rechnungType) {
+        this.rechnungType = rechnungType;
     }
 
 
@@ -34,54 +41,44 @@ public class RechnungBindingPrintService {
                                  CustomerModel customerModel) {
         this.rechnungModel = model;
         this.customerModel = customerModel;
-        this.printPropertyList = FXCollections.observableArrayList();
 
         preparePrintPropertyList();
 
     }
-    
-    public boolean increateIfMorePrintingPage() {
-    	if(!hasMorePrintingPage()){
-            return false;
-        }
-        this.printingItemPageIndex += 1;
-        return true;
+
+    public int getItemPageCount() {
+        return itemPageCount;
     }
-    
-    public boolean hasMorePrintingPage() {
-    	if(this.printingItemPageIndex >= this.printingItemPageCount){
-            return false;
-        }
-        
-        return true;
-    }
-    
+
     private void preparePrintPropertyList() {
         calculateRechnungSumme();
     	List<RechnungItemModel> modelItems = rechnungModel.getItems();
-    	this.printPropertyList.clear();
+        this.printPropertyList = new ArrayList<>(); //FXCollections.observableArrayList();
+        int maxPrintRowCount = RECHNUNG_TYPE_MAX_ROW_COUNT.get(this.rechnungType);
 
-        //for(int k= 0; k< 5; k++){
-            for(int i=0; i<modelItems.size(); i++){
-            	this.printPropertyList.add(new RechnungItemPrintProperty(this.printPropertyList.size() + 1, modelItems.get(i)));
+        itemPageCount = (int)(rechnungModel.getItems().size() / maxPrintRowCount);
+        if(itemPageCount * maxPrintRowCount < rechnungModel.getItems().size()){
+            itemPageCount ++;
+        }
+
+        for(int i=0; i<itemPageCount; i++){
+            ObservableList<RechnungItemPrintProperty> obsList = FXCollections.observableArrayList();
+            int from = i * maxPrintRowCount;
+            int to = (i + 1) * maxPrintRowCount;
+            if(to > rechnungModel.getItems().size()){
+                to = rechnungModel.getItems().size();
             }
-        //}
-        
-        this.printingItemPageIndex = 0;
-        this.printingItemPageCount = (int)(this.printPropertyList.size() / MAX_PRINT_LIST_ITEMS);
-        if(this.printingItemPageCount * MAX_PRINT_LIST_ITEMS < this.printPropertyList.size()) {
-        	this.printingItemPageCount += 1;
+
+            List<RechnungItemModel> itemsSubList = rechnungModel.getItems().subList(from, to);
+            for(int j=0; j<itemsSubList.size(); j++){
+                obsList.add(new RechnungItemPrintProperty(i * maxPrintRowCount + j + 1, itemsSubList.get(j)));
+            }
+            this.printPropertyList.add(obsList);
         }
     }
 
-    public ObservableList<RechnungItemPrintProperty> getRechnungPrintItems() {
-    	int start = this.printingItemPageIndex * MAX_PRINT_LIST_ITEMS;
-    	int to = ((this.printingItemPageIndex + 1) * MAX_PRINT_LIST_ITEMS);
-    	if(to > this.printPropertyList.size()) {
-    		to = this.printPropertyList.size();
-    	}
-    	List<RechnungItemPrintProperty> items = this.printPropertyList.subList(start, to);
-        return FXCollections.observableArrayList(items);
+    public ObservableList<RechnungItemPrintProperty> getRechnungPrintPageItems(int pageIndex) {
+        return this.printPropertyList.get(pageIndex);
     }
 
     public String getNettoSumme() {
