@@ -22,6 +22,9 @@ import de.seifi.rechnung_manager_app.models.RechnungItemProperty;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Pos;
+import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -48,7 +51,6 @@ public class RechnungBindingService {
     
     private StringProperty rechnungNummer;
     private StringProperty rechnungDatum;
-    private StringProperty liferDatum;
     
     private BooleanProperty disableSave;
     private BooleanProperty disablePrint;
@@ -101,7 +103,6 @@ public class RechnungBindingService {
         
         rechnungNummer = new SimpleStringProperty();
         rechnungDatum = new SimpleStringProperty();
-        liferDatum = new SimpleStringProperty();
         
         disableSave = new SimpleBooleanProperty(true);
         disablePrint = new SimpleBooleanProperty(false);
@@ -195,7 +196,7 @@ public class RechnungBindingService {
 	public void reset() {
 		this.rechnungItems.clear();
         while (this.rechnungItems.size() < INITIAL_ITEMS){
-        	addNewRowIntern(new RechnungItemProperty());
+        	addNewRowIntern(new RechnungItemProperty(true));
         }
         calculateRechnungSumme();
         
@@ -208,15 +209,19 @@ public class RechnungBindingService {
 
         int lastNummer = this.rechnungDataHelper.getLastActiveRechnungNummer();
 
-        rechnungSavingModel = new RechnungModel(null, lastNummer + 1, date, date, 1, rechnungType,
+        RechnungModel model = new RechnungModel(null, lastNummer + 1, date, date, 1, rechnungType,
                                                 RechnungStatus.ACTIVE, RechnungManagerFxApp.loggedUser);
         
-        rechnungNummer.set(String.valueOf(lastNummer + 1));
-        rechnungDatum.set(date);
-        liferDatum.set(date);
+        setRechnungModel(model);
         
         setDirty(false);
         this.visbleToggleStatusBox.set(true);
+	}
+
+	private void setRechnungModel(RechnungModel model) {
+		this.rechnungSavingModel = model;
+        this.rechnungNummer.set(String.valueOf(rechnungSavingModel.getNummer()));
+        this.rechnungDatum.set(rechnungSavingModel.getRechnungCreate());
 	}
 
     public List<CustomerSelectModel> getCustomerSelectList() {
@@ -250,10 +255,6 @@ public class RechnungBindingService {
 
 	public StringProperty getRechnungDatumProperty() {
 		return rechnungDatum;
-	}
-
-	public StringProperty getLiferDatumProperty() {
-		return liferDatum;
 	}
 
 	public boolean isDirty() {
@@ -425,10 +426,10 @@ public class RechnungBindingService {
 	}
 
 	public void addNewRow() {
-		addNewRowIntern(new RechnungItemProperty());
+		addNewRowIntern(new RechnungItemProperty(true));
 	}
 
-	public void setRechnungModel(RechnungModel rechnungModel) {
+	public void setRechnungModel(RechnungModel rechnungModel, GridPane bannerPane) {
 		
 		if(rechnungType == RechnungType.RECHNUNG) {
 	        Optional<CustomerModel> customerEntityOptional = RechnungManagerSpringApp
@@ -441,15 +442,17 @@ public class RechnungBindingService {
 			
 		}
         
-        rechnungSavingModel = rechnungModel;
+		setRechnungModel(rechnungModel);
+		
 		rechnungItems.clear();
 
         this.rechnungSavingModel = rechnungModel;
         
         this.customerModelProperty.setModel(this.customerSavingModel);
-		
+        
+        
 		rechnungModel.getItems().forEach(r -> addNewRowIntern(new RechnungItemProperty(r)));
-
+		
         RechnungManagerSpringApp.getProduktService().retreiveProduktList();
 		
 		isDirty = false;

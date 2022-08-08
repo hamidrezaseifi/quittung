@@ -109,7 +109,7 @@ public class UiUtils {
 			controller.loadModel(rechnungModel, false, stage);
 	        rechnungPane.setPadding(new Insets(10));
 	        
-	        Scene scene = new Scene(rechnungPane, 1000, 800);
+	        Scene scene = new Scene(rechnungPane, 1200, 1000);
 			scene.getStylesheets().add(RechnungManagerFxApp.getMainStyle());
 
 	        stage.initModality(Modality.APPLICATION_MODAL);

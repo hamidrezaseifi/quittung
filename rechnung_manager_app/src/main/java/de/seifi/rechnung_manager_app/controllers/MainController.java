@@ -16,6 +16,8 @@ public class MainController implements Initializable {
 	private static final Logger logger = LoggerFactory.getLogger(MainController.class);
 
 	@FXML private GridPane childBox;
+	
+	private static GridPane reportPane = null;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -70,10 +72,13 @@ public class MainController implements Initializable {
 
 		logger.debug("Show Report");
 
+		if(reportPane == null) {
+			reportPane = RechnungManagerFxApp.getReportPane();
+		}
 		if(RechnungManagerFxApp.cannCurrentControllerClosed()) {
     		clearChildren();
         	
-        	childBox.getChildren().add(RechnungManagerFxApp.getReportPane());
+        	childBox.getChildren().add(reportPane);
     	}
 
 	}

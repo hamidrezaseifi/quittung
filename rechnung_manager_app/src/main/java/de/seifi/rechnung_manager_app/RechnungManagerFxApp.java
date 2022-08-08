@@ -135,6 +135,7 @@ public class RechnungManagerFxApp extends Application implements ISingleInstance
             @Override public void handle(ActionEvent actionEvent) {
             	mainStage.setIconified(false);
                 splashStage.hide();
+                mainStage.setMaximized(true);
             }
         });
         fadeSplash.play();

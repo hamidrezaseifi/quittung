@@ -1,10 +1,8 @@
 package de.seifi.rechnung_manager_app.ui.tablecell;
 
-import de.seifi.rechnung_manager_app.models.RechnungItemProperty;
 import de.seifi.rechnung_manager_app.ui.TableUtils;
-import javafx.scene.control.TableCell;
 
-public class GeldLabelTableCell extends TableCell<RechnungItemProperty, Float> {
+public class GeldLabelTableCell extends MarkedTableCellBase<Float> {
 
     public GeldLabelTableCell() {
 
@@ -23,6 +21,7 @@ public class GeldLabelTableCell extends TableCell<RechnungItemProperty, Float> {
     public void updateItem(Float item, boolean empty) {
         super.updateItem(item, empty);
 
+        
     }
 
 }

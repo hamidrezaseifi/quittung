@@ -13,13 +13,17 @@ import de.seifi.rechnung_manager_app.ui.FloatGeldLabel;
 import de.seifi.rechnung_manager_app.ui.UiUtils;
 import de.seifi.rechnung_manager_app.utils.GeneralUtils;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -84,12 +88,16 @@ public class RechnungController implements Initializable, ControllerBase {
     @FXML private Label lblHaus;
 
     @FXML private Label lblAddress2;
+    
+    @FXML private Label lblExemplar;
 
     @FXML private HBox toggleStatusBox;
 
     @FXML private Label lblStatusChange;
 
     @FXML private HBox nameBox;
+    
+    @FXML private VBox itemsListBox;
 
 
     private RechnungBindingService rechnungBindingService;
@@ -232,6 +240,8 @@ public class RechnungController implements Initializable, ControllerBase {
 
         showItemsTableView.setItems(rechnungBindingService.getRechnungItems());
         showItemsTableView.setUserData(rechnungBindingService);
+        
+        showItemsTableView.prefHeightProperty().bind(itemsListBox.heightProperty().subtract(95));
 
         mengeColumn.setOnEditCommit(event -> {
             final Integer value = event.getNewValue();
@@ -320,13 +330,53 @@ public class RechnungController implements Initializable, ControllerBase {
 	public void loadModel(RechnungModel rechnungModel, boolean editable, Stage stage) {
 
 
-		showItemsTableView.setEditable(editable);
-		rechnungBindingService.setRechnungModel(rechnungModel);
+		rechnungBindingService.setRechnungModel(rechnungModel, bannerPane);
 		
 		showItemsTableView.getColumns().forEach(c -> c.setEditable(editable));
         rechnungBindingService.setIsView(!editable);
         this.stage = stage;
 
+        lblExemplar.setText("original");
+		if(rechnungModel.hasReference()) {
+			lblExemplar.setText("überarbeiten");
+		}
+		
+		if(this.rechnungType == RechnungType.RECHNUNG){
+            lblQuittung.setVisible(false);
+        }
+
+        if(this.rechnungType == RechnungType.QUITTUNG){
+        	lblQuittung.setVisible(true);
+
+        }
+        
+        TabPane tbItemsList = new TabPane();
+        GridPane.setColumnIndex(tbItemsList, 0);
+        GridPane.setRowIndex(tbItemsList, 2);
+        rootPane.getChildren().remove(itemsListBox);
+        rootPane.getChildren().add(tbItemsList);
+        
+        Tab tbOriginal = new Tab("Original");
+        tbOriginal.setContent(itemsListBox);
+        tbItemsList.getTabs().add(tbOriginal);
+
+        showItemsTableView.setEditable(editable);
+        showItemsTableView.setOnKeyPressed( new EventHandler<KeyEvent>()
+        {
+          @Override
+          public void handle( final KeyEvent keyEvent )
+          {
+        	  RechnungItemProperty itemProperty = showItemsTableView.getSelectionModel().getSelectedItem();
+
+            
+              if ( keyEvent.getCode().equals( KeyCode.DELETE ) )
+              {
+            	  itemProperty.setIsMarkedAsDeleted(true);
+              }
+
+          }
+        } );
+        
 		if(!editable) {
             Pane parent = (Pane)btnReset.getParent();
             parent.getChildren().remove(btnSave);
@@ -343,10 +393,15 @@ public class RechnungController implements Initializable, ControllerBase {
                 //lblName.setCursor(Cursor.DEFAULT);
                 lblName.prefWidthProperty().bind(nameBox.widthProperty());
                 nameBox.getChildren().remove(btnSelectCsutomer);
+                lblQuittung.setVisible(false);
             }
 
             if(this.rechnungType == RechnungType.QUITTUNG){
+            	lblQuittung.setVisible(true);
             	for(Node child: bannerPane.getChildren()) {
+            		if(lblQuittung == child) {
+            			continue;
+            		}
             		if(GridPane.getColumnIndex(child) == 1 || GridPane.getColumnIndex(child) == 2) {
             			child.setVisible(false);
             		}

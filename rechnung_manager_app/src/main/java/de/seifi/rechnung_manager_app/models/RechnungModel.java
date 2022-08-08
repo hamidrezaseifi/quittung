@@ -124,6 +124,10 @@ public class RechnungModel {
 		this.referenceId = referenceId;
 	}
 
+	public boolean hasReference() {
+		return referenceId != null;
+	}
+
 	public Integer getNummer() {
 		return nummer;
 	}

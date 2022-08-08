@@ -9,8 +9,10 @@ public class RechnungItemProperty {
     private FloatProperty brutoPreis;
     private FloatProperty preis;
     private FloatProperty gesamt;
+    private BooleanProperty markedAsDeleted;
+    private boolean newItem;
 
-    public RechnungItemProperty() {
+    public RechnungItemProperty(boolean newItem) {
     	
         this.produkt = new SimpleStringProperty();
         this.artikelNummer = new SimpleStringProperty();
@@ -18,31 +20,19 @@ public class RechnungItemProperty {
         this.brutoPreis = new SimpleFloatProperty(0f);
         this.preis = new SimpleFloatProperty(0f);
         this.gesamt = new SimpleFloatProperty(0f);
+        this.markedAsDeleted = new SimpleBooleanProperty(false);
+        this.newItem = newItem;
         
     }
 
     public RechnungItemProperty(RechnungItemModel model) {
-        this();
+        this(model.isNew());
         this.produkt.set(model.getProdukt());
         this.artikelNummer.set(model.getArtikelNummer());
         this.menge.set(model.getMenge());
         this.preis.set(model.getPreis());
         this.gesamt.set(model.getGesmt());
     }
-
-    public RechnungItemProperty(
-            String produkt,
-            String artikelNummer,
-            int menge,
-            float preis) {
-        this();
-        this.produkt.set(produkt);
-        this.artikelNummer.set(artikelNummer);
-        this.menge.set(menge);
-        this.preis.set(preis);
-        this.gesamt.set(preis * menge);
-    }
-
 
     public String getProdukt() {
         return produkt.get();
@@ -114,7 +104,24 @@ public class RechnungItemProperty {
 		this.brutoPreis.set(brutoPreis);
 	}
 
-    public RechnungItemModel toModel(){
+	public Boolean getIsMarkedAsDeleted() {
+		return markedAsDeleted.get();
+	}
+
+	public BooleanProperty getIsMarkedAsDeletedProperty() {
+		return markedAsDeleted;
+	}
+
+	public void setIsMarkedAsDeleted(Boolean value) {
+		this.markedAsDeleted.set(value);
+	}
+	
+	
+    public boolean isNewItem() {
+		return newItem;
+	}
+
+	public RechnungItemModel toModel(){
         return new RechnungItemModel(this.produkt.get(), this.artikelNummer.get(), this.menge.get(), this.preis.get());
     }
 

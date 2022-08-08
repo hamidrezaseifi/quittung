@@ -4,12 +4,21 @@ import de.seifi.rechnung_manager_app.ui.FloatTextField;
 import de.seifi.rechnung_manager_app.ui.IntegerTextField;
 import de.seifi.rechnung_manager_app.models.RechnungItemProperty;
 import de.seifi.rechnung_manager_app.ui.TableUtils;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.paint.Color;
 
-public abstract class BaseEditbaleTableCell<T> extends TableCell<RechnungItemProperty, T> {
-
+public abstract class BaseEditbaleTableCell<T> extends MarkedTableCellBase<T> {
+	
+	
 	protected abstract void createEditingControl();
 
 	protected abstract Control getEditingControl();
@@ -24,7 +33,7 @@ public abstract class BaseEditbaleTableCell<T> extends TableCell<RechnungItemPro
     public BaseEditbaleTableCell() {
         
     	createEditingControl();
-    	
+    	    	
         itemProperty().addListener((obx, oldItem, newItem) -> {
             if (newItem == null) {
                 setCellText(null);
@@ -33,7 +42,9 @@ public abstract class BaseEditbaleTableCell<T> extends TableCell<RechnungItemPro
             }
         });
 
-        setGraphic(getEditingControl());
+        
+        Control control = getEditingControl();
+        setGraphic(control);
         setContentDisplay(ContentDisplay.TEXT_ONLY);
         
         getEditingControl().focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
