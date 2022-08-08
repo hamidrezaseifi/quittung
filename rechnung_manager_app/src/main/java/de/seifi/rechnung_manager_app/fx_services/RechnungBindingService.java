@@ -5,7 +5,6 @@ import de.seifi.rechnung_common.entities.RechnungEntity;
 import de.seifi.rechnung_common.repositories.RechnungRepository;
 import de.seifi.rechnung_manager_app.RechnungManagerFxApp;
 import de.seifi.rechnung_manager_app.RechnungManagerSpringApp;
-import de.seifi.rechnung_manager_app.adapter.CustomerAdapter;
 import de.seifi.rechnung_manager_app.adapter.RechnungAdapter;
 import de.seifi.rechnung_manager_app.data_service.IRechnungDataHelper;
 import de.seifi.rechnung_manager_app.enums.RechnungStatus;
@@ -22,9 +21,6 @@ import de.seifi.rechnung_manager_app.models.RechnungItemProperty;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.geometry.Pos;
-import javafx.scene.control.Label;
-import javafx.scene.layout.GridPane;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -75,12 +71,12 @@ public class RechnungBindingService {
     private List<String> berechnenFaktorZielColorList = Arrays.asList("-fx-background-color: white", "-fx-background-color: #f2f6ff");
     
     private StringProperty bannerBackColor;
-    
-    private final CustomerAdapter customerAdapter = new CustomerAdapter();
 
     private final RechnungAdapter rechnungAdapter = new RechnungAdapter();
 
     private boolean isCustomerSelected = false;
+    
+    private boolean editingMode = false;
 
     public RechnungBindingService(final RechnungType rechnungType, 
     							  final RechnungRepository rechnungRepository,
@@ -97,6 +93,8 @@ public class RechnungBindingService {
 
         this.customerList = new HashMap<>();
 
+        this.editingMode = false;
+        
         gesamtSumme = new SimpleFloatProperty(0);
         nettoSumme = new SimpleFloatProperty(0);
         mvstSumme = new SimpleFloatProperty(0);
@@ -194,25 +192,33 @@ public class RechnungBindingService {
 	}
 
 	public void reset() {
-		this.rechnungItems.clear();
-        while (this.rechnungItems.size() < INITIAL_ITEMS){
-        	addNewRowIntern(new RechnungItemProperty(true));
-        }
-        calculateRechnungSumme();
-        
-        customerModelProperty = new CustomerModelProperty();
-        
+		
+		if(this.editingMode == false) {
+			this.rechnungItems.clear();
+	        while (this.rechnungItems.size() < INITIAL_ITEMS){
+	        	addNewRowIntern(new RechnungItemProperty(true));
+	        }
+	        calculateRechnungSumme();
+	        
+	        customerModelProperty = new CustomerModelProperty();
+	        
 
-        LocalDateTime ldt = LocalDateTime.now();
+	        LocalDateTime ldt = LocalDateTime.now();
 
-        String date = GeneralUtils.formatDate(ldt);
+	        String date = GeneralUtils.formatDate(ldt);
 
-        int lastNummer = this.rechnungDataHelper.getLastActiveRechnungNummer();
+	        int lastNummer = this.rechnungDataHelper.getLastActiveRechnungNummer();
 
-        RechnungModel model = new RechnungModel(null, lastNummer + 1, date, date, 1, rechnungType,
-                                                RechnungStatus.ACTIVE, RechnungManagerFxApp.loggedUser);
-        
-        setRechnungModel(model);
+	        RechnungModel model = new RechnungModel(null, lastNummer + 1, date, date, 1, rechnungType,
+	                                                RechnungStatus.ACTIVE, RechnungManagerFxApp.loggedUser);
+	        
+	        setRechnungModel(model);
+			
+		}
+		
+		if(this.editingMode) {
+			this.startEditing(rechnungSavingModel);
+		}
         
         setDirty(false);
         this.visbleToggleStatusBox.set(true);
@@ -429,8 +435,11 @@ public class RechnungBindingService {
 		addNewRowIntern(new RechnungItemProperty(true));
 	}
 
-	public void setRechnungModel(RechnungModel rechnungModel, GridPane bannerPane) {
+	public void startEditing(RechnungModel rechnungModel) {
 		
+
+        this.editingMode = true;
+
 		if(rechnungType == RechnungType.RECHNUNG) {
 	        Optional<CustomerModel> customerEntityOptional = RechnungManagerSpringApp
                     .getCustomerService().getById(rechnungModel.getCustomerId());
@@ -459,9 +468,12 @@ public class RechnungBindingService {
 
         this.calculateRechnungSumme();
 	}
+	
+    public boolean isEditingMode() {
+		return editingMode;
+	}
 
-
-    public void setIsView(boolean isView) {
+	public void setIsView(boolean isView) {
         this.isView = isView;
     }
 

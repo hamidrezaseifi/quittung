@@ -75,6 +75,10 @@ public class RechnungController implements Initializable, ControllerBase {
 
     @FXML private Button btnPrint;
 
+    @FXML private Button btnAddItem;
+
+    @FXML private Button btnDeleteItem;
+
     @FXML private GridPane bannerPane;
 
     @FXML private Label lblName;
@@ -98,6 +102,8 @@ public class RechnungController implements Initializable, ControllerBase {
     @FXML private HBox nameBox;
     
     @FXML private VBox itemsListBox;
+    
+    @FXML private HBox toolbarBox;
 
 
     private RechnungBindingService rechnungBindingService;
@@ -152,6 +158,18 @@ public class RechnungController implements Initializable, ControllerBase {
     }
 
     @FXML
+    private void addItem() throws IOException {
+
+    	
+    }
+
+    @FXML
+    private void deleteItem() throws IOException {
+
+    	markSelectedItemAsDeleted();
+    }
+
+    @FXML
     private void selectCustomer() throws IOException {
     	//rechnungBindingService.test();
     	
@@ -170,6 +188,7 @@ public class RechnungController implements Initializable, ControllerBase {
     
     
     private void doReloadData() {
+    	
     	showItemsTableView.setItems(null);
     	rechnungBindingService.reset();
         showItemsTableView.setItems(rechnungBindingService.getRechnungItems());
@@ -327,10 +346,15 @@ public class RechnungController implements Initializable, ControllerBase {
         return "Die Rechnung-Daten ist geändert aber nicht gescpeichert!";
     }
 
+    private void markSelectedItemAsDeleted() {
+		RechnungItemProperty itemProperty = showItemsTableView.getSelectionModel().getSelectedItem();
+		  itemProperty.setIsMarkedAsDeleted(true);
+	}
+    
 	public void loadModel(RechnungModel rechnungModel, boolean editable, Stage stage) {
 
 
-		rechnungBindingService.setRechnungModel(rechnungModel, bannerPane);
+		rechnungBindingService.startEditing(rechnungModel);
 		
 		showItemsTableView.getColumns().forEach(c -> c.setEditable(editable));
         rechnungBindingService.setIsView(!editable);
@@ -350,44 +374,31 @@ public class RechnungController implements Initializable, ControllerBase {
 
         }
         
-        TabPane tbItemsList = new TabPane();
-        GridPane.setColumnIndex(tbItemsList, 0);
-        GridPane.setRowIndex(tbItemsList, 2);
-        rootPane.getChildren().remove(itemsListBox);
-        rootPane.getChildren().add(tbItemsList);
+        addExamplarTab();
         
-        Tab tbOriginal = new Tab("Original");
-        tbOriginal.setContent(itemsListBox);
-        tbItemsList.getTabs().add(tbOriginal);
+        btnAddItem.setVisible(true);
+        btnDeleteItem.setVisible(true);
 
         showItemsTableView.setEditable(editable);
         showItemsTableView.setOnKeyPressed( new EventHandler<KeyEvent>()
-        {
-          @Override
-          public void handle( final KeyEvent keyEvent )
-          {
-        	  RechnungItemProperty itemProperty = showItemsTableView.getSelectionModel().getSelectedItem();
+        	{
+	          @Override
+	          public void handle( final KeyEvent keyEvent )
+	          {
 
-            
-              if ( keyEvent.getCode().equals( KeyCode.DELETE ) )
-              {
-            	  itemProperty.setIsMarkedAsDeleted(true);
-              }
+	              if ( keyEvent.getCode().equals( KeyCode.DELETE ) )
+	              {
+	            	  markSelectedItemAsDeleted();
+	              }
+	
+	          }
 
-          }
-        } );
+	        } 
+        );
         
 		if(!editable) {
-            Pane parent = (Pane)btnReset.getParent();
-            parent.getChildren().remove(btnSave);
-            parent.getChildren().remove(btnReset);
 
-            parent = (Pane)toggleStatusBox.getParent();
-            parent.getChildren().remove(toggleStatusBox);
-
-			//btnSave.setVisible(false);
-			//btnReset.setVisible(false);
-            //btnSelectCsutomer.setVisible(false);
+			//toolbarBox.getChildren().remove(toggleStatusBox);
 
             if(this.rechnungType == RechnungType.RECHNUNG){
                 //lblName.setCursor(Cursor.DEFAULT);
@@ -412,6 +423,18 @@ public class RechnungController implements Initializable, ControllerBase {
 
 
         }
+	}
+
+	private void addExamplarTab() {
+		TabPane tbItemsList = new TabPane();
+        GridPane.setColumnIndex(tbItemsList, 0);
+        GridPane.setRowIndex(tbItemsList, 2);
+        rootPane.getChildren().remove(itemsListBox);
+        rootPane.getChildren().add(tbItemsList);
+        
+        Tab tbOriginal = new Tab("Original");
+        tbOriginal.setContent(itemsListBox);
+        tbItemsList.getTabs().add(tbOriginal);
 	}
 
 }
