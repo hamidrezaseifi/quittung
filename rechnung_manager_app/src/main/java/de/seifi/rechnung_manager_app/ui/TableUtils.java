@@ -25,7 +25,13 @@ public class TableUtils {
 
         if(r >= tv.getItems().size()){
         	RechnungBindingService rechnungBindingService = (RechnungBindingService)tv.getUserData();
-        	rechnungBindingService.addNewRow();
+        	if(rechnungBindingService.isEditingMode() == false) {
+        		rechnungBindingService.addNewRow();
+        	}
+        	else {
+        		return null;
+        	}
+        	
             
         }
 

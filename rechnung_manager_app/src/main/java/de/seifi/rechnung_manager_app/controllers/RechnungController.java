@@ -160,6 +160,16 @@ public class RechnungController implements Initializable, ControllerBase {
     @FXML
     private void addItem() throws IOException {
 
+    	RechnungItemProperty item = rechnungBindingService.addNewRow();
+    	btnAddItem.setDisable(true);
+
+    	showItemsTableView.edit(-1, null);
+    	
+    	setItemsTableViewEditable(true);
+    	int indexofItem = showItemsTableView.getItems().indexOf(item);
+    	showItemsTableView.getSelectionModel().select(indexofItem);
+    	showItemsTableView.requestFocus();
+    	showItemsTableView.edit(indexofItem, mengeColumn);
     	
     }
 
@@ -273,6 +283,15 @@ public class RechnungController implements Initializable, ControllerBase {
             TablePosition<RechnungItemProperty,?> tPos = event.getTablePosition();
             rechnungBindingService.setNewBrutoPreisValue(tPos.getRow(), value);
             rechnungBindingService.setVisbleToggleStatusBox(false);
+            
+            if(rechnungBindingService.isEditingMode()) {
+            	showItemsTableView.edit(-1, null);
+
+            	btnAddItem.setDisable(false);
+            	setItemsTableViewEditable(false);
+            }
+        	
+
         });
 
         produktColumn.setOnEditCommit(event -> {
@@ -347,8 +366,11 @@ public class RechnungController implements Initializable, ControllerBase {
     }
 
     private void markSelectedItemAsDeleted() {
-		RechnungItemProperty itemProperty = showItemsTableView.getSelectionModel().getSelectedItem();
-		  itemProperty.setIsMarkedAsDeleted(true);
+    	int selctedIndx = showItemsTableView.getSelectionModel().getSelectedIndex();
+    	
+    	showItemsTableView.setItems(null);
+    	rechnungBindingService.deleteItemAtIndex(selctedIndx);
+    	showItemsTableView.setItems(rechnungBindingService.getRechnungItems());
 	}
     
 	public void loadModel(RechnungModel rechnungModel, boolean editable, Stage stage) {
@@ -356,7 +378,6 @@ public class RechnungController implements Initializable, ControllerBase {
 
 		rechnungBindingService.startEditing(rechnungModel);
 		
-		showItemsTableView.getColumns().forEach(c -> c.setEditable(editable));
         rechnungBindingService.setIsView(!editable);
         this.stage = stage;
 
@@ -379,7 +400,7 @@ public class RechnungController implements Initializable, ControllerBase {
         btnAddItem.setVisible(true);
         btnDeleteItem.setVisible(true);
 
-        showItemsTableView.setEditable(editable);
+		setItemsTableViewEditable(editable);
         showItemsTableView.setOnKeyPressed( new EventHandler<KeyEvent>()
         	{
 	          @Override
@@ -423,6 +444,11 @@ public class RechnungController implements Initializable, ControllerBase {
 
 
         }
+	}
+
+	private void setItemsTableViewEditable(boolean editable) {
+		//showItemsTableView.getColumns().forEach(c -> c.setEditable(editable));
+        showItemsTableView.setEditable(editable);
 	}
 
 	private void addExamplarTab() {

@@ -431,8 +431,10 @@ public class RechnungBindingService {
 		this.rechnungItems.add(item);
 	}
 
-	public void addNewRow() {
-		addNewRowIntern(new RechnungItemProperty(true));
+	public RechnungItemProperty addNewRow() {
+		RechnungItemProperty item = new RechnungItemProperty(true);
+		addNewRowIntern(item);
+		return item;
 	}
 
 	public void startEditing(RechnungModel rechnungModel) {
@@ -500,6 +502,20 @@ public class RechnungBindingService {
 
 	public void test() {
 		this.customerModelProperty.setCustomerName("test name");
+		
+	}
+
+	public void deleteItemAtIndex(int selctedIndx) {
+		if(selctedIndx == -1) {
+			return;
+		}
+		
+		if(rechnungItems.get(selctedIndx).isNewItem()) {
+			rechnungItems.remove(selctedIndx);
+		}
+		else {
+			rechnungItems.get(selctedIndx).setIsMarkedAsDeleted(true);
+		}
 		
 	}
 
