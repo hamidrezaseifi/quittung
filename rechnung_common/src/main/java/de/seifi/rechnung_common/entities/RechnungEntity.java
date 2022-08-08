@@ -23,6 +23,9 @@ public class RechnungEntity extends EntityBase {
 	@Column(name="customer_id", nullable = true)
 	private UUID customerId;
 
+	@Column(name="reference_id", nullable = true)
+	private UUID referenceId;
+
 	@Column(nullable = false) 
 	private Integer nummer;
 
@@ -60,9 +63,12 @@ public class RechnungEntity extends EntityBase {
     	super();
     	items = new HashSet<>();
 		this.rechnungVersion = 1;
+		this.referenceId = null;
+		this.customerId = null;
     }
 
 	public RechnungEntity(UUID customerId,
+						  UUID referenceId,
 						  Integer nummer,
 						  String rechnungCreate,
 						  String liferDate,
@@ -72,6 +78,7 @@ public class RechnungEntity extends EntityBase {
 						  UUID userId) {
 		this();
 		this.customerId = customerId;
+		this.referenceId = referenceId;
 		this.nummer = nummer;
 		this.rechnungCreate = rechnungCreate;
 		this.liferDate = liferDate;
@@ -82,6 +89,7 @@ public class RechnungEntity extends EntityBase {
 	}
 
 	public RechnungEntity(UUID id,
+						  UUID referenceId,
 						  UUID customerId,
 						  Integer nummer,
 						  String rechnungCreate,
@@ -94,6 +102,7 @@ public class RechnungEntity extends EntityBase {
 		this();
 		this.id = id;
 		this.customerId = customerId;
+		this.referenceId = referenceId;
 		this.nummer = nummer;
 		this.rechnungCreate = rechnungCreate;
 		this.liferDate = liferDate;
@@ -119,6 +128,14 @@ public class RechnungEntity extends EntityBase {
 
 	public void setCustomerId(UUID customerId) {
 		this.customerId = customerId;
+	}
+	
+	public UUID getReferenceId() {
+		return referenceId;
+	}
+
+	public void setReferenceId(UUID referenceId) {
+		this.referenceId = referenceId;
 	}
 
 	public Integer getNummer() {

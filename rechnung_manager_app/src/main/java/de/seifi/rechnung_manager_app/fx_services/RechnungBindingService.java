@@ -208,7 +208,7 @@ public class RechnungBindingService {
 
         int lastNummer = this.rechnungDataHelper.getLastActiveRechnungNummer();
 
-        rechnungSavingModel = new RechnungModel(lastNummer + 1, date, date, 1, rechnungType,
+        rechnungSavingModel = new RechnungModel(null, lastNummer + 1, date, date, 1, rechnungType,
                                                 RechnungStatus.ACTIVE, RechnungManagerFxApp.loggedUser);
         
         rechnungNummer.set(String.valueOf(lastNummer + 1));

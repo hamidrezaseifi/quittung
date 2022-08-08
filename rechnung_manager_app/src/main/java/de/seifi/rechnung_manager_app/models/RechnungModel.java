@@ -15,6 +15,8 @@ public class RechnungModel {
     private UUID id;
 
 	private UUID customerId;
+	
+	private UUID referenceId;
 
 	private Integer nummer;
 	   
@@ -43,10 +45,12 @@ public class RechnungModel {
 		this.userId = null;
 		this.items = new ArrayList<>();
 		this.rechnungVersion = 1;
+		this.referenceId = null;
 
     }
 
-	public RechnungModel(Integer nummer,
+	public RechnungModel(UUID referenceId,
+						 Integer nummer,
 						 String rechnungCreate,
 						 String liferDate,
 						 int rechnungVersion,
@@ -54,6 +58,7 @@ public class RechnungModel {
 						 RechnungStatus status,
 						 UUID userId) {
 		this();
+		this.referenceId = referenceId;
 		this.nummer = nummer;
 		this.rechnungCreate = rechnungCreate;
 		this.liferDate = liferDate;
@@ -66,6 +71,7 @@ public class RechnungModel {
 
 	public RechnungModel(UUID id,
 						 UUID customerId,
+						 UUID referenceId,
 						 Integer nummer,
 						 String rechnungCreate,
 						 String liferDate,
@@ -78,6 +84,7 @@ public class RechnungModel {
 		this();
 		this.id = id;
 		this.customerId = customerId;
+		this.referenceId = referenceId;
 		this.nummer = nummer;
 		this.rechnungCreate = rechnungCreate;
 		this.liferDate = liferDate;
@@ -107,6 +114,14 @@ public class RechnungModel {
 
 	public void setCustomerId(UUID customerId) {
 		this.customerId = customerId;
+	}
+
+	public UUID getReferenceId() {
+		return referenceId;
+	}
+
+	public void setReferenceId(UUID referenceId) {
+		this.referenceId = referenceId;
 	}
 
 	public Integer getNummer() {

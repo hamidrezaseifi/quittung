@@ -9,12 +9,12 @@ public class RechnungAdapter extends AdapterBase<RechnungEntity, RechnungModel> 
 	public RechnungEntity toEntity(RechnungModel model) {
 		RechnungEntity entity = null;
 		if(model.isNew()) {
-			entity = new RechnungEntity(model.getCustomerId(), model.getNummer(), model.getRechnungCreate(), model.getLiferDate(),
-										model.getRechnungVersion(), model.getRechnungType().getValue(), model.getStatus().getValue(),
+			entity = new RechnungEntity(model.getCustomerId(), model.getReferenceId(), model.getNummer(), model.getRechnungCreate(), 
+					model.getLiferDate(), model.getRechnungVersion(), model.getRechnungType().getValue(), model.getStatus().getValue(),
 										model.getUserId());
 		} 
 		else {
-			entity = new RechnungEntity(model.getId(), model.getCustomerId(), model.getNummer(), model.getRechnungCreate(),
+			entity = new RechnungEntity(model.getId(), model.getCustomerId(), model.getReferenceId(), model.getNummer(), model.getRechnungCreate(),
 										model.getLiferDate(), model.getRechnungVersion(), model.getRechnungType().getValue(),
 										model.getStatus().getValue(), model.getUserId(), model.getUpdated());
 		}
@@ -27,9 +27,9 @@ public class RechnungAdapter extends AdapterBase<RechnungEntity, RechnungModel> 
 
 	@Override
 	public RechnungModel toModel(RechnungEntity entity) {
-		RechnungModel model = new RechnungModel(entity.getId(), entity.getCustomerId(), entity.getNummer(), entity.getRechnungCreate(), 
-				entity.getLiferDate(), entity.getRechnungVersion(), entity.getRechnungType(), entity.getStatus(), entity.getUserId(),
-												entity.getCreated(), entity.getUpdated());
+		RechnungModel model = new RechnungModel(entity.getId(), entity.getCustomerId(), entity.getReferenceId(), entity.getNummer(), 
+				entity.getRechnungCreate(), entity.getLiferDate(), entity.getRechnungVersion(), entity.getRechnungType(), entity.getStatus(), 
+				entity.getUserId(), entity.getCreated(), entity.getUpdated());
 		
 		RechnungItemAdapter itemAdapter = new RechnungItemAdapter();
 		model.setItems(itemAdapter.toModelList(entity.getItems()));
