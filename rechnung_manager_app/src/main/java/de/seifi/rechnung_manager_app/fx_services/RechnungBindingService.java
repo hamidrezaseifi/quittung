@@ -133,8 +133,11 @@ public class RechnungBindingService {
     public void calculateRechnungSumme() {
         float netto = 0;
 
-        for(RechnungItemProperty i:this.rechnungItems){
-            netto += i.getGesamt();
+        for(RechnungItemProperty item:this.rechnungItems){
+            if(item.getIsMarkedAsDeleted()){
+                continue;
+            }
+            netto += item.getGesamt();
         }
         
         nettoSumme.set(netto);
@@ -505,18 +508,19 @@ public class RechnungBindingService {
 		
 	}
 
-	public void deleteItemAtIndex(int selctedIndx) {
-		if(selctedIndx == -1) {
+	public void deleteItemAtIndex(int selectedIndx) {
+		if(selectedIndx == -1) {
 			return;
 		}
 		
-		if(rechnungItems.get(selctedIndx).isNewItem()) {
-			rechnungItems.remove(selctedIndx);
+		if(rechnungItems.get(selectedIndx).isNewItem()) {
+			rechnungItems.remove(selectedIndx);
 		}
 		else {
-			rechnungItems.get(selctedIndx).setIsMarkedAsDeleted(true);
+			rechnungItems.get(selectedIndx).setIsMarkedAsDeleted(true);
 		}
-		
+
+        calculateRechnungSumme();
 	}
 
     

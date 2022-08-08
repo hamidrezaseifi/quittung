@@ -31,7 +31,7 @@ public class GeldEditingTableCell extends BaseEditbaleTableCell<Float> {
 	protected void setCellText(Float value) {
 		
 		if(value == null) {
-			setText(TableUtils.formatGeld(0.0f));
+			setText("");
 		}
 		else {
 			setText(TableUtils.formatGeld(value));

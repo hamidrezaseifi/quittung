@@ -7,12 +7,8 @@ public class GeldLabelTableCell extends MarkedTableCellBase<Float> {
     public GeldLabelTableCell() {
 
         itemProperty().addListener((obx, oldItem, newItem) -> {
-            Float val = 0f;
-            if (newItem != null) {
-                val = newItem;
-            }
-
-            setText(TableUtils.formatGeld(val));
+            String strValue = newItem != null? TableUtils.formatGeld(newItem) : "";
+            setText(strValue);
         });
         
     }

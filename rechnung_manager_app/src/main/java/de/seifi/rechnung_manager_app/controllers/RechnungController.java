@@ -366,10 +366,11 @@ public class RechnungController implements Initializable, ControllerBase {
     }
 
     private void markSelectedItemAsDeleted() {
-    	int selctedIndx = showItemsTableView.getSelectionModel().getSelectedIndex();
+    	int selectedIndx = showItemsTableView.getSelectionModel().getSelectedIndex();
     	
     	showItemsTableView.setItems(null);
-    	rechnungBindingService.deleteItemAtIndex(selctedIndx);
+        //showItemsTableView.getItems().clear();
+    	rechnungBindingService.deleteItemAtIndex(selectedIndx);
     	showItemsTableView.setItems(rechnungBindingService.getRechnungItems());
 	}
     

@@ -26,7 +26,7 @@ public class IntegerTableCell extends BaseEditbaleTableCell<Integer> {
 	@Override
 	protected void setCellText(Integer value) {
 		if(value == null) {
-			setText(String.valueOf(0));
+			setText("");
 		}
 		else {
 			setText(String.valueOf(value));
