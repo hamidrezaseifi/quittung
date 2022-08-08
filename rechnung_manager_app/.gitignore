@@ -35,3 +35,6 @@ build/
 /exec/*.log
 /exec/*.exe
 /db_config.cfg
+/rechnung_manager_config.cfg
+/logs
+/logs/**
