@@ -106,6 +106,17 @@
     
 }
 
+.edit-button {
+	         
+    -fx-background-image: url('../images/edit.png');
+    
+    -fx-background-size: 26 26;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 3px center;   
+    -fx-font-size: 14px;
+    
+}
+
 .bill-button {
 	         
     -fx-background-image: url('../images/bill.png');

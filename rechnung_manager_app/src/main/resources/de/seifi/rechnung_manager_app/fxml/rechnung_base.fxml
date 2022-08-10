@@ -79,6 +79,7 @@
         </GridPane>
 
         <HBox fx:id="toolbarBox" GridPane.columnIndex="0" GridPane.rowIndex="1" spacing="10" alignment="CENTER_RIGHT">
+            <Button styleClass="edit-button" visible="false" fx:id="btnEdit" text="Bearbeiten" onAction="#startEdit" prefWidth="116" prefHeight="36" alignment="CENTER_RIGHT"></Button>
             <Button styleClass="add-customer-button" visible="false" fx:id="btnAddItem" text="" onAction="#addItem" prefWidth="36" prefHeight="36" alignment="CENTER_RIGHT"></Button>
             <Button styleClass="remove-customer-button" visible="false" fx:id="btnDeleteItem" text="" onAction="#deleteItem" prefWidth="36" prefHeight="36" alignment="CENTER_RIGHT"></Button>
             <Button styleClass="reload-button" fx:id="btnReset" text="Zurücksetzen" onAction="#reload" prefWidth="130" prefHeight="36" alignment="CENTER_RIGHT"></Button>

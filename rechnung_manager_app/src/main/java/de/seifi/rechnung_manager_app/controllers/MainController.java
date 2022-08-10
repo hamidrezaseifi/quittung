@@ -5,9 +5,14 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import de.seifi.rechnung_manager_app.RechnungManagerFxApp;
+import de.seifi.rechnung_manager_app.enums.RechnungType;
+import de.seifi.rechnung_manager_app.models.CustomerModel;
+import de.seifi.rechnung_manager_app.models.RechnungModel;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.*;
+import javafx.util.Pair;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,7 +43,8 @@ public class MainController implements Initializable {
 		if(RechnungManagerFxApp.cannCurrentControllerClosed()) {
     		clearChildren();
         	
-        	childBox.getChildren().add(RechnungManagerFxApp.getQuittungPane());
+    		Pair<GridPane, RechnungController> pair = RechnungManagerFxApp.getRechnungPane(RechnungType.QUITTUNG);
+        	childBox.getChildren().add(pair.getKey());
     	}
 
 	}
@@ -51,7 +57,8 @@ public class MainController implements Initializable {
 		if(RechnungManagerFxApp.cannCurrentControllerClosed()) {
     		clearChildren();
         	
-        	childBox.getChildren().add(RechnungManagerFxApp.getRechnungPane());
+    		Pair<GridPane, RechnungController> pair = RechnungManagerFxApp.getRechnungPane(RechnungType.RECHNUNG);
+        	childBox.getChildren().add(pair.getKey());
     	}
 
 	}
@@ -114,6 +121,20 @@ public class MainController implements Initializable {
     		childBox.getChildren().remove(0);	
     	}
     }
+
+	public void startEditRechnung(RechnungModel rechnungModel, CustomerModel customerModel) throws IOException {
+		logger.debug(String.format("Start editing Rechnung Type '%s' id: '%s'", rechnungModel.getRechnungType(), rechnungModel.getId()));
+
+		if(RechnungManagerFxApp.cannCurrentControllerClosed()) {
+    		clearChildren();
+        	
+    		Pair<GridPane, RechnungController> pair = RechnungManagerFxApp.getRechnungPane(rechnungModel.getRechnungType());
+    		RechnungController controller = pair.getValue();
+    		controller.startEdit(rechnungModel, customerModel);
+        	childBox.getChildren().add(pair.getKey());
+    	}
+		
+	}
 
     
 }

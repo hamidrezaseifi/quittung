@@ -220,7 +220,7 @@ public class RechnungBindingService {
 		}
 		
 		if(this.editingMode) {
-			this.startEditing(rechnungSavingModel);
+			this.startEditing(rechnungSavingModel, this.customerSavingModel);
 		}
         
         setDirty(false);
@@ -440,21 +440,23 @@ public class RechnungBindingService {
 		return item;
 	}
 
-	public void startEditing(RechnungModel rechnungModel) {
+	public void startEditing(RechnungModel rechnungModel, CustomerModel customerModel) {
 		
 
         this.editingMode = true;
 
-		if(rechnungType == RechnungType.RECHNUNG) {
+		if(rechnungType == RechnungType.RECHNUNG && customerModel == null) {
 	        Optional<CustomerModel> customerEntityOptional = RechnungManagerSpringApp
                     .getCustomerService().getById(rechnungModel.getCustomerId());
 	        if(customerEntityOptional.isEmpty()){
 	        	throw new RuntimeException("Der Kunde von der Rechnung nicht gefunden!");
 	        }
-
-	        this.customerSavingModel = customerEntityOptional.get();
+	        
+	        customerModel = customerEntityOptional.get();
 			
 		}
+		
+		this.customerSavingModel = customerModel;
         
 		setRechnungModel(rechnungModel);
 		

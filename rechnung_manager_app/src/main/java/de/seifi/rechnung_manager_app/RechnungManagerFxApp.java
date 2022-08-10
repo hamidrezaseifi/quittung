@@ -6,6 +6,8 @@ import de.seifi.rechnung_manager_app.controllers.ControllerBase;
 import de.seifi.rechnung_manager_app.controllers.MainController;
 import de.seifi.rechnung_manager_app.controllers.RechnungController;
 import de.seifi.rechnung_manager_app.enums.RechnungType;
+import de.seifi.rechnung_manager_app.models.CustomerModel;
+import de.seifi.rechnung_manager_app.models.RechnungModel;
 import de.seifi.rechnung_manager_app.services.ICustomerService;
 import de.seifi.rechnung_manager_app.ui.UiUtils;
 import de.seifi.rechnung_manager_app.utils.RechnungManagerAppConfig;
@@ -246,7 +248,7 @@ public class RechnungManagerFxApp extends Application implements ISingleInstance
         return fxmlLoader;
     }
 
-    public static GridPane getRechnungPane() throws IOException {
+    /*public static GridPane getRechnungPane() throws IOException {
 
         URL fxmlResource = RechnungManagerFxApp.class.getResource("fxml/rechnung_base.fxml");
         FXMLLoader fxmlLoader = new FXMLLoader(fxmlResource);
@@ -264,7 +266,20 @@ public class RechnungManagerFxApp extends Application implements ISingleInstance
         GridPane rechnungPane = (GridPane)fxmlLoader.load();
 
         return rechnungPane;
+    }*/
+    
+
+    public static Pair<GridPane, RechnungController> getRechnungPane(RechnungType rechnungType) throws IOException {
+
+        URL fxmlResource = RechnungManagerFxApp.class.getResource("fxml/rechnung_base.fxml");
+        FXMLLoader fxmlLoader = new FXMLLoader(fxmlResource);
+        RechnungController controller = new RechnungController(rechnungType);
+		fxmlLoader.setController(controller);
+        GridPane rechnungPane = (GridPane)fxmlLoader.load();
+
+        return new Pair<>(rechnungPane, controller);
     }
+
 
     public static GridPane getHomePane() throws IOException {
     	/*if(homePane == null) {
@@ -315,7 +330,6 @@ public class RechnungManagerFxApp extends Application implements ISingleInstance
 		return currentController != null? currentController.isDirty() : false;
 	}
 
-
 	public static boolean cannCurrentControllerClosed() {
 		if(isCurrentControllerDirty()){
             UiUtils.showError("Niche gespeicherte Änderungen ...", currentController.getDirtyMessage());
@@ -328,6 +342,12 @@ public class RechnungManagerFxApp extends Application implements ISingleInstance
 
 	public static void setCurrentController(ControllerBase currentController) {
 		RechnungManagerFxApp.currentController = currentController;
+	}
+
+	public static void startEditRechnung(RechnungModel rechnungModel, CustomerModel customerModel) throws IOException {
+		logger.debug("Start editing rechnung: " + rechnungModel.getId());
+		
+		mainController.startEditRechnung(rechnungModel, customerModel);
 	}
 
 }

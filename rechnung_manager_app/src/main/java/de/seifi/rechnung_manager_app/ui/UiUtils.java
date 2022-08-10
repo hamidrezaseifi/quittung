@@ -98,7 +98,7 @@ public class UiUtils {
 		return rechnungPringController;
 	}
 
-    public static void showRechnungDialog(RechnungModel rechnungModel) {
+    public static void showRechnungViewDialog(RechnungModel rechnungModel) {
     	try {
 			Stage stage = new Stage();
 			FXMLLoader fxmlLoader = RechnungManagerFxApp.getRechnungFxmlLoader();
@@ -106,7 +106,7 @@ public class UiUtils {
 			fxmlLoader.setController(controller);
 
 			GridPane rechnungPane = fxmlLoader.load();
-			controller.loadModel(rechnungModel, false, stage);
+			controller.startView(rechnungModel, stage);
 	        rechnungPane.setPadding(new Insets(10));
 	        
 	        Scene scene = new Scene(rechnungPane, 1200, 1000);

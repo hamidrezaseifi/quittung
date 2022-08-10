@@ -78,6 +78,8 @@ public class RechnungController implements Initializable, ControllerBase {
     @FXML private Button btnAddItem;
 
     @FXML private Button btnDeleteItem;
+    
+    @FXML private Button btnEdit;
 
     @FXML private GridPane bannerPane;
 
@@ -171,6 +173,13 @@ public class RechnungController implements Initializable, ControllerBase {
     	showItemsTableView.requestFocus();
     	showItemsTableView.edit(indexofItem, mengeColumn);
     	
+    }
+    
+    @FXML
+    private void startEdit() throws IOException {
+    	this.stage.close();
+    	
+    	RechnungManagerFxApp.startEditRechnung(rechnungBindingService.getRechnungSavingModel(), rechnungBindingService.getCustomerModel());
     }
 
     @FXML
@@ -374,13 +383,68 @@ public class RechnungController implements Initializable, ControllerBase {
     	showItemsTableView.setItems(rechnungBindingService.getRechnungItems());
 	}
     
-	public void loadModel(RechnungModel rechnungModel, boolean editable, Stage stage) {
+	public void startView(RechnungModel rechnungModel, Stage stage) {
 
 
-		rechnungBindingService.startEditing(rechnungModel);
+		rechnungBindingService.startEditing(rechnungModel, null);
 		
-        rechnungBindingService.setIsView(!editable);
+        rechnungBindingService.setIsView(true);
         this.stage = stage;
+
+        lblExemplar.setText("original");
+		if(rechnungModel.hasReference()) {
+			lblExemplar.setText("überarbeiten");
+		}
+		
+		if(this.rechnungType == RechnungType.RECHNUNG){
+            lblQuittung.setVisible(false);
+        }
+
+        if(this.rechnungType == RechnungType.QUITTUNG){
+        	lblQuittung.setVisible(true);
+
+        }
+        
+        addExamplarTab();
+        
+        toolbarBox.getChildren().remove(btnAddItem);
+        toolbarBox.getChildren().remove(btnDeleteItem);
+        toolbarBox.getChildren().remove(btnSave);
+        toolbarBox.getChildren().remove(btnReset);
+        toolbarBox.getChildren().remove(btnClose);
+        
+        btnEdit.setVisible(true);
+        
+		setItemsTableViewEditable(false);
+
+        if(this.rechnungType == RechnungType.RECHNUNG){
+            
+            nameBox.getChildren().remove(btnSelectCsutomer);
+            lblQuittung.setVisible(false);
+        }
+
+        if(this.rechnungType == RechnungType.QUITTUNG){
+        	lblQuittung.setVisible(true);
+        	for(Node child: bannerPane.getChildren()) {
+        		if(lblQuittung == child) {
+        			continue;
+        		}
+        		if(GridPane.getColumnIndex(child) == 1 || GridPane.getColumnIndex(child) == 2) {
+        			child.setVisible(false);
+        		}
+        		
+        	}
+
+        }
+
+	}
+    
+	public void startEdit(RechnungModel rechnungModel, CustomerModel customerModel) {
+
+
+		rechnungBindingService.startEditing(rechnungModel, customerModel);
+		
+        rechnungBindingService.setIsView(false);
 
         lblExemplar.setText("original");
 		if(rechnungModel.hasReference()) {
@@ -400,8 +464,9 @@ public class RechnungController implements Initializable, ControllerBase {
         
         btnAddItem.setVisible(true);
         btnDeleteItem.setVisible(true);
-
-		setItemsTableViewEditable(editable);
+        btnEdit.setVisible(false);
+        
+		setItemsTableViewEditable(false);
         showItemsTableView.setOnKeyPressed( new EventHandler<KeyEvent>()
         	{
 	          @Override
@@ -418,34 +483,28 @@ public class RechnungController implements Initializable, ControllerBase {
 	        } 
         );
         
-		if(!editable) {
+        if(this.rechnungType == RechnungType.RECHNUNG){
+            nameBox.getChildren().remove(btnSelectCsutomer);
+            lblQuittung.setVisible(false);
+        }
 
-			//toolbarBox.getChildren().remove(toggleStatusBox);
-
-            if(this.rechnungType == RechnungType.RECHNUNG){
-                //lblName.setCursor(Cursor.DEFAULT);
-                lblName.prefWidthProperty().bind(nameBox.widthProperty());
-                nameBox.getChildren().remove(btnSelectCsutomer);
-                lblQuittung.setVisible(false);
-            }
-
-            if(this.rechnungType == RechnungType.QUITTUNG){
-            	lblQuittung.setVisible(true);
-            	for(Node child: bannerPane.getChildren()) {
-            		if(lblQuittung == child) {
-            			continue;
-            		}
-            		if(GridPane.getColumnIndex(child) == 1 || GridPane.getColumnIndex(child) == 2) {
-            			child.setVisible(false);
-            		}
-            		
-            	}
-
-            }
-
+        if(this.rechnungType == RechnungType.QUITTUNG){
+        	lblQuittung.setVisible(true);
+        	for(Node child: bannerPane.getChildren()) {
+        		if(lblQuittung == child) {
+        			continue;
+        		}
+        		if(GridPane.getColumnIndex(child) == 1 || GridPane.getColumnIndex(child) == 2) {
+        			child.setVisible(false);
+        		}
+        		
+        	}
 
         }
+
 	}
+	
+	
 
 	private void setItemsTableViewEditable(boolean editable) {
 		//showItemsTableView.getColumns().forEach(c -> c.setEditable(editable));

@@ -49,7 +49,7 @@ public class ReportToolsTableCell extends TableCell<ReportItemModel, String> {
 		btnEdit.setOnAction((ActionEvent event) -> {
 			
 			RechnungModel model = getCurrentRechnungModel();
-			UiUtils.showRechnungDialog(model);
+			UiUtils.showRechnungViewDialog(model);
 			
         });
 
