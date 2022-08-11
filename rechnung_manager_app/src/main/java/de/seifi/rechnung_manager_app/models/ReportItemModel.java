@@ -17,6 +17,8 @@ public class ReportItemModel {
 
     private StringProperty rechnungZeit;
 
+    private StringProperty paymentType;
+
     private ListProperty<RechnungItemModel> produktListItem;
 
     private StringProperty nettoGesamt;
@@ -32,6 +34,7 @@ public class ReportItemModel {
         this.rechnungDatum = new SimpleStringProperty(model.getRechnungCreate());
         this.nummer = new SimpleStringProperty(String.valueOf(model.getNummer()));
         this.rechnungZeit = new SimpleStringProperty(model.getRechnungCreate());
+        this.paymentType = new SimpleStringProperty(model.getPaymentType().getTitle());
         this.produktListItem = new SimpleListProperty<RechnungItemModel>(FXCollections.observableArrayList(model.getItems()));
         this.nettoGesamt = new SimpleStringProperty(TableUtils.formatGeld(model.getGesamt()));
         this.bruttoGesamt = new SimpleStringProperty(TableUtils.formatGeld(GerldCalculator.nettoToBrutto(model.getGesamt())));
@@ -69,6 +72,15 @@ public class ReportItemModel {
     public StringProperty rechnungZeitProperty() {
         return rechnungZeit;
     }
+
+    public String getPaymentType() {
+        return paymentType.get();
+    }
+
+    public StringProperty paymentTypeProperty() {
+        return paymentType;
+    }
+
 
     public Object getProduktListItem() {
         return produktListItem.get();

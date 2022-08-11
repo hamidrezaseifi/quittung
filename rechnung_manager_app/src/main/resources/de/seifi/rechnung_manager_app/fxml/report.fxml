@@ -62,6 +62,12 @@
                     </cellValueFactory>
 
                 </TableColumn>
+                <TableColumn fx:id="paymentTypeColumn" text="Zahltyp" editable="false" sortable="false" prefWidth="90">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="paymentType" />
+                    </cellValueFactory>
+
+                </TableColumn>
                 <TableColumn fx:id="produktListColumn" prefWidth="120" text="Produkte" editable="false" sortable="false">
                     <cellValueFactory>
                         <PropertyValueFactory property="produktListItem" />

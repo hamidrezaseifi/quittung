@@ -131,26 +131,29 @@ public class RechnungItemProperty {
         }
 
         return !isPropertyEmpty(produkt) && !isPropertyEmpty(artikelNummer) && !isPropertyEmpty(menge) && 
-        		!isPropertyEmpty(brutoPreis) && !isPropertyEmpty(preis) && !isPropertyEmpty(gesamt);
+        		!isBrutoPreisEmpty() && !isPropertyEmpty(preis) && !isPropertyEmpty(gesamt);
     }
 
     public boolean isEmpty(){
 
-        return isPropertyEmpty(produkt) && isPropertyEmpty(artikelNummer) && isPropertyEmpty(menge) && isPropertyEmpty(brutoPreis) && isPropertyEmpty(preis) && isPropertyEmpty(gesamt);
+        return isPropertyEmpty(produkt) && isPropertyEmpty(artikelNummer) && isPropertyEmpty(menge) && isBrutoPreisEmpty() && isPropertyEmpty(preis) && isPropertyEmpty(gesamt);
     }
 
     public boolean canSaved(){
 
-        return !isEmpty() && isValid();
+        return !isEmpty() && isValid() && !getIsMarkedAsDeleted();
     }
 
     private boolean isPropertyEmpty(StringProperty prop) {
     	return prop.getValue() == null || prop.getValue().toString().trim().isEmpty() || prop.getValue().toString().trim().isBlank();
     }
 
-    
     private boolean isPropertyEmpty(FloatProperty prop) {
-    	return prop.getValue() == null || prop.getValue() == 0.0;
+        return prop.getValue() == null || prop.getValue() == 0.0;
+    }
+
+    private boolean isBrutoPreisEmpty() {
+        return newItem && (brutoPreis.getValue() == null || brutoPreis.getValue() == 0.0);
     }
 
     private boolean isPropertyEmpty(IntegerProperty prop) {

@@ -69,11 +69,14 @@
                 <Label fx:id="lblRechnungNummerTitle" text="Rechnung Nr." GridPane.columnIndex="4" GridPane.rowIndex="0" styleClass="summe-label" textAlignment="LEFT" />
                 <Label fx:id="lblRechnungNummer" GridPane.columnIndex="5" GridPane.rowIndex="0" styleClass="summe-label" textAlignment="LEFT" />
 
-                <Label text="Datum" GridPane.columnIndex="4" GridPane.rowIndex="1" styleClass="summe-label" textAlignment="LEFT" style="" />
-                <Label fx:id="lblDatum" GridPane.columnIndex="5" GridPane.rowIndex="1" styleClass="summe-label" textAlignment="LEFT" style="" />
+                <Label text="Datum" GridPane.columnIndex="4" GridPane.rowIndex="1" styleClass="summe-label" textAlignment="LEFT" />
+                <Label fx:id="lblDatum" GridPane.columnIndex="5" GridPane.rowIndex="1" styleClass="summe-label" textAlignment="LEFT" />
 
-                <Label text="Exemplar" GridPane.columnIndex="4" GridPane.rowIndex="2" styleClass="summe-label" textAlignment="LEFT" style="" />
-                <Label text="Original" fx:id="lblExemplar" GridPane.columnIndex="5" GridPane.rowIndex="2" styleClass="summe-label" textAlignment="LEFT" style="" />
+				<Label text="Exemplar" GridPane.columnIndex="4" GridPane.rowIndex="2" styleClass="summe-label" textAlignment="LEFT" />
+				<Label text="Original" fx:id="lblExemplar" GridPane.columnIndex="5" GridPane.rowIndex="2" styleClass="summe-label" textAlignment="LEFT" />
+
+				<Label text="Zahltyp" GridPane.columnIndex="4" GridPane.rowIndex="3" styleClass="summe-label" textAlignment="LEFT" />
+				<ComboBox fx:id="cmbPaymentType" GridPane.columnIndex="5" GridPane.rowIndex="3" styleClass="summe-label" />
 
 			</children>
         </GridPane>

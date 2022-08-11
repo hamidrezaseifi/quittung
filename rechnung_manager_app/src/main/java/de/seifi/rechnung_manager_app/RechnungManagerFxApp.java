@@ -10,6 +10,7 @@ import de.seifi.rechnung_manager_app.models.CustomerModel;
 import de.seifi.rechnung_manager_app.models.RechnungModel;
 import de.seifi.rechnung_manager_app.services.ICustomerService;
 import de.seifi.rechnung_manager_app.ui.UiUtils;
+import de.seifi.rechnung_manager_app.utils.RechUncaughtExceptionHandler;
 import de.seifi.rechnung_manager_app.utils.RechnungManagerAppConfig;
 import javafx.animation.FadeTransition;
 import javafx.application.Application;
@@ -71,6 +72,7 @@ public class RechnungManagerFxApp extends Application implements ISingleInstance
     }
 
     public static void main(String[] args) {
+        Thread.setDefaultUncaughtExceptionHandler(new RechUncaughtExceptionHandler());
 
         logger.info("Start Main Application");
         RechnungManagerFxApp.startArgs = args;

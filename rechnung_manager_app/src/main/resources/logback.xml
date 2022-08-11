@@ -26,7 +26,7 @@
         </encoder>
     </appender>
 
-    <root level="debug">
+    <root level="ERROR">
         <appender-ref ref="STDOUT" />
         <appender-ref ref="DEBUG_FILE_ROLLING"/>
     </root>

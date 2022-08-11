@@ -45,6 +45,10 @@ public class RechnungEntity extends EntityBase {
 	@ColumnDefault("1")
 	private Integer rechnungVersion;
 
+	@Column(name="payment_type", nullable = false)
+	@ColumnDefault("1")
+	private Integer paymentType;
+
 	@Column(name="user_id")
 	private UUID userId;
 
@@ -63,6 +67,7 @@ public class RechnungEntity extends EntityBase {
     	super();
     	items = new HashSet<>();
 		this.rechnungVersion = 1;
+		this.paymentType = 1;
 		this.referenceId = null;
 		this.customerId = null;
     }
@@ -73,6 +78,7 @@ public class RechnungEntity extends EntityBase {
 						  String rechnungCreate,
 						  String liferDate,
 						  int rechnungVersion,
+						  int paymentType,
 						  int rechnungType,
 						  int status,
 						  UUID userId) {
@@ -86,6 +92,7 @@ public class RechnungEntity extends EntityBase {
 		this.userId = userId;
 		this.rechnungType = rechnungType;
 		this.rechnungVersion = rechnungVersion;
+		this.paymentType = paymentType;
 	}
 
 	public RechnungEntity(UUID id,
@@ -95,6 +102,7 @@ public class RechnungEntity extends EntityBase {
 						  String rechnungCreate,
 						  String liferDate,
 						  int rechnungVersion,
+						  int paymentType,
 						  int rechnungType,
 						  int status,
 						  UUID userId,
@@ -110,6 +118,7 @@ public class RechnungEntity extends EntityBase {
 		this.userId = userId;
 		this.rechnungType = rechnungType;
 		this.rechnungVersion = rechnungVersion;
+		this.paymentType = paymentType;
 		this.updated = updated;
 	}
 
@@ -200,6 +209,14 @@ public class RechnungEntity extends EntityBase {
 
 	public void setRechnungVersion(Integer rechnungVersion) {
 		this.rechnungVersion = rechnungVersion;
+	}
+
+	public Integer getPaymentType() {
+		return paymentType;
+	}
+
+	public void setPaymentType(Integer paymentType) {
+		this.paymentType = paymentType;
 	}
 
 	public Integer getStatus() {

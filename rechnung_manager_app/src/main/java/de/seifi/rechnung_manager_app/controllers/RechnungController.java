@@ -4,6 +4,7 @@ import de.seifi.rechnung_common.repositories.RechnungRepository;
 import de.seifi.rechnung_manager_app.RechnungManagerFxApp;
 import de.seifi.rechnung_manager_app.RechnungManagerSpringApp;
 import de.seifi.rechnung_manager_app.data_service.IRechnungDataHelper;
+import de.seifi.rechnung_manager_app.enums.PaymentType;
 import de.seifi.rechnung_manager_app.enums.RechnungType;
 import de.seifi.rechnung_manager_app.fx_services.RechnungBindingService;
 import de.seifi.rechnung_manager_app.models.CustomerModel;
@@ -107,6 +108,8 @@ public class RechnungController implements Initializable, ControllerBase {
     
     @FXML private HBox toolbarBox;
 
+    @FXML private ComboBox<PaymentType> cmbPaymentType;
+
 
     private RechnungBindingService rechnungBindingService;
 
@@ -133,22 +136,13 @@ public class RechnungController implements Initializable, ControllerBase {
 
 	@FXML
     private void speichern() throws IOException {
-        if(!rechnungBindingService.verifySaving()){
+        if(!rechnungBindingService.verifySaving(true)){
             return;
         }
-		/*showItemsTableView.setEditable(false);
-		showItemsTableView.edit(-1, null);
-		showItemsTableView.setDisable(true);
-		
-		showItemsTableView.setItems(null);*/
-		
+
         if(rechnungBindingService.save()){
 
         }
-		
-		/*showItemsTableView.setItems(rechnungBindingService.getRechnungItems());
-        showItemsTableView.setEditable(true);
-        showItemsTableView.setDisable(false);*/
     }
 
     @FXML
@@ -299,8 +293,8 @@ public class RechnungController implements Initializable, ControllerBase {
             	btnAddItem.setDisable(false);
             	setItemsTableViewEditable(false);
             }
-        	
 
+            rechnungBindingService.setDirty(true);
         });
 
         produktColumn.setOnEditCommit(event -> {
@@ -334,6 +328,12 @@ public class RechnungController implements Initializable, ControllerBase {
         btnSave.disableProperty().bind(rechnungBindingService.getDisableSaveProperty());
         btnPrint.disableProperty().bind(rechnungBindingService.getDisablePrintProperty());
         toggleStatusBox.visibleProperty().bind(rechnungBindingService.getVisbleToggleStatusBox());
+
+        cmbPaymentType.getItems().addAll(PaymentType.values());
+        cmbPaymentType.valueProperty().bindBidirectional(rechnungBindingService.getPaymentTypeProperty());
+        cmbPaymentType.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
+            rechnungBindingService.calculateButtons();
+        });
 
         if(this.rechnungType == RechnungType.QUITTUNG){
         	
@@ -391,9 +391,11 @@ public class RechnungController implements Initializable, ControllerBase {
         rechnungBindingService.setIsView(true);
         this.stage = stage;
 
+        toggleStatusBox.getChildren().remove(lblStatusChange);
+
         lblExemplar.setText("original");
 		if(rechnungModel.hasReference()) {
-			lblExemplar.setText("überarbeiten");
+			lblExemplar.setText("überarbeitet: ver " + rechnungModel.getRechnungVersion());
 		}
 		
 		if(this.rechnungType == RechnungType.RECHNUNG){
@@ -414,6 +416,8 @@ public class RechnungController implements Initializable, ControllerBase {
         toolbarBox.getChildren().remove(btnClose);
         
         btnEdit.setVisible(true);
+
+        cmbPaymentType.setDisable(true);
         
 		setItemsTableViewEditable(false);
 

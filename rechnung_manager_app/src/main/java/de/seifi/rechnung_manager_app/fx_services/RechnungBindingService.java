@@ -7,17 +7,13 @@ import de.seifi.rechnung_manager_app.RechnungManagerFxApp;
 import de.seifi.rechnung_manager_app.RechnungManagerSpringApp;
 import de.seifi.rechnung_manager_app.adapter.RechnungAdapter;
 import de.seifi.rechnung_manager_app.data_service.IRechnungDataHelper;
+import de.seifi.rechnung_manager_app.enums.PaymentType;
 import de.seifi.rechnung_manager_app.enums.RechnungStatus;
 import de.seifi.rechnung_manager_app.enums.RechnungType;
-import de.seifi.rechnung_manager_app.models.CustomerModel;
-import de.seifi.rechnung_manager_app.models.CustomerModelProperty;
-import de.seifi.rechnung_manager_app.models.CustomerSelectModel;
-import de.seifi.rechnung_manager_app.models.ProduktModel;
-import de.seifi.rechnung_manager_app.models.RechnungModel;
+import de.seifi.rechnung_manager_app.models.*;
 import de.seifi.rechnung_manager_app.ui.UiUtils;
 import de.seifi.rechnung_manager_app.utils.GeneralUtils;
 import de.seifi.rechnung_manager_app.utils.GerldCalculator;
-import de.seifi.rechnung_manager_app.models.RechnungItemProperty;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -51,6 +47,8 @@ public class RechnungBindingService {
     private BooleanProperty disableSave;
     private BooleanProperty disablePrint;
     private BooleanProperty visbleToggleStatusBox;
+
+    private ObjectProperty<PaymentType> paymentTypeProperty;
 
     private RechnungModel rechnungSavingModel = new RechnungModel();
 
@@ -101,6 +99,7 @@ public class RechnungBindingService {
         
         rechnungNummer = new SimpleStringProperty();
         rechnungDatum = new SimpleStringProperty();
+        paymentTypeProperty = new SimpleObjectProperty<>(PaymentType.NOT_SET);
         
         disableSave = new SimpleBooleanProperty(true);
         disablePrint = new SimpleBooleanProperty(false);
@@ -196,7 +195,7 @@ public class RechnungBindingService {
 
 	public void reset() {
 		
-		if(this.editingMode == false) {
+		if(!this.editingMode) {
 			this.rechnungItems.clear();
 	        while (this.rechnungItems.size() < INITIAL_ITEMS){
 	        	addNewRowIntern(new RechnungItemProperty(true));
@@ -212,8 +211,8 @@ public class RechnungBindingService {
 
 	        int lastNummer = this.rechnungDataHelper.getLastActiveRechnungNummer();
 
-	        RechnungModel model = new RechnungModel(null, lastNummer + 1, date, date, 1, rechnungType,
-	                                                RechnungStatus.ACTIVE, RechnungManagerFxApp.loggedUser);
+	        RechnungModel model = new RechnungModel(null, lastNummer + 1, date, date, 1,
+                    PaymentType.NOT_SET, rechnungType, RechnungStatus.ACTIVE, RechnungManagerFxApp.loggedUser);
 	        
 	        setRechnungModel(model);
 			
@@ -231,6 +230,7 @@ public class RechnungBindingService {
 		this.rechnungSavingModel = model;
         this.rechnungNummer.set(String.valueOf(rechnungSavingModel.getNummer()));
         this.rechnungDatum.set(rechnungSavingModel.getRechnungCreate());
+        this.paymentTypeProperty.set(rechnungSavingModel.getPaymentType());
 	}
 
     public List<CustomerSelectModel> getCustomerSelectList() {
@@ -266,6 +266,9 @@ public class RechnungBindingService {
 		return rechnungDatum;
 	}
 
+    public ObjectProperty<PaymentType> getPaymentTypeProperty(){
+        return this.paymentTypeProperty;
+    }
 	public boolean isDirty() {
 		return isDirty;
 	}
@@ -273,23 +276,10 @@ public class RechnungBindingService {
 	
 	public void setDirty(boolean isDirty) {
 		this.isDirty = isDirty;
-		
-		if(isDirty) {
-			if(this.rechnungItems.stream().anyMatch(pi -> !pi.isValid())) {
-				this.disableSave.set(true);
-			}
-			else {
-				this.disableSave.set(!isAnyValidArtikelToSave());
-			}
-			
-		}
-		
-		this.disablePrint.set(isDirty);
-		if(this.visbleToggleStatusBox.get()) {
-			this.visbleToggleStatusBox.set(this.disableSave.get());
-		}
-		
-	}
+
+        calculateButtons();
+
+    }
 	
 	private boolean isAnyValidArtikelToSave() {
 		return this.rechnungItems.stream().anyMatch(pi -> pi.isValid() & !pi.isEmpty());
@@ -311,20 +301,50 @@ public class RechnungBindingService {
 		visbleToggleStatusBox.set(visible);;
 	}
 
-    public boolean verifySaving() {
-        if(this.rechnungType == RechnungType.RECHNUNG) {
-            if (this.isCustomerSelected == false) {
+    public boolean verifySaving(boolean showError) {
+        if(paymentTypeProperty.get() == PaymentType.NOT_SET){
+            if(showError){
                 UiUtils.showError("Rechnung-Speichern",
-                                  "Es ist kein Kunde ausgewählt. Bitte wählen Sie einen Kunden aus");
+                        "Zahltyp ist nicht ausgewählt. Bitte wählen Sie einen Zahltyp aus.");
+            }
+            return false;
+        }
+        if(this.rechnungType == RechnungType.RECHNUNG) {
+            if (!this.isCustomerSelected) {
+                if(showError){
+                    UiUtils.showError("Rechnung-Speichern",
+                            "Es ist kein Kunde ausgewählt. Bitte wählen Sie einen Kunden aus.");
+                }
+
                 return false;
             }
         }
+
+        if(this.rechnungItems.stream().anyMatch(pi -> !pi.isValid())){
+            return false;
+        }
+
+        if(!isAnyValidArtikelToSave()){
+            return false;
+        }
+
         return true;
     }
 
-            public boolean save() {
-        if(this.rechnungType == RechnungType.RECHNUNG){
-            if(this.isCustomerSelected == false){
+    public boolean save() {
+        if(this.editingMode){
+            RechnungModel oldInstance = rechnungSavingModel.clone();
+            oldInstance.setStatus(RechnungStatus.OLD);
+            RechnungEntity savingEntity = rechnungAdapter.toEntity(oldInstance);
+            savingEntity.setUpdated(null);
+            rechnungRepository.save(savingEntity);
+
+            rechnungSavingModel.setExemplarOf(oldInstance);
+
+        }
+
+        if(!this.editingMode && this.rechnungType == RechnungType.RECHNUNG){
+            if(!this.isCustomerSelected){
                 UiUtils.showError("Rechnung-Speichern", "Es ist kein Kunde ausgewählt. Bitte wählen Sie einen Kunden aus");
                 return false;
             }
@@ -340,17 +360,17 @@ public class RechnungBindingService {
             rechnungSavingModel.setCustomerId(RechnungModel.QUITTUNG_CUSTOMER_ID);
         }
 
+        rechnungSavingModel.setPaymentType(this.paymentTypeProperty.get());
         rechnungSavingModel.getItems().clear();
-        rechnungSavingModel
-                .getItems().addAll(this.rechnungItems.stream().filter(qi -> qi.canSaved()).map(qi -> qi.toModel()).collect(Collectors.toList()));
+        rechnungSavingModel.getItems().addAll(getSavingRechnungItems());
 
         RechnungEntity savingEntity = rechnungAdapter.toEntity(rechnungSavingModel);
-
+        savingEntity.setUpdated(null);
         rechnungRepository.save(savingEntity);
         Optional<RechnungEntity> savedEntityOptional = rechnungRepository.findById(savingEntity.getId());
         if(savedEntityOptional.isPresent()) {
             rechnungSavingModel = rechnungAdapter.toModel(savedEntityOptional.get());
-            List<RechnungItemProperty> items = this.rechnungItems.stream().filter(qi -> qi.canSaved()).collect(Collectors.toList());
+            List<RechnungItemProperty> items = this.rechnungItems.stream().filter(RechnungItemProperty::canSaved).collect(Collectors.toList());
 
             RechnungManagerSpringApp.getProduktService().retreiveProduktList();
             
@@ -360,16 +380,19 @@ public class RechnungBindingService {
             }
             RechnungManagerSpringApp.getProduktService().retreiveProduktList();
         }
-
-
+        reset();
         setDirty(false);
-
-
 
         return true;
     }
 
-	public void setNewMengeValue(int row, Integer value) {
+    private List<RechnungItemModel> getSavingRechnungItems() {
+        return this.rechnungItems.stream().
+                filter(RechnungItemProperty::canSaved).
+                map(RechnungItemProperty::toModel).collect(Collectors.toList());
+    }
+
+    public void setNewMengeValue(int row, Integer value) {
 		RechnungItemProperty prop = this.rechnungItems.get(row);
         if(prop.getMenge() != value) {
         	prop.setMenge(value);
@@ -437,6 +460,7 @@ public class RechnungBindingService {
 	public RechnungItemProperty addNewRow() {
 		RechnungItemProperty item = new RechnungItemProperty(true);
 		addNewRowIntern(item);
+        setDirty(true);
 		return item;
 	}
 
@@ -445,28 +469,35 @@ public class RechnungBindingService {
 
         this.editingMode = true;
 
-		if(rechnungType == RechnungType.RECHNUNG && customerModel == null) {
-	        Optional<CustomerModel> customerEntityOptional = RechnungManagerSpringApp
-                    .getCustomerService().getById(rechnungModel.getCustomerId());
-	        if(customerEntityOptional.isEmpty()){
-	        	throw new RuntimeException("Der Kunde von der Rechnung nicht gefunden!");
-	        }
-	        
-	        customerModel = customerEntityOptional.get();
-			
-		}
-		
-		this.customerSavingModel = customerModel;
-        
+		if(rechnungType == RechnungType.RECHNUNG) {
+
+            if(customerModel == null){
+                Optional<CustomerModel> customerEntityOptional = RechnungManagerSpringApp
+                        .getCustomerService().getById(rechnungModel.getCustomerId());
+                if(customerEntityOptional.isEmpty()){
+                    throw new RuntimeException("Der Kunde von der Rechnung nicht gefunden!");
+                }
+
+                customerModel = customerEntityOptional.get();
+
+            }
+
+            this.customerSavingModel = customerModel;
+
+            this.customerModelProperty.setModel(this.customerSavingModel);
+
+            this.isCustomerSelected = this.customerSavingModel != null;
+
+            this.calculateButtons();
+        }
+
 		setRechnungModel(rechnungModel);
 		
 		rechnungItems.clear();
 
         this.rechnungSavingModel = rechnungModel;
-        
-        this.customerModelProperty.setModel(this.customerSavingModel);
-        
-        
+        this.paymentTypeProperty.set(this.rechnungSavingModel.getPaymentType());
+
 		rechnungModel.getItems().forEach(r -> addNewRowIntern(new RechnungItemProperty(r)));
 		
         RechnungManagerSpringApp.getProduktService().retreiveProduktList();
@@ -523,7 +554,16 @@ public class RechnungBindingService {
 		}
 
         calculateRechnungSumme();
+        setDirty(true);
 	}
 
-    
+
+    public void calculateButtons() {
+        this.disableSave.set(!this.verifySaving(false));
+
+        this.disablePrint.set(isDirty);
+        if(this.visbleToggleStatusBox.get()) {
+            this.visbleToggleStatusBox.set(this.disableSave.get());
+        }
+    }
 }

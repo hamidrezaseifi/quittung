@@ -148,9 +148,9 @@
             </HBox>
 
             <VBox spacing="0">
-                <Label text="Waren-Rückgabe nur innerhalb 7 Werktagen gegen einen Gutschrift minus 15% Bearbeitungsgebühr" textAlignment="LEFT" prefWidth="570" styleClass="print-comments-label" />
-                <Label text="Elektronik oder Ausgepacjte Ware sind von Umtausch ausgeschlossen sowir Autoreifen" textAlignment="LEFT" prefWidth="570" styleClass="print-comments-label" />
-                <Label text="Bitte überweisen Sie den Betrag unter Angaben der Rechnungsnummer innerhalb von 8 Tagen auf das Untenstehende Konto." textAlignment="LEFT" prefWidth="570" styleClass="print-comments-label" />
+                <Label text="Waren rückgabe nur innerhalb 7 Werktagen Gegen einen Gutschrift minus 15% Bearbeitungsgebühr" textAlignment="LEFT" prefWidth="570" styleClass="print-comments-label" />
+                <Label text="Elektronik oder Ausgepackte ware sind von Umtausch Ausgeschlossen sowie Autoreifen" textAlignment="LEFT" prefWidth="570" styleClass="print-comments-label" />
+                <Label text="Bitte Überweisen Sie den Betrag unter Angaben der Rechnungsnummer innerhalb von 8 Tagen auf das Untenstehende Konto." textAlignment="LEFT" prefWidth="570" styleClass="print-comments-label" />
                 <padding>
 					<Insets top="5" bottom="0" right="0" left="0" />
 				</padding>

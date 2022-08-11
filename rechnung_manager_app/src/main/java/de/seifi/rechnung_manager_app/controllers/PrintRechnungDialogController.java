@@ -162,6 +162,7 @@ public class PrintRechnungDialogController implements Initializable {
             if(this.printAllPages(pageLayout)){
                 isPrinted = true;
             }
+            removeThankLabel();
 
             forCustomer = false;
         }

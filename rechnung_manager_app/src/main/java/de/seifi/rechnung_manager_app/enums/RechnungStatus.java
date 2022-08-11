@@ -2,6 +2,7 @@ package de.seifi.rechnung_manager_app.enums;
 
 public enum RechnungStatus {
     ACTIVE(0),
+    OLD(5),
     ARCHIVED(10);
 
     private final int value;

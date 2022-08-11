@@ -36,6 +36,8 @@ public class ReportController implements Initializable, ControllerBase {
 
     @FXML private TableColumn<ReportItemModel, String> zeitColumn;
 
+    @FXML private TableColumn<ReportItemModel, String> paymentTypeColumn;
+
     @FXML private TableColumn<ReportItemModel, String> rechnungColumn;
 
     @FXML private TableColumn<ReportItemModel, String> produktListColumn;
@@ -159,12 +161,13 @@ public class ReportController implements Initializable, ControllerBase {
         produktListColumn.prefWidthProperty().bind(
                 reportTableView.widthProperty().subtract(
                         datumColumn.widthProperty()).subtract(
-                        nummerColumn.widthProperty()).subtract(
-                        zeitColumn.widthProperty()).subtract(
-                            rechnungColumn.widthProperty()).subtract(
-                                            toolsColumn.widthProperty()).subtract(
-                                                gesamtColumn.widthProperty()).subtract(5)
-                                                                           );
+                            nummerColumn.widthProperty()).subtract(
+                                zeitColumn.widthProperty()).subtract(
+                                    paymentTypeColumn.widthProperty()).subtract(
+                                        rechnungColumn.widthProperty()).subtract(
+                                                    toolsColumn.widthProperty()).subtract(
+                                                        gesamtColumn.widthProperty()).subtract(5)
+                                                                                   );
 
         reportTableView.setItems(reportBindingService.getReportItems());
         reportTableView.setUserData(reportBindingService);

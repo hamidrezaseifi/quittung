@@ -118,5 +118,15 @@ public class RechnungItemModel {
 		return id == null;
 	}
 
-    
+    public RechnungItemModel clone(){
+        RechnungItemModel model = new RechnungItemModel(this.getId(),
+                this.getProdukt(),
+                this.getArtikelNummer(),
+                this.getMenge(),
+                this.getPreis(),
+                this.getCreated(),
+                this.getUpdated());
+
+        return model;
+    }
 }

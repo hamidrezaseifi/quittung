@@ -4,7 +4,10 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
+import de.seifi.rechnung_manager_app.adapter.RechnungItemAdapter;
+import de.seifi.rechnung_manager_app.enums.PaymentType;
 import de.seifi.rechnung_manager_app.enums.RechnungStatus;
 import de.seifi.rechnung_manager_app.enums.RechnungType;
 
@@ -27,6 +30,8 @@ public class RechnungModel {
 	private RechnungType rechnungType;
 
 	private Integer rechnungVersion;
+
+	private PaymentType paymentType;
 
 	private RechnungStatus status;
 
@@ -54,6 +59,7 @@ public class RechnungModel {
 						 String rechnungCreate,
 						 String liferDate,
 						 int rechnungVersion,
+						 PaymentType paymentType,
 						 RechnungType rechnungType,
 						 RechnungStatus status,
 						 UUID userId) {
@@ -63,6 +69,7 @@ public class RechnungModel {
 		this.rechnungCreate = rechnungCreate;
 		this.liferDate = liferDate;
 		this.rechnungVersion = rechnungVersion;
+		this.paymentType = paymentType;
 		this.rechnungType = rechnungType;
 		this.status = status;
 		this.userId = userId;
@@ -76,6 +83,7 @@ public class RechnungModel {
 						 String rechnungCreate,
 						 String liferDate,
 						 int rechnungVersion,
+						 int paymentType,
 						 int rechnungType,
 						 int status,
 						 UUID userId,
@@ -90,6 +98,7 @@ public class RechnungModel {
 		this.liferDate = liferDate;
 		this.rechnungVersion = rechnungVersion;
 		this.rechnungType = RechnungType.ofValue(rechnungType);
+		this.paymentType = PaymentType.ofValue(paymentType);
 		this.status = RechnungStatus.ofValue(status);
         this.created = created;
         this.updated = updated;
@@ -181,6 +190,18 @@ public class RechnungModel {
 		this.rechnungVersion = rechnungVersion;
 	}
 
+	public PaymentType getPaymentType() {
+		return paymentType;
+	}
+
+	public void setPaymentType(PaymentType paymentType) {
+		this.paymentType = paymentType;
+	}
+
+	public void setPaymentType(Integer paymentType) {
+		this.paymentType = PaymentType.ofValue(paymentType);
+	}
+
 	public RechnungStatus getStatus() {
 		return status;
 	}
@@ -221,6 +242,51 @@ public class RechnungModel {
 		}
 
 		return gesamt;
+	}
+
+	public void changeToNew(){
+		setId(null);
+		setUpdated(null);
+		setCreated(null);
+	}
+
+	public void setExemplarOf(RechnungModel reference){
+		changeToNew();
+		setRechnungVersion(reference.getRechnungVersion() + 1);
+
+		UUID referenceId = reference.getMainReferenceId();
+
+		setReferenceId(referenceId);
+	}
+
+	public UUID getMainReferenceId() {
+		UUID referenceId = getReferenceId();
+		if(referenceId == null){
+			referenceId = getId();
+		}
+		return referenceId;
+	}
+
+	public RechnungModel clone(){
+		RechnungModel model = new RechnungModel(this.getId(),
+				this.getCustomerId(),
+				this.getReferenceId(),
+				this.getNummer(),
+				this.getRechnungCreate(),
+				this.getLiferDate(),
+				this.getRechnungVersion(),
+				this.getPaymentType().getValue(),
+				this.getRechnungType().getValue(),
+				this.getStatus().getValue(),
+				this.getUserId(),
+				this.getCreated(),
+				this.getUpdated());
+
+		model.setItems(this.getItems().stream().map(RechnungItemModel::clone).collect(Collectors.toList()));
+
+		return model;
+
+
 	}
     
 
