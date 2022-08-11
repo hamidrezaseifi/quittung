@@ -64,7 +64,7 @@
 	               	<Label fx:id="lblCity" styleClass="rechnung-customer-label" prefWidth="130"  />
 				</HBox>
 				
-				<Label text="Quittung" fx:id="lblQuittung" GridPane.columnIndex="2" GridPane.rowIndex="0" GridPane.rowSpan="3" GridPane.columnSpan="2" styleClass="quittung-label" visible="false" textAlignment="LEFT" alignment="BASELINE_LEFT" />
+				<Label text="Quittung" fx:id="lblQuittung" GridPane.columnIndex="2" GridPane.rowIndex="0" GridPane.rowSpan="4" GridPane.columnSpan="2" styleClass="quittung-label" visible="false" textAlignment="LEFT" alignment="BASELINE_LEFT" />
 
                 <Label fx:id="lblRechnungNummerTitle" text="Rechnung Nr." GridPane.columnIndex="4" GridPane.rowIndex="0" styleClass="summe-label" textAlignment="LEFT" />
                 <Label fx:id="lblRechnungNummer" GridPane.columnIndex="5" GridPane.rowIndex="0" styleClass="summe-label" textAlignment="LEFT" />

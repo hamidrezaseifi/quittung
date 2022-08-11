@@ -11,6 +11,7 @@ import de.seifi.rechnung_manager_app.adapter.CustomerAdapter;
 import de.seifi.rechnung_manager_app.adapter.ProduktAdapter;
 import de.seifi.rechnung_manager_app.adapter.RechnungAdapter;
 import de.seifi.rechnung_manager_app.enums.CustomerStatus;
+import de.seifi.rechnung_manager_app.enums.RechnungStatus;
 import de.seifi.rechnung_manager_app.models.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -98,10 +99,10 @@ public class ReportBindingService {
 
         }
         if(nummer != null){
-            entityList = this.rechnungRepository.search(tsFrom, tsTo, nummer);
+            entityList = this.rechnungRepository.search(tsFrom, tsTo, nummer, RechnungStatus.ACTIVE.getValue());
         }
         else{
-            entityList = this.rechnungRepository.search(tsFrom, tsTo);
+            entityList = this.rechnungRepository.search(tsFrom, tsTo, RechnungStatus.ACTIVE.getValue());
         }
 
         List<ReportItemModel> modelList = entityList.stream().map(e -> new ReportItemModel(rechnungAdapter.toModel(e), allCustomers.get(e.getCustomerId()))).collect(Collectors.toList());

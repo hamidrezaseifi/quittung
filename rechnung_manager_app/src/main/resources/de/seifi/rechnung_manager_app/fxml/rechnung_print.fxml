@@ -70,7 +70,7 @@
                 <Label text="Seite" GridPane.columnIndex="1" GridPane.rowIndex="3" styleClass="rechnung-info-label" textAlignment="LEFT" style="" />
                 <Label fx:id="lblPageIndex" GridPane.columnIndex="2" GridPane.rowIndex="3" styleClass="rechnung-info-label" textAlignment="LEFT" style="" />
 
-                <Label  fx:id="lblPrintType" GridPane.rowSpan="2" GridPane.columnIndex="0" GridPane.rowIndex="4" textAlignment="LEFT" style="-fx-font-size: 22px; -fx-font-weight: bold;" />
+                <Label  fx:id="lblPrintType" GridPane.rowSpan="1" GridPane.columnIndex="0" GridPane.rowIndex="0" textAlignment="LEFT" style="-fx-font-size: 22px; -fx-font-weight: bold;" />
 
             </children>
         </GridPane>

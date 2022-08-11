@@ -12,3 +12,8 @@
 /plugings/
 /logs/
 /rechnung_manager_config.cfg
+/data_manager_config.cfg
+/libs/lib/
+/libs/logs/
+/libs/test/
+/rechnung_runner/.vs/rechnung_runner/v16/

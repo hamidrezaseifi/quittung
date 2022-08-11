@@ -452,7 +452,7 @@ public class RechnungController implements Initializable, ControllerBase {
 
         lblExemplar.setText("original");
 		if(rechnungModel.hasReference()) {
-			lblExemplar.setText("überarbeiten");
+            lblExemplar.setText("überarbeitet: ver " + rechnungModel.getRechnungVersion());
 		}
 		
 		if(this.rechnungType == RechnungType.RECHNUNG){
@@ -507,8 +507,6 @@ public class RechnungController implements Initializable, ControllerBase {
         }
 
 	}
-	
-	
 
 	private void setItemsTableViewEditable(boolean editable) {
 		//showItemsTableView.getColumns().forEach(c -> c.setEditable(editable));

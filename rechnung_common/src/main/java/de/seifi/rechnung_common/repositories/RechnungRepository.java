@@ -21,11 +21,11 @@ public interface RechnungRepository extends JpaRepository<RechnungEntity, UUID> 
 	
 	Optional<RechnungEntity> findTopByOrderByNummerDesc();
 
-	@Query("SELECT r FROM RechnungEntity r where r.created between :from and :to  order by r.nummer desc")
-	List<RechnungEntity> search(@Param("from") LocalDateTime from, @Param("to") LocalDateTime to);
+	@Query("SELECT r FROM RechnungEntity r where r.created between :from and :to and r.status=:status  order by r.nummer desc")
+	List<RechnungEntity> search(@Param("from") LocalDateTime from, @Param("to") LocalDateTime to, @Param("status") int status);
 
-	@Query("SELECT r FROM RechnungEntity r where r.created between :from and :to and r.nummer=:nummer  order by r.nummer desc")
-	List<RechnungEntity> search(@Param("from") LocalDateTime from, @Param("to") LocalDateTime to, @Param("nummer") Integer nummer);
+	@Query("SELECT r FROM RechnungEntity r where r.created between :from and :to and r.nummer=:nummer and r.status=:status  order by r.nummer desc")
+	List<RechnungEntity> search(@Param("from") LocalDateTime from, @Param("to") LocalDateTime to, @Param("nummer") Integer nummer, @Param("status") int status);
 
 	@Query("SELECT max(r.nummer) FROM RechnungEntity r where r.status=:status")
 	Optional<Integer> getMaxNummer(@Param("status") int status);

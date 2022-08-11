@@ -12,15 +12,16 @@ using namespace std;
 int main(int argc, char* argv[])
 {
     ShowWindow(::GetConsoleWindow(), SW_HIDE);
-    
+    //ShowWindow(::GetConsoleWindow(), SW_NORMAL);
+
     if (argc > 1) {
         
         string arg1 = argv[1];
         if (arg1 == "rechnung") {
-            system(".\\java\\bin\\java.exe -cp rechnung_manager_app-0.0.1-jar-with-dependencies.jar --module-path java/fx/lib --add-modules javafx.controls,javafx.fxml,javafx.graphics de.seifi.rechnung_manager_app.RechnungManagerFxApp");
+            system(".\\java\\bin\\java.exe -cp \"rechnung_manager_app-0.0.1.jar;lib\\*\" --module-path java/fx/lib --add-modules javafx.controls,javafx.fxml,javafx.graphics de.seifi.rechnung_manager_app.RechnungManagerFxApp");
         }
         if (arg1 == "data_manager") {
-            system(".\\java\\bin\\java.exe -cp data_manager-0.0.1-jar-with-dependencies.jar --module-path java/fx/lib --add-modules javafx.controls,javafx.fxml,javafx.graphics de.seifi.data_manager.DataManagerFxApp");
+            system(".\\java\\bin\\java.exe -cp \"data_manager-0.0.1.jar;lib\\*\" --module-path java/fx/lib --add-modules javafx.controls,javafx.fxml,javafx.graphics de.seifi.data_manager.DataManagerFxApp");
         }
         //".\\java\\bin\\java.exe -cp rechnung_manager_app-0.0.1-jar-with-dependencies.jar --module-path java/fx/lib --add-modules javafx.controls,javafx.fxml,javafx.graphics de.seifi.rechnung_manager_app.RechnungManagerFxApp"
 
@@ -29,7 +30,6 @@ int main(int argc, char* argv[])
     else {
         cout << "No argument\n";
     }
-    //system(".\\java\\bin\\java.exe -cp rechnung_manager_app-0.0.1-jar-with-dependencies.jar --module-path java/fx/lib --add-modules javafx.controls,javafx.fxml,javafx.graphics de.seifi.rechnung_manager_app.RechnungManagerFxApp");
 
     return 0;
 }

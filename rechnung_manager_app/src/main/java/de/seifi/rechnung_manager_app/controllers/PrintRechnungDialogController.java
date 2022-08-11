@@ -108,7 +108,7 @@ public class PrintRechnungDialogController implements Initializable {
 
         lblDatum.setText(rechnungBindingService.getRechnungDatum());
 
-        lblPrintType.setText(this.rechnungType.getTitle());
+        lblPrintType.setText(this.rechnungType.getTitle() + ": " + rechnungBindingService.getPaymentTypeTitle());
 
         if(this.rechnungType == RechnungType.RECHNUNG){
             lblCustomerName.setText(rechnungBindingService.getCustomerModel().getCustomerName());

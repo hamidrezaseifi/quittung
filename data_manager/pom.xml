@@ -36,12 +36,6 @@
             <version>${javafx.version}</version>
         </dependency>
 		<dependency>
-			<groupId>it.sauronsoftware</groupId>
-			<artifactId>junique</artifactId>
-			<version>1.0.4</version>
-		</dependency>
-
-		<dependency>
 			<groupId>de.seifi</groupId>
 			<artifactId>rechnung_common</artifactId>
 			<version>0.0.1</version>

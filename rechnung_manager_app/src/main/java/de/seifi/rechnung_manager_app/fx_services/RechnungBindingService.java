@@ -380,7 +380,7 @@ public class RechnungBindingService {
             }
             RechnungManagerSpringApp.getProduktService().retreiveProduktList();
         }
-        reset();
+        startEditing(rechnungSavingModel, customerSavingModel);
         setDirty(false);
 
         return true;

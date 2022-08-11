@@ -121,4 +121,7 @@ public class RechnungBindingPrintService {
         gesamtSumme = TableUtils.formatGeld(netto + (netto * 19 / 100));
     }
 
+    public String getPaymentTypeTitle() {
+        return rechnungModel.getPaymentType().getTitle();
+    }
 }

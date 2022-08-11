@@ -22,12 +22,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-
-		<dependency>
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<scope>runtime</scope>
-		</dependency>
 		
 		<dependency>
             <groupId>org.openjfx</groupId>
@@ -44,16 +38,6 @@
             <artifactId>javafx-base</artifactId>
             <version>${javafx.version}</version>
         </dependency>
-		<dependency>
-			<groupId>it.sauronsoftware</groupId>
-			<artifactId>junique</artifactId>
-			<version>1.0.4</version>
-		</dependency>
-		<dependency>
-		    <groupId>org.ini4j</groupId>
-		    <artifactId>ini4j</artifactId>
-		    <version>0.5.2</version>
-		</dependency>
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-core</artifactId>
