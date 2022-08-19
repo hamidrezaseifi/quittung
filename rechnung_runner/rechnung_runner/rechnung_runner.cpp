@@ -6,13 +6,99 @@
 #include <Windows.h>
 #include <iostream>
 #include <string.h>
-
+#include <fstream>
+#include <sstream>
+#
 using namespace std;
+
+static inline void ltrim(std::string& s) {
+    s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](unsigned char ch) {
+        return !std::isspace(ch);
+    }));
+}
+
+// trim from end (in place)
+static inline void rtrim(std::string& s) {
+    s.erase(std::find_if(s.rbegin(), s.rend(), [](unsigned char ch) {
+        return !std::isspace(ch);
+    }).base(), s.end());
+}
+
+// trim from both ends (in place)
+static inline void trim(std::string& s) {
+    ltrim(s);
+    rtrim(s);
+}
+
 
 int main(int argc, char* argv[])
 {
-    ShowWindow(::GetConsoleWindow(), SW_HIDE);
+    //ShowWindow(::GetConsoleWindow(), SW_HIDE);
     //ShowWindow(::GetConsoleWindow(), SW_NORMAL);
+
+    if (argc <= 1) {
+        cout << "No argument!!!!\n";
+        return 0;
+    }
+
+    bool hideWindows = true;
+    if (argc > 2) {
+        string hideWindowsCommand = argv[2];
+        hideWindows = (hideWindowsCommand == "hide");
+    }
+
+    string commandFolderPath = argv[1];
+    string commandFilePath = commandFolderPath + "\\command.cfg";
+
+    ifstream infile(commandFilePath); //"E:\\Hamid\\Projects\\java\\quittung\\command.txt"
+    string line;
+
+    cout << "======================================================== Start ======================================================= \n";
+
+    string command = ".\\java\\bin\\java.exe ";
+
+    while (getline(infile, line))
+    {
+        trim(line);
+
+        int delimIndex = line.find("=");
+        if (delimIndex < 1) {
+            continue;
+        }
+
+        string key = line.substr(0, delimIndex);
+        string value = line.substr(delimIndex + 1, line.size());
+
+        trim(key);
+        trim(value);
+
+        cout << key << "  --> " << value << "\n";
+
+        cout << " ---------------------- " << "\n";
+
+        if (key != "main_class" && key != "") {
+            command += "-" + key + " ";
+        }
+
+        if (value != "") {
+            command +=  "\"" + value + "\" ";
+        }
+
+    }
+
+    cout << "======================================================== End ======================================================= \n";
+
+    if (hideWindows) {
+        ShowWindow(::GetConsoleWindow(), SW_HIDE);
+    }
+    
+
+    cout << command << "\n";
+
+    system(command.c_str());
+
+
+    return 0;
 
     if (argc > 1) {
         
@@ -34,13 +120,3 @@ int main(int argc, char* argv[])
     return 0;
 }
 
-// Programm ausführen: STRG+F5 oder Menüeintrag "Debuggen" > "Starten ohne Debuggen starten"
-// Programm debuggen: F5 oder "Debuggen" > Menü "Debuggen starten"
-
-// Tipps für den Einstieg: 
-//   1. Verwenden Sie das Projektmappen-Explorer-Fenster zum Hinzufügen/Verwalten von Dateien.
-//   2. Verwenden Sie das Team Explorer-Fenster zum Herstellen einer Verbindung mit der Quellcodeverwaltung.
-//   3. Verwenden Sie das Ausgabefenster, um die Buildausgabe und andere Nachrichten anzuzeigen.
-//   4. Verwenden Sie das Fenster "Fehlerliste", um Fehler anzuzeigen.
-//   5. Wechseln Sie zu "Projekt" > "Neues Element hinzufügen", um neue Codedateien zu erstellen, bzw. zu "Projekt" > "Vorhandenes Element hinzufügen", um dem Projekt vorhandene Codedateien hinzuzufügen.
-//   6. Um dieses Projekt später erneut zu öffnen, wechseln Sie zu "Datei" > "Öffnen" > "Projekt", und wählen Sie die SLN-Datei aus.

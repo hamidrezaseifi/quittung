@@ -80,18 +80,6 @@ public class RechnungManagerFxApp extends Application implements ISingleInstance
         RunSingleInstance.runInstance(args, new RechnungManagerFxApp(), "RechnungManagerAppId");
     }
     
-   /* public void run(){
-        RechnungManagerSpringApp.start(startArgs);
-		
-	    try {
-			showMainStage();
-		} catch (IOException e) {
-			
-			e.printStackTrace();
-		}
-
-    }*/
-    
     private void showSplash(Stage initStage) throws IOException {
     	
     	splashStage = initStage;
@@ -249,27 +237,6 @@ public class RechnungManagerFxApp extends Application implements ISingleInstance
 
         return fxmlLoader;
     }
-
-    /*public static GridPane getRechnungPane() throws IOException {
-
-        URL fxmlResource = RechnungManagerFxApp.class.getResource("fxml/rechnung_base.fxml");
-        FXMLLoader fxmlLoader = new FXMLLoader(fxmlResource);
-        fxmlLoader.setController(new RechnungController(RechnungType.RECHNUNG));
-        GridPane rechnungPane = (GridPane)fxmlLoader.load();
-
-        return rechnungPane;
-    }
-
-    public static GridPane getQuittungPane() throws IOException {
-
-        URL fxmlResource = RechnungManagerFxApp.class.getResource("fxml/rechnung_base.fxml");
-        FXMLLoader fxmlLoader = new FXMLLoader(fxmlResource);
-        fxmlLoader.setController(new RechnungController(RechnungType.QUITTUNG));
-        GridPane rechnungPane = (GridPane)fxmlLoader.load();
-
-        return rechnungPane;
-    }*/
-    
 
     public static Pair<GridPane, RechnungController> getRechnungPane(RechnungType rechnungType) throws IOException {
 

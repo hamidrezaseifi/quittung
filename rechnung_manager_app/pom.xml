@@ -5,11 +5,12 @@
 	<parent>
 		<groupId>de.seifi</groupId>
 		<artifactId>rechnung_manager</artifactId>
-		<version>0.0.1</version>
+		<version>0.0.2</version>
 	</parent>
 	<artifactId>rechnung_manager_app</artifactId>
 	<name>rechnung_manager_app</name>
 	<description>Demo project for Spring Boot</description>
+	<version>0.0.2</version>
 	<properties>
 		<java.version>11</java.version>
         <javafx.version>17.0.1</javafx.version>
@@ -57,7 +58,7 @@
 		<dependency>
 			<groupId>de.seifi</groupId>
 			<artifactId>rechnung_common</artifactId>
-			<version>0.0.1</version>
+			<version>0.0.2</version>
 			<scope>compile</scope>
 		</dependency>
 
