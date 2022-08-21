@@ -64,14 +64,6 @@
 
 	</dependencies>
 
-	<repositories>
-		<repository>
-			<id>poolborges-github-thirdparty</id>
-			<name>poolborges-github</name>
-			<url>https://github.com/poolborges/maven/raw/master/thirdparty/</url>
-		</repository>
-	</repositories>
-
 	<build>
 		<plugins>
 			<!-- any other plugins -->

@@ -17,3 +17,10 @@
 /libs/logs/
 /libs/test/
 /rechnung_runner/.vs/rechnung_runner/v16/
+/libs/rechnung_runner.x
+/libs/data_manager/
+/libs/rechnung_manager_app/
+/libs/updater/
+/rechnung_runner/x64/
+/rechnung_runner/rechnung_runner/rechnung_runner.vcxproj.user
+/rechnung_runner/rechnung_runner/x64/

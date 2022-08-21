@@ -18,6 +18,7 @@
         <maven.compiler.release>11</maven.compiler.release>
 
 	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -37,20 +38,12 @@
 		</dependency>
 
 		<dependency>
-			<groupId>it.sauronsoftware</groupId>
-			<artifactId>junique</artifactId>
-			<version>1.0.4</version>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.6</version>
 		</dependency>
 
 	</dependencies>
-
-	<repositories>
-		<repository>
-			<id>poolborges-github-thirdparty</id>
-			<name>poolborges-github</name>
-			<url>https://github.com/poolborges/maven/raw/master/thirdparty/</url>
-		</repository>
-	</repositories>
 
 	<build>
 		<plugins>
