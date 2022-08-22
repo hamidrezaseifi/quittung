@@ -6,6 +6,7 @@ import javafx.application.Platform;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.info.BuildProperties;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -26,6 +27,8 @@ public class RechnungManagerSpringApp {
 
 
 	private static ICustomerService customerService = null;
+
+	private static BuildProperties buildProperties;
 
 	private static IProduktService produktService = null;
 
@@ -58,6 +61,13 @@ public class RechnungManagerSpringApp {
 
 		});
 
+	}
+
+	public static BuildProperties getBuildProperties(){
+		if(RechnungManagerSpringApp.buildProperties == null){
+			RechnungManagerSpringApp.buildProperties = RechnungManagerSpringApp.applicationContext.getBean(BuildProperties.class);
+		}
+		return RechnungManagerSpringApp.buildProperties;
 	}
 
 }

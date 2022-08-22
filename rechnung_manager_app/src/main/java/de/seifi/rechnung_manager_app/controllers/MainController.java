@@ -102,19 +102,32 @@ public class MainController implements Initializable {
     	}
 
 	}
-	
-    @FXML
-    private void showAdmin() throws IOException {
+
+	@FXML
+	private void showAdmin() throws IOException {
 
 		logger.debug("Show Admin");
 
 		if(RechnungManagerFxApp.cannCurrentControllerClosed()) {
-    		clearChildren();
-        	
-        	childBox.getChildren().add(RechnungManagerFxApp.getAdminPane());
-    	}
-    	
-    }
+			clearChildren();
+
+			childBox.getChildren().add(RechnungManagerFxApp.getAdminPane());
+		}
+
+	}
+
+	@FXML
+	private void showAbout() throws IOException {
+
+		logger.debug("Show About");
+
+		if(RechnungManagerFxApp.cannCurrentControllerClosed()) {
+			clearChildren();
+
+			childBox.getChildren().add(RechnungManagerFxApp.getAboutPane());
+		}
+
+	}
     
     private void clearChildren() {
     	while(childBox.getChildren().isEmpty() == false) {
