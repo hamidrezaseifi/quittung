@@ -24,6 +24,11 @@
 					"name": "rechnung_manager_app_command",
 					"url": "http://cynical-conferences.000webhostapp.com/files/rechnung_manager_app_command-0.0.2.cfg",
 					"download_path": "rechnung_manager_app/command.cfg"
+				},
+				{
+					"name": "rechnung_common-0.0.2-jar-with-dependencies",
+					"url": "http://cynical-conferences.000webhostapp.com/files/rechnung_common-0.0.2-jar-with-dependencies.jar",
+					"download_path": "lib/rechnung_common-0.0.2-jar-with-dependencies.jar"
 				}
 			]
 		}
