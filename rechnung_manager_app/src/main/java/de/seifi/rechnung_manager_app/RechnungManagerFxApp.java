@@ -272,8 +272,16 @@ public class RechnungManagerFxApp extends Application implements ISingleInstance
     	/*if(adminPane == null) {
     		adminPane =  (GridPane)loadFXML("admin");
     	}*/
-    	GridPane adminPane =  (GridPane)loadFXML("admin");
-    	return adminPane;
+        GridPane adminPane =  (GridPane)loadFXML("admin");
+        return adminPane;
+    }
+
+    public static GridPane getAboutPane() throws IOException {
+    	/*if(adminPane == null) {
+    		adminPane =  (GridPane)loadFXML("admin");
+    	}*/
+        GridPane adminPane =  (GridPane)loadFXML("about");
+        return adminPane;
     }
 
     public static GridPane getSplashPane() throws IOException {
