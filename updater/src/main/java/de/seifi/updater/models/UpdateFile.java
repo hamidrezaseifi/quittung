@@ -1,9 +1,12 @@
 package de.seifi.updater.models;
 
+import de.seifi.updater.enums.FileActionType;
+
 public class UpdateFile {
 
     private String name;
     private String url;
+    private String action;
     private String download_path;
 
     public String getName() {
@@ -20,6 +23,18 @@ public class UpdateFile {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getAction() {
+        return action;
+    }
+
+    public FileActionType getActionType(){
+        return FileActionType.fromValue(action);
+    }
+
+    public void setAction(String action) {
+        this.action = action;
     }
 
     public String getDownload_path() {

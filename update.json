@@ -8,27 +8,32 @@
 				{
 					"name": "data_manager",
 					"url": "http://cynical-conferences.000webhostapp.com/files/data_manager-0.0.2.jar",
-					"download_path": "data_manager/data_manager-0.0.2.jar"
+					"download_path": "data_manager/data_manager-0.0.2.jar",
+					"action": "copy"
 				},
 				{
 					"name": "data_manager_command",
 					"url": "http://cynical-conferences.000webhostapp.com/files/data_manager_command-0.0.2.cfg",
-					"download_path": "data_manager/command.cfg"
+					"download_path": "data_manager/command.cfg",
+					"action": "copy_overwrite"
 				},
 				{
 					"name": "rechnung_manager_app",
 					"url": "http://cynical-conferences.000webhostapp.com/files/rechnung_manager_app-0.0.2.jar",
-					"download_path": "rechnung_manager_app/rechnung_manager_app-0.0.2.jar"
+					"download_path": "rechnung_manager_app/rechnung_manager_app-0.0.2.jar",
+					"action": "copy"
 				},
 				{
 					"name": "rechnung_manager_app_command",
 					"url": "http://cynical-conferences.000webhostapp.com/files/rechnung_manager_app_command-0.0.2.cfg",
-					"download_path": "rechnung_manager_app/command.cfg"
+					"download_path": "rechnung_manager_app/command.cfg",
+					"action": "copy_overwrite"
 				},
 				{
 					"name": "rechnung_common-0.0.2-jar-with-dependencies",
 					"url": "http://cynical-conferences.000webhostapp.com/files/rechnung_common-0.0.2-jar-with-dependencies.jar",
-					"download_path": "lib/rechnung_common-0.0.2-jar-with-dependencies.jar"
+					"download_path": "lib/rechnung_common-0.0.2-jar-with-dependencies.jar",
+					"action": "copy"
 				}
 			]
 		}

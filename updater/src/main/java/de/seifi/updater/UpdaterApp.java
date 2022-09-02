@@ -3,6 +3,7 @@ package de.seifi.updater;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import de.seifi.updater.enums.FileActionType;
 import de.seifi.updater.models.UpdateFile;
 import de.seifi.updater.models.UpdateRoot;
 import de.seifi.updater.models.UpdateVersion;
@@ -28,23 +29,48 @@ public class UpdaterApp {
             UpdateVersion updateVersion = updateRoot.getCurrentVersion();
             if(updateVersion != null){
                 for(UpdateFile updateFile :updateVersion.getFiles()){
-                    donwloadIfNotExists(updateFile);
+                    processFile(updateFile);
                 }
             }
         }
 
     }
 
-    private static void donwloadIfNotExists(UpdateFile updateFile) throws IOException {
-        String fileUrl = updateFile.getUrl();
+    private static void processFile(UpdateFile updateFile) throws IOException {
         File downloadFile = getDownloadPath(updateFile);
+        if(updateFile.getActionType() == FileActionType.COPY ||
+                updateFile.getActionType() == FileActionType.COPY_OVERWRITE){
+            donwloadIfNotExists(updateFile, downloadFile);
+        }
+        if(updateFile.getActionType() == FileActionType.DELETE){
+            deleteFileIfExists(updateFile, downloadFile);
+        }
+    }
+
+    private static void deleteFileIfExists(UpdateFile updateFile, File downloadFile) {
+        if(downloadFile.exists()){
+            downloadFile.delete();
+        }
+    }
+
+    private static void donwloadIfNotExists(UpdateFile updateFile, File downloadFile) throws IOException {
+
+        //File downloadFile = getDownloadPath(updateFile);
         if(!downloadFile.getParentFile().exists()){
             System.out.println("Create folder " + downloadFile.getParentFile().getAbsoluteFile());
             downloadFile.getParentFile().mkdirs();
         }
+        if(downloadFile.exists()){
+            if(updateFile.getActionType() == FileActionType.COPY){
+                return;
+            }
+            if(updateFile.getActionType() == FileActionType.COPY_OVERWRITE){
+                downloadFile.delete();
+            }
+        }
         if(!downloadFile.exists()){
             System.out.println("Download file " + downloadFile.getAbsoluteFile());
-
+            String fileUrl = updateFile.getUrl();
             InputStream in = new URL(fileUrl).openStream();
             Files.copy(in, downloadFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
