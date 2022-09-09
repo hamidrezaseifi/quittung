@@ -204,6 +204,14 @@ public class CustomerModel {
 	@Override
 	public String toString(){
 		return customerName + (status == CustomerStatus.ACTIVE ? ": aktiv" : ": inaktive");
-	}    
+	}
+
+	public String getPrintLine1() {
+		return this.street + " "+ this.houseNumber;
+	}
+
+	public String getPrintLine2() {
+		return this.plz + " "+ this.city;
+	}
 
 }

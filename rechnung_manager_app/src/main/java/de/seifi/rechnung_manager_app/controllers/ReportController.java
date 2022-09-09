@@ -25,6 +25,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.RowConstraints;
+import net.sf.jasperreports.engine.JRException;
 
 public class ReportController implements Initializable, ControllerBase {
 
@@ -97,7 +98,7 @@ public class ReportController implements Initializable, ControllerBase {
     }
     
     @FXML
-    private void printRechnung() throws IOException {
+    private void printRechnung() throws JRException {
     	if(reportBindingService.getReportItems().isEmpty()) {
     		return;
     	}

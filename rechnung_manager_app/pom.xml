@@ -56,6 +56,18 @@
 		</dependency>
 
 		<dependency>
+			<groupId>net.sf.jasperreports</groupId>
+			<artifactId>jasperreports</artifactId>
+			<version>6.15.0</version>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.jasperreports</groupId>
+			<artifactId>jasperreports-fonts</artifactId>
+			<version>6.15.0</version>
+		</dependency>
+
+
+		<dependency>
 			<groupId>de.seifi</groupId>
 			<artifactId>rechnung_common</artifactId>
 			<version>0.0.2</version>

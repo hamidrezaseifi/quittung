@@ -26,6 +26,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import net.sf.jasperreports.engine.JRException;
 
 import java.io.IOException;
 import java.net.URL;
@@ -208,7 +209,7 @@ public class RechnungController implements Initializable, ControllerBase {
     }
     
     @FXML
-    private void printRechnung() throws IOException {
+    private void printRechnung() throws JRException {
 
 
     	showItemsTableView.setEditable(false);

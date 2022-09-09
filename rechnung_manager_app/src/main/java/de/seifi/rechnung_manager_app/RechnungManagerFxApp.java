@@ -171,9 +171,15 @@ public class RechnungManagerFxApp extends Application implements ISingleInstance
     public static String getMainStyle() {
         return RechnungManagerFxApp.class.getResource("styles/styles.css").toExternalForm();
     }
-    
+
     public static String getPrintStyle() {
         return RechnungManagerFxApp.class.getResource("styles/print_styles.css").toExternalForm();
+    }
+
+    public static InputStream getJasperFilePath(String fileName) throws IOException {
+        URL url = RechnungManagerFxApp.class.getResource("jasper/" + fileName + ".jasper");
+
+        return url.openStream();
     }
 
     private void closeWindowEvent(WindowEvent event) {

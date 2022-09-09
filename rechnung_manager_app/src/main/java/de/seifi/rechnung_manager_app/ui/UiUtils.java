@@ -1,6 +1,7 @@
 package de.seifi.rechnung_manager_app.ui;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,6 +13,9 @@ import de.seifi.rechnung_manager_app.controllers.RechnungController;
 import de.seifi.rechnung_manager_app.enums.RechnungType;
 import de.seifi.rechnung_manager_app.models.CustomerModel;
 import de.seifi.rechnung_manager_app.models.RechnungModel;
+import de.seifi.rechnung_manager_app.models.print.PrintJRDataSourceBase;
+import de.seifi.rechnung_manager_app.models.print.QuittungPrintJRDataSource;
+import de.seifi.rechnung_manager_app.models.print.RechnungPrintJRDataSource;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.print.PrinterJob;
@@ -22,6 +26,10 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperPrintManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -62,10 +70,14 @@ public class UiUtils {
         return alert.showAndWait();
     }
 
-	public static void printRechnungItems(List<RechnungModel> rechnungModelList,
-										  boolean forCustomer) {
+	public static void printRechnungItems(List<RechnungModel> rechnungModelList, boolean forCustomer) {
 		logger.debug("Start printing ...");
 
+		JasperPrint jasperPrint = null;
+		JasperPrint jasperThankPrint = null;
+		InputStream rechnungStream = null;
+		InputStream rechnungThankStream = null;
+		PrintJRDataSourceBase printJRDataSource = null;
 
 		for(RechnungModel model: rechnungModelList){
 			if(model.getRechnungType() == RechnungType.RECHNUNG){
@@ -75,11 +87,59 @@ public class UiUtils {
 					throw new RuntimeException("Der Kunde von der Rechnung nicht gefunden!");
 				}
 
-				rechnungPringController.printRechnungList(model, customerEntityOptional.get(), forCustomer);
+				printJRDataSource = new RechnungPrintJRDataSource(model, customerEntityOptional.get());
+
+				try {
+					rechnungStream = RechnungManagerFxApp.getJasperFilePath("rechnung");
+					rechnungThankStream = RechnungManagerFxApp.getJasperFilePath("rechnung_thank");
+				} catch (IOException e) {
+					logger.error("Error in load print report.", e);
+					return;
+				}
+
+				//rechnungPringController.printRechnungList(model, customerEntityOptional.get(), forCustomer);
 			}
 			if(model.getRechnungType() == RechnungType.QUITTUNG){
-				quittungPringController.printRechnungList(model, null, forCustomer);
+				printJRDataSource = new QuittungPrintJRDataSource(model);
+
+				try {
+					rechnungStream = RechnungManagerFxApp.getJasperFilePath("quittung");
+					rechnungThankStream = RechnungManagerFxApp.getJasperFilePath("quittung_thank");
+				} catch (IOException e) {
+					logger.error("Error in load print report.", e);
+					return;
+				}
+
+
+
+				//quittungPringController.printRechnungList(model, null, forCustomer);
 			}
+
+			try {
+				jasperPrint = JasperFillManager.fillReport(rechnungStream,
+														   printJRDataSource.getPrintParameter(),
+														   printJRDataSource);
+
+				JasperPrintManager.printReport(jasperPrint, false);
+			} catch (JRException e) {
+				logger.error("Error in load print report.", e);
+				return;
+			}
+
+
+			if(forCustomer){
+				try {
+					jasperThankPrint = JasperFillManager.fillReport(rechnungThankStream,
+																	printJRDataSource.getPrintParameter(),
+																	printJRDataSource);
+					JasperPrintManager.printReport(jasperThankPrint, false);
+				} catch (JRException e) {
+					logger.error("Error in load print report.", e);
+					return;
+				}
+
+			}
+
 		}
 
 
