@@ -10,14 +10,12 @@ public abstract class PrintJRDataSourceBase implements JRDataSource, IPrintJRDat
 
     protected int rowIndex = -1;
 
-    private Map<String, Object> printParameterMap = null;
+    //private Map<String, Object> printParameterMap = null;
 
     @Override
     public Map<String, Object> getPrintParameter() {
-        if(this.printParameterMap == null){
-            preparePrintParameterMap();
-        }
-        return printParameterMap;
+        return preparePrintParameterMap();
+        //return printParameterMap;
     }
 
     @Override
@@ -30,12 +28,19 @@ public abstract class PrintJRDataSourceBase implements JRDataSource, IPrintJRDat
 
     protected abstract Float getTotalNeto();
 
-    protected void preparePrintParameterMap() {
-        this.printParameterMap = new HashMap<>();
+    protected Map<String, Object> preparePrintParameterMap() {
+        Map<String, Object> printParameterMap = new HashMap<>();
         Float totalNeto = this.getTotalNeto();
         printParameterMap.put(IPrintJRDataSource.PARAMETER_TOTAL_ROWS, this.getRowCount());
         printParameterMap.put(IPrintJRDataSource.PARAMETER_TOTAL_NETO, totalNeto);
         printParameterMap.put(IPrintJRDataSource.PARAMETER_TOTAL_MWT, totalNeto * 19 / 100);
+
+        return printParameterMap;
+    }
+
+    public void reset(){
+        this.rowIndex = -1;
+
     }
 
 }

@@ -5,13 +5,13 @@
 	<parent>
 		<groupId>de.seifi</groupId>
 		<artifactId>rechnung_manager</artifactId>
-		<version>0.0.2</version>
+		<version>0.0.3</version>
 	</parent>
 	<artifactId>data_manager</artifactId>
 	<name>data_manager</name>
 	<description>data manager</description>
 	<packaging>jar</packaging>
-	<version>0.0.2</version>
+	<version>0.0.3</version>
 	<properties>
 		<java.version>11</java.version>
         <javafx.version>17.0.1</javafx.version>
@@ -39,7 +39,7 @@
 		<dependency>
 			<groupId>de.seifi</groupId>
 			<artifactId>rechnung_common</artifactId>
-			<version>0.0.2</version>
+			<version>0.0.3</version>
 		</dependency>
 		
 	</dependencies>

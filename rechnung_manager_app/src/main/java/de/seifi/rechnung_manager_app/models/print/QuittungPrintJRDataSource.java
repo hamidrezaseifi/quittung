@@ -43,9 +43,9 @@ public class QuittungPrintJRDataSource extends PrintJRDataSourceBase {
         switch (jrField.getName()){
             case "produkt": return row.getProdukt();
             case "nummer": return row.getNummer();
-            case "rechnungCreate": return row.getRechnungCreate();
-            case "paymentType": return row.getPaymentType();
-            case "artikelNummer": return row.getArtikelNummer();
+            case "rechnung_reate": return row.getRechnungCreate();
+            case "payment_type": return row.getPaymentType();
+            case "artikel_nummer": return row.getArtikelNummer();
             case "menge": return row.getMenge();
             case "preis": return row.getPreis();
             case "gesamt": return row.getGesamt();

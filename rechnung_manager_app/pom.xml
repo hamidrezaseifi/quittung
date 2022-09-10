@@ -5,12 +5,12 @@
 	<parent>
 		<groupId>de.seifi</groupId>
 		<artifactId>rechnung_manager</artifactId>
-		<version>0.0.2</version>
+		<version>0.0.3</version>
 	</parent>
 	<artifactId>rechnung_manager_app</artifactId>
 	<name>rechnung_manager_app</name>
 	<description>Demo project for Spring Boot</description>
-	<version>0.0.2</version>
+	<version>0.0.3</version>
 	<properties>
 		<java.version>11</java.version>
         <javafx.version>17.0.1</javafx.version>
@@ -58,23 +58,45 @@
 		<dependency>
 			<groupId>net.sf.jasperreports</groupId>
 			<artifactId>jasperreports</artifactId>
-			<version>6.15.0</version>
+			<version>6.20.0</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.lowagie</groupId>
+					<artifactId>itext</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
+
 		<dependency>
 			<groupId>net.sf.jasperreports</groupId>
-			<artifactId>jasperreports-fonts</artifactId>
-			<version>6.15.0</version>
+			<artifactId>jasperreports-functions</artifactId>
+			<version>6.20.0</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.lowagie</groupId>
+					<artifactId>itext</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 
 		<dependency>
 			<groupId>de.seifi</groupId>
 			<artifactId>rechnung_common</artifactId>
-			<version>0.0.2</version>
+			<version>0.0.3</version>
 			<scope>compile</scope>
+
 		</dependency>
 
+
 	</dependencies>
+
+	<repositories>
+		<repository>
+			<id>maven</id>
+			<url>https://jaspersoft.jfrog.io/jaspersoft/third-party-ce-artifacts/</url>
+		</repository>
+	</repositories>
 
 	<build>
 		<plugins>

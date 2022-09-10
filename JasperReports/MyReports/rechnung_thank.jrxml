@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.20.0.final using JasperReports Library version 6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Quittung Thank" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isTitleNewPage="true" uuid="4eedbb89-b4f6-4469-9ab6-f642a1688cf7">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Rechnung Thank" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isTitleNewPage="true" uuid="4eedbb89-b4f6-4469-9ab6-f642a1688cf7">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Postgresql"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
@@ -69,10 +69,15 @@
 	rechnung_item.preis * rechnung_item.menge AS gesamt,
 	rechnung.nummer,
 	rechnung.rechnung_create,
-	rechnung.payment_type
+	rechnung.payment_type,
+	customer.customer_name,
+	concat( customer.street,' ',customer.house_number) AS address1,
+	concat( customer.plz,' ',customer.city) AS address2
 FROM rechnung
 	inner join rechnung_item ON 
 	 rechnung.id = rechnung_item.rechnung_id 
+	inner join customer ON 
+	 customer.id = rechnung.customer_id 
 WHERE 
 	 rechnung.id = 'c6810c6a-3063-4fa2-a77b-04580a68524f']]>
 	</queryString>
@@ -90,6 +95,21 @@ WHERE
 		<property name="com.jaspersoft.studio.field.name" value="rechnung_create"/>
 		<property name="com.jaspersoft.studio.field.label" value="rechnung_create"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="rechnung"/>
+	</field>
+	<field name="customer_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="customer_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="customer_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="customer"/>
+	</field>
+	<field name="address1" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="address1"/>
+		<property name="com.jaspersoft.studio.field.label" value="address1"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="customer"/>
+	</field>
+	<field name="address2" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="address2"/>
+		<property name="com.jaspersoft.studio.field.label" value="address2"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="customer"/>
 	</field>
 	<field name="payment_type" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.name" value="payment_type"/>
@@ -126,28 +146,49 @@ WHERE
 		<band height="210">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<staticText>
-				<reportElement x="10" y="159" width="100" height="25" uuid="e622555d-198b-4ccd-a4a1-c59c53304058">
+				<reportElement x="10" y="49" width="100" height="25" uuid="e622555d-198b-4ccd-a4a1-c59c53304058">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
 					<font size="19" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Quittung]]></text>
+				<text><![CDATA[Rechnung]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="130" y="159" width="50" height="25" forecolor="#ADADAD" uuid="bf0a9cda-edd2-4b2b-add5-fae239bc6b1a"/>
+				<reportElement x="130" y="49" width="50" height="25" forecolor="#ADADAD" uuid="bf0a9cda-edd2-4b2b-add5-fae239bc6b1a"/>
 				<textElement>
 					<font size="19" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{payment_type} == 1? "Bar": "Card"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="10" y="150" width="100" height="15" uuid="f4c0e7d5-8ccb-489a-8a20-e48ceabd4f69"/>
+				<textElement>
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{customer_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="10" y="165" width="100" height="15" uuid="9ece090d-d778-468c-b988-d2b83addb023"/>
+				<textElement>
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{address1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="10" y="180" width="100" height="15" uuid="02d6c00d-facb-4de8-8943-25db11651645"/>
+				<textElement>
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{address2}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="222" y="150" width="69" height="15" uuid="edbd74ac-0cbd-44c9-8a8e-ccf745191172"/>
 				<textElement>
 					<font fontName="Arial"/>
 				</textElement>
-				<text><![CDATA[Quittung Nr.]]></text>
+				<text><![CDATA[Rechnung Nr.]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="222" y="165" width="69" height="15" uuid="2d2f365d-7b12-4a8f-990d-ff528a2660bc"/>
@@ -165,7 +206,7 @@ WHERE
 			</staticText>
 			<image scaleImage="FillFrame" hAlign="Center">
 				<reportElement x="280" y="6" width="264" height="140" uuid="94883631-a913-43e2-b182-ab8d77d0181e"/>
-				<imageExpression><![CDATA["E:/Hamid/Projects/java/quittung/rechnung_manager_app/src/main/resources/de/seifi/rechnung_manager_app/images/logo_small_1065.png"]]></imageExpression>
+				<imageExpression><![CDATA["logo_small_1065.png"]]></imageExpression>
 			</image>
 			<textField>
 				<reportElement x="372" y="148" width="100" height="17" uuid="813776eb-e4e0-4127-90d7-7964611599bd"/>
@@ -370,9 +411,10 @@ WHERE
 				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="10" y="25" width="535" height="1" uuid="0be1f9e2-7958-4199-b581-7f137f6fc604">
+				<reportElement x="10" y="25" width="534" height="1" uuid="0be1f9e2-7958-4199-b581-7f137f6fc604">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
 					<printWhenExpression><![CDATA[EQUALS($P{total_rows},$V{REPORT_COUNT} )]]></printWhenExpression>
 				</reportElement>
 			</line>
@@ -382,9 +424,10 @@ WHERE
 		<band height="4">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<line>
-				<reportElement x="10" y="-6" width="535" height="1" uuid="3ad3baad-648e-488a-9332-1d880fc30440">
+				<reportElement x="10" y="-6" width="534" height="1" uuid="3ad3baad-648e-488a-9332-1d880fc30440">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
 					<printWhenExpression><![CDATA[NOT( EQUALS($P{total_rows},$V{REPORT_COUNT} ) )]]></printWhenExpression>
 				</reportElement>
 			</line>
@@ -576,7 +619,7 @@ WHERE
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial&#xD;&#xA;" size="14" isBold="true"/>
+					<font fontName="Arial" size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Danke für Ihren Einkauf]]></text>
 			</staticText>

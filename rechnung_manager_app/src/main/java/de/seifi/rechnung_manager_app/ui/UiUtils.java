@@ -3,6 +3,7 @@ package de.seifi.rechnung_manager_app.ui;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import de.seifi.rechnung_manager_app.RechnungManagerFxApp;
@@ -92,7 +93,7 @@ public class UiUtils {
 				try {
 					rechnungStream = RechnungManagerFxApp.getJasperFilePath("rechnung");
 					rechnungThankStream = RechnungManagerFxApp.getJasperFilePath("rechnung_thank");
-				} catch (IOException e) {
+				} catch (Exception e) {
 					logger.error("Error in load print report.", e);
 					return;
 				}
@@ -105,7 +106,7 @@ public class UiUtils {
 				try {
 					rechnungStream = RechnungManagerFxApp.getJasperFilePath("quittung");
 					rechnungThankStream = RechnungManagerFxApp.getJasperFilePath("quittung_thank");
-				} catch (IOException e) {
+				} catch (Exception e) {
 					logger.error("Error in load print report.", e);
 					return;
 				}
@@ -116,12 +117,13 @@ public class UiUtils {
 			}
 
 			try {
+				Map<String, Object> printParameterMap = printJRDataSource.getPrintParameter();
 				jasperPrint = JasperFillManager.fillReport(rechnungStream,
-														   printJRDataSource.getPrintParameter(),
+														   printParameterMap,
 														   printJRDataSource);
 
 				JasperPrintManager.printReport(jasperPrint, false);
-			} catch (JRException e) {
+			} catch (Exception e) {
 				logger.error("Error in load print report.", e);
 				return;
 			}
@@ -129,11 +131,13 @@ public class UiUtils {
 
 			if(forCustomer){
 				try {
+					printJRDataSource.reset();
+					Map<String, Object> printParameterMap = printJRDataSource.getPrintParameter();
 					jasperThankPrint = JasperFillManager.fillReport(rechnungThankStream,
-																	printJRDataSource.getPrintParameter(),
+																	printParameterMap,
 																	printJRDataSource);
 					JasperPrintManager.printReport(jasperThankPrint, false);
-				} catch (JRException e) {
+				} catch (Exception e) {
 					logger.error("Error in load print report.", e);
 					return;
 				}

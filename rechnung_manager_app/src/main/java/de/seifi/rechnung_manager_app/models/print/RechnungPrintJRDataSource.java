@@ -51,12 +51,12 @@ public class RechnungPrintJRDataSource extends PrintJRDataSourceBase {
         switch (jrField.getName()){
             case "produkt": return row.getProdukt();
             case "nummer": return row.getNummer();
-            case "rechnungCreate": return row.getRechnungCreate();
+            case "rechnung_create": return row.getRechnungCreate();
             case "customer_name": return row.getCustomerName();
             case "address1": return row.getAddress1();
             case "address2": return row.getAddress2();
-            case "paymentType": return row.getPaymentType();
-            case "artikelNummer": return row.getArtikelNummer();
+            case "payment_type": return row.getPaymentType();
+            case "artikel_nummer": return row.getArtikelNummer();
             case "menge": return row.getMenge();
             case "preis": return row.getPreis();
             case "gesamt": return row.getGesamt();

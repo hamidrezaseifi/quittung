@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<jdbcDataAdapter class="net.sf.jasperreports.data.jdbc.JdbcDataAdapterImpl">
+  <name>Postgresql</name>
+  <classpath>E:\Hamid\Projects\JasperViewerFx\postgresql-42.3.6.jar</classpath>
+  <driver>org.postgresql.Driver</driver>
+  <username>postgres</username>
+  <password>7342</password>
+  <url>jdbc:postgresql://localhost:5432/rechnung</url>
+  <database></database>
+  <savePassword>true</savePassword>
+  <serverAddress></serverAddress>
+</jdbcDataAdapter>
