@@ -1,5 +1,6 @@
 package de.seifi.rechnung_manager_app.models.print;
 
+import java.io.IOException;
 import java.util.Map;
 
 public interface IPrintJRDataSource {
@@ -7,5 +8,7 @@ public interface IPrintJRDataSource {
     static final String PARAMETER_TOTAL_MWT = "mwt";
     static final String PARAMETER_TOTAL_ROWS = "total_rows";
 
-    Map<String, Object> getPrintParameter();
+    static final String PARAMETER_LOGO_PATH = "logo_path";
+
+    Map<String, Object> getPrintParameter() throws IOException;
 }

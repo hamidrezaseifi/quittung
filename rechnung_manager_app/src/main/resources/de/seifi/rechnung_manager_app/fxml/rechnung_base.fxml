@@ -16,7 +16,7 @@
         <RowConstraints prefHeight="140" vgrow="NEVER" />
         <RowConstraints prefHeight="40" vgrow="NEVER" />
         <RowConstraints vgrow="ALWAYS" />
-        <RowConstraints prefHeight="50" vgrow="NEVER" />
+        <RowConstraints prefHeight="10" vgrow="NEVER" />
     </rowConstraints>
     <children>
             
@@ -171,8 +171,7 @@
 	        </GridPane>
         
         </VBox>
-        <HBox GridPane.columnIndex="0" GridPane.rowIndex="4" spacing="10" alignment="CENTER_LEFT" fx:id="toggleStatusBox">
-            <Label text="Status: Bereit ..." fx:id="lblStatusChange" onMouseClicked="#toggleBrerechnenZiel" styleClass="toggle-label" prefWidth="280" prefHeight="36" alignment="CENTER"></Label>
+        <HBox GridPane.columnIndex="0" GridPane.rowIndex="4" spacing="0" alignment="CENTER_LEFT" fx:id="toggleStatusBox">
 
         </HBox>
 

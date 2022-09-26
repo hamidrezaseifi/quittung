@@ -1,8 +1,10 @@
 package de.seifi.rechnung_manager_app.models.print;
 
+import de.seifi.rechnung_manager_app.RechnungManagerFxApp;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,7 +15,7 @@ public abstract class PrintJRDataSourceBase implements JRDataSource, IPrintJRDat
     //private Map<String, Object> printParameterMap = null;
 
     @Override
-    public Map<String, Object> getPrintParameter() {
+    public Map<String, Object> getPrintParameter() throws IOException {
         return preparePrintParameterMap();
         //return printParameterMap;
     }
@@ -28,12 +30,13 @@ public abstract class PrintJRDataSourceBase implements JRDataSource, IPrintJRDat
 
     protected abstract Float getTotalNeto();
 
-    protected Map<String, Object> preparePrintParameterMap() {
+    protected Map<String, Object> preparePrintParameterMap() throws IOException {
         Map<String, Object> printParameterMap = new HashMap<>();
         Float totalNeto = this.getTotalNeto();
         printParameterMap.put(IPrintJRDataSource.PARAMETER_TOTAL_ROWS, this.getRowCount());
         printParameterMap.put(IPrintJRDataSource.PARAMETER_TOTAL_NETO, totalNeto);
         printParameterMap.put(IPrintJRDataSource.PARAMETER_TOTAL_MWT, totalNeto * 19 / 100);
+        printParameterMap.put(IPrintJRDataSource.PARAMETER_LOGO_PATH, RechnungManagerFxApp.getJasperPrintLogoPath());
 
         return printParameterMap;
     }

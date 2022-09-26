@@ -17,10 +17,10 @@ import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
+import javafx.scene.input.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -101,7 +101,9 @@ public class RechnungController implements Initializable, ControllerBase {
 
     @FXML private HBox toggleStatusBox;
 
-    @FXML private Label lblStatusChange;
+    //@FXML private Label lblStatusChange;
+
+    @FXML private Button btnToggleBrerechnenZiel;
 
     @FXML private HBox nameBox;
     
@@ -336,6 +338,7 @@ public class RechnungController implements Initializable, ControllerBase {
             rechnungBindingService.calculateButtons();
         });
 
+        KeyCombination kc = new KeyCodeCombination(KeyCode.T, KeyCombination.ALT_DOWN, KeyCombination.CONTROL_DOWN, KeyCombination.SHIFT_DOWN);
         if(this.rechnungType == RechnungType.QUITTUNG){
         	
         	for(Node child: bannerPane.getChildren()) {
@@ -346,7 +349,20 @@ public class RechnungController implements Initializable, ControllerBase {
         	}
             
         	lblQuittung.setVisible(true);
-            //toggleStatusBox.setVisible(true);
+
+            btnToggleBrerechnenZiel = new Button("");
+            btnToggleBrerechnenZiel.setPrefWidth(1);
+            btnToggleBrerechnenZiel.setPrefHeight(1);
+            btnToggleBrerechnenZiel.setPadding(new Insets(0));
+            btnToggleBrerechnenZiel.setOnAction(e -> {
+                rechnungBindingService.toggleActiveBerechnenZiel();
+                showItemsTableView.requestFocus();
+            });
+            //btnToggleBrerechnenZiel.setVisible(false);
+
+            toggleStatusBox.getChildren().add(btnToggleBrerechnenZiel);
+
+            RechnungManagerFxApp.mainScene.addMnemonic(new Mnemonic(btnToggleBrerechnenZiel, kc));
         }
 
         if(this.rechnungType == RechnungType.RECHNUNG){
@@ -360,6 +376,13 @@ public class RechnungController implements Initializable, ControllerBase {
 
             //toggleStatusBox.setVisible(false);
             lblQuittung.setVisible(false);
+
+            if(btnToggleBrerechnenZiel != null){
+                toggleStatusBox.getChildren().remove(btnToggleBrerechnenZiel);
+            }
+
+            RechnungManagerFxApp.mainScene.getMnemonics().remove(kc);
+
         }
 
     }
@@ -392,7 +415,7 @@ public class RechnungController implements Initializable, ControllerBase {
         rechnungBindingService.setIsView(true);
         this.stage = stage;
 
-        toggleStatusBox.getChildren().remove(lblStatusChange);
+        toggleStatusBox.getChildren().remove(btnToggleBrerechnenZiel);
 
         lblExemplar.setText("original");
 		if(rechnungModel.hasReference()) {

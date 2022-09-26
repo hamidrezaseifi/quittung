@@ -182,6 +182,12 @@ public class RechnungManagerFxApp extends Application implements ISingleInstance
         return url.openStream();
     }
 
+    public static String getJasperPrintLogoPath() throws IOException {
+        URL url = RechnungManagerFxApp.class.getResource("images/logo_small_1065.png");
+
+        return url.getPath().toString();
+    }
+
     private void closeWindowEvent(WindowEvent event) {
         if(isCurrentControllerDirty()){
             UiUtils.showError("Niche gespeicherte Änderungen ...", currentController.getDirtyMessage());

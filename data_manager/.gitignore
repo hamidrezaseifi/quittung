@@ -35,3 +35,4 @@ build/
 /exec/*.log
 /exec/*.exe
 /db_config.cfg
+/data_manager-0.0.3.jar
