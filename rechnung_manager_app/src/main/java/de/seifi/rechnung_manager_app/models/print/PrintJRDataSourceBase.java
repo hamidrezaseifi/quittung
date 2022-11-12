@@ -36,7 +36,7 @@ public abstract class PrintJRDataSourceBase implements JRDataSource, IPrintJRDat
         printParameterMap.put(IPrintJRDataSource.PARAMETER_TOTAL_ROWS, this.getRowCount());
         printParameterMap.put(IPrintJRDataSource.PARAMETER_TOTAL_NETO, totalNeto);
         printParameterMap.put(IPrintJRDataSource.PARAMETER_TOTAL_MWT, totalNeto * 19 / 100);
-        printParameterMap.put(IPrintJRDataSource.PARAMETER_LOGO_PATH, RechnungManagerFxApp.getJasperPrintLogoPath());
+        printParameterMap.put(IPrintJRDataSource.PARAMETER_LOGO_PATH, RechnungManagerFxApp.getLocalJasperPrintLogoPath());
 
         return printParameterMap;
     }

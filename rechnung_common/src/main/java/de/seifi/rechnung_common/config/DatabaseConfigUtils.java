@@ -36,7 +36,9 @@ public class DatabaseConfigUtils extends ConfigReader {
 
 	private static final String CONFIG_KEY_QUITTUNG_DATASOURCE_USERNAME = "username";
 
-	
+	private static final String CONFIG_KEY_QUITTUNG_DATASOURCE_IS_H2 = "is_h2";
+
+
 	private static final String CONFIG_DEFAULT_VALU_QUITTUNG_DATASOURCE_SERVER = "localhost";
 
 	private static final String CONFIG_DEFAULT_VALU_QUITTUNG_DATASOURCE_PORT = "5432";
@@ -47,6 +49,8 @@ public class DatabaseConfigUtils extends ConfigReader {
 
 	private static final String CONFIG_DEFAULT_VALUE_QUITTUNG_DATASOURCE_USERNAME = "postgres";
 
+	private static final String CONFIG_DEFAULT_VALUE_QUITTUNG_DATASOURCE_IS_H2 = "false";
+
 	private static final String BACKUP_HISTORY_TABLE_NAME = "backup_history";
 
 
@@ -55,7 +59,8 @@ public class DatabaseConfigUtils extends ConfigReader {
 			new ConfigItem(CONFIG_KEY_DATABASE_SECTOR, CONFIG_KEY_QUITTUNG_DATASOURCE_PORT, CONFIG_DEFAULT_VALU_QUITTUNG_DATASOURCE_PORT),
 			new ConfigItem(CONFIG_KEY_DATABASE_SECTOR, CONFIG_KEY_QUITTUNG_DATASOURCE_DATABASE, CONFIG_DEFAULT_VALU_QUITTUNG_DATASOURCE_DATABASE),
 			new ConfigItem(CONFIG_KEY_DATABASE_SECTOR, CONFIG_KEY_QUITTUNG_DATASOURCE_PASSWORD, CONFIG_DEFAULT_VALUE_QUITTUNG_DATASOURCE_PASSWORD),
-			new ConfigItem(CONFIG_KEY_DATABASE_SECTOR, CONFIG_KEY_QUITTUNG_DATASOURCE_USERNAME, CONFIG_DEFAULT_VALUE_QUITTUNG_DATASOURCE_USERNAME));
+			new ConfigItem(CONFIG_KEY_DATABASE_SECTOR, CONFIG_KEY_QUITTUNG_DATASOURCE_USERNAME, CONFIG_DEFAULT_VALUE_QUITTUNG_DATASOURCE_USERNAME),
+			new ConfigItem(CONFIG_KEY_DATABASE_SECTOR, CONFIG_KEY_QUITTUNG_DATASOURCE_IS_H2, CONFIG_DEFAULT_VALUE_QUITTUNG_DATASOURCE_IS_H2));
 	
 
 	private static final List<TableModel> existingTables = 
@@ -144,9 +149,17 @@ public class DatabaseConfigUtils extends ConfigReader {
 	}
 	
 	private String getDatasourceUrl() {
+		if(isH2Database()){
+			return "jdbc:h2:mem:testdb";
+
+		}
 		return getDatasourceUrl(getServer(), getPort(), getDatabase());
 	}
-	
+
+	private boolean isH2Database() {
+		return datasourceDriverClassName.equals("org.h2.Driver");
+	}
+
 	public List<TableModel> getTableModelList(){
 		return existingTables;
 	}
@@ -228,12 +241,17 @@ public class DatabaseConfigUtils extends ConfigReader {
 
 
 	public String getDatasourcePassword() {
+		if(isH2Database()){
+			return "";
+		}
 
 		return getValue(CONFIG_KEY_QUITTUNG_DATASOURCE_PASSWORD);
 	}
 
 	public String getDatasourceUsername() {
-
+		if(isH2Database()){
+			return "sa";
+		}
 		return getValue(CONFIG_KEY_QUITTUNG_DATASOURCE_USERNAME);	
 	}
 

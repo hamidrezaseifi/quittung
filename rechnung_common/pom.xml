@@ -5,12 +5,12 @@
 	<parent>
 		<groupId>de.seifi</groupId>
 		<artifactId>rechnung_manager</artifactId>
-		<version>0.0.3</version>
+		<version>0.0.4</version>
 	</parent>
 	<artifactId>rechnung_common</artifactId>
 	<name>rechnung_common</name>
 	<description>rechnung_common</description>
-	<version>0.0.3</version>
+	<version>0.0.4</version>
 	<properties>
 		<java.version>11</java.version>
         <javafx.version>17.0.1</javafx.version>
@@ -28,6 +28,12 @@
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
 			<scope>runtime</scope>
 		</dependency>
 

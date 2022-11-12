@@ -8,7 +8,6 @@ import de.seifi.rechnung_manager_app.controllers.RechnungController;
 import de.seifi.rechnung_manager_app.enums.RechnungType;
 import de.seifi.rechnung_manager_app.models.CustomerModel;
 import de.seifi.rechnung_manager_app.models.RechnungModel;
-import de.seifi.rechnung_manager_app.services.ICustomerService;
 import de.seifi.rechnung_manager_app.ui.UiUtils;
 import de.seifi.rechnung_manager_app.utils.RechUncaughtExceptionHandler;
 import de.seifi.rechnung_manager_app.utils.RechnungManagerAppConfig;
@@ -29,11 +28,13 @@ import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 import javafx.util.Pair;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.UUID;
 
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -66,6 +67,8 @@ public class RechnungManagerFxApp extends Application implements ISingleInstance
 
     public static UUID loggedUser = null;
 
+    private static String localJasperPrintLogoPath = null;
+
     @Override
     public void runInstance(String[] args) {
         Application.launch(args);
@@ -77,9 +80,51 @@ public class RechnungManagerFxApp extends Application implements ISingleInstance
         logger.info("Start Main Application");
         RechnungManagerFxApp.startArgs = args;
 
+        copyPrintLogo();
+
         RunSingleInstance.runInstance(args, new RechnungManagerFxApp(), "RechnungManagerAppId");
     }
-    
+
+    private static void copyPrintLogo() {
+
+        InputStream stream = null;
+        OutputStream resStreamOut = null;
+        try {
+            URL logoJarPath = getJasperPrintLogoPath();
+
+            Path currentRelativePath = Paths.get("");
+            String currentRelativePathStr = currentRelativePath.toAbsolutePath().toString();
+            File logoLocalFile = Paths.get(currentRelativePathStr, "print_logo.png").toFile();
+
+            stream = logoJarPath.openStream();
+            resStreamOut = new FileOutputStream(logoLocalFile);
+
+            if(logoLocalFile.exists()){
+                logoLocalFile.delete();
+            }
+
+            localJasperPrintLogoPath = logoLocalFile.getAbsolutePath();
+
+            int readBytes;
+            byte[] buffer = new byte[4096];
+            while ((readBytes = stream.read(buffer)) > 0) {
+                resStreamOut.write(buffer, 0, readBytes);
+            }
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        finally {
+            try {
+                stream.close();
+                resStreamOut.close();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+
+        }
+    }
+
     private void showSplash(Stage initStage) throws IOException {
     	
     	splashStage = initStage;
@@ -182,10 +227,15 @@ public class RechnungManagerFxApp extends Application implements ISingleInstance
         return url.openStream();
     }
 
-    public static String getJasperPrintLogoPath() throws IOException {
+    private static URL getJasperPrintLogoPath() throws IOException {
         URL url = RechnungManagerFxApp.class.getResource("images/logo_small_1065.png");
 
-        return url.getPath().toString();
+        return url;
+    }
+
+    public static String getLocalJasperPrintLogoPath(){
+        return localJasperPrintLogoPath;
+
     }
 
     private void closeWindowEvent(WindowEvent event) {
