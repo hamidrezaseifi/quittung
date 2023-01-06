@@ -60,7 +60,7 @@ public class KostenvoranschlagEntity extends EntityBase {
 	private LocalDateTime updated;
 
 	@OneToMany(mappedBy = "rechnung", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-	private Set<RechnungItemEntity> items;
+	private Set<KostenvoranschlagItemEntity> items;
 
     public KostenvoranschlagEntity() {
     	super();
@@ -175,21 +175,21 @@ public class KostenvoranschlagEntity extends EntityBase {
 	}
 
 
-	public Set<RechnungItemEntity> getItems() {
+	public Set<KostenvoranschlagItemEntity> getItems() {
 		return items;
 	}
 
-	public void setItems(List<RechnungItemEntity> items) {
+	public void setItems(List<KostenvoranschlagItemEntity> items) {
 		this.items.clear();
 		if(items != null) {
-			items.forEach(i -> i.setRechnung(this));
+			items.forEach(i -> i.setKostenvoranschlag(this));
 			this.items.addAll(items);
 		}
 		
 	}
 
-	public void addItem(RechnungItemEntity item) {
-		item.setRechnung(this);
+	public void addItem(KostenvoranschlagItemEntity item) {
+		item.setKostenvoranschlag(this);
 		this.items.add(item);
 		
 	}

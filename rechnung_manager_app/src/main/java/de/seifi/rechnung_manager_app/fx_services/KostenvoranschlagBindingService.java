@@ -2,7 +2,7 @@ package de.seifi.rechnung_manager_app.fx_services;
 
 
 import de.seifi.rechnung_common.entities.RechnungEntity;
-import de.seifi.rechnung_common.repositories.RechnungRepository;
+import de.seifi.rechnung_common.repositories.KostenvoranschlagRepository;
 import de.seifi.rechnung_manager_app.RechnungManagerFxApp;
 import de.seifi.rechnung_manager_app.RechnungManagerSpringApp;
 import de.seifi.rechnung_manager_app.adapter.RechnungAdapter;
@@ -28,7 +28,7 @@ public class KostenvoranschlagBindingService {
 
     private int INITIAL_ITEMS = 10;
 
-    private final RechnungRepository rechnungRepository;
+    private final KostenvoranschlagRepository kostenvoranschlagRepository;
     private final IRechnungDataHelper rechnungDataHelper;
     //private final CustomerRepository customerRepository;
 
@@ -70,7 +70,7 @@ public class KostenvoranschlagBindingService {
 
     private boolean editingMode = false;
 
-    public KostenvoranschlagBindingService(final RechnungRepository rechnungRepository,
+    public KostenvoranschlagBindingService(final KostenvoranschlagRepository kostenvoranschlagRepository,
                                            final IRechnungDataHelper rechnungDataHelper) {
     	
     	CURRENT_INSTANCE = this;
@@ -78,7 +78,7 @@ public class KostenvoranschlagBindingService {
         this.activeBerechnenZiel = 0;
         this.bannerBackColor = new SimpleStringProperty(this.berechnenFaktorZielColorList.get(this.activeBerechnenZiel));
 
-        this.rechnungRepository = rechnungRepository;
+        this.kostenvoranschlagRepository = kostenvoranschlagRepository;
         this.rechnungDataHelper = rechnungDataHelper;
 
         this.customerList = new HashMap<>();

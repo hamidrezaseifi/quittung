@@ -12,7 +12,7 @@ import java.util.UUID;
 
 
 @Entity
-@Table(name = "rechnung_item")
+@Table(name = "kostenvoranschlag_item")
 public class KostenvoranschlagItemEntity extends EntityBase {
 
 	@Id
@@ -21,8 +21,8 @@ public class KostenvoranschlagItemEntity extends EntityBase {
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
 	@OnDelete(action = OnDeleteAction.CASCADE)
-	@JoinColumn(foreignKey = @ForeignKey(name = "rechnung_item_rechnung_fkey"))
-	private RechnungEntity rechnung;
+	@JoinColumn(foreignKey = @ForeignKey(name = "kostenvoranschlag_item_kostenvoranschlag_fkey"))
+	private KostenvoranschlagEntity kostenvoranschlag;
 
 	@Column(nullable = false)
 	private String produkt;
@@ -120,15 +120,13 @@ public class KostenvoranschlagItemEntity extends EntityBase {
 		this.id = id;
 	}
 
-	public RechnungEntity getRechnung() {
-		return rechnung;
+	public KostenvoranschlagEntity getKostenvoranschlag() {
+		return kostenvoranschlag;
 	}
 
-	public void setRechnung(RechnungEntity rechnung) {
-		this.rechnung = rechnung;
-
+	public void setKostenvoranschlag(KostenvoranschlagEntity kostenvoranschlag) {
+		this.kostenvoranschlag = kostenvoranschlag;
 	}
-	
 
 	@Override
 	public LocalDateTime getCreated() {
