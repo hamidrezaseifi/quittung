@@ -71,7 +71,9 @@ public class DatabaseConfigUtils extends ConfigReader {
 	
 	@Value("${quittung.datasource.driver-class-name}")
 	private String datasourceDriverClassName;
-	
+
+	@Value("${spring.profiles.active}")
+	private String activeProfile;
 	
 	public DatabaseConfigUtils() {
 		super("db_config.cfg", configItemList);

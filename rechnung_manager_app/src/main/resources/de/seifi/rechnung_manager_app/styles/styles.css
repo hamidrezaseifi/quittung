@@ -139,6 +139,17 @@
 
 }
 
+.estimate-button {
+
+    -fx-background-image: url('../images/estimate.png');
+
+    -fx-background-size: 26 26;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position:3px center;
+    -fx-font-size: 14px;
+
+}
+
 .home-button {
 	         
     -fx-background-image: url('../images/home.png');

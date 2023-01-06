@@ -13,13 +13,19 @@ public class QuittungPrintJRDataSource extends PrintJRDataSourceBase {
 
     private final List<QuittungPrintJRRow> rows;
 
-    public QuittungPrintJRDataSource(List<QuittungPrintJRRow> rows) {
+    private final String createDate;
+
+    public QuittungPrintJRDataSource(List<QuittungPrintJRRow> rows,
+                                     String createDate) {
         this.rows = rows;
+        this.createDate = createDate;
     }
 
     public QuittungPrintJRDataSource(RechnungModel rechnungModel) {
         this.rows = rechnungModel.getItems().stream().map(item -> extractQuittungPrintJRRow(rechnungModel, item)).collect(
                 Collectors.toList());
+
+        this.createDate = rechnungModel.getRechnungCreate();
     }
 
     private QuittungPrintJRRow extractQuittungPrintJRRow(RechnungModel rechnungModel,
@@ -66,5 +72,10 @@ public class QuittungPrintJRDataSource extends PrintJRDataSourceBase {
         this.rows.forEach(r -> totalNeto.updateAndGet(v -> v + r.getGesamt()));
 
         return totalNeto.get();
+    }
+
+    @Override
+    protected String getCreateDate() {
+        return this.createDate;
     }
 }

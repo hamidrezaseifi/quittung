@@ -32,7 +32,8 @@
             <Button styleClass="home-button" text="Home" onAction="#showHome" prefWidth="116" prefHeight="36" alignment="CENTER_RIGHT"></Button>
             <Button styleClass="bill-button" text="Quittung" onAction="#showQuitting" prefWidth="116" prefHeight="36" alignment="CENTER_RIGHT"></Button>
             <Button styleClass="receipt-button" text="Rechnung" onAction="#showRechnung" prefWidth="116" prefHeight="36" alignment="CENTER_RIGHT"></Button>
-            <Button styleClass="report-button" text="Bericht" onAction="#showReport" prefWidth="116" prefHeight="36" alignment="CENTER_RIGHT"></Button>
+            <Button styleClass="estimate-button" text="Kostenvoranschlag" onAction="#showKostenvoranschlag" prefWidth="166" prefHeight="36" alignment="CENTER_RIGHT"></Button>
+            <Button styleClass="report-button" text="Bericht" onAction="#showReport" prefWidth="96" prefHeight="36" alignment="CENTER_RIGHT"></Button>
             <Button styleClass="customer-button" text="Kunden-Verwaltung" onAction="#showCustomers" prefWidth="166" prefHeight="36" alignment="CENTER_RIGHT"></Button>
             <Button styleClass="admin-button" text="Verwaltung" onAction="#showAdmin" prefWidth="116" prefHeight="36" alignment="CENTER_RIGHT"></Button>
             <Button styleClass="about-button" text="Über" onAction="#showAbout" prefWidth="116" prefHeight="36" alignment="CENTER_RIGHT"></Button>

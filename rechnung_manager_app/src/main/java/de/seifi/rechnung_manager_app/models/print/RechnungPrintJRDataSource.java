@@ -14,23 +14,20 @@ public class RechnungPrintJRDataSource extends PrintJRDataSourceBase {
 
     private final List<RechnungPrintJRRow> rows;
 
-    public RechnungPrintJRDataSource(List<RechnungPrintJRRow> rows) {
-        this.rows = rows;
-
-    }
+    private final String createDate;
 
     public RechnungPrintJRDataSource(RechnungModel rechnungModel, CustomerModel customerModel) {
         this.rows = rechnungModel.getItems().stream().map(item -> createRechnungPrintJRRow(rechnungModel, customerModel, item)).collect(
                 Collectors.toList());
 
-
+        this.createDate = rechnungModel.getRechnungCreate();
     }
 
     private RechnungPrintJRRow createRechnungPrintJRRow(RechnungModel rechnungModel,
                                                         CustomerModel customerModel,
                                                         RechnungItemModel itemModel) {
         RechnungPrintJRRow
-                row = new RechnungPrintJRRow(itemModel.getProdukt(),
+                printJRRow = new RechnungPrintJRRow(itemModel.getProdukt(),
                                              rechnungModel.getNummer().toString(),
                                              rechnungModel.getRechnungCreate(),
                                              customerModel.getCustomerName(),
@@ -41,11 +38,11 @@ public class RechnungPrintJRDataSource extends PrintJRDataSourceBase {
                                              itemModel.getMenge(),
                                              itemModel.getPreis(),
                                              itemModel.getGesmt());
-        return row;
+        return printJRRow;
     }
 
     @Override
-    public Object getFieldValue(JRField jrField) throws JRException {
+    public Object getFieldValue(JRField jrField) {
         RechnungPrintJRRow row = rows.get(this.rowIndex);
 
         switch (jrField.getName()){
@@ -77,5 +74,10 @@ public class RechnungPrintJRDataSource extends PrintJRDataSourceBase {
         this.rows.forEach(r -> totalNeto.updateAndGet(v -> v + r.getGesamt()));
 
         return totalNeto.get();
+    }
+
+    @Override
+    protected String getCreateDate() {
+        return this.createDate;
     }
 }

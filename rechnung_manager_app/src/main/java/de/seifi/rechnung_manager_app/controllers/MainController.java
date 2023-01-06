@@ -63,6 +63,19 @@ public class MainController implements Initializable {
 
 	}
 
+	@FXML
+	private void showKostenvoranschlag() throws IOException {
+		logger.debug("Show Quitting");
+
+		if(RechnungManagerFxApp.cannCurrentControllerClosed()) {
+			clearChildren();
+
+			Pair<GridPane, KostenvoranschlagController> pair = RechnungManagerFxApp.getKostenvoranschlag();
+			childBox.getChildren().add(pair.getKey());
+		}
+
+	}
+
     @FXML
     public void showHome() throws IOException {
     	

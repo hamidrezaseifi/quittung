@@ -3,6 +3,7 @@ package de.seifi.rechnung_manager_app;
 import de.seifi.rechnung_common.utils.ISingleInstanceRunnable;
 import de.seifi.rechnung_common.utils.RunSingleInstance;
 import de.seifi.rechnung_manager_app.controllers.ControllerBase;
+import de.seifi.rechnung_manager_app.controllers.KostenvoranschlagController;
 import de.seifi.rechnung_manager_app.controllers.MainController;
 import de.seifi.rechnung_manager_app.controllers.RechnungController;
 import de.seifi.rechnung_manager_app.enums.RechnungType;
@@ -305,7 +306,17 @@ public class RechnungManagerFxApp extends Application implements ISingleInstance
         URL fxmlResource = RechnungManagerFxApp.class.getResource("fxml/rechnung_base.fxml");
         FXMLLoader fxmlLoader = new FXMLLoader(fxmlResource);
         RechnungController controller = new RechnungController(rechnungType);
-		fxmlLoader.setController(controller);
+        fxmlLoader.setController(controller);
+        GridPane rechnungPane = (GridPane)fxmlLoader.load();
+
+        return new Pair<>(rechnungPane, controller);
+    }
+    public static Pair<GridPane, KostenvoranschlagController> getKostenvoranschlag() throws IOException {
+
+        URL fxmlResource = RechnungManagerFxApp.class.getResource("fxml/rechnung_base.fxml");
+        FXMLLoader fxmlLoader = new FXMLLoader(fxmlResource);
+        KostenvoranschlagController controller = new KostenvoranschlagController();
+        fxmlLoader.setController(controller);
         GridPane rechnungPane = (GridPane)fxmlLoader.load();
 
         return new Pair<>(rechnungPane, controller);

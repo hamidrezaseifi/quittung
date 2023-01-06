@@ -5,12 +5,12 @@
 	<parent>
 		<groupId>de.seifi</groupId>
 		<artifactId>rechnung_manager</artifactId>
-		<version>0.0.4</version>
+		<version>0.0.5</version>
 	</parent>
 	<artifactId>rechnung_common</artifactId>
 	<name>rechnung_common</name>
 	<description>rechnung_common</description>
-	<version>0.0.4</version>
+	<version>0.0.5</version>
 	<properties>
 		<java.version>11</java.version>
         <javafx.version>17.0.1</javafx.version>
