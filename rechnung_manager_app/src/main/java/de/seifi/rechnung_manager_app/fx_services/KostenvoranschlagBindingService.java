@@ -34,7 +34,7 @@ public class KostenvoranschlagBindingService {
 
     private final Map<UUID, CustomerModel> customerList;
 
-    private ObservableList<RechnungItemProperty> rechnungItems;
+    private ObservableList<RechnungItemProperty> vorschlagItems;
     private CustomerModelProperty customerModelProperty;
 
     private FloatProperty gesamtSumme;
@@ -46,7 +46,7 @@ public class KostenvoranschlagBindingService {
     private BooleanProperty disableSave;
     private BooleanProperty disablePrint;
 
-    private RechnungModel rechnungSavingModel = new RechnungModel();
+    private KostenvoranschlagModel savingModel = new KostenvoranschlagModel();
 
     private CustomerModel customerSavingModel = new CustomerModel();
 
