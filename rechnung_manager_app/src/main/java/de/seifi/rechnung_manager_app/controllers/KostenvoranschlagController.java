@@ -1,26 +1,17 @@
 package de.seifi.rechnung_manager_app.controllers;
 
 import de.seifi.rechnung_common.repositories.KostenvoranschlagRepository;
-import de.seifi.rechnung_common.repositories.RechnungRepository;
 import de.seifi.rechnung_manager_app.RechnungManagerFxApp;
 import de.seifi.rechnung_manager_app.RechnungManagerSpringApp;
 import de.seifi.rechnung_manager_app.data_service.IRechnungDataHelper;
-import de.seifi.rechnung_manager_app.enums.PaymentType;
-import de.seifi.rechnung_manager_app.enums.RechnungType;
 import de.seifi.rechnung_manager_app.fx_services.KostenvoranschlagBindingService;
-import de.seifi.rechnung_manager_app.fx_services.RechnungBindingService;
 import de.seifi.rechnung_manager_app.models.*;
 import de.seifi.rechnung_manager_app.ui.FloatGeldLabel;
 import de.seifi.rechnung_manager_app.ui.UiUtils;
-import de.seifi.rechnung_manager_app.utils.GeneralUtils;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.input.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -29,7 +20,6 @@ import net.sf.jasperreports.engine.JRException;
 
 import java.io.IOException;
 import java.net.URL;
-import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -52,7 +42,7 @@ public class KostenvoranschlagController implements Initializable, ControllerBas
 
     @FXML private TableColumn<KostenvoranschlagItemProperty, String> markeColumn;
 
-    @FXML private TableColumn<KostenvoranschlagItemProperty, Float> bPreisColumn;
+    @FXML private TableColumn<KostenvoranschlagItemProperty, Float> preisColumn;
 
     @FXML private TableColumn<KostenvoranschlagItemProperty, Boolean> bestelltColumn;
 
@@ -77,8 +67,6 @@ public class KostenvoranschlagController implements Initializable, ControllerBas
     @FXML private Button btnDeleteItem;
 
     @FXML private Button btnEdit;
-
-    @FXML private GridPane bannerPane;
 
     @FXML private Label lblName;
 
@@ -113,11 +101,6 @@ public class KostenvoranschlagController implements Initializable, ControllerBas
         this.rechnungDataHelper = RechnungManagerSpringApp.applicationContext.getBean(IRechnungDataHelper.class);
 
 	}
-
-    @FXML
-    private void toggleBrerechnenZiel(){
-        bindingService.toggleActiveBerechnenZiel();
-    }
 
 	@FXML
     private void speichern() throws IOException {
@@ -235,15 +218,12 @@ public class KostenvoranschlagController implements Initializable, ControllerBas
         bindingService = new KostenvoranschlagBindingService(this.kostenvoranschlagRepository,
                                                              this.rechnungDataHelper);
 
-
-        bannerPane.styleProperty().bind(bindingService.bannerBackColorProperty());
-
         produktColumn.prefWidthProperty().bind(
                 showItemsTableView.widthProperty().subtract(
                         originalNummerColumn.widthProperty()).subtract(
                         teilNummerColumn.widthProperty()).subtract(
                         markeColumn.widthProperty()).subtract(
-                            bPreisColumn.widthProperty()).subtract(
+                        preisColumn.widthProperty()).subtract(
                                             bestelltColumn.widthProperty()).subtract(5)
                                                                        );
 
@@ -270,7 +250,7 @@ public class KostenvoranschlagController implements Initializable, ControllerBas
             bindingService.setNewMarkeValue(tPos.getRow(), value);
         });
 
-        bPreisColumn.setOnEditCommit(event -> {
+        preisColumn.setOnEditCommit(event -> {
             final Float value = event.getNewValue();
             TablePosition<KostenvoranschlagItemProperty,?> tPos = event.getTablePosition();
             bindingService.setNewPreisValue(tPos.getRow(), value);

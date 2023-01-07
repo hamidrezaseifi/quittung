@@ -9,6 +9,6 @@ public class ProduktTableCellFactory implements
                                          Callback<TableColumn<RechnungItemProperty, String>, TableCell<RechnungItemProperty, String>> {
     @Override
     public TableCell<RechnungItemProperty, String> call(TableColumn<RechnungItemProperty, String> rechnungItemPropertyStringTableColumn) {
-        return new ProduktTableCell();
+        return new ProduktTableCellRechnung();
     }
 }

@@ -7,8 +7,12 @@
 <?import de.seifi.rechnung_manager_app.ui.FloatGeldLabel?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.geometry.Insets?>
+<?import de.seifi.rechnung_manager_app.ui.tablecell.kostenvoranschlag.KostenvoranschlagProduktTableCellFactory?>
+<?import de.seifi.rechnung_manager_app.ui.tablecell.kostenvoranschlag.KostenvoranschlagNummerTableCellFactory?>
+<?import de.seifi.rechnung_manager_app.ui.tablecell.kostenvoranschlag.KostenvoranschlagGeldLabelTableCellFactory?>
+<?import de.seifi.rechnung_manager_app.ui.tablecell.kostenvoranschlag.KostenvoranschlagCheckboxTableCellFactory?>
 <GridPane alignment="TOP_LEFT" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
-          fx:id="rootPane">
+		  fx:controller="de.seifi.rechnung_manager_app.controllers.KostenvoranschlagController" fx:id="rootPane">
     <columnConstraints>
         <ColumnConstraints hgrow="ALWAYS" />
     </columnConstraints>
@@ -20,7 +24,7 @@
     </rowConstraints>
     <children>
             
-    	<GridPane GridPane.columnIndex="0" GridPane.rowIndex="0" styleClass="rechnung-banner" fx:id="bannerPane">
+    	<GridPane GridPane.columnIndex="0" GridPane.rowIndex="0" styleClass="rechnung-banner">
 			<columnConstraints>
 		        <ColumnConstraints hgrow="ALWAYS" />
                 <ColumnConstraints hgrow="NEVER" prefWidth="130" />
@@ -84,52 +88,52 @@
         <VBox fx:id="itemsListBox" GridPane.columnIndex="0" GridPane.rowIndex="2">
 	        <TableView editable="true" fx:id="showItemsTableView">
 	            <columns>
-	                <TableColumn fx:id="mengeColumn" text="Menge" prefWidth="90" sortable="false">
-	                    <cellValueFactory>
-	                        <PropertyValueFactory property="menge" />
-	                    </cellValueFactory>
-	                    <cellFactory>
-	                        <IntegerTableCellFactory />
-	                    </cellFactory>
-	                </TableColumn>
 	                <TableColumn fx:id="produktColumn" text="Produkt" sortable="false">
 	                    <cellValueFactory>
 	                        <PropertyValueFactory property="produkt" />
 	                    </cellValueFactory>
 	                    <cellFactory>
-	                        <ProduktTableCellFactory />
+	                        <KostenvoranschlagProduktTableCellFactory />
 	                    </cellFactory>
 	                </TableColumn>
-	                <TableColumn fx:id="artikelNummerColumn" text="Artikel-Nr." prefWidth="110" sortable="false">
-	                    <cellValueFactory>
-	                        <PropertyValueFactory property="artikelNummer" />
-	                    </cellValueFactory>
-	                    <cellFactory>
-	                        <ArtikelNummerTableCellFactory />
-	                    </cellFactory>
-	                </TableColumn>
-	                <TableColumn fx:id="bPreisColumn" text="Bruto-Preis" prefWidth="120" sortable="false">
-	                    <cellValueFactory>
-	                        <PropertyValueFactory property="brutoPreis" />
-	                    </cellValueFactory>
-	                    <cellFactory>
-	                        <GeldEditingTableCellFactory />
-	                    </cellFactory>
-	                </TableColumn>
-	                <TableColumn fx:id="nPreisColumn" text="Einzelpreis" prefWidth="120" editable="false" sortable="false">
+					<TableColumn fx:id="originalNummerColumn" text="Originalnummer" prefWidth="110" sortable="false">
+						<cellValueFactory>
+							<PropertyValueFactory property="originalNummer" />
+						</cellValueFactory>
+						<cellFactory>
+							<KostenvoranschlagNummerTableCellFactory />
+						</cellFactory>
+					</TableColumn>
+					<TableColumn fx:id="teilNummerColumn" text="Teilnummer" prefWidth="110" sortable="false">
+						<cellValueFactory>
+							<PropertyValueFactory property="teilNummer" />
+						</cellValueFactory>
+						<cellFactory>
+							<KostenvoranschlagNummerTableCellFactory />
+						</cellFactory>
+					</TableColumn>
+					<TableColumn fx:id="markeColumn" text="Marke" prefWidth="110" sortable="false">
+						<cellValueFactory>
+							<PropertyValueFactory property="marke" />
+						</cellValueFactory>
+						<cellFactory>
+							<KostenvoranschlagNummerTableCellFactory />
+						</cellFactory>
+					</TableColumn>
+	                <TableColumn fx:id="preisColumn" text="Einzelpreis" prefWidth="120" editable="false" sortable="false">
 	                    <cellValueFactory>
 	                        <PropertyValueFactory property="preis" />
 	                    </cellValueFactory>
 	                    <cellFactory>
-	                        <GeldLabelTableCellFactory />
+	                        <KostenvoranschlagGeldLabelTableCellFactory />
 	                    </cellFactory>
 	                </TableColumn>
-	                <TableColumn fx:id="gesamtColumn" text="Gesamtpreis" prefWidth="180" editable="false" sortable="false">
+	                <TableColumn fx:id="bestelltColumn" text="Bestellt" prefWidth="60" editable="false" sortable="false">
 	                    <cellValueFactory>
-	                        <PropertyValueFactory property="gesamt" />
+	                        <PropertyValueFactory property="bestellt" />
 	                    </cellValueFactory>
 	                    <cellFactory>
-	                        <GeldLabelTableCellFactory />
+	                        <KostenvoranschlagCheckboxTableCellFactory />
 	                    </cellFactory>
 	                </TableColumn>
 	            </columns>

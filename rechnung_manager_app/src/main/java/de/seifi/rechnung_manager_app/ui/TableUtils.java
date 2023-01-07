@@ -9,8 +9,8 @@ import javafx.util.Pair;
 
 public class TableUtils {
 
-    public static Pair<Integer, TableColumn<RechnungItemProperty,?>> findNextEditable(TableCell<RechnungItemProperty,?> cell){
-        TableView<RechnungItemProperty> tv = cell.getTableView();
+    public static <T> Pair<Integer, TableColumn<T,?>> findNextEditable(TableCell<T,?> cell){
+        TableView<T> tv = cell.getTableView();
         
         Pair<Integer, Integer> pos = getTableCellPosition(cell);
         
@@ -35,11 +35,11 @@ public class TableUtils {
             
         }
 
-        return new Pair<Integer, TableColumn<RechnungItemProperty, ?>>(r, tv.getColumns().get(c));
+        return new Pair<Integer, TableColumn<T, ?>>(r, tv.getColumns().get(c));
     }
     
-    public static Pair<Integer, TableColumn<RechnungItemProperty,?>> findPrevEditable(TableCell<RechnungItemProperty,?> cell){
-        TableView<RechnungItemProperty> tv = cell.getTableView();
+    public static<T> Pair<Integer, TableColumn<T,?>> findPrevEditable(TableCell<T,?> cell){
+        TableView<T> tv = cell.getTableView();
         
         Pair<Integer, Integer> pos = getTableCellPosition(cell);
         
@@ -74,7 +74,7 @@ public class TableUtils {
             
         }
 
-        return new Pair<Integer, TableColumn<RechnungItemProperty, ?>>(r, tv.getColumns().get(c));
+        return new Pair<Integer, TableColumn<T, ?>>(r, tv.getColumns().get(c));
     }
     
     public static Pair<Integer, Integer> getTableCellPosition(TableCell<?,?> cell){
@@ -92,9 +92,9 @@ public class TableUtils {
         return new Pair<Integer, Integer>(r, c);
     }
     
-    public static void selectNextEditable(TableCell<RechnungItemProperty,?> cell) {
-    	TableView<RechnungItemProperty> tv = cell.getTableView();
-    	Pair<Integer, TableColumn<RechnungItemProperty,?>> res = findNextEditable(cell);
+    public static <T> void selectNextEditable(TableCell<T,?> cell) {
+    	TableView<T> tv = cell.getTableView();
+    	Pair<Integer, TableColumn<T,?>> res = findNextEditable(cell);
     	
         if(res != null){
         	tv.getSelectionModel().select(res.getKey(), res.getValue());
@@ -102,9 +102,9 @@ public class TableUtils {
         }
     }
     
-    public static boolean selectPrevEditable(TableCell<RechnungItemProperty,?> cell) {
-    	TableView<RechnungItemProperty> tv = cell.getTableView();
-    	Pair<Integer, TableColumn<RechnungItemProperty,?>> res = findPrevEditable(cell);
+    public static <T> boolean selectPrevEditable(TableCell<T,?> cell) {
+    	TableView<T> tv = cell.getTableView();
+    	Pair<Integer, TableColumn<T,?>> res = findPrevEditable(cell);
     	
         if(res != null){
         	tv.getSelectionModel().select(res.getKey(), res.getValue());

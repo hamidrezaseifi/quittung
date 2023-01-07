@@ -1,24 +1,18 @@
-package de.seifi.rechnung_manager_app.ui.tablecell;
+package de.seifi.rechnung_manager_app.ui.tablecell.kostenvoranschlag;
 
 import de.seifi.rechnung_manager_app.ui.FloatTextField;
 import de.seifi.rechnung_manager_app.ui.IntegerTextField;
-import de.seifi.rechnung_manager_app.models.RechnungItemProperty;
 import de.seifi.rechnung_manager_app.ui.TableUtils;
-import javafx.beans.binding.Bindings;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.geometry.Insets;
-import javafx.scene.control.*;
+import de.seifi.rechnung_manager_app.ui.tablecell.MarkedTableCellBase;
+import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.Control;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.paint.Color;
 
-public abstract class BaseEditbaleTableCell<T> extends MarkedTableCellBase<T> {
-	
-	
+public abstract class KostenvoranschlagBaseEditbaleTableCell<T> extends KostenvoranschlagMarkedTableCellBase<T> {
+
+
 	protected abstract void createEditingControl();
 
 	protected abstract Control getEditingControl();
@@ -27,10 +21,10 @@ public abstract class BaseEditbaleTableCell<T> extends MarkedTableCellBase<T> {
 
 	protected abstract void setEditingControlValue(T value);
 
-	protected abstract void setCellText(T text);
+	protected abstract void setCellText(T value);
 
 
-    public BaseEditbaleTableCell() {
+    public KostenvoranschlagBaseEditbaleTableCell() {
         
     	createEditingControl();
     	    	

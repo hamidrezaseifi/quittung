@@ -56,17 +56,6 @@ public class KostenvoranschlagBindingService {
     private boolean isDirty;
     private boolean isView = false;
 
-
-    private int activeBerechnenZiel;
-
-    private float berechnenFaktorBasis = 1.4f;
-
-    private List<Float> berechnenFaktorZielList = Arrays.asList(1.4f, 1.2f);
-
-    private List<String> berechnenFaktorZielColorList = Arrays.asList("-fx-background-color: white", "-fx-background-color: #f2f6ff");
-
-    private StringProperty bannerBackColor;
-
     private final KostenvoranschlagAdapter kostenvoranschlagAdapter = new KostenvoranschlagAdapter();
 
     private boolean isCustomerSelected = false;
@@ -76,9 +65,6 @@ public class KostenvoranschlagBindingService {
                                            final IRechnungDataHelper rechnungDataHelper) {
     	
     	CURRENT_INSTANCE = this;
-
-        this.activeBerechnenZiel = 0;
-        this.bannerBackColor = new SimpleStringProperty(this.berechnenFaktorZielColorList.get(this.activeBerechnenZiel));
 
         this.kostenvoranschlagRepository = kostenvoranschlagRepository;
         this.rechnungDataHelper = rechnungDataHelper;
@@ -98,24 +84,6 @@ public class KostenvoranschlagBindingService {
         
         reset();
 
-    }
-
-    public void toggleActiveBerechnenZiel(){
-        this.activeBerechnenZiel = this.activeBerechnenZiel == 0 ? 1 : 0;
-        this.bannerBackColor.set(this.berechnenFaktorZielColorList.get(this.activeBerechnenZiel));
-
-    }
-
-    public String getBannerBackColor() {
-        return bannerBackColor.get();
-    }
-
-    public StringProperty bannerBackColorProperty() {
-        return bannerBackColor;
-    }
-
-    public float getBerechnenFaktorZiel() {
-        return this.berechnenFaktorZielList.get(this.activeBerechnenZiel);
     }
 
     public void calculateRechnungSumme() {
@@ -166,19 +134,6 @@ public class KostenvoranschlagBindingService {
     public FloatProperty mvstSummeProperty() {
         return mvstSumme;
     }
-
-    public void setMvstSumme(float mvstSumme) {
-        this.mvstSumme.set(mvstSumme);
-    }
-
-	public float calculateNettoPreis(Float value) {
-		
-		float netto = GerldCalculator.bruttoToNetto(value);
-
-        netto = (netto * getBerechnenFaktorZiel()) / berechnenFaktorBasis;
-
-		return netto;
-	}
 
 	public void reset() {
 		

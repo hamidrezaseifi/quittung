@@ -4,7 +4,7 @@ import javafx.scene.control.*;
 import javafx.util.StringConverter;
 import javafx.util.converter.DefaultStringConverter;
 
-public class ArtikelNummerTableCell extends BaseEditbaleTableCell<String> {
+public class ArtikelNummerTableCellRechnung extends RechnungBaseEditbaleTableCell<String> {
 
     private TextField textField;
 
@@ -37,7 +37,7 @@ public class ArtikelNummerTableCell extends BaseEditbaleTableCell<String> {
 	}
 
 	
-    public ArtikelNummerTableCell() {
+    public ArtikelNummerTableCellRechnung() {
         super();
 
     }

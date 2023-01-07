@@ -11,8 +11,6 @@ import java.util.UUID;
 @Repository
 public interface KostenvoranschlagRepository extends JpaRepository<KostenvoranschlagEntity, UUID> {
 
-    @Query("SELECT k FROM KostenvoranschlagEntity order by k.created desc limit 1")
-    Optional<KostenvoranschlagEntity> getLastKostenvoranschlag();
-
+    Optional<KostenvoranschlagEntity> findFirstByOrderByCreatedDesc();
 
 }

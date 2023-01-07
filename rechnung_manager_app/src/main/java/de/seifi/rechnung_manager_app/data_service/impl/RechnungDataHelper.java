@@ -47,7 +47,7 @@ public class RechnungDataHelper implements IRechnungDataHelper {
     @Override
     public String getNewActivevorschlagNummer() {
 
-        Optional<KostenvoranschlagEntity> lastKostenvoranschlagOptional = this.kostenvoranschlagRepository.getLastKostenvoranschlag();
+        Optional<KostenvoranschlagEntity> lastKostenvoranschlagOptional = this.kostenvoranschlagRepository.findFirstByOrderByCreatedDesc();
         int currentYear = LocalDate.now().getYear();
 
         if(lastKostenvoranschlagOptional.isPresent()){

@@ -311,15 +311,10 @@ public class RechnungManagerFxApp extends Application implements ISingleInstance
 
         return new Pair<>(rechnungPane, controller);
     }
-    public static Pair<GridPane, KostenvoranschlagController> getKostenvoranschlag() throws IOException {
+    public static GridPane getKostenvoranschlag() throws IOException {
 
-        URL fxmlResource = RechnungManagerFxApp.class.getResource("fxml/rechnung_base.fxml");
-        FXMLLoader fxmlLoader = new FXMLLoader(fxmlResource);
-        KostenvoranschlagController controller = new KostenvoranschlagController();
-        fxmlLoader.setController(controller);
-        GridPane rechnungPane = (GridPane)fxmlLoader.load();
-
-        return new Pair<>(rechnungPane, controller);
+        GridPane reportPane =  (GridPane)loadFXML("kostenvoranschlag");
+        return reportPane;
     }
 
 

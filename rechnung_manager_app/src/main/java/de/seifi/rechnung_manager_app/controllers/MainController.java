@@ -9,6 +9,7 @@ import de.seifi.rechnung_manager_app.enums.RechnungType;
 import de.seifi.rechnung_manager_app.models.CustomerModel;
 import de.seifi.rechnung_manager_app.models.RechnungModel;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.*;
 import javafx.util.Pair;
@@ -70,8 +71,8 @@ public class MainController implements Initializable {
 		if(RechnungManagerFxApp.cannCurrentControllerClosed()) {
 			clearChildren();
 
-			Pair<GridPane, KostenvoranschlagController> pair = RechnungManagerFxApp.getKostenvoranschlag();
-			childBox.getChildren().add(pair.getKey());
+			childBox.getChildren().add(RechnungManagerFxApp.getKostenvoranschlag());
+
 		}
 
 	}

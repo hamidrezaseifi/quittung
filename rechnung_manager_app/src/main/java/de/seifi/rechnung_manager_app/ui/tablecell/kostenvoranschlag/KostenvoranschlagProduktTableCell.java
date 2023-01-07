@@ -1,18 +1,19 @@
-package de.seifi.rechnung_manager_app.ui.tablecell;
-
-import java.util.List;
-import java.util.stream.Collectors;
+package de.seifi.rechnung_manager_app.ui.tablecell.kostenvoranschlag;
 
 import de.seifi.rechnung_manager_app.RechnungManagerSpringApp;
 import de.seifi.rechnung_manager_app.models.ProduktModel;
 import de.seifi.rechnung_manager_app.ui.FilterComboBox;
+import de.seifi.rechnung_manager_app.ui.tablecell.RechnungBaseEditbaleTableCell;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.*;
+import javafx.scene.control.Control;
 import javafx.util.StringConverter;
 import javafx.util.converter.DefaultStringConverter;
 
-public class ProduktTableCell extends BaseEditbaleTableCell<String> {
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class KostenvoranschlagProduktTableCell extends KostenvoranschlagBaseEditbaleTableCell<String> {
 
     private FilterComboBox editComboBox;
     private ObservableList<String> obsProduktList;
@@ -46,7 +47,7 @@ public class ProduktTableCell extends BaseEditbaleTableCell<String> {
 	}
 
 	
-    public ProduktTableCell() {
+    public KostenvoranschlagProduktTableCell() {
         
         super();
      	 

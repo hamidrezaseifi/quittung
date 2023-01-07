@@ -9,6 +9,6 @@ public class GeldEditingTableCellFactory implements
                                          Callback<TableColumn<RechnungItemProperty, Float>, TableCell<RechnungItemProperty, Float>> {
     @Override
     public TableCell<RechnungItemProperty, Float> call(TableColumn<RechnungItemProperty, Float> rechnungItemPropertyStringTableColumn) {
-        return new GeldEditingTableCell();
+        return new GeldEditingTableCellRechnung();
     }
 }
