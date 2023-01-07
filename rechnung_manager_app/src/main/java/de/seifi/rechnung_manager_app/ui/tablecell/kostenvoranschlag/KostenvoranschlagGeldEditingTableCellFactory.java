@@ -5,10 +5,10 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.util.Callback;
 
-public class KostenvoranschlagGeldLabelTableCellFactory implements
+public class KostenvoranschlagGeldEditingTableCellFactory implements
                                          Callback<TableColumn<KostenvoranschlagItemProperty, Float>, TableCell<KostenvoranschlagItemProperty, Float>> {
     @Override
-    public TableCell<KostenvoranschlagItemProperty, Float> call(TableColumn<KostenvoranschlagItemProperty, Float> rechnungItemPropertyStringTableColumn) {
-        return new KostenvoranschlagGeldLabelTableCell();
+    public TableCell<KostenvoranschlagItemProperty, Float> call(TableColumn<KostenvoranschlagItemProperty, Float> itemPropertyStringTableColumn) {
+        return new KostenvoranschlagGeldEditingTableCellRechnung();
     }
 }

@@ -41,6 +41,8 @@ public class KostenvoranschlagCheckboxTableCell extends KostenvoranschlagBaseEdi
 
     @Override
     protected void setCellText(Boolean value) {
+        value = value == null? false: value;
+
         chkControl.setSelected(value);
     }
 

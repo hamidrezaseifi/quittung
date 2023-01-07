@@ -25,7 +25,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class KostenvoranschlagBindingService {
+public class KostenvoranschlagBindingService implements IBindingService<KostenvoranschlagItemProperty> {
 
 	public static KostenvoranschlagBindingService CURRENT_INSTANCE = null;
 
@@ -56,6 +56,8 @@ public class KostenvoranschlagBindingService {
     private boolean isDirty;
     private boolean isView = false;
 
+    private boolean editingMode = false;
+
     private final KostenvoranschlagAdapter kostenvoranschlagAdapter = new KostenvoranschlagAdapter();
 
     private boolean isCustomerSelected = false;
@@ -81,7 +83,9 @@ public class KostenvoranschlagBindingService {
         disablePrint = new SimpleBooleanProperty(false);
 
         this.vorschlagItems = FXCollections.observableArrayList();
-        
+
+        this.editingMode = true;
+
         reset();
 
     }
@@ -421,5 +425,10 @@ public class KostenvoranschlagBindingService {
 
         this.disablePrint.set(isDirty);
 
+    }
+
+    @Override
+    public boolean isEditingMode() {
+        return editingMode;
     }
 }

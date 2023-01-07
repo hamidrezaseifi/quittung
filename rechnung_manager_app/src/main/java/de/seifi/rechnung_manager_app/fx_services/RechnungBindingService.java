@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class RechnungBindingService {
+public class RechnungBindingService implements IBindingService<RechnungItemProperty> {
 	
 	public static RechnungBindingService CURRENT_INSTANCE = null;
 	
@@ -506,7 +506,8 @@ public class RechnungBindingService {
 
         this.calculateRechnungSumme();
 	}
-	
+
+    @Override
     public boolean isEditingMode() {
 		return editingMode;
 	}

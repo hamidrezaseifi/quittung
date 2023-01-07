@@ -9,8 +9,9 @@
 <?import javafx.geometry.Insets?>
 <?import de.seifi.rechnung_manager_app.ui.tablecell.kostenvoranschlag.KostenvoranschlagProduktTableCellFactory?>
 <?import de.seifi.rechnung_manager_app.ui.tablecell.kostenvoranschlag.KostenvoranschlagNummerTableCellFactory?>
-<?import de.seifi.rechnung_manager_app.ui.tablecell.kostenvoranschlag.KostenvoranschlagGeldLabelTableCellFactory?>
 <?import de.seifi.rechnung_manager_app.ui.tablecell.kostenvoranschlag.KostenvoranschlagCheckboxTableCellFactory?>
+<?import de.seifi.rechnung_manager_app.ui.tablecell.kostenvoranschlag.KostenvoranschlagGeldEditingTableCellFactory?>
+<?import javafx.scene.text.Text?>
 <GridPane alignment="TOP_LEFT" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
 		  fx:controller="de.seifi.rechnung_manager_app.controllers.KostenvoranschlagController" fx:id="rootPane">
     <columnConstraints>
@@ -29,9 +30,9 @@
 		        <ColumnConstraints hgrow="ALWAYS" />
                 <ColumnConstraints hgrow="NEVER" prefWidth="130" />
                 <ColumnConstraints hgrow="NEVER" prefWidth="250" />
-                <ColumnConstraints hgrow="NEVER" prefWidth="10" />
+                <ColumnConstraints hgrow="NEVER" prefWidth="20" />
                 <ColumnConstraints hgrow="NEVER" prefWidth="150" />
-                <ColumnConstraints hgrow="NEVER" prefWidth="150" />
+                <ColumnConstraints hgrow="NEVER" prefWidth="200" />
 		    </columnConstraints>
 		    <rowConstraints>
 		        <RowConstraints prefHeight="40" vgrow="NEVER" />
@@ -70,8 +71,21 @@
 				
 				<Label text="Quittung" fx:id="lblQuittung" GridPane.columnIndex="2" GridPane.rowIndex="0" GridPane.rowSpan="4" GridPane.columnSpan="2" styleClass="quittung-label" visible="false" textAlignment="LEFT" alignment="BASELINE_LEFT" />
 
-                <Label text="Nummer" GridPane.columnIndex="4" GridPane.rowIndex="0" styleClass="summe-label" textAlignment="LEFT" />
-                <Label fx:id="lblNummer" GridPane.columnIndex="5" GridPane.rowIndex="0" styleClass="summe-label" textAlignment="LEFT" />
+				<Label text="Nummer" GridPane.columnIndex="4" GridPane.rowIndex="0" styleClass="summe-label" textAlignment="LEFT" />
+				<Label fx:id="lblNummer" GridPane.columnIndex="5" GridPane.rowIndex="0" styleClass="summe-label" textAlignment="LEFT" />
+
+				<Label text="Schluesselnummer" GridPane.columnIndex="4" GridPane.rowIndex="1" styleClass="summe-label" textAlignment="LEFT" />
+				<TextField fx:id="txtSchluesselNummer" GridPane.columnIndex="5" GridPane.rowIndex="1" styleClass="summe-label" />
+
+				<Label text="Fahrgestellnummer" GridPane.columnIndex="4" GridPane.rowIndex="2" styleClass="summe-label" textAlignment="LEFT" />
+				<TextField fx:id="txtFahrgestellnummer" GridPane.columnIndex="5" GridPane.rowIndex="2" styleClass="summe-label" />
+
+				<Label text="Fahrzeugschein" GridPane.columnIndex="4" GridPane.rowIndex="3" styleClass="summe-label" textAlignment="LEFT" />
+				<HBox spacing="0" GridPane.columnIndex="5" GridPane.rowIndex="3" fx:id="fahrzeugscheinBox">
+					<Label fx:id="lblFahrzeugschein" prefWidth="170" textAlignment="LEFT" styleClass="rechnung-customer-label"></Label>
+					<Button fx:id="btnFahrzeugschein" prefWidth="30" styleClass="select-customer-button" onAction="#selectCustomer"></Button>
+
+				</HBox>
 
 			</children>
         </GridPane>
@@ -96,7 +110,7 @@
 	                        <KostenvoranschlagProduktTableCellFactory />
 	                    </cellFactory>
 	                </TableColumn>
-					<TableColumn fx:id="originalNummerColumn" text="Originalnummer" prefWidth="110" sortable="false">
+					<TableColumn fx:id="originalNummerColumn" text="Originalnummer" prefWidth="160" sortable="false">
 						<cellValueFactory>
 							<PropertyValueFactory property="originalNummer" />
 						</cellValueFactory>
@@ -104,7 +118,7 @@
 							<KostenvoranschlagNummerTableCellFactory />
 						</cellFactory>
 					</TableColumn>
-					<TableColumn fx:id="teilNummerColumn" text="Teilnummer" prefWidth="110" sortable="false">
+					<TableColumn fx:id="teilNummerColumn" text="Teilnummer" prefWidth="160" sortable="false">
 						<cellValueFactory>
 							<PropertyValueFactory property="teilNummer" />
 						</cellValueFactory>
@@ -112,7 +126,7 @@
 							<KostenvoranschlagNummerTableCellFactory />
 						</cellFactory>
 					</TableColumn>
-					<TableColumn fx:id="markeColumn" text="Marke" prefWidth="110" sortable="false">
+					<TableColumn fx:id="markeColumn" text="Marke" prefWidth="140" sortable="false">
 						<cellValueFactory>
 							<PropertyValueFactory property="marke" />
 						</cellValueFactory>
@@ -120,15 +134,15 @@
 							<KostenvoranschlagNummerTableCellFactory />
 						</cellFactory>
 					</TableColumn>
-	                <TableColumn fx:id="preisColumn" text="Einzelpreis" prefWidth="120" editable="false" sortable="false">
+	                <TableColumn fx:id="preisColumn" text="Einzelpreis" prefWidth="120" sortable="false">
 	                    <cellValueFactory>
 	                        <PropertyValueFactory property="preis" />
 	                    </cellValueFactory>
 	                    <cellFactory>
-	                        <KostenvoranschlagGeldLabelTableCellFactory />
+	                        <KostenvoranschlagGeldEditingTableCellFactory />
 	                    </cellFactory>
 	                </TableColumn>
-	                <TableColumn fx:id="bestelltColumn" text="Bestellt" prefWidth="60" editable="false" sortable="false">
+	                <TableColumn fx:id="bestelltColumn" text="Bestellt" prefWidth="66" sortable="false">
 	                    <cellValueFactory>
 	                        <PropertyValueFactory property="bestellt" />
 	                    </cellValueFactory>
