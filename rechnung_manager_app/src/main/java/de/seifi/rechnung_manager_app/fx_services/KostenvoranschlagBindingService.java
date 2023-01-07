@@ -1,12 +1,15 @@
 package de.seifi.rechnung_manager_app.fx_services;
 
 
+import de.seifi.rechnung_common.entities.KostenvoranschlagEntity;
 import de.seifi.rechnung_common.entities.RechnungEntity;
 import de.seifi.rechnung_common.repositories.KostenvoranschlagRepository;
 import de.seifi.rechnung_manager_app.RechnungManagerFxApp;
 import de.seifi.rechnung_manager_app.RechnungManagerSpringApp;
+import de.seifi.rechnung_manager_app.adapter.KostenvoranschlagAdapter;
 import de.seifi.rechnung_manager_app.adapter.RechnungAdapter;
 import de.seifi.rechnung_manager_app.data_service.IRechnungDataHelper;
+import de.seifi.rechnung_manager_app.enums.KostenvoranschlagStatus;
 import de.seifi.rechnung_manager_app.enums.PaymentType;
 import de.seifi.rechnung_manager_app.enums.RechnungStatus;
 import de.seifi.rechnung_manager_app.enums.RechnungType;
@@ -34,7 +37,7 @@ public class KostenvoranschlagBindingService {
 
     private final Map<UUID, CustomerModel> customerList;
 
-    private ObservableList<RechnungItemProperty> vorschlagItems;
+    private ObservableList<KostenvoranschlagItemProperty> vorschlagItems;
     private CustomerModelProperty customerModelProperty;
 
     private FloatProperty gesamtSumme;
@@ -64,11 +67,10 @@ public class KostenvoranschlagBindingService {
 
     private StringProperty bannerBackColor;
 
-    private final RechnungAdapter rechnungAdapter = new RechnungAdapter();
+    private final KostenvoranschlagAdapter kostenvoranschlagAdapter = new KostenvoranschlagAdapter();
 
     private boolean isCustomerSelected = false;
 
-    private boolean editingMode = false;
 
     public KostenvoranschlagBindingService(final KostenvoranschlagRepository kostenvoranschlagRepository,
                                            final IRechnungDataHelper rechnungDataHelper) {
@@ -82,8 +84,6 @@ public class KostenvoranschlagBindingService {
         this.rechnungDataHelper = rechnungDataHelper;
 
         this.customerList = new HashMap<>();
-
-        this.editingMode = false;
         
         gesamtSumme = new SimpleFloatProperty(0);
         nettoSumme = new SimpleFloatProperty(0);
@@ -94,7 +94,7 @@ public class KostenvoranschlagBindingService {
         disableSave = new SimpleBooleanProperty(true);
         disablePrint = new SimpleBooleanProperty(false);
 
-        this.rechnungItems = FXCollections.observableArrayList();
+        this.vorschlagItems = FXCollections.observableArrayList();
         
         reset();
 
@@ -121,11 +121,9 @@ public class KostenvoranschlagBindingService {
     public void calculateRechnungSumme() {
         float netto = 0;
 
-        for(RechnungItemProperty item:this.rechnungItems){
-            if(item.getIsMarkedAsDeleted()){
-                continue;
-            }
-            netto += item.getGesamt();
+        for(KostenvoranschlagItemProperty item:this.vorschlagItems){
+
+            netto += item.getPreis();
         }
         
         nettoSumme.set(netto);
@@ -133,8 +131,8 @@ public class KostenvoranschlagBindingService {
         gesamtSumme.set(nettoSumme.getValue() + mvstSumme.getValue());
     }
 
-    public ObservableList<RechnungItemProperty> getRechnungItems() {
-        return this.rechnungItems;
+    public ObservableList<KostenvoranschlagItemProperty> getKostenvoranschlagItems() {
+        return this.vorschlagItems;
     }
 
     public float getGesamtSumme() {
@@ -184,9 +182,9 @@ public class KostenvoranschlagBindingService {
 
 	public void reset() {
 		
-        this.rechnungItems.clear();
-        while (this.rechnungItems.size() < INITIAL_ITEMS){
-            addNewRowIntern(new RechnungItemProperty(true));
+        this.vorschlagItems.clear();
+        while (this.vorschlagItems.size() < INITIAL_ITEMS){
+            addNewRowIntern(new KostenvoranschlagItemProperty(true));
         }
         calculateRechnungSumme();
 
@@ -195,25 +193,23 @@ public class KostenvoranschlagBindingService {
 
         LocalDateTime ldt = LocalDateTime.now();
 
-        String date = GeneralUtils.formatDate(ldt);
+        String lastNummer = this.rechnungDataHelper.getNewActivevorschlagNummer();
 
-        int lastNummer = this.rechnungDataHelper.getLastActiveRechnungNummer();
-
-        RechnungModel model = new RechnungModel(null, lastNummer + 1, date, date, 1,
-                PaymentType.NOT_SET, RechnungType.RECHNUNG, RechnungStatus.ACTIVE, RechnungManagerFxApp.loggedUser);
+        KostenvoranschlagModel model = new KostenvoranschlagModel(
+                lastNummer,
+                null,
+                null,
+                null,
+                KostenvoranschlagStatus.OPEN);
 
         setRechnungModel(model);
-		
-		if(this.editingMode) {
-			this.startEditing(rechnungSavingModel, this.customerSavingModel);
-		}
         
         setDirty(false);
 	}
 
-	private void setRechnungModel(RechnungModel model) {
-		this.rechnungSavingModel = model;
-        this.rechnungNummer.set(String.valueOf(rechnungSavingModel.getNummer()));
+	private void setRechnungModel(KostenvoranschlagModel model) {
+		this.savingModel = model;
+        this.vorschlagNummer.set(String.valueOf(savingModel.getNummer()));
 	}
 
     public List<CustomerSelectModel> getCustomerSelectList() {
@@ -233,12 +229,12 @@ public class KostenvoranschlagBindingService {
 		return customerModelProperty;
 	}
 
-	public int getCurrentRechnungNummer() {
-		return rechnungSavingModel.getNummer();
+	public String getCurrentvorschlagNummer() {
+		return savingModel.getNummer();
 	}
 
-    public RechnungModel getRechnungSavingModel() {
-        return rechnungSavingModel;
+    public KostenvoranschlagModel getRechnungSavingModel() {
+        return savingModel;
     }
 
     public StringProperty getNummerProperty() {
@@ -261,7 +257,7 @@ public class KostenvoranschlagBindingService {
     }
 	
 	private boolean isAnyValidArtikelToSave() {
-		return this.rechnungItems.stream().anyMatch(pi -> pi.isValid() & !pi.isEmpty());
+		return this.vorschlagItems.stream().anyMatch(pi -> pi.isValid() & !pi.isEmpty());
 	}
 
 	public BooleanProperty getDisableSaveProperty() {
@@ -283,7 +279,7 @@ public class KostenvoranschlagBindingService {
             return false;
         }
 
-        if(this.rechnungItems.stream().anyMatch(pi -> !pi.isValid())){
+        if(this.vorschlagItems.stream().anyMatch(pi -> !pi.isValid())){
             return false;
         }
 
@@ -295,17 +291,6 @@ public class KostenvoranschlagBindingService {
     }
 
     public boolean save() {
-        if(this.editingMode){
-            RechnungModel oldInstance = rechnungSavingModel.clone();
-            oldInstance.setStatus(RechnungStatus.OLD);
-            RechnungEntity savingEntity = rechnungAdapter.toEntity(oldInstance);
-            savingEntity.setUpdated(null);
-            rechnungRepository.save(savingEntity);
-
-            rechnungSavingModel.setExemplarOf(oldInstance);
-
-        }
-
         if(!this.isCustomerSelected){
             UiUtils.showError("Rechnung-Speichern", "Es ist kein Kunde ausgewählt. Bitte wählen Sie einen Kunden aus");
             return false;
@@ -315,116 +300,89 @@ public class KostenvoranschlagBindingService {
             customerSavingModel = customerModelOptional.get();
         }
 
-        rechnungSavingModel.setCustomerId(customerSavingModel.getId());
+        savingModel.setCustomerId(customerSavingModel.getId());
 
-        rechnungSavingModel.getItems().clear();
-        rechnungSavingModel.getItems().addAll(getSavingRechnungItems());
+        savingModel.getItems().clear();
+        savingModel.getItems().addAll(getSavingRechnungItems());
 
-        RechnungEntity savingEntity = rechnungAdapter.toEntity(rechnungSavingModel);
+        KostenvoranschlagEntity savingEntity = kostenvoranschlagAdapter.toEntity(savingModel);
         savingEntity.setUpdated(null);
-        rechnungRepository.save(savingEntity);
-        Optional<RechnungEntity> savedEntityOptional = rechnungRepository.findById(savingEntity.getId());
-        if(savedEntityOptional.isPresent()) {
-            rechnungSavingModel = rechnungAdapter.toModel(savedEntityOptional.get());
-            List<RechnungItemProperty> items = this.rechnungItems.stream().filter(RechnungItemProperty::canSaved).collect(Collectors.toList());
-
-            RechnungManagerSpringApp.getProduktService().retreiveProduktList();
-            
-            for(RechnungItemProperty item: items) {
-            	RechnungManagerSpringApp.getProduktService().add(item.getProdukt(), item.getBrutoPreis());
-
-            }
-            RechnungManagerSpringApp.getProduktService().retreiveProduktList();
-        }
-        startEditing(rechnungSavingModel, customerSavingModel);
+        kostenvoranschlagRepository.save(savingEntity);
+        startEditing(savingModel, customerSavingModel);
         setDirty(false);
 
         return true;
     }
 
-    private List<RechnungItemModel> getSavingRechnungItems() {
-        return this.rechnungItems.stream().
-                filter(RechnungItemProperty::canSaved).
-                map(RechnungItemProperty::toModel).collect(Collectors.toList());
+    private List<KostenvoranschlagItemModel> getSavingRechnungItems() {
+        return this.vorschlagItems.stream().
+                filter(KostenvoranschlagItemProperty::canSaved).
+                map(KostenvoranschlagItemProperty::toModel).collect(Collectors.toList());
     }
 
-    public void setNewMengeValue(int row, Integer value) {
-		RechnungItemProperty prop = this.rechnungItems.get(row);
-        if(prop.getMenge() != value) {
-        	prop.setMenge(value);
-
-            calculateRechnungSumme();
-            setDirty(true);
-
-        }
-	}
-
-	public void setNewBrutoPreisValue(int row, Float value) {
-		
-		RechnungItemProperty prop = this.rechnungItems.get(row);
-        
-        if(prop.getBrutoPreis() != value) {
-        	
-        	prop.setBrutoPreis(value);
-            prop.setPreis(calculateNettoPreis(value));
-            
-            calculateRechnungSumme();
-            setDirty(true);
- 
-        }
-		
-	}
-
 	public void setNewProduktValue(int row, String value) {
-		
-		RechnungItemProperty prop = this.rechnungItems.get(row);
+
+        KostenvoranschlagItemProperty prop = this.vorschlagItems.get(row);
         if(prop.getProdukt() != value) {
             prop.setProdukt(value);
             calculateRechnungSumme();
             setDirty(true);
 
-            Optional<String> foundProdukt = RechnungManagerSpringApp.getProduktService().getProduktMap().keySet().stream().filter(k -> k.equalsIgnoreCase(
-                    value)).findAny();
-            
-            if(foundProdukt.isPresent()) {
-            	
-            	ProduktModel produktModel = RechnungManagerSpringApp.getProduktService().getProduktMap().get(foundProdukt.get());
-            	prop.setBrutoPreis(produktModel.getLastPreis());
-            }
-
         }
 		
 	}
 
-	public void setNewArtikelNummerValue(int row, String value) {
-		
-		RechnungItemProperty prop = this.rechnungItems.get(row);
-        if(prop.getArtikelNummer() != value) {
-            prop.setArtikelNummer(value);
-            calculateRechnungSumme();
+    public void setNewOriginalNummerValue(int row, String value) {
+        KostenvoranschlagItemProperty prop = this.vorschlagItems.get(row);
+        if(prop.getProdukt() != value) {
+            prop.setOriginalNummer(value);
             setDirty(true);
 
         }
+    }
+
+    public void setNewTeilNummerValue(int row, String value) {
+        KostenvoranschlagItemProperty prop = this.vorschlagItems.get(row);
+        if(prop.getProdukt() != value) {
+            prop.setTeilNummer(value);
+            setDirty(true);
+
+        }
+    }
+
+    public void setNewMarkeValue(int row, String value) {
+        KostenvoranschlagItemProperty prop = this.vorschlagItems.get(row);
+        if(prop.getProdukt() != value) {
+            prop.setMarke(value);
+            setDirty(true);
+
+        }
+    }
+
+    public void setNewPreisValue(int row, Float value) {
+        KostenvoranschlagItemProperty prop = this.vorschlagItems.get(row);
+        if(prop.getPreis() != value) {
+            prop.setPreis(value);
+            setDirty(true);
+
+        }
+    }
+
+
+
+	private void addNewRowIntern(KostenvoranschlagItemProperty item) {
 		
+		this.vorschlagItems.add(item);
 	}
 
-	private void addNewRowIntern(RechnungItemProperty item) {
-		
-		this.rechnungItems.add(item);
-	}
-
-	public RechnungItemProperty addNewRow() {
-		RechnungItemProperty item = new RechnungItemProperty(true);
+	public KostenvoranschlagItemProperty addNewRow() {
+        KostenvoranschlagItemProperty item = new KostenvoranschlagItemProperty(true);
 		addNewRowIntern(item);
         setDirty(true);
 		return item;
 	}
 
-	public void startEditing(RechnungModel rechnungModel, CustomerModel customerModel) {
-		
-
-        this.editingMode = true;
-
+	public void startEditing(KostenvoranschlagModel rechnungModel, CustomerModel customerModel) {
 
         if(customerModel == null){
             Optional<CustomerModel> customerEntityOptional = RechnungManagerSpringApp
@@ -434,7 +392,6 @@ public class KostenvoranschlagBindingService {
             }
 
             customerModel = customerEntityOptional.get();
-
         }
 
         this.customerSavingModel = customerModel;
@@ -445,24 +402,19 @@ public class KostenvoranschlagBindingService {
 
         this.calculateButtons();
 
-
 		setRechnungModel(rechnungModel);
 		
-		rechnungItems.clear();
+		vorschlagItems.clear();
 
-        this.rechnungSavingModel = rechnungModel;
+        this.savingModel = rechnungModel;
 
-		rechnungModel.getItems().forEach(r -> addNewRowIntern(new RechnungItemProperty(r)));
+		rechnungModel.getItems().forEach(r -> addNewRowIntern(new KostenvoranschlagItemProperty(r)));
 		
         RechnungManagerSpringApp.getProduktService().retreiveProduktList();
 		
 		isDirty = false;
 
         this.calculateRechnungSumme();
-	}
-	
-    public boolean isEditingMode() {
-		return editingMode;
 	}
 
 	public void setIsView(boolean isView) {
@@ -500,11 +452,8 @@ public class KostenvoranschlagBindingService {
 			return;
 		}
 		
-		if(rechnungItems.get(selectedIndx).isNewItem()) {
-			rechnungItems.remove(selectedIndx);
-		}
-		else {
-			rechnungItems.get(selectedIndx).setIsMarkedAsDeleted(true);
+		if(vorschlagItems.get(selectedIndx).isNewItem()) {
+			vorschlagItems.remove(selectedIndx);
 		}
 
         calculateRechnungSumme();

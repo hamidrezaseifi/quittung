@@ -1,5 +1,6 @@
 package de.seifi.rechnung_manager_app.controllers;
 
+import de.seifi.rechnung_common.repositories.KostenvoranschlagRepository;
 import de.seifi.rechnung_common.repositories.RechnungRepository;
 import de.seifi.rechnung_manager_app.RechnungManagerFxApp;
 import de.seifi.rechnung_manager_app.RechnungManagerSpringApp;
@@ -8,9 +9,7 @@ import de.seifi.rechnung_manager_app.enums.PaymentType;
 import de.seifi.rechnung_manager_app.enums.RechnungType;
 import de.seifi.rechnung_manager_app.fx_services.KostenvoranschlagBindingService;
 import de.seifi.rechnung_manager_app.fx_services.RechnungBindingService;
-import de.seifi.rechnung_manager_app.models.CustomerModel;
-import de.seifi.rechnung_manager_app.models.RechnungItemProperty;
-import de.seifi.rechnung_manager_app.models.RechnungModel;
+import de.seifi.rechnung_manager_app.models.*;
 import de.seifi.rechnung_manager_app.ui.FloatGeldLabel;
 import de.seifi.rechnung_manager_app.ui.UiUtils;
 import de.seifi.rechnung_manager_app.utils.GeneralUtils;
@@ -37,7 +36,7 @@ import java.util.ResourceBundle;
 
 public class KostenvoranschlagController implements Initializable, ControllerBase {
 
-    @FXML private TableView<RechnungItemProperty> showItemsTableView;
+    @FXML private TableView<KostenvoranschlagItemProperty> showItemsTableView;
 
     @FXML private FloatGeldLabel lblNetto;
 
@@ -45,17 +44,17 @@ public class KostenvoranschlagController implements Initializable, ControllerBas
 
     @FXML private FloatGeldLabel lblGesamt;
 
-    @FXML private TableColumn<RechnungItemProperty, String> produktColumn;
+    @FXML private TableColumn<KostenvoranschlagItemProperty, String> produktColumn;
 
-    @FXML private TableColumn<RechnungItemProperty, String> artikelNummerColumn;
+    @FXML private TableColumn<KostenvoranschlagItemProperty, String> originalNummerColumn;
 
-    @FXML private TableColumn<RechnungItemProperty, Integer> mengeColumn;
+    @FXML private TableColumn<KostenvoranschlagItemProperty, String> teilNummerColumn;
 
-    @FXML private TableColumn<RechnungItemProperty, Float> nPreisColumn;
+    @FXML private TableColumn<KostenvoranschlagItemProperty, String> markeColumn;
 
-    @FXML private TableColumn<RechnungItemProperty, Float> bPreisColumn;
+    @FXML private TableColumn<KostenvoranschlagItemProperty, Float> bPreisColumn;
 
-    @FXML private TableColumn<RechnungItemProperty, Float> gesamtColumn;
+    @FXML private TableColumn<KostenvoranschlagItemProperty, Boolean> bestelltColumn;
 
     @FXML private GridPane rootPane;
 
@@ -101,7 +100,7 @@ public class KostenvoranschlagController implements Initializable, ControllerBas
 
     private KostenvoranschlagBindingService bindingService;
 
-    private final RechnungRepository rechnungRepository;
+    private final KostenvoranschlagRepository kostenvoranschlagRepository;
 
     private final IRechnungDataHelper rechnungDataHelper;
 
@@ -109,7 +108,8 @@ public class KostenvoranschlagController implements Initializable, ControllerBas
 
     public KostenvoranschlagController() {
 
-        this.rechnungRepository = RechnungManagerSpringApp.applicationContext.getBean(RechnungRepository.class);
+        this.kostenvoranschlagRepository =
+                RechnungManagerSpringApp.applicationContext.getBean(KostenvoranschlagRepository.class);
         this.rechnungDataHelper = RechnungManagerSpringApp.applicationContext.getBean(IRechnungDataHelper.class);
 
 	}
@@ -141,7 +141,7 @@ public class KostenvoranschlagController implements Initializable, ControllerBas
     @FXML
     private void addItem() throws IOException {
 
-    	RechnungItemProperty item = bindingService.addNewRow();
+        KostenvoranschlagItemProperty item = bindingService.addNewRow();
     	btnAddItem.setDisable(true);
 
     	showItemsTableView.edit(-1, null);
@@ -150,15 +150,8 @@ public class KostenvoranschlagController implements Initializable, ControllerBas
     	int indexofItem = showItemsTableView.getItems().indexOf(item);
     	showItemsTableView.getSelectionModel().select(indexofItem);
     	showItemsTableView.requestFocus();
-    	showItemsTableView.edit(indexofItem, mengeColumn);
+    	showItemsTableView.edit(indexofItem, produktColumn);
     	
-    }
-    
-    @FXML
-    private void startEdit() throws IOException {
-    	this.stage.close();
-    	
-    	RechnungManagerFxApp.startEditRechnung(bindingService.getRechnungSavingModel(), bindingService.getCustomerModel());
     }
 
     @FXML
@@ -189,7 +182,7 @@ public class KostenvoranschlagController implements Initializable, ControllerBas
     	
     	showItemsTableView.setItems(null);
     	bindingService.reset();
-        showItemsTableView.setItems(bindingService.getRechnungItems());
+        showItemsTableView.setItems(bindingService.getKostenvoranschlagItems());
     }
     
     @FXML
@@ -199,7 +192,7 @@ public class KostenvoranschlagController implements Initializable, ControllerBas
     	showItemsTableView.setEditable(false);
     	showItemsTableView.edit(-1, null);
 
-        UiUtils.printRechnungItems(Arrays.asList(bindingService.getRechnungSavingModel()), true);
+        UiUtils.printKostenvoranschlagItems(Arrays.asList(bindingService.getRechnungSavingModel()));
         showItemsTableView.setEditable(true);
 
     }
@@ -239,58 +232,56 @@ public class KostenvoranschlagController implements Initializable, ControllerBas
     	
     	RechnungManagerFxApp.setCurrentController(this);
 
-        bindingService = new KostenvoranschlagBindingService(this.rechnungRepository,
-                                                                     this.rechnungDataHelper);
+        bindingService = new KostenvoranschlagBindingService(this.kostenvoranschlagRepository,
+                                                             this.rechnungDataHelper);
 
 
         bannerPane.styleProperty().bind(bindingService.bannerBackColorProperty());
 
         produktColumn.prefWidthProperty().bind(
                 showItemsTableView.widthProperty().subtract(
-                        artikelNummerColumn.widthProperty()).subtract(
-                            mengeColumn.widthProperty()).subtract(
-                                    bPreisColumn.widthProperty()).subtract(
-                                            nPreisColumn.widthProperty()).subtract(
-                                                    gesamtColumn.widthProperty()).subtract(5)
+                        originalNummerColumn.widthProperty()).subtract(
+                        teilNummerColumn.widthProperty()).subtract(
+                        markeColumn.widthProperty()).subtract(
+                            bPreisColumn.widthProperty()).subtract(
+                                            bestelltColumn.widthProperty()).subtract(5)
                                                                        );
 
-        showItemsTableView.setItems(bindingService.getRechnungItems());
+        showItemsTableView.setItems(bindingService.getKostenvoranschlagItems());
         showItemsTableView.setUserData(bindingService);
         
         showItemsTableView.prefHeightProperty().bind(itemsListBox.heightProperty().subtract(95));
 
-        mengeColumn.setOnEditCommit(event -> {
-            final Integer value = event.getNewValue();
-            TablePosition<RechnungItemProperty,?> tPos = event.getTablePosition();
-            bindingService.setNewMengeValue(tPos.getRow(), value);
+        originalNummerColumn.setOnEditCommit(event -> {
+            final String value = event.getNewValue();
+            TablePosition<KostenvoranschlagItemProperty,?> tPos = event.getTablePosition();
+            bindingService.setNewOriginalNummerValue(tPos.getRow(), value);
+        });
+
+        teilNummerColumn.setOnEditCommit(event -> {
+            final String value = event.getNewValue();
+            TablePosition<KostenvoranschlagItemProperty,?> tPos = event.getTablePosition();
+            bindingService.setNewTeilNummerValue(tPos.getRow(), value);
+        });
+
+        markeColumn.setOnEditCommit(event -> {
+            final String value = event.getNewValue();
+            TablePosition<KostenvoranschlagItemProperty,?> tPos = event.getTablePosition();
+            bindingService.setNewMarkeValue(tPos.getRow(), value);
         });
 
         bPreisColumn.setOnEditCommit(event -> {
             final Float value = event.getNewValue();
-            TablePosition<RechnungItemProperty,?> tPos = event.getTablePosition();
-            bindingService.setNewBrutoPreisValue(tPos.getRow(), value);
-
-            if(bindingService.isEditingMode()) {
-            	showItemsTableView.edit(-1, null);
-
-            	btnAddItem.setDisable(false);
-            	setItemsTableViewEditable(false);
-            }
+            TablePosition<KostenvoranschlagItemProperty,?> tPos = event.getTablePosition();
+            bindingService.setNewPreisValue(tPos.getRow(), value);
 
             bindingService.setDirty(true);
         });
 
         produktColumn.setOnEditCommit(event -> {
             final String value = event.getNewValue();
-            TablePosition<RechnungItemProperty,?> tPos = event.getTablePosition();
+            TablePosition<KostenvoranschlagItemProperty,?> tPos = event.getTablePosition();
             bindingService.setNewProduktValue(tPos.getRow(), value);
-        });
-
-        artikelNummerColumn.setOnEditCommit(event -> {
-            final String value = event.getNewValue();
-            TablePosition<RechnungItemProperty,?> tPos = event.getTablePosition();
-            bindingService.setNewArtikelNummerValue(tPos.getRow(), value);
-
         });
 
         lblNetto.valueProperty().bind(bindingService.nettoSummeProperty());
@@ -331,10 +322,10 @@ public class KostenvoranschlagController implements Initializable, ControllerBas
     	showItemsTableView.setItems(null);
         //showItemsTableView.getItems().clear();
     	bindingService.deleteItemAtIndex(selectedIndx);
-    	showItemsTableView.setItems(bindingService.getRechnungItems());
+    	showItemsTableView.setItems(bindingService.getKostenvoranschlagItems());
 	}
     
-	public void startView(RechnungModel rechnungModel, Stage stage) {
+	public void startView(KostenvoranschlagModel rechnungModel, Stage stage) {
 
 
 		bindingService.startEditing(rechnungModel, null);

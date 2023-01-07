@@ -1,5 +1,6 @@
 package de.seifi.rechnung_manager_app.models;
 
+import de.seifi.rechnung_manager_app.enums.KostenvoranschlagStatus;
 import de.seifi.rechnung_manager_app.enums.PaymentType;
 import de.seifi.rechnung_manager_app.enums.RechnungStatus;
 import de.seifi.rechnung_manager_app.enums.RechnungType;
@@ -19,32 +20,63 @@ public class KostenvoranschlagModel {
 
 	private String nummer;
 
-	private String schluesselnummer;
+	private String schluesselNummer;
 
-	private String fahrgestellnummer;
+	private String fahrgestellNummer;
 
-	private String fahrzeugschein;
+	private String fahrzeugSchein;
 
-	private RechnungStatus status;
-
-	private UUID userId;
+	private KostenvoranschlagStatus status;
 
 	private LocalDateTime created;
 
 	private LocalDateTime updated;
 
-	private List<RechnungItemModel> items;
+	private List<KostenvoranschlagItemModel> items;
 
     public KostenvoranschlagModel() {
     	super();
     	this.id = null;
 		this.customerId = null;
-		this.userId = null;
 		this.items = new ArrayList<>();
-
-
     }
-	
+
+	public KostenvoranschlagModel(UUID id,
+								  UUID customerId,
+								  String nummer,
+								  String schluesselNummer,
+								  String fahrgestellNummer,
+								  String fahrzeugSchein,
+								  KostenvoranschlagStatus status,
+								  LocalDateTime created,
+								  LocalDateTime updated) {
+		this.id = id;
+		this.customerId = customerId;
+		this.nummer = nummer;
+		this.schluesselNummer = schluesselNummer;
+		this.fahrgestellNummer = fahrgestellNummer;
+		this.fahrzeugSchein = fahrzeugSchein;
+		this.status = status;
+		this.created = created;
+		this.updated = updated;
+	}
+
+	public KostenvoranschlagModel(String nummer,
+								  String schluesselNummer,
+								  String fahrgestellNummer,
+								  String fahrzeugSchein,
+								  KostenvoranschlagStatus status) {
+		this.id = id;
+		this.customerId = customerId;
+		this.nummer = nummer;
+		this.schluesselNummer = schluesselNummer;
+		this.fahrgestellNummer = fahrgestellNummer;
+		this.fahrzeugSchein = fahrzeugSchein;
+		this.status = status;
+		this.created = created;
+		this.updated = updated;
+	}
+
 	public boolean isNew() {
 		return id == null;
 	}
@@ -73,44 +105,36 @@ public class KostenvoranschlagModel {
 		this.nummer = nummer;
 	}
 
-	public String getSchluesselnummer() {
-		return schluesselnummer;
+	public String getSchluesselNummer() {
+		return schluesselNummer;
 	}
 
-	public void setSchluesselnummer(String schluesselnummer) {
-		this.schluesselnummer = schluesselnummer;
+	public void setSchluesselNummer(String schluesselNummer) {
+		this.schluesselNummer = schluesselNummer;
 	}
 
-	public String getFahrgestellnummer() {
-		return fahrgestellnummer;
+	public String getFahrgestellNummer() {
+		return fahrgestellNummer;
 	}
 
-	public void setFahrgestellnummer(String fahrgestellnummer) {
-		this.fahrgestellnummer = fahrgestellnummer;
+	public void setFahrgestellNummer(String fahrgestellNummer) {
+		this.fahrgestellNummer = fahrgestellNummer;
 	}
 
-	public String getFahrzeugschein() {
-		return fahrzeugschein;
+	public String getFahrzeugSchein() {
+		return fahrzeugSchein;
 	}
 
-	public void setFahrzeugschein(String fahrzeugschein) {
-		this.fahrzeugschein = fahrzeugschein;
+	public void setFahrzeugSchein(String fahrzeugSchein) {
+		this.fahrzeugSchein = fahrzeugSchein;
 	}
 
-	public RechnungStatus getStatus() {
+	public KostenvoranschlagStatus getStatus() {
 		return status;
 	}
 
-	public void setStatus(RechnungStatus status) {
+	public void setStatus(KostenvoranschlagStatus status) {
 		this.status = status;
-	}
-
-	public UUID getUserId() {
-		return userId;
-	}
-
-	public void setUserId(UUID userId) {
-		this.userId = userId;
 	}
 
 	public LocalDateTime getCreated() {
@@ -129,11 +153,11 @@ public class KostenvoranschlagModel {
 		this.updated = updated;
 	}
 
-	public List<RechnungItemModel> getItems() {
+	public List<KostenvoranschlagItemModel> getItems() {
 		return items;
 	}
 
-	public void setItems(List<RechnungItemModel> items) {
+	public void setItems(List<KostenvoranschlagItemModel> items) {
 		this.items = items;
 	}
 }

@@ -22,34 +22,21 @@ public class KostenvoranschlagEntity extends EntityBase {
 	@Column(name="customer_id", nullable = true)
 	private UUID customerId;
 
-	@Column(name="reference_id", nullable = true)
-	private UUID referenceId;
-
 	@Column(nullable = false)
-	private Integer nummer;
+	private String nummer;
 
-	@Column(name="rechnung_create", nullable = false)
-	private String rechnungCreate;
+	@Column(name="schluessel_nummer", nullable = false)
+	private String schluesselNummer;
 
-	@Column(name="lifer_date", nullable = false)
-	private String liferDate;
+	@Column(name="fahrgestell_uummer", nullable = false)
+	private String fahrgestellNummer;
 
-	@Column(name="rechnung_type", nullable = false)
-	private Integer rechnungType;
+	@Column(name="fahrzeug_schein", nullable = false)
+	private String fahrzeugSchein;
 
+	@ColumnDefault("1")
 	@Column(nullable = false)
 	private Integer status;
-
-	@Column(name="rechnung_version", nullable = false)
-	@ColumnDefault("1")
-	private Integer rechnungVersion;
-
-	@Column(name="payment_type", nullable = false)
-	@ColumnDefault("1")
-	private Integer paymentType;
-
-	@Column(name="user_id")
-	private UUID userId;
 
 	@CreationTimestamp
 	@ColumnDefault("CURRENT_TIMESTAMP")
@@ -59,66 +46,47 @@ public class KostenvoranschlagEntity extends EntityBase {
 	@ColumnDefault("CURRENT_TIMESTAMP")
 	private LocalDateTime updated;
 
-	@OneToMany(mappedBy = "rechnung", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "kostenvoranschlag", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	private Set<KostenvoranschlagItemEntity> items;
 
     public KostenvoranschlagEntity() {
     	super();
     	items = new HashSet<>();
-		this.rechnungVersion = 1;
-		this.paymentType = 1;
-		this.referenceId = null;
 		this.customerId = null;
     }
 
-	public KostenvoranschlagEntity(UUID customerId,
-                                   UUID referenceId,
-                                   Integer nummer,
-                                   String rechnungCreate,
-                                   String liferDate,
-                                   int rechnungVersion,
-                                   int paymentType,
-                                   int rechnungType,
-                                   int status,
-                                   UUID userId) {
-		this();
-		this.customerId = customerId;
-		this.referenceId = referenceId;
-		this.nummer = nummer;
-		this.rechnungCreate = rechnungCreate;
-		this.liferDate = liferDate;
-		this.status = status;
-		this.userId = userId;
-		this.rechnungType = rechnungType;
-		this.rechnungVersion = rechnungVersion;
-		this.paymentType = paymentType;
-	}
-
 	public KostenvoranschlagEntity(UUID id,
-                                   UUID referenceId,
-                                   UUID customerId,
-                                   Integer nummer,
-                                   String rechnungCreate,
-                                   String liferDate,
-                                   int rechnungVersion,
-                                   int paymentType,
-                                   int rechnungType,
-                                   int status,
-                                   UUID userId,
-                                   LocalDateTime updated) {
-		this();
+								   UUID customerId,
+								   String nummer,
+								   String schluesselNummer,
+								   String fahrgestellNummer,
+								   String fahrzeugSchein,
+								   Integer status,
+								   LocalDateTime created,
+								   LocalDateTime updated) {
 		this.id = id;
 		this.customerId = customerId;
-		this.referenceId = referenceId;
 		this.nummer = nummer;
-		this.rechnungCreate = rechnungCreate;
-		this.liferDate = liferDate;
+		this.schluesselNummer = schluesselNummer;
+		this.fahrgestellNummer = fahrgestellNummer;
+		this.fahrzeugSchein = fahrzeugSchein;
 		this.status = status;
-		this.userId = userId;
-		this.rechnungType = rechnungType;
-		this.rechnungVersion = rechnungVersion;
-		this.paymentType = paymentType;
+		this.created = created;
 		this.updated = updated;
+	}
+
+	public KostenvoranschlagEntity(UUID customerId,
+								   String nummer,
+								   String schluesselNummer,
+								   String fahrgestellNummer,
+								   String fahrzeugSchein,
+								   Integer status) {
+		this.customerId = customerId;
+		this.nummer = nummer;
+		this.schluesselNummer = schluesselNummer;
+		this.fahrgestellNummer = fahrgestellNummer;
+		this.fahrzeugSchein = fahrzeugSchein;
+		this.status = status;
 	}
 
 	public UUID getId() {
@@ -137,43 +105,50 @@ public class KostenvoranschlagEntity extends EntityBase {
 	public void setCustomerId(UUID customerId) {
 		this.customerId = customerId;
 	}
-	
-	public UUID getReferenceId() {
-		return referenceId;
-	}
 
-	public void setReferenceId(UUID referenceId) {
-		this.referenceId = referenceId;
-	}
-
-	public Integer getNummer() {
+	public String getNummer() {
 		return nummer;
 	}
 
-	public void setNummer(Integer nummer) {
+	public void setNummer(String nummer) {
 		this.nummer = nummer;
 	}
 
-
-	public String getRechnungCreate() {
-		return rechnungCreate;
+	public String getSchluesselNummer() {
+		return schluesselNummer;
 	}
 
-
-	public void setRechnungCreate(String rechnungCreate) {
-		this.rechnungCreate = rechnungCreate;
+	public void setSchluesselNummer(String schluesselNummer) {
+		this.schluesselNummer = schluesselNummer;
 	}
 
-
-	public String getLiferDate() {
-		return liferDate;
+	public String getFahrgestellNummer() {
+		return fahrgestellNummer;
 	}
 
-
-	public void setLiferDate(String liferDate) {
-		this.liferDate = liferDate;
+	public void setFahrgestellNummer(String fahrgestellNummer) {
+		this.fahrgestellNummer = fahrgestellNummer;
 	}
 
+	public String getFahrzeugSchein() {
+		return fahrzeugSchein;
+	}
+
+	public void setFahrzeugSchein(String fahrzeugSchein) {
+		this.fahrzeugSchein = fahrzeugSchein;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
+	public void setItems(Set<KostenvoranschlagItemEntity> items) {
+		this.items = items;
+	}
 
 	public Set<KostenvoranschlagItemEntity> getItems() {
 		return items;
@@ -192,46 +167,6 @@ public class KostenvoranschlagEntity extends EntityBase {
 		item.setKostenvoranschlag(this);
 		this.items.add(item);
 		
-	}
-
-	public Integer getRechnungType() {
-		return rechnungType;
-	}
-
-	public void setRechnungType(Integer rechnungType) {
-		this.rechnungType = rechnungType;
-	}
-
-	public Integer getRechnungVersion() {
-		return rechnungVersion;
-	}
-
-	public void setRechnungVersion(Integer rechnungVersion) {
-		this.rechnungVersion = rechnungVersion;
-	}
-
-	public Integer getPaymentType() {
-		return paymentType;
-	}
-
-	public void setPaymentType(Integer paymentType) {
-		this.paymentType = paymentType;
-	}
-
-	public Integer getStatus() {
-		return status;
-	}
-
-	public void setStatus(Integer status) {
-		this.status = status;
-	}
-
-	public UUID getUserId() {
-		return userId;
-	}
-
-	public void setUserId(UUID userId) {
-		this.userId = userId;
 	}
 
 	@Override

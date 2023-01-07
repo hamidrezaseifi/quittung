@@ -27,11 +27,17 @@ public class KostenvoranschlagItemEntity extends EntityBase {
 	@Column(nullable = false)
 	private String produkt;
 
-	@Column(name="artikel_nummer", nullable = false)
-	private String artikelNummer;
+	@Column(name="original_nummer", nullable = false)
+	private String originalNummer;
+
+	@Column(name="teil_nummer", nullable = false)
+	private String teilNummer;
+
+	@Column(name="marke", nullable = false)
+	private String marke;
 
 	@Column(nullable = false)
-	private Integer menge;
+	private Boolean bestellt;
 
 	@Column(nullable = false)
 	private Float preis;
@@ -48,69 +54,41 @@ public class KostenvoranschlagItemEntity extends EntityBase {
     	super();
     }
 
-    public KostenvoranschlagItemEntity(String produkt,
-                                       String artikelNummer,
-                                       Integer menge,
-                                       Float preis) {
-    	super();
-        this.produkt = produkt;
-        this.artikelNummer = artikelNummer;
-        this.menge = menge;
-        this.preis = preis;
-    }
+	public KostenvoranschlagItemEntity(String produkt,
+									   String originalNummer,
+									   String teilNummer,
+									   String marke,
+									   Boolean bestellt,
+									   Float preis) {
+		this.produkt = produkt;
+		this.originalNummer = originalNummer;
+		this.teilNummer = teilNummer;
+		this.marke = marke;
+		this.bestellt = bestellt;
+		this.preis = preis;
+	}
 
-    public KostenvoranschlagItemEntity(UUID id,
-                                       String produkt,
-                                       String artikelNummer,
-                                       Integer menge,
-                                       Float preis,
-                                       LocalDateTime updated) {
-    	super();
-        this.id = id;
-        this.produkt = produkt;
-        this.artikelNummer = artikelNummer;
-        this.menge = menge;
-        this.preis = preis;
-        this.updated = updated;
-   }
+	public KostenvoranschlagItemEntity(UUID id,
+									   String produkt,
+									   String originalNummer,
+									   String teilNummer,
+									   String marke,
+									   Boolean bestellt,
+									   Float preis,
+									   LocalDateTime created,
+									   LocalDateTime updated) {
+		this.id = id;
+		this.produkt = produkt;
+		this.originalNummer = originalNummer;
+		this.teilNummer = teilNummer;
+		this.marke = marke;
+		this.bestellt = bestellt;
+		this.preis = preis;
+		this.created = created;
+		this.updated = updated;
+	}
 
-
-	public String getProdukt() {
-        return produkt;
-    }
-
-    public void setProdukt(String produkt) {
-        this.produkt = produkt;
-    }
-
-    public Integer getMenge() {
-        return menge;
-    }
-
-    public void setMenge(Integer menge) {
-        this.menge = menge;
-    }
-
-    public Float getPreis() {
-        return preis;
-    }
-
-    public void setPreis(Float preis) {
-        this.preis = preis;
-    }
-
-    public Float getGesmt() {
-        return preis * menge;
-    }
-
-    public String getArtikelNummer() {
-        return artikelNummer;
-    }
-
-    public void setArtikelNummer(String artikelNummer) {
-        this.artikelNummer = artikelNummer;
-    }
-
+	@Override
 	public UUID getId() {
 		return id;
 	}
@@ -126,6 +104,54 @@ public class KostenvoranschlagItemEntity extends EntityBase {
 
 	public void setKostenvoranschlag(KostenvoranschlagEntity kostenvoranschlag) {
 		this.kostenvoranschlag = kostenvoranschlag;
+	}
+
+	public String getProdukt() {
+		return produkt;
+	}
+
+	public void setProdukt(String produkt) {
+		this.produkt = produkt;
+	}
+
+	public String getOriginalNummer() {
+		return originalNummer;
+	}
+
+	public void setOriginalNummer(String originalNummer) {
+		this.originalNummer = originalNummer;
+	}
+
+	public String getTeilNummer() {
+		return teilNummer;
+	}
+
+	public void setTeilNummer(String teilNummer) {
+		this.teilNummer = teilNummer;
+	}
+
+	public String getMarke() {
+		return marke;
+	}
+
+	public void setMarke(String marke) {
+		this.marke = marke;
+	}
+
+	public Boolean getBestellt() {
+		return bestellt;
+	}
+
+	public void setBestellt(Boolean bestellt) {
+		this.bestellt = bestellt;
+	}
+
+	public Float getPreis() {
+		return preis;
+	}
+
+	public void setPreis(Float preis) {
+		this.preis = preis;
 	}
 
 	@Override
@@ -147,7 +173,7 @@ public class KostenvoranschlagItemEntity extends EntityBase {
 	public void setUpdated(LocalDateTime updated) {
 		this.updated = updated;
 	}
-	
+
 	@Override
     public boolean equals(Object o) {
         if (this == o) return true;

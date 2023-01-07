@@ -13,6 +13,7 @@ import de.seifi.rechnung_manager_app.controllers.PrintRechnungDialogController;
 import de.seifi.rechnung_manager_app.controllers.RechnungController;
 import de.seifi.rechnung_manager_app.enums.RechnungType;
 import de.seifi.rechnung_manager_app.models.CustomerModel;
+import de.seifi.rechnung_manager_app.models.KostenvoranschlagModel;
 import de.seifi.rechnung_manager_app.models.RechnungModel;
 import de.seifi.rechnung_manager_app.models.print.PrintJRDataSourceBase;
 import de.seifi.rechnung_manager_app.models.print.QuittungPrintJRDataSource;
@@ -187,4 +188,6 @@ public class UiUtils {
 		}
     }
 
+	public static void printKostenvoranschlagItems(List<KostenvoranschlagModel> KostenvoranschlagModelItems) {
+	}
 }
