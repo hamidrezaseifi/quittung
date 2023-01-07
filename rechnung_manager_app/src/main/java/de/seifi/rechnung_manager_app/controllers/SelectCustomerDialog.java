@@ -70,8 +70,6 @@ public class SelectCustomerDialog extends Dialog<CustomerModel> {
                                  }
                              });
 
-        //dialogPane.lookupButton(okButton).addEventFilter(ActionEvent.ANY, this::onConnect);
-
         initOwner(owner);
         initModality(Modality.APPLICATION_MODAL);
 

@@ -29,8 +29,9 @@ public class CustomerFahrzeugScheinEntity extends EntityBase {
 	private UUID customerId;
 
 
-	@Type(type = "org.hibernate.type.BlobType")
-	@Lob
+	//@Type(type = "org.hibernate.type.BlobType")
+	//@Lob
+	@Column(name="image_bytes", nullable = true)
 	private byte[] imageBytes;
 
 	private String name;
@@ -49,10 +50,8 @@ public class CustomerFahrzeugScheinEntity extends EntityBase {
     }
 
 	public CustomerFahrzeugScheinEntity(UUID customerId,
-										byte[] imageBytes,
 										String name) {
 		this.customerId = customerId;
-		this.imageBytes = imageBytes;
 		this.name = name;
 	}
 
@@ -110,15 +109,5 @@ public class CustomerFahrzeugScheinEntity extends EntityBase {
 		this.updated = updated;
 	}
 
-	public void setImage(BufferedImage image) throws IOException {
-		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		ImageIO.write(image, "PNG" /* for instance */, out);
-		imageBytes = out.toByteArray();
-	}
-
-	public BufferedImage getImage() throws IOException {
-		InputStream in = new ByteArrayInputStream(imageBytes);
-		return ImageIO.read(in);
-	}
 
 }

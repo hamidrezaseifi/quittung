@@ -74,13 +74,13 @@
 				<Label text="Nummer" GridPane.columnIndex="4" GridPane.rowIndex="0" styleClass="summe-label" textAlignment="LEFT" />
 				<Label fx:id="lblNummer" GridPane.columnIndex="5" GridPane.rowIndex="0" styleClass="summe-label" textAlignment="LEFT" />
 
-				<Label text="Schluesselnummer" GridPane.columnIndex="4" GridPane.rowIndex="1" styleClass="summe-label" textAlignment="LEFT" />
+				<Label fx:id="lblSchluesselNummer" text="Schluesselnummer" GridPane.columnIndex="4" GridPane.rowIndex="1" styleClass="summe-label" textAlignment="LEFT" />
 				<TextField fx:id="txtSchluesselNummer" GridPane.columnIndex="5" GridPane.rowIndex="1" styleClass="summe-label" />
 
-				<Label text="Fahrgestellnummer" GridPane.columnIndex="4" GridPane.rowIndex="2" styleClass="summe-label" textAlignment="LEFT" />
+				<Label fx:id="lblFahrgestellnummer" text="Fahrgestellnummer" GridPane.columnIndex="4" GridPane.rowIndex="2" styleClass="summe-label" textAlignment="LEFT" />
 				<TextField fx:id="txtFahrgestellnummer" GridPane.columnIndex="5" GridPane.rowIndex="2" styleClass="summe-label" />
 
-				<Label text="Fahrzeugschein" GridPane.columnIndex="4" GridPane.rowIndex="3" styleClass="summe-label" textAlignment="LEFT" />
+				<Label fx:id="lblFahrzeugschein" text="Fahrzeugschein" GridPane.columnIndex="4" GridPane.rowIndex="3" styleClass="summe-label" textAlignment="LEFT" />
 				<HBox spacing="0" GridPane.columnIndex="5" GridPane.rowIndex="3" fx:id="fahrzeugscheinBox">
 					<ComboBox fx:id="cmbFahrzeugschein" prefWidth="140" styleClass="rechnung-customer-combo" onAction="#cmbFahrzeugscheinAction"></ComboBox>
 					<Button fx:id="btnAddFahrzeugschein" prefWidth="30" styleClass="add-fahrzeugschein-button" onAction="#addFahrzeugschein"></Button>

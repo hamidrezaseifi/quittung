@@ -51,6 +51,8 @@ public class KostenvoranschlagBindingService implements IBindingService<Kostenvo
     private BooleanProperty disableSave;
     private BooleanProperty disablePrint;
 
+    private BooleanProperty hasCustomerProperty;
+
     private KostenvoranschlagModel savingModel = new KostenvoranschlagModel();
 
     private CustomerModel customerSavingModel = new CustomerModel();
@@ -61,9 +63,6 @@ public class KostenvoranschlagBindingService implements IBindingService<Kostenvo
     private boolean editingMode = false;
 
     private final KostenvoranschlagAdapter kostenvoranschlagAdapter = new KostenvoranschlagAdapter();
-
-    private boolean isCustomerSelected = false;
-
 
     public KostenvoranschlagBindingService(KostenvoranschlagRepository kostenvoranschlagRepository,
                                            CustomerFahrzeugScheinRepository fahrzeugScheinRepository,
@@ -90,14 +89,12 @@ public class KostenvoranschlagBindingService implements IBindingService<Kostenvo
 
         this.fahrzeugScheins = FXCollections.observableArrayList();
 
-        this.fahrzeugScheins.add(new CustomerFahrzeugScheinModel(null, null, "fs 1"));
-        this.fahrzeugScheins.add(new CustomerFahrzeugScheinModel(null, null, "fs 2"));
-        this.fahrzeugScheins.add(new CustomerFahrzeugScheinModel(null, null, "fs 3"));
-
         this.selectedFahrzeugSchein = new SimpleObjectProperty<>();
         this.selectedFahrzeugSchein.set(null);
 
         this.editingMode = true;
+
+        this.hasCustomerProperty = new SimpleBooleanProperty(false);
 
         reset();
 
@@ -130,6 +127,14 @@ public class KostenvoranschlagBindingService implements IBindingService<Kostenvo
 
     public void setSelectedFahrzeugSchein(CustomerFahrzeugScheinModel selectedFahrzeugSchein) {
         this.selectedFahrzeugSchein.set(selectedFahrzeugSchein);
+    }
+
+    public boolean isHasCustomerProperty() {
+        return hasCustomerProperty.get();
+    }
+
+    public BooleanProperty hasCustomerPropertyProperty() {
+        return hasCustomerProperty;
     }
 
     public float getGesamtSumme() {
@@ -254,7 +259,7 @@ public class KostenvoranschlagBindingService implements IBindingService<Kostenvo
 
     public boolean verifySaving(boolean showError) {
 
-        if (!this.isCustomerSelected) {
+        if (!this.hasCustomerProperty.get()) {
             if(showError){
                 UiUtils.showError("Rechnung-Speichern",
                         "Es ist kein Kunde ausgewählt. Bitte wählen Sie einen Kunden aus.");
@@ -275,7 +280,7 @@ public class KostenvoranschlagBindingService implements IBindingService<Kostenvo
     }
 
     public boolean save() {
-        if(!this.isCustomerSelected){
+        if(!this.hasCustomerProperty.get()){
             UiUtils.showError("Rechnung-Speichern", "Es ist kein Kunde ausgewählt. Bitte wählen Sie einen Kunden aus");
             return false;
         }
@@ -380,9 +385,9 @@ public class KostenvoranschlagBindingService implements IBindingService<Kostenvo
 
         this.customerSavingModel = customerModel;
 
-        this.customerModelProperty.setModel(this.customerSavingModel);
+        this.hasCustomerProperty.set(this.customerSavingModel != null);
 
-        this.isCustomerSelected = this.customerSavingModel != null;
+        this.customerModelProperty.setModel(this.customerSavingModel);
 
         this.calculateButtons();
 
@@ -412,17 +417,27 @@ public class KostenvoranschlagBindingService implements IBindingService<Kostenvo
     public void setCurrentCustomer(UUID id) {
         this.customerSavingModel = this.customerList.get(id);
         this.customerModelProperty.setModel(this.customerSavingModel);
+        reloadFahrzeugscheins();
+    }
+
+    public void reloadFahrzeugscheins() {
         this.fahrzeugScheins.clear();
-        List<CustomerFahrzeugScheinEntity> fsEntityList = this.fahrzeugScheinRepository.findAllByCustomerId(id);
+        List<CustomerFahrzeugScheinEntity> fsEntityList =
+                this.fahrzeugScheinRepository.findAllByCustomerId(this.customerSavingModel.getId());
         List<CustomerFahrzeugScheinModel> fsModelList =
                 fsEntityList.stream().map(e -> new CustomerFahrzeugScheinModel(e)).collect(Collectors.toList());
         this.fahrzeugScheins.addAll(fsModelList);
     }
 
     public void setCustomerModel(CustomerModel customerModel) {
+        if(customerModel.isNew()){
+            Optional<CustomerModel> customerModelOptional = RechnungManagerSpringApp.getCustomerService().save(customerModel);
+            customerModel = customerModelOptional.get();
+        }
         this.customerSavingModel = customerModel;
         this.customerModelProperty.setModel(customerModel);
-        this.isCustomerSelected = true;
+        this.hasCustomerProperty.set(customerModel != null);
+        reloadFahrzeugscheins();
 
     }
 

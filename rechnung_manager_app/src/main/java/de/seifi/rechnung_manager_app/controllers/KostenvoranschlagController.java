@@ -90,6 +90,18 @@ public class KostenvoranschlagController implements Initializable, ControllerBas
 
     @FXML private HBox toolbarBox;
 
+    @FXML private TextField txtSchluesselNummer;
+
+    @FXML private TextField txtFahrgestellnummer;
+
+    @FXML private HBox fahrzeugscheinBox;
+
+    @FXML private Label lblSchluesselNummer;
+
+    @FXML private Label lblFahrgestellnummer;
+
+    @FXML private Label lblFahrzeugschein;
+
     private KostenvoranschlagBindingService bindingService;
 
     private final KostenvoranschlagRepository kostenvoranschlagRepository;
@@ -169,9 +181,17 @@ public class KostenvoranschlagController implements Initializable, ControllerBas
     }
 
     @FXML
-    private void addFahrzeugschein(){
+    private void addFahrzeugschein() throws IOException{
 
+        AddCustomerFahrzeugscheinDialog dialog =
+                new AddCustomerFahrzeugscheinDialog(stage,
+                                                    this.bindingService.getCustomerModel(),
+                                                    this.fahrzeugScheinRepository);
+        Optional<CustomerFahrzeugScheinModel> result = dialog.showAndWait();
+        if(result.isPresent()){
+            this.bindingService.reloadFahrzeugscheins();
 
+        }
     }
 
     @FXML
@@ -261,6 +281,15 @@ public class KostenvoranschlagController implements Initializable, ControllerBas
         cmbFahrzeugschein.setItems(bindingService.getFahrzeugScheins());
 
         showItemsTableView.prefHeightProperty().bind(itemsListBox.heightProperty().subtract(95));
+
+        toolbarBox.visibleProperty().bind(this.bindingService.hasCustomerPropertyProperty());
+        itemsListBox.visibleProperty().bind(this.bindingService.hasCustomerPropertyProperty());
+        fahrzeugscheinBox.visibleProperty().bind(this.bindingService.hasCustomerPropertyProperty());
+        txtSchluesselNummer.visibleProperty().bind(this.bindingService.hasCustomerPropertyProperty());
+        txtFahrgestellnummer.visibleProperty().bind(this.bindingService.hasCustomerPropertyProperty());
+        lblSchluesselNummer.visibleProperty().bind(this.bindingService.hasCustomerPropertyProperty());
+        lblFahrgestellnummer.visibleProperty().bind(this.bindingService.hasCustomerPropertyProperty());
+        lblFahrzeugschein.visibleProperty().bind(this.bindingService.hasCustomerPropertyProperty());
 
         originalNummerColumn.setOnEditCommit(event -> {
             final String value = event.getNewValue();

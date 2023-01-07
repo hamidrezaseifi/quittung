@@ -12,21 +12,18 @@ public class CustomerFahrzeugScheinModel {
 
     private String name;
 
-    public CustomerFahrzeugScheinModel() {
-    }
+    private String imagePath;
 
-    public CustomerFahrzeugScheinModel(UUID id,
-                                       UUID customerId,
-                                       String name) {
-        this.id = id;
-        this.customerId = customerId;
-        this.name = name;
+    private byte[] imageBytes;
+
+    public CustomerFahrzeugScheinModel() {
     }
 
     public CustomerFahrzeugScheinModel(CustomerFahrzeugScheinEntity entity) {
         this.id = entity.getId();
         this.customerId = entity.getCustomerId();
         this.name = entity.getName();
+        this.imageBytes = entity.getImageBytes();
     }
 
     public UUID getId() {
@@ -51,6 +48,22 @@ public class CustomerFahrzeugScheinModel {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
+    public byte[] getImageBytes() {
+        return imageBytes;
+    }
+
+    public void setImageBytes(byte[] imageBytes) {
+        this.imageBytes = imageBytes;
     }
 
     @Override

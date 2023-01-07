@@ -130,7 +130,6 @@ public class CustomerModelProperty {
 
 
 	public boolean isInvalid() {
-		return this.customerName.get().isBlank() || this.street.get().isBlank() || this.houseNumber.get().isBlank()
-			   || this.plz.get().isBlank() || this.city.get().isBlank();
+		return this.customerName.get().isBlank();
 	}
 }
