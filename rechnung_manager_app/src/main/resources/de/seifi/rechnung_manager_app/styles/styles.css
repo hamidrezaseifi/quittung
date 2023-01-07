@@ -55,9 +55,16 @@
     -fx-border-style: solid;
 }
 
-.select-customer-button{
-    -fx-background-image: url('../images/select_multiple_1.png');
+.add-fahrzeugschein-button{
+    -fx-background-image: url('../images/add.png');
     -fx-background-position:center;  
+    -fx-background-size: 90% 90%;
+    -fx-background-repeat: no-repeat;
+}
+
+.view-fahrzeugschein-button{
+    -fx-background-image: url('../images/search.png');
+    -fx-background-position:center;
     -fx-background-size: 90% 90%;
     -fx-background-repeat: no-repeat;
 }

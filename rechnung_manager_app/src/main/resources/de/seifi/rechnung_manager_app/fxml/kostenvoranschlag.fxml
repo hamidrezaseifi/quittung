@@ -82,8 +82,9 @@
 
 				<Label text="Fahrzeugschein" GridPane.columnIndex="4" GridPane.rowIndex="3" styleClass="summe-label" textAlignment="LEFT" />
 				<HBox spacing="0" GridPane.columnIndex="5" GridPane.rowIndex="3" fx:id="fahrzeugscheinBox">
-					<Label fx:id="lblFahrzeugschein" prefWidth="170" textAlignment="LEFT" styleClass="rechnung-customer-label"></Label>
-					<Button fx:id="btnFahrzeugschein" prefWidth="30" styleClass="select-customer-button" onAction="#selectCustomer"></Button>
+					<ComboBox fx:id="cmbFahrzeugschein" prefWidth="140" styleClass="rechnung-customer-combo" onAction="#cmbFahrzeugscheinAction"></ComboBox>
+					<Button fx:id="btnAddFahrzeugschein" prefWidth="30" styleClass="add-fahrzeugschein-button" onAction="#addFahrzeugschein"></Button>
+					<Button fx:id="btnViewFahrzeugschein" prefWidth="30" styleClass="view-fahrzeugschein-button" onAction="#viewFahrzeugschein"></Button>
 
 				</HBox>
 

@@ -1,22 +1,16 @@
 package de.seifi.rechnung_manager_app.fx_services;
 
 
+import de.seifi.rechnung_common.entities.CustomerFahrzeugScheinEntity;
 import de.seifi.rechnung_common.entities.KostenvoranschlagEntity;
-import de.seifi.rechnung_common.entities.RechnungEntity;
+import de.seifi.rechnung_common.repositories.CustomerFahrzeugScheinRepository;
 import de.seifi.rechnung_common.repositories.KostenvoranschlagRepository;
-import de.seifi.rechnung_manager_app.RechnungManagerFxApp;
 import de.seifi.rechnung_manager_app.RechnungManagerSpringApp;
 import de.seifi.rechnung_manager_app.adapter.KostenvoranschlagAdapter;
-import de.seifi.rechnung_manager_app.adapter.RechnungAdapter;
 import de.seifi.rechnung_manager_app.data_service.IRechnungDataHelper;
 import de.seifi.rechnung_manager_app.enums.KostenvoranschlagStatus;
-import de.seifi.rechnung_manager_app.enums.PaymentType;
-import de.seifi.rechnung_manager_app.enums.RechnungStatus;
-import de.seifi.rechnung_manager_app.enums.RechnungType;
 import de.seifi.rechnung_manager_app.models.*;
 import de.seifi.rechnung_manager_app.ui.UiUtils;
-import de.seifi.rechnung_manager_app.utils.GeneralUtils;
-import de.seifi.rechnung_manager_app.utils.GerldCalculator;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -32,13 +26,21 @@ public class KostenvoranschlagBindingService implements IBindingService<Kostenvo
     private int INITIAL_ITEMS = 10;
 
     private final KostenvoranschlagRepository kostenvoranschlagRepository;
+
+    private final CustomerFahrzeugScheinRepository fahrzeugScheinRepository;
+
     private final IRechnungDataHelper rechnungDataHelper;
     //private final CustomerRepository customerRepository;
 
     private final Map<UUID, CustomerModel> customerList;
 
     private ObservableList<KostenvoranschlagItemProperty> vorschlagItems;
+
+    private ObservableList<CustomerFahrzeugScheinModel> fahrzeugScheins;
     private CustomerModelProperty customerModelProperty;
+
+    private ObjectProperty<CustomerFahrzeugScheinModel> selectedFahrzeugSchein;
+
 
     private FloatProperty gesamtSumme;
     private FloatProperty nettoSumme;
@@ -63,12 +65,14 @@ public class KostenvoranschlagBindingService implements IBindingService<Kostenvo
     private boolean isCustomerSelected = false;
 
 
-    public KostenvoranschlagBindingService(final KostenvoranschlagRepository kostenvoranschlagRepository,
-                                           final IRechnungDataHelper rechnungDataHelper) {
+    public KostenvoranschlagBindingService(KostenvoranschlagRepository kostenvoranschlagRepository,
+                                           CustomerFahrzeugScheinRepository fahrzeugScheinRepository,
+                                           IRechnungDataHelper rechnungDataHelper) {
     	
     	CURRENT_INSTANCE = this;
 
         this.kostenvoranschlagRepository = kostenvoranschlagRepository;
+        this.fahrzeugScheinRepository = fahrzeugScheinRepository;
         this.rechnungDataHelper = rechnungDataHelper;
 
         this.customerList = new HashMap<>();
@@ -83,6 +87,15 @@ public class KostenvoranschlagBindingService implements IBindingService<Kostenvo
         disablePrint = new SimpleBooleanProperty(false);
 
         this.vorschlagItems = FXCollections.observableArrayList();
+
+        this.fahrzeugScheins = FXCollections.observableArrayList();
+
+        this.fahrzeugScheins.add(new CustomerFahrzeugScheinModel(null, null, "fs 1"));
+        this.fahrzeugScheins.add(new CustomerFahrzeugScheinModel(null, null, "fs 2"));
+        this.fahrzeugScheins.add(new CustomerFahrzeugScheinModel(null, null, "fs 3"));
+
+        this.selectedFahrzeugSchein = new SimpleObjectProperty<>();
+        this.selectedFahrzeugSchein.set(null);
 
         this.editingMode = true;
 
@@ -105,6 +118,18 @@ public class KostenvoranschlagBindingService implements IBindingService<Kostenvo
 
     public ObservableList<KostenvoranschlagItemProperty> getKostenvoranschlagItems() {
         return this.vorschlagItems;
+    }
+
+    public ObservableList<CustomerFahrzeugScheinModel> getFahrzeugScheins() {
+        return fahrzeugScheins;
+    }
+
+    public CustomerFahrzeugScheinModel getSelectedFahrzeugSchein() {
+        return selectedFahrzeugSchein.get();
+    }
+
+    public void setSelectedFahrzeugSchein(CustomerFahrzeugScheinModel selectedFahrzeugSchein) {
+        this.selectedFahrzeugSchein.set(selectedFahrzeugSchein);
     }
 
     public float getGesamtSumme() {
@@ -387,7 +412,11 @@ public class KostenvoranschlagBindingService implements IBindingService<Kostenvo
     public void setCurrentCustomer(UUID id) {
         this.customerSavingModel = this.customerList.get(id);
         this.customerModelProperty.setModel(this.customerSavingModel);
-
+        this.fahrzeugScheins.clear();
+        List<CustomerFahrzeugScheinEntity> fsEntityList = this.fahrzeugScheinRepository.findAllByCustomerId(id);
+        List<CustomerFahrzeugScheinModel> fsModelList =
+                fsEntityList.stream().map(e -> new CustomerFahrzeugScheinModel(e)).collect(Collectors.toList());
+        this.fahrzeugScheins.addAll(fsModelList);
     }
 
     public void setCustomerModel(CustomerModel customerModel) {

@@ -1,5 +1,6 @@
 package de.seifi.rechnung_manager_app.controllers;
 
+import de.seifi.rechnung_common.repositories.CustomerFahrzeugScheinRepository;
 import de.seifi.rechnung_common.repositories.KostenvoranschlagRepository;
 import de.seifi.rechnung_manager_app.RechnungManagerFxApp;
 import de.seifi.rechnung_manager_app.RechnungManagerSpringApp;
@@ -9,6 +10,7 @@ import de.seifi.rechnung_manager_app.models.*;
 import de.seifi.rechnung_manager_app.ui.FloatGeldLabel;
 import de.seifi.rechnung_manager_app.ui.UiUtils;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -33,6 +35,8 @@ public class KostenvoranschlagController implements Initializable, ControllerBas
     @FXML private FloatGeldLabel lblMvst;
 
     @FXML private FloatGeldLabel lblGesamt;
+
+    @FXML private ComboBox<CustomerFahrzeugScheinModel> cmbFahrzeugschein;
 
     @FXML private TableColumn<KostenvoranschlagItemProperty, String> produktColumn;
 
@@ -90,6 +94,8 @@ public class KostenvoranschlagController implements Initializable, ControllerBas
 
     private final KostenvoranschlagRepository kostenvoranschlagRepository;
 
+    private final CustomerFahrzeugScheinRepository fahrzeugScheinRepository;
+
     private final IRechnungDataHelper rechnungDataHelper;
 
     private Stage stage;
@@ -98,6 +104,8 @@ public class KostenvoranschlagController implements Initializable, ControllerBas
 
         this.kostenvoranschlagRepository =
                 RechnungManagerSpringApp.applicationContext.getBean(KostenvoranschlagRepository.class);
+        this.fahrzeugScheinRepository =
+                RechnungManagerSpringApp.applicationContext.getBean(CustomerFahrzeugScheinRepository.class);
         this.rechnungDataHelper = RechnungManagerSpringApp.applicationContext.getBean(IRechnungDataHelper.class);
 
 	}
@@ -159,6 +167,18 @@ public class KostenvoranschlagController implements Initializable, ControllerBas
         }
 
     }
+
+    @FXML
+    private void addFahrzeugschein(){
+
+
+    }
+
+    @FXML
+    private void viewFahrzeugschein(){
+
+
+    }
     
     
     private void doReloadData() {
@@ -177,6 +197,13 @@ public class KostenvoranschlagController implements Initializable, ControllerBas
 
         UiUtils.printKostenvoranschlagItems(Arrays.asList(bindingService.getRechnungSavingModel()));
         showItemsTableView.setEditable(true);
+
+    }
+
+    @FXML
+    private void cmbFahrzeugscheinAction(ActionEvent event) {
+
+        bindingService.setSelectedFahrzeugSchein(cmbFahrzeugschein.getSelectionModel().getSelectedItem());
 
     }
 
@@ -216,6 +243,7 @@ public class KostenvoranschlagController implements Initializable, ControllerBas
     	RechnungManagerFxApp.setCurrentController(this);
 
         bindingService = new KostenvoranschlagBindingService(this.kostenvoranschlagRepository,
+                                                             this.fahrzeugScheinRepository,
                                                              this.rechnungDataHelper);
 
         produktColumn.prefWidthProperty().bind(
@@ -229,7 +257,9 @@ public class KostenvoranschlagController implements Initializable, ControllerBas
 
         showItemsTableView.setItems(bindingService.getKostenvoranschlagItems());
         showItemsTableView.setUserData(bindingService);
-        
+
+        cmbFahrzeugschein.setItems(bindingService.getFahrzeugScheins());
+
         showItemsTableView.prefHeightProperty().bind(itemsListBox.heightProperty().subtract(95));
 
         originalNummerColumn.setOnEditCommit(event -> {
