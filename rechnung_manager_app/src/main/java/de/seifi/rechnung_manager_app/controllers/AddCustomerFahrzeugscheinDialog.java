@@ -14,13 +14,22 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Window;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -39,7 +48,9 @@ public class AddCustomerFahrzeugscheinDialog extends Dialog<CustomerFahrzeugSche
 
     @FXML private ButtonType okButtonType;
 
-    @FXML private HBox imageBox;
+    @FXML private HBox imageSelectBox;
+
+    @FXML private VBox existingImagesBox;
 
     private Button okButton;
 
@@ -74,7 +85,7 @@ public class AddCustomerFahrzeugscheinDialog extends Dialog<CustomerFahrzeugSche
         initModality(Modality.APPLICATION_MODAL);
 
         setResizable(true);
-        setTitle("Customer Fahrzeugschein hinzufügen...");
+        setTitle("Customer Fahrzeugschein ...");
         setDialogPane(dialogPane);
 
 		setResultConverter(buttonType -> {
@@ -103,18 +114,16 @@ public class AddCustomerFahrzeugscheinDialog extends Dialog<CustomerFahrzeugSche
         List<CustomerFahrzeugScheinEntity> fsList = this.fahrzeugScheinRepository.findAllByCustomerId(customerModel.getId());
 
         int newid = 1;
-        if(!fsList.isEmpty()){
-
-            String lastName = fsList.get(fsList.size() - 1).getName();
-            String lastIdStr = lastName.split("-")[1];
-            int lastId = Integer.parseInt(lastIdStr);
-            newid = lastId + 1;
+        for(CustomerFahrzeugScheinEntity entity: fsList){
+            newid = getNewid(entity);
+            addNewImageBox(new CustomerFahrzeugScheinModel(entity));
         }
+
         String newName = "Fahrzeugschein-" + newid;
         txtName.setText(newName);
 
 
-        lblFahrzeugscheinPath.prefWidthProperty().bind(imageBox.widthProperty().subtract(30));
+        lblFahrzeugscheinPath.prefWidthProperty().bind(imageSelectBox.widthProperty().subtract(30));
 
 
         validateModel();
@@ -124,6 +133,53 @@ public class AddCustomerFahrzeugscheinDialog extends Dialog<CustomerFahrzeugSche
         });
 
 
+    }
+
+    private void addNewImageBox(CustomerFahrzeugScheinModel model) {
+        HBox existingImageBox = new HBox();
+        existingImageBox.setSpacing(5);
+        existingImageBox.setStyle("-fx-background-color: #EEFFFF; -fx-padding: 3 3 3 3;");
+        Label lblName = new Label(model.getName());
+        lblName.setPrefHeight(70);
+        lblName.setPrefWidth(120);
+        lblName.setAlignment(Pos.CENTER_LEFT);
+        Image img = new Image(new ByteArrayInputStream(model.getImageBytes()));
+        ImageView imgView = new ImageView();
+        imgView.setImage(img);
+        imgView.setFitWidth(100);
+        imgView.setFitHeight(70);
+        imgView.setUserData(model);
+        imgView.setOnMouseClicked((event) -> {
+
+            ImageView imgPreview = new ImageView();
+            imgPreview.setImage(img);
+
+            Dialog showImageDialog = new Dialog<>();
+            showImageDialog.setTitle("Bildbetracht ...");
+            showImageDialog.setResizable(true);
+            showImageDialog.getDialogPane().setContent(imgPreview);
+            imgPreview.fitWidthProperty().bind(showImageDialog.widthProperty().subtract(30));
+            imgPreview.fitHeightProperty().bind(showImageDialog.heightProperty().subtract(80));
+            ButtonType buttonTypeOk = new ButtonType("Okay", ButtonBar.ButtonData.OK_DONE);
+            showImageDialog.getDialogPane().getButtonTypes().add(buttonTypeOk);
+            showImageDialog.setWidth(800);
+            showImageDialog.setHeight(600);
+
+            showImageDialog.showAndWait();
+        });
+
+        existingImageBox.getChildren().addAll(lblName, imgView);
+        existingImageBox.setUserData(model);
+        existingImagesBox.getChildren().add(existingImageBox);
+    }
+
+    private int getNewid(CustomerFahrzeugScheinEntity entity) {
+        int newid;
+        String entityName = entity.getName();
+        String lastIdStr = entityName.split("-")[1];
+        int lastId = Integer.parseInt(lastIdStr);
+        newid = lastId + 1;
+        return newid;
     }
 
     @FXML
