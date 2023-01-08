@@ -1,7 +1,6 @@
 package de.seifi.rechnung_manager_app.data_service.impl;
 
 import de.seifi.rechnung_common.entities.KostenvoranschlagEntity;
-import de.seifi.rechnung_common.repositories.CustomerRepository;
 import de.seifi.rechnung_common.repositories.KostenvoranschlagRepository;
 import de.seifi.rechnung_common.repositories.RechnungRepository;
 import de.seifi.rechnung_manager_app.data_service.IRechnungDataHelper;

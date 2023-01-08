@@ -1,6 +1,5 @@
 package de.seifi.rechnung_common.repositories;
 
-import de.seifi.rechnung_common.entities.CustomerEntity;
 import de.seifi.rechnung_common.entities.CustomerFahrzeugScheinEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

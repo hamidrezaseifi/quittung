@@ -2,7 +2,6 @@ package de.seifi.rechnung_manager_app.ui.tablecell.kostenvoranschlag;
 
 import de.seifi.rechnung_manager_app.ui.FloatTextField;
 import de.seifi.rechnung_manager_app.ui.TableUtils;
-import de.seifi.rechnung_manager_app.ui.tablecell.RechnungBaseEditbaleTableCell;
 import javafx.scene.control.Control;
 
 public class KostenvoranschlagGeldEditingTableCellRechnung extends KostenvoranschlagBaseEditbaleTableCell<Float> {

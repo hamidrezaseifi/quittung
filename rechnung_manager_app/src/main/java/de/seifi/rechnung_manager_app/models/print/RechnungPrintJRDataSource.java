@@ -3,7 +3,6 @@ package de.seifi.rechnung_manager_app.models.print;
 import de.seifi.rechnung_manager_app.models.CustomerModel;
 import de.seifi.rechnung_manager_app.models.RechnungItemModel;
 import de.seifi.rechnung_manager_app.models.RechnungModel;
-import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRField;
 
 import java.util.List;

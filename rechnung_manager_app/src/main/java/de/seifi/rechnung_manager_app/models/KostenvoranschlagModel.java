@@ -1,16 +1,11 @@
 package de.seifi.rechnung_manager_app.models;
 
 import de.seifi.rechnung_manager_app.enums.KostenvoranschlagStatus;
-import de.seifi.rechnung_manager_app.enums.PaymentType;
-import de.seifi.rechnung_manager_app.enums.RechnungStatus;
-import de.seifi.rechnung_manager_app.enums.RechnungType;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 public class KostenvoranschlagModel {
 

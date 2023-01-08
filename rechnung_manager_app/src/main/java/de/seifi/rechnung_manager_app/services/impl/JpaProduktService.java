@@ -2,11 +2,9 @@ package de.seifi.rechnung_manager_app.services.impl;
 
 import de.seifi.rechnung_common.entities.ProduktEntity;
 import de.seifi.rechnung_common.repositories.ProduktRepository;
-import de.seifi.rechnung_manager_app.RechnungManagerSpringApp;
 import de.seifi.rechnung_manager_app.adapter.ProduktAdapter;
 import de.seifi.rechnung_manager_app.models.ProduktModel;
 import de.seifi.rechnung_manager_app.services.IProduktService;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.*;

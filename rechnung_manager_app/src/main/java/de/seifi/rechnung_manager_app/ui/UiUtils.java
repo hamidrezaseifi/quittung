@@ -8,7 +8,6 @@ import java.util.Optional;
 
 import de.seifi.rechnung_manager_app.RechnungManagerFxApp;
 import de.seifi.rechnung_manager_app.RechnungManagerSpringApp;
-import de.seifi.rechnung_manager_app.adapter.CustomerAdapter;
 import de.seifi.rechnung_manager_app.controllers.PrintRechnungDialogController;
 import de.seifi.rechnung_manager_app.controllers.RechnungController;
 import de.seifi.rechnung_manager_app.enums.RechnungType;
@@ -20,7 +19,6 @@ import de.seifi.rechnung_manager_app.models.print.QuittungPrintJRDataSource;
 import de.seifi.rechnung_manager_app.models.print.RechnungPrintJRDataSource;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.print.PrinterJob;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
@@ -31,8 +29,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.Window;
-import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperPrintManager;
@@ -79,8 +75,8 @@ public class UiUtils {
 	public static void printRechnungItems(List<RechnungModel> rechnungModelList, boolean forCustomer) {
 		logger.debug("Start printing ...");
 
-		JasperPrint jasperPrint = null;
-		JasperPrint jasperThankPrint = null;
+		JasperPrint jasperPrint;
+		JasperPrint jasperThankPrint;
 		InputStream rechnungStream = null;
 		InputStream rechnungThankStream = null;
 		PrintJRDataSourceBase printJRDataSource = null;

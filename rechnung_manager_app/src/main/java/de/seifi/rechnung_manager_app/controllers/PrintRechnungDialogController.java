@@ -19,7 +19,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.transform.Scale;
 
 import java.net.URL;
-import java.util.Map;
 import java.util.ResourceBundle;
 
 public class PrintRechnungDialogController implements Initializable {

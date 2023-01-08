@@ -1,6 +1,5 @@
 package de.seifi.rechnung_manager_app.services;
 
-import de.seifi.rechnung_common.entities.CustomerEntity;
 import de.seifi.rechnung_manager_app.models.CustomerModel;
 
 import java.util.List;

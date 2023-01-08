@@ -4,7 +4,6 @@ import de.seifi.rechnung_common.config.ConfigItem;
 import de.seifi.rechnung_common.config.ConfigReader;
 import de.seifi.rechnung_common.config.IConfigItem;
 import de.seifi.rechnung_manager_app.RechnungManagerFxApp;
-import de.seifi.rechnung_manager_app.models.PrinterItem;
 import javafx.print.Printer;
 
 import java.util.Arrays;

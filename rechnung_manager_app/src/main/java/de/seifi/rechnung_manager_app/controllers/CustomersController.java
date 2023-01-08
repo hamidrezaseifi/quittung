@@ -1,6 +1,5 @@
 package de.seifi.rechnung_manager_app.controllers;
 
-import de.seifi.rechnung_common.entities.CustomerEntity;
 import de.seifi.rechnung_manager_app.RechnungManagerFxApp;
 import de.seifi.rechnung_manager_app.RechnungManagerSpringApp;
 import de.seifi.rechnung_manager_app.adapter.CustomerAdapter;

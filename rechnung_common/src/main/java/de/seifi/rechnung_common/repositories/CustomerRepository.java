@@ -6,7 +6,6 @@ import org.springframework.data.repository.query.Param;
 
 import de.seifi.rechnung_common.entities.CustomerEntity;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 

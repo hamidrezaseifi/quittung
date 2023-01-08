@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import de.seifi.rechnung_manager_app.adapter.RechnungItemAdapter;
 import de.seifi.rechnung_manager_app.enums.PaymentType;
 import de.seifi.rechnung_manager_app.enums.RechnungStatus;
 import de.seifi.rechnung_manager_app.enums.RechnungType;

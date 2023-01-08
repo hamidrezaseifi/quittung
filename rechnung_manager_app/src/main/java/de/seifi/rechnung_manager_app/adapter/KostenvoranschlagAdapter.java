@@ -10,7 +10,7 @@ public class KostenvoranschlagAdapter extends AdapterBase<KostenvoranschlagEntit
 
 	@Override
 	public KostenvoranschlagEntity toEntity(KostenvoranschlagModel model) {
-		KostenvoranschlagEntity entity = null;
+		KostenvoranschlagEntity entity;
 		if(model.isNew()) {
 			entity = new KostenvoranschlagEntity(model.getCustomerId(),
 												 model.getNummer(),

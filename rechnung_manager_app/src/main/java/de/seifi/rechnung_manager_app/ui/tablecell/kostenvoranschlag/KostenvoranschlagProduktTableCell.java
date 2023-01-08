@@ -3,7 +3,6 @@ package de.seifi.rechnung_manager_app.ui.tablecell.kostenvoranschlag;
 import de.seifi.rechnung_manager_app.RechnungManagerSpringApp;
 import de.seifi.rechnung_manager_app.models.ProduktModel;
 import de.seifi.rechnung_manager_app.ui.FilterComboBox;
-import de.seifi.rechnung_manager_app.ui.tablecell.RechnungBaseEditbaleTableCell;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Control;

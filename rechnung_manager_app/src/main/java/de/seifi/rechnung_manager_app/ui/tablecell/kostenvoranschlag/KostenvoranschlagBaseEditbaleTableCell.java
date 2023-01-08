@@ -3,7 +3,6 @@ package de.seifi.rechnung_manager_app.ui.tablecell.kostenvoranschlag;
 import de.seifi.rechnung_manager_app.ui.FloatTextField;
 import de.seifi.rechnung_manager_app.ui.IntegerTextField;
 import de.seifi.rechnung_manager_app.ui.TableUtils;
-import de.seifi.rechnung_manager_app.ui.tablecell.MarkedTableCellBase;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Control;
 import javafx.scene.control.TextField;

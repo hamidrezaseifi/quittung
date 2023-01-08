@@ -3,7 +3,6 @@ package de.seifi.rechnung_manager_app;
 import de.seifi.rechnung_common.utils.ISingleInstanceRunnable;
 import de.seifi.rechnung_common.utils.RunSingleInstance;
 import de.seifi.rechnung_manager_app.controllers.ControllerBase;
-import de.seifi.rechnung_manager_app.controllers.KostenvoranschlagController;
 import de.seifi.rechnung_manager_app.controllers.MainController;
 import de.seifi.rechnung_manager_app.controllers.RechnungController;
 import de.seifi.rechnung_manager_app.enums.RechnungType;
@@ -35,7 +34,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.UUID;
 
-import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

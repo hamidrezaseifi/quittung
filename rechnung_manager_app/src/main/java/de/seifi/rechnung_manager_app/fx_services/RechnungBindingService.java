@@ -298,7 +298,7 @@ public class RechnungBindingService implements IBindingService<RechnungItemPrope
 	}
 
 	public void setVisbleToggleStatusBox(boolean visible) {
-		visbleToggleStatusBox.set(visible);;
+		visbleToggleStatusBox.set(visible);
 	}
 
     public boolean verifySaving(boolean showError) {

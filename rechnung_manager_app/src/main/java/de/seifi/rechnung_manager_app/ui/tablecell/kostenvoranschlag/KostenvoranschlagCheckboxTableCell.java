@@ -1,8 +1,5 @@
 package de.seifi.rechnung_manager_app.ui.tablecell.kostenvoranschlag;
 
-import de.seifi.rechnung_manager_app.ui.FilterComboBox;
-import de.seifi.rechnung_manager_app.ui.TableUtils;
-import javafx.collections.FXCollections;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Control;
 
