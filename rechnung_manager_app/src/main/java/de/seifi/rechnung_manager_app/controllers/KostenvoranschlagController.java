@@ -10,7 +10,6 @@ import de.seifi.rechnung_manager_app.models.*;
 import de.seifi.rechnung_manager_app.ui.FloatGeldLabel;
 import de.seifi.rechnung_manager_app.ui.UiUtils;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -36,7 +35,7 @@ public class KostenvoranschlagController implements Initializable, ControllerBas
 
     @FXML private FloatGeldLabel lblGesamt;
 
-    @FXML private ComboBox<CustomerFahrzeugScheinModel> cmbFahrzeugschein;
+    @FXML private Label lblFahrzeugscheinName;
 
     @FXML private TableColumn<KostenvoranschlagItemProperty, String> produktColumn;
 
@@ -181,17 +180,23 @@ public class KostenvoranschlagController implements Initializable, ControllerBas
     }
 
     @FXML
-    private void addFahrzeugschein() throws IOException{
+    private void selectFahrzeugschein() throws IOException{
 
-        AddCustomerFahrzeugscheinDialog dialog =
-                new AddCustomerFahrzeugscheinDialog(stage,
-                                                    this.bindingService.getCustomerModel(),
-                                                    this.fahrzeugScheinRepository);
+        SelectCustomerFahrzeugscheinDialog dialog =
+                new SelectCustomerFahrzeugscheinDialog(stage,
+                                                       this.bindingService.getCustomerModel(),
+                                                       this.bindingService.getSelectedFahrzeugSchein(),
+                                                       this.fahrzeugScheinRepository);
         Optional<CustomerFahrzeugScheinModel> result = dialog.showAndWait();
         if(result.isPresent()){
-            this.bindingService.reloadFahrzeugscheins();
-
+            bindingService.setSelectedFahrzeugSchein(result.get());
         }
+    }
+
+    @FXML
+    private void deleteFahrzeugschein() throws IOException{
+
+        bindingService.setSelectedFahrzeugSchein(null);
     }
 
     @FXML
@@ -217,13 +222,6 @@ public class KostenvoranschlagController implements Initializable, ControllerBas
 
         UiUtils.printKostenvoranschlagItems(Arrays.asList(bindingService.getRechnungSavingModel()));
         showItemsTableView.setEditable(true);
-
-    }
-
-    @FXML
-    private void cmbFahrzeugscheinAction(ActionEvent event) {
-
-        bindingService.setSelectedFahrzeugSchein(cmbFahrzeugschein.getSelectionModel().getSelectedItem());
 
     }
 
@@ -278,9 +276,9 @@ public class KostenvoranschlagController implements Initializable, ControllerBas
         showItemsTableView.setItems(bindingService.getKostenvoranschlagItems());
         showItemsTableView.setUserData(bindingService);
 
-        cmbFahrzeugschein.setItems(bindingService.getFahrzeugScheins());
-
         showItemsTableView.prefHeightProperty().bind(itemsListBox.heightProperty().subtract(95));
+
+        lblFahrzeugscheinName.textProperty().bind(this.bindingService.selectedFahrzeugScheinNamePropertyProperty());
 
         toolbarBox.visibleProperty().bind(this.bindingService.hasCustomerPropertyProperty());
         itemsListBox.visibleProperty().bind(this.bindingService.hasCustomerPropertyProperty());

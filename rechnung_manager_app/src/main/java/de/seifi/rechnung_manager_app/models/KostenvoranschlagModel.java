@@ -24,7 +24,7 @@ public class KostenvoranschlagModel {
 
 	private String fahrgestellNummer;
 
-	private String fahrzeugSchein;
+	private UUID fahrzeugSchein;
 
 	private KostenvoranschlagStatus status;
 
@@ -46,7 +46,7 @@ public class KostenvoranschlagModel {
 								  String nummer,
 								  String schluesselNummer,
 								  String fahrgestellNummer,
-								  String fahrzeugSchein,
+								  UUID fahrzeugSchein,
 								  KostenvoranschlagStatus status,
 								  LocalDateTime created,
 								  LocalDateTime updated) {
@@ -64,7 +64,7 @@ public class KostenvoranschlagModel {
 	public KostenvoranschlagModel(String nummer,
 								  String schluesselNummer,
 								  String fahrgestellNummer,
-								  String fahrzeugSchein,
+								  UUID fahrzeugSchein,
 								  KostenvoranschlagStatus status) {
 		this.id = id;
 		this.customerId = customerId;
@@ -121,11 +121,11 @@ public class KostenvoranschlagModel {
 		this.fahrgestellNummer = fahrgestellNummer;
 	}
 
-	public String getFahrzeugSchein() {
+	public UUID getFahrzeugSchein() {
 		return fahrzeugSchein;
 	}
 
-	public void setFahrzeugSchein(String fahrzeugSchein) {
+	public void setFahrzeugSchein(UUID fahrzeugSchein) {
 		this.fahrzeugSchein = fahrzeugSchein;
 	}
 

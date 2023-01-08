@@ -1,7 +1,6 @@
 package de.seifi.rechnung_manager_app.fx_services;
 
 
-import de.seifi.rechnung_common.entities.CustomerFahrzeugScheinEntity;
 import de.seifi.rechnung_common.entities.KostenvoranschlagEntity;
 import de.seifi.rechnung_common.repositories.CustomerFahrzeugScheinRepository;
 import de.seifi.rechnung_common.repositories.KostenvoranschlagRepository;
@@ -36,10 +35,11 @@ public class KostenvoranschlagBindingService implements IBindingService<Kostenvo
 
     private ObservableList<KostenvoranschlagItemProperty> vorschlagItems;
 
-    private ObservableList<CustomerFahrzeugScheinModel> fahrzeugScheins;
     private CustomerModelProperty customerModelProperty;
 
     private ObjectProperty<CustomerFahrzeugScheinModel> selectedFahrzeugSchein;
+
+    private StringProperty selectedFahrzeugScheinNameProperty;
 
 
     private FloatProperty gesamtSumme;
@@ -87,10 +87,9 @@ public class KostenvoranschlagBindingService implements IBindingService<Kostenvo
 
         this.vorschlagItems = FXCollections.observableArrayList();
 
-        this.fahrzeugScheins = FXCollections.observableArrayList();
-
         this.selectedFahrzeugSchein = new SimpleObjectProperty<>();
         this.selectedFahrzeugSchein.set(null);
+        this.selectedFahrzeugScheinNameProperty = new SimpleStringProperty("");
 
         this.editingMode = true;
 
@@ -117,16 +116,26 @@ public class KostenvoranschlagBindingService implements IBindingService<Kostenvo
         return this.vorschlagItems;
     }
 
-    public ObservableList<CustomerFahrzeugScheinModel> getFahrzeugScheins() {
-        return fahrzeugScheins;
-    }
-
     public CustomerFahrzeugScheinModel getSelectedFahrzeugSchein() {
         return selectedFahrzeugSchein.get();
     }
 
-    public void setSelectedFahrzeugSchein(CustomerFahrzeugScheinModel selectedFahrzeugSchein) {
-        this.selectedFahrzeugSchein.set(selectedFahrzeugSchein);
+    public StringProperty selectedFahrzeugScheinNamePropertyProperty() {
+        return selectedFahrzeugScheinNameProperty;
+    }
+
+    public ObjectProperty<CustomerFahrzeugScheinModel> selectedFahrzeugScheinProperty() {
+        return selectedFahrzeugSchein;
+    }
+
+    public String getSelectedFahrzeugScheinNameProperty() {
+        return selectedFahrzeugScheinNameProperty.get();
+    }
+
+    public void setSelectedFahrzeugSchein(CustomerFahrzeugScheinModel model) {
+        this.selectedFahrzeugSchein.set(model);
+        String name = model != null ? model.getName() : "";
+        this.selectedFahrzeugScheinNameProperty.set(name);
     }
 
     public boolean isHasCustomerProperty() {
@@ -417,16 +426,6 @@ public class KostenvoranschlagBindingService implements IBindingService<Kostenvo
     public void setCurrentCustomer(UUID id) {
         this.customerSavingModel = this.customerList.get(id);
         this.customerModelProperty.setModel(this.customerSavingModel);
-        reloadFahrzeugscheins();
-    }
-
-    public void reloadFahrzeugscheins() {
-        this.fahrzeugScheins.clear();
-        List<CustomerFahrzeugScheinEntity> fsEntityList =
-                this.fahrzeugScheinRepository.findAllByCustomerId(this.customerSavingModel.getId());
-        List<CustomerFahrzeugScheinModel> fsModelList =
-                fsEntityList.stream().map(e -> new CustomerFahrzeugScheinModel(e)).collect(Collectors.toList());
-        this.fahrzeugScheins.addAll(fsModelList);
     }
 
     public void setCustomerModel(CustomerModel customerModel) {
@@ -437,7 +436,7 @@ public class KostenvoranschlagBindingService implements IBindingService<Kostenvo
         this.customerSavingModel = customerModel;
         this.customerModelProperty.setModel(customerModel);
         this.hasCustomerProperty.set(customerModel != null);
-        reloadFahrzeugscheins();
+        setSelectedFahrzeugSchein(null);
 
     }
 

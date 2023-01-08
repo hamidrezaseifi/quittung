@@ -32,7 +32,7 @@ public class KostenvoranschlagEntity extends EntityBase {
 	private String fahrgestellNummer;
 
 	@Column(name="fahrzeug_schein", nullable = false)
-	private String fahrzeugSchein;
+	private UUID fahrzeugSchein;
 
 	@ColumnDefault("1")
 	@Column(nullable = false)
@@ -60,7 +60,7 @@ public class KostenvoranschlagEntity extends EntityBase {
 								   String nummer,
 								   String schluesselNummer,
 								   String fahrgestellNummer,
-								   String fahrzeugSchein,
+								   UUID fahrzeugSchein,
 								   Integer status,
 								   LocalDateTime created,
 								   LocalDateTime updated) {
@@ -79,7 +79,7 @@ public class KostenvoranschlagEntity extends EntityBase {
 								   String nummer,
 								   String schluesselNummer,
 								   String fahrgestellNummer,
-								   String fahrzeugSchein,
+								   UUID fahrzeugSchein,
 								   Integer status) {
 		this.customerId = customerId;
 		this.nummer = nummer;
@@ -130,11 +130,11 @@ public class KostenvoranschlagEntity extends EntityBase {
 		this.fahrgestellNummer = fahrgestellNummer;
 	}
 
-	public String getFahrzeugSchein() {
+	public UUID getFahrzeugSchein() {
 		return fahrzeugSchein;
 	}
 
-	public void setFahrzeugSchein(String fahrzeugSchein) {
+	public void setFahrzeugSchein(UUID fahrzeugSchein) {
 		this.fahrzeugSchein = fahrzeugSchein;
 	}
 

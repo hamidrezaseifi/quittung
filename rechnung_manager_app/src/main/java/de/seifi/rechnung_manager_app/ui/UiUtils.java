@@ -23,7 +23,11 @@ import javafx.geometry.Insets;
 import javafx.print.PrinterJob;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -190,4 +194,23 @@ public class UiUtils {
 
 	public static void printKostenvoranschlagItems(List<KostenvoranschlagModel> KostenvoranschlagModelItems) {
 	}
+
+
+	public static Dialog createImageViewDialog(Image img) {
+		ImageView imgPreview = new ImageView();
+		imgPreview.setImage(img);
+
+		Dialog showImageDialog = new Dialog<>();
+		showImageDialog.setTitle("Bildbetracht ...");
+		showImageDialog.setResizable(true);
+		showImageDialog.getDialogPane().setContent(imgPreview);
+		imgPreview.fitWidthProperty().bind(showImageDialog.widthProperty().subtract(30));
+		imgPreview.fitHeightProperty().bind(showImageDialog.heightProperty().subtract(80));
+		ButtonType buttonTypeOk = new ButtonType("Okay", ButtonBar.ButtonData.OK_DONE);
+		showImageDialog.getDialogPane().getButtonTypes().add(buttonTypeOk);
+		showImageDialog.setWidth(800);
+		showImageDialog.setHeight(600);
+		return showImageDialog;
+	}
+
 }
