@@ -64,6 +64,7 @@ public class KostenvoranschlagEntity extends EntityBase {
 								   Integer status,
 								   LocalDateTime created,
 								   LocalDateTime updated) {
+		this();
 		this.id = id;
 		this.customerId = customerId;
 		this.nummer = nummer;
@@ -81,6 +82,7 @@ public class KostenvoranschlagEntity extends EntityBase {
 								   String fahrgestellNummer,
 								   UUID fahrzeugSchein,
 								   Integer status) {
+		this();
 		this.customerId = customerId;
 		this.nummer = nummer;
 		this.schluesselNummer = schluesselNummer;

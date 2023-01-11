@@ -41,6 +41,10 @@ public class KostenvoranschlagBindingService implements IBindingService<Kostenvo
 
     private StringProperty selectedFahrzeugScheinNameProperty;
 
+    private StringProperty schluesselNummerProperty;
+
+    private StringProperty fahrgestellNummerProperty;
+
 
     private FloatProperty gesamtSumme;
     private FloatProperty nettoSumme;
@@ -91,6 +95,9 @@ public class KostenvoranschlagBindingService implements IBindingService<Kostenvo
         this.selectedFahrzeugSchein.set(null);
         this.selectedFahrzeugScheinNameProperty = new SimpleStringProperty("");
 
+        this.schluesselNummerProperty = new SimpleStringProperty("");
+        this.fahrgestellNummerProperty = new SimpleStringProperty("");
+
         this.editingMode = true;
 
         this.hasCustomerProperty = new SimpleBooleanProperty(false);
@@ -122,6 +129,22 @@ public class KostenvoranschlagBindingService implements IBindingService<Kostenvo
 
     public StringProperty selectedFahrzeugScheinNamePropertyProperty() {
         return selectedFahrzeugScheinNameProperty;
+    }
+
+    public String getSchluesselNummerProperty() {
+        return schluesselNummerProperty.get();
+    }
+
+    public String getFahrgestellNummerProperty() {
+        return fahrgestellNummerProperty.get();
+    }
+
+    public StringProperty fahrgestellNummerPropertyProperty() {
+        return fahrgestellNummerProperty;
+    }
+
+    public StringProperty schluesselNummerPropertyProperty() {
+        return schluesselNummerProperty;
     }
 
     public ObjectProperty<CustomerFahrzeugScheinModel> selectedFahrzeugScheinProperty() {
@@ -188,6 +211,10 @@ public class KostenvoranschlagBindingService implements IBindingService<Kostenvo
 
         customerModelProperty = new CustomerModelProperty();
 
+        schluesselNummerProperty.set("");
+        fahrgestellNummerProperty.set("");
+        selectedFahrzeugSchein.set(null);
+        selectedFahrzeugScheinNameProperty.set("");
 
         LocalDateTime ldt = LocalDateTime.now();
 
@@ -270,8 +297,19 @@ public class KostenvoranschlagBindingService implements IBindingService<Kostenvo
 
         if (!this.hasCustomerProperty.get()) {
             if(showError){
-                UiUtils.showError("Rechnung-Speichern",
-                        "Es ist kein Kunde ausgewählt. Bitte wählen Sie einen Kunden aus.");
+                UiUtils.showError("Kostenvoranschlag-Speichern",
+                                  "Es ist kein Kunde ausgewählt. Bitte wählen Sie einen Kunden aus.");
+            }
+
+            return false;
+        }
+
+        if (this.selectedFahrzeugSchein.get() == null &&
+            schluesselNummerProperty.get().isEmpty() &&
+            fahrgestellNummerProperty.get().isEmpty()) {
+            if(showError){
+                UiUtils.showError("Kostenvoranschlag-Speichern",
+                                  "Es ist kein Kunde ausgewählt. Bitte wählen Sie einen Kunden aus.");
             }
 
             return false;
@@ -289,8 +327,7 @@ public class KostenvoranschlagBindingService implements IBindingService<Kostenvo
     }
 
     public boolean save() {
-        if(!this.hasCustomerProperty.get()){
-            UiUtils.showError("Rechnung-Speichern", "Es ist kein Kunde ausgewählt. Bitte wählen Sie einen Kunden aus");
+        if(!verifySaving(true)){
             return false;
         }
         if(customerSavingModel.isNew()){
@@ -299,9 +336,11 @@ public class KostenvoranschlagBindingService implements IBindingService<Kostenvo
         }
 
         savingModel.setCustomerId(customerSavingModel.getId());
+        savingModel.setFahrgestellNummer(fahrgestellNummerProperty.get());
+        savingModel.setSchluesselNummer(schluesselNummerProperty.get());
+        savingModel.setFahrzeugSchein(selectedFahrzeugSchein.get() != null? selectedFahrzeugSchein.get().getId(): null);
 
-        savingModel.getItems().clear();
-        savingModel.getItems().addAll(getSavingRechnungItems());
+        savingModel.setItems(getSavingRechnungItems());
 
         KostenvoranschlagEntity savingEntity = kostenvoranschlagAdapter.toEntity(savingModel);
         savingEntity.setUpdated(null);
@@ -386,7 +425,7 @@ public class KostenvoranschlagBindingService implements IBindingService<Kostenvo
             Optional<CustomerModel> customerEntityOptional = RechnungManagerSpringApp
                     .getCustomerService().getById(rechnungModel.getCustomerId());
             if(customerEntityOptional.isEmpty()){
-                throw new RuntimeException("Der Kunde von der Rechnung nicht gefunden!");
+                throw new RuntimeException("Der Kunde von der Kostenvoranschlag nicht gefunden!");
             }
 
             customerModel = customerEntityOptional.get();

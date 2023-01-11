@@ -45,6 +45,7 @@ public class KostenvoranschlagModel {
 								  KostenvoranschlagStatus status,
 								  LocalDateTime created,
 								  LocalDateTime updated) {
+		this();
 		this.id = id;
 		this.customerId = customerId;
 		this.nummer = nummer;
@@ -61,15 +62,12 @@ public class KostenvoranschlagModel {
 								  String fahrgestellNummer,
 								  UUID fahrzeugSchein,
 								  KostenvoranschlagStatus status) {
-		this.id = id;
-		this.customerId = customerId;
+		this();
 		this.nummer = nummer;
 		this.schluesselNummer = schluesselNummer;
 		this.fahrgestellNummer = fahrgestellNummer;
 		this.fahrzeugSchein = fahrzeugSchein;
 		this.status = status;
-		this.created = created;
-		this.updated = updated;
 	}
 
 	public boolean isNew() {
@@ -153,6 +151,7 @@ public class KostenvoranschlagModel {
 	}
 
 	public void setItems(List<KostenvoranschlagItemModel> items) {
-		this.items = items;
+		this.items.clear();
+		this.items.addAll(items);
 	}
 }

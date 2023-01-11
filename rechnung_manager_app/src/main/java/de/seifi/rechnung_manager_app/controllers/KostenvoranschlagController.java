@@ -289,6 +289,9 @@ public class KostenvoranschlagController implements Initializable, ControllerBas
         lblFahrgestellnummer.visibleProperty().bind(this.bindingService.hasCustomerPropertyProperty());
         lblFahrzeugschein.visibleProperty().bind(this.bindingService.hasCustomerPropertyProperty());
 
+        txtSchluesselNummer.textProperty().bindBidirectional(this.bindingService.schluesselNummerPropertyProperty());
+        txtFahrgestellnummer.textProperty().bindBidirectional(this.bindingService.fahrgestellNummerPropertyProperty());
+
         originalNummerColumn.setOnEditCommit(event -> {
             final String value = event.getNewValue();
             TablePosition<KostenvoranschlagItemProperty,?> tPos = event.getTablePosition();
