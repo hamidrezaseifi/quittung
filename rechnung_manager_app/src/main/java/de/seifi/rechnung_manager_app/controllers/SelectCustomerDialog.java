@@ -2,13 +2,16 @@ package de.seifi.rechnung_manager_app.controllers;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import de.seifi.rechnung_manager_app.RechnungManagerFxApp;
 import de.seifi.rechnung_manager_app.RechnungManagerSpringApp;
 import de.seifi.rechnung_manager_app.models.CustomerModel;
 import de.seifi.rechnung_manager_app.models.CustomerModelProperty;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -38,6 +41,8 @@ public class SelectCustomerDialog extends Dialog<CustomerModel> {
 
     @FXML private ButtonType okButtonType;
 
+    @FXML private TextField txtFilter;
+
     private Button okButton;
 
     @FXML private TabPane tabPane;
@@ -46,7 +51,9 @@ public class SelectCustomerDialog extends Dialog<CustomerModel> {
 
     private final List<CustomerModel> allCustomerList;
 
-    private final ObservableList<CustomerModel> filteredCustomerList;
+    private final ObservableList<CustomerModel> customerList;
+
+    private final FilteredList<CustomerModel> filteredList;
 
     public SelectCustomerDialog(Window owner,
                                 CustomerModel inCustomerModel) throws IOException {
@@ -79,10 +86,13 @@ public class SelectCustomerDialog extends Dialog<CustomerModel> {
 
         customerModelProperty = new CustomerModelProperty();
 
-        filteredCustomerList = FXCollections.observableArrayList();
-        filteredCustomerList.addAll(this.allCustomerList);
+        customerList = FXCollections.observableArrayList();
+        customerList.addAll(this.allCustomerList);
 
-		setResultConverter(buttonType -> {
+        filteredList = new FilteredList<>(this.customerList, p -> true);
+
+
+        setResultConverter(buttonType -> {
             if( buttonType.getButtonData() == ButtonBar.ButtonData.CANCEL_CLOSE){
                 return null;
             }
@@ -113,10 +123,27 @@ public class SelectCustomerDialog extends Dialog<CustomerModel> {
             return row ;
         });
 
-        twCustomers.setItems(filteredCustomerList);
+        twCustomers.setItems(filteredList);
 
         txtName.requestFocus();
 
+        txtFilter.textProperty().addListener((obs, oldValue, newValue) -> {
+            final String selected = txtFilter.getText();
+
+            Platform.runLater(() -> {
+
+                filteredList.setPredicate(item -> {
+                    if(newValue == null) {
+                        return false;
+                    }
+                    if (item.getCustomerName().toUpperCase().contains(newValue.toUpperCase())) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                });
+            });
+        });
 
         validateModel();
 
@@ -129,8 +156,8 @@ public class SelectCustomerDialog extends Dialog<CustomerModel> {
         });
 
         if(inCustomerModel.isNew() == false){
-            for(int i=0; i<filteredCustomerList.size(); i++){
-                if(filteredCustomerList.get(i).getId() == inCustomerModel.getId()){
+            for(int i = 0; i < customerList.size(); i++){
+                if(customerList.get(i).getId() == inCustomerModel.getId()){
                     twCustomers.getSelectionModel().select(i);
                     break;
                 }

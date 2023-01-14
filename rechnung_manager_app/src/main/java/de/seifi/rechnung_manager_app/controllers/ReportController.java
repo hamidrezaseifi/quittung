@@ -9,22 +9,25 @@ import java.util.stream.Collectors;
 
 import de.seifi.rechnung_common.repositories.CustomerRepository;
 import de.seifi.rechnung_common.repositories.ProduktRepository;
-import de.seifi.rechnung_common.repositories.RechnungRepository;
 import de.seifi.rechnung_manager_app.RechnungManagerFxApp;
 import de.seifi.rechnung_manager_app.RechnungManagerSpringApp;
 import de.seifi.rechnung_manager_app.fx_services.ReportBindingService;
+import de.seifi.rechnung_manager_app.models.CustomerModel;
 import de.seifi.rechnung_manager_app.models.ProduktModel;
 import de.seifi.rechnung_manager_app.models.ReportItemModel;
+import de.seifi.rechnung_manager_app.services.impl.JpaRechnungService;
 import de.seifi.rechnung_manager_app.ui.IntegerTextField;
 import de.seifi.rechnung_manager_app.ui.TextObserverDatePicker;
 import de.seifi.rechnung_manager_app.ui.UiUtils;
 import de.seifi.rechnung_manager_app.models.RechnungModel;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.RowConstraints;
+import javafx.stage.Stage;
 import net.sf.jasperreports.engine.JRException;
 
 public class ReportController implements Initializable, ControllerBase {
@@ -47,7 +50,6 @@ public class ReportController implements Initializable, ControllerBase {
     
     @FXML private TableColumn<ReportItemModel, String> toolsColumn;
 
-
     @FXML private GridPane rootPane;
 
     @FXML private GridPane bannerPane;
@@ -66,20 +68,23 @@ public class ReportController implements Initializable, ControllerBase {
 
     @FXML private IntegerTextField txtNummer;
 
+    @FXML private Label lblCustomer;
+
 
     private ReportBindingService reportBindingService;
     
     private final ProduktRepository produktRepository;
    
-    private final RechnungRepository rechnungRepository;
+    private final JpaRechnungService rechnungRepository;
 
     private final CustomerRepository customerRepository;
 
+    private Stage stage;
 
 
     public ReportController() {
 		
-    	this.rechnungRepository = RechnungManagerSpringApp.applicationContext.getBean(RechnungRepository.class);
+    	this.rechnungRepository = RechnungManagerSpringApp.applicationContext.getBean(JpaRechnungService.class);
     	this.produktRepository = RechnungManagerSpringApp.applicationContext.getBean(ProduktRepository.class);
         this.customerRepository = RechnungManagerSpringApp.applicationContext.getBean(CustomerRepository.class);
 
@@ -115,6 +120,28 @@ public class ReportController implements Initializable, ControllerBase {
 	        RechnungManagerFxApp.getMainController().showHome();
     	}
     	
+    }
+
+    public void selectCustomer() throws IOException {
+        SelectCustomerDialog dialog = new SelectCustomerDialog(stage,
+                                                               this.reportBindingService.getSelectedCustomerModel());
+
+        Optional<CustomerModel> result = dialog.showAndWait();
+        if(result.isPresent()){
+
+            Platform.runLater(()->{
+                CustomerModel model = result.get();
+                lblCustomer.setText(model.getCustomerName());
+                this.reportBindingService.getSearchFilterProperty().customerProperty().set(model);
+            });
+        }
+
+    }
+
+    public void removeCustomer() throws IOException {
+        lblCustomer.setText("");
+        this.reportBindingService.getSearchFilterProperty().customerProperty().set(null);
+
     }
 
     private boolean canResetData() {
@@ -191,4 +218,7 @@ public class ReportController implements Initializable, ControllerBase {
 		return reportBindingService.getProduktList();
 	}
 
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
 }

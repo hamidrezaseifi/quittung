@@ -5,6 +5,7 @@ import de.seifi.rechnung_common.utils.RunSingleInstance;
 import de.seifi.rechnung_manager_app.controllers.ControllerBase;
 import de.seifi.rechnung_manager_app.controllers.MainController;
 import de.seifi.rechnung_manager_app.controllers.RechnungController;
+import de.seifi.rechnung_manager_app.controllers.ReportController;
 import de.seifi.rechnung_manager_app.enums.RechnungType;
 import de.seifi.rechnung_manager_app.models.CustomerModel;
 import de.seifi.rechnung_manager_app.models.RechnungModel;
@@ -332,7 +333,15 @@ public class RechnungManagerFxApp extends Application implements ISingleInstance
     }
 
     public static GridPane getReportPane() throws IOException {
-        GridPane reportPane =  (GridPane)loadFXML("report");
+
+        URL fxmlResource = RechnungManagerFxApp.class.getResource("fxml/report.fxml");
+        FXMLLoader fxmlLoader = new FXMLLoader(fxmlResource);
+
+        GridPane reportPane =  fxmlLoader.load();
+
+        ReportController controller = (ReportController)fxmlLoader.getController();
+        controller.setStage(mainStage);
+
         return reportPane;
     }
 

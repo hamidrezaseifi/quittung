@@ -6,13 +6,13 @@ import de.seifi.rechnung_common.entities.ProduktEntity;
 import de.seifi.rechnung_common.entities.RechnungEntity;
 import de.seifi.rechnung_common.repositories.CustomerRepository;
 import de.seifi.rechnung_common.repositories.ProduktRepository;
-import de.seifi.rechnung_common.repositories.RechnungRepository;
 import de.seifi.rechnung_manager_app.adapter.CustomerAdapter;
 import de.seifi.rechnung_manager_app.adapter.ProduktAdapter;
 import de.seifi.rechnung_manager_app.adapter.RechnungAdapter;
 import de.seifi.rechnung_manager_app.enums.CustomerStatus;
 import de.seifi.rechnung_manager_app.enums.RechnungStatus;
 import de.seifi.rechnung_manager_app.models.*;
+import de.seifi.rechnung_manager_app.services.impl.JpaRechnungService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -31,7 +31,7 @@ public class ReportBindingService {
 	    
     private final ProduktRepository produktRepository;
     
-    private final RechnungRepository rechnungRepository;
+    private final JpaRechnungService rechnungService;
 
     private final CustomerRepository customerRepository;
 	    
@@ -44,7 +44,7 @@ public class ReportBindingService {
     private boolean isDirty;
 
     private SearchFilterProperty searchFilterProperty;
-    
+
     private final ProduktAdapter produktAdapter = new ProduktAdapter();
     
     private final CustomerAdapter customerAdapter = new CustomerAdapter(); 
@@ -52,13 +52,13 @@ public class ReportBindingService {
     private final RechnungAdapter rechnungAdapter = new RechnungAdapter(); 
     
     public ReportBindingService(ProduktRepository produktRepository,
-                                final RechnungRepository rechnungRepository,
+                                final JpaRechnungService rechnungService,
                                 CustomerRepository customerRepository) {
     	
     	CURRENT_INSTANCE = this;
 
     	this.produktRepository = produktRepository;
-    	this.rechnungRepository = rechnungRepository;
+    	this.rechnungService = rechnungService;
         this.customerRepository = customerRepository;
         
         rechnungItems = FXCollections.observableArrayList();
@@ -98,12 +98,8 @@ public class ReportBindingService {
         catch (Exception ex){
 
         }
-        if(nummer != null){
-            entityList = this.rechnungRepository.search(tsFrom, tsTo, nummer, RechnungStatus.ACTIVE.getValue());
-        }
-        else{
-            entityList = this.rechnungRepository.search(tsFrom, tsTo, RechnungStatus.ACTIVE.getValue());
-        }
+
+        entityList = this.rechnungService.search(searchFilterProperty);
 
         List<ReportItemModel> modelList = entityList.stream().map(e -> new ReportItemModel(rechnungAdapter.toModel(e), allCustomers.get(e.getCustomerId()))).collect(Collectors.toList());
 
@@ -123,4 +119,10 @@ public class ReportBindingService {
     public SearchFilterProperty getSearchFilterProperty() {
         return searchFilterProperty;
     }
+
+    public CustomerModel getSelectedCustomerModel() {
+        CustomerModel selectedModel = searchFilterProperty.customerProperty().get();
+        return selectedModel == null ? new CustomerModel() : selectedModel;
+    }
+
 }

@@ -1,23 +1,19 @@
 package de.seifi.rechnung_manager_app.data_service.impl;
 
 import de.seifi.rechnung_common.entities.KostenvoranschlagEntity;
-import de.seifi.rechnung_common.repositories.KostenvoranschlagRepository;
 import de.seifi.rechnung_common.repositories.RechnungRepository;
+import de.seifi.rechnung_common.repositories.KostenvoranschlagRepository;
 import de.seifi.rechnung_manager_app.data_service.IRechnungDataHelper;
 import de.seifi.rechnung_manager_app.enums.RechnungStatus;
 
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
-import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Optional;
 
 @Repository
 public class RechnungDataHelper implements IRechnungDataHelper {
-
-    @PersistenceContext
-    private EntityManager entityManager;
 
     private final RechnungRepository rechnungRepository;
 

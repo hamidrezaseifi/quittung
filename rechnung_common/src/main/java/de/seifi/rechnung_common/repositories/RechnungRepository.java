@@ -15,23 +15,23 @@ import de.seifi.rechnung_common.entities.RechnungEntity;
 @Repository
 public interface RechnungRepository extends JpaRepository<RechnungEntity, UUID> {
 
-	@Query("SELECT r FROM RechnungEntity r order by r.nummer")
-	Optional<RechnungEntity> findMaxLastNummer();
-	
-	Optional<RechnungEntity> findTopByOrderByNummerDesc();
+    @Query("SELECT r FROM RechnungEntity r order by r.nummer")
+    Optional<RechnungEntity> findMaxLastNummer();
 
-	@Query("SELECT r FROM RechnungEntity r where r.created between :from and :to and r.status=:status  order by r.nummer desc")
-	List<RechnungEntity> search(@Param("from") LocalDateTime from, @Param("to") LocalDateTime to, @Param("status") int status);
+    Optional<RechnungEntity> findTopByOrderByNummerDesc();
 
-	@Query("SELECT r FROM RechnungEntity r where r.created between :from and :to and r.nummer=:nummer and r.status=:status  order by r.nummer desc")
-	List<RechnungEntity> search(@Param("from") LocalDateTime from, @Param("to") LocalDateTime to, @Param("nummer") Integer nummer, @Param("status") int status);
+    @Query("SELECT r FROM RechnungEntity r where r.created between :from and :to and r.status=:status  order by r.nummer desc")
+    List<RechnungEntity> search(@Param("from") LocalDateTime from, @Param("to") LocalDateTime to, @Param("status") int status);
 
-	@Query("SELECT max(r.nummer) FROM RechnungEntity r where r.status=:status")
-	Optional<Integer> getMaxNummer(@Param("status") int status);
+    @Query("SELECT r FROM RechnungEntity r where r.created between :from and :to and r.nummer=:nummer and r.status=:status  order by r.nummer desc")
+    List<RechnungEntity> search(@Param("from") LocalDateTime from, @Param("to") LocalDateTime to, @Param("nummer") Integer nummer, @Param("status") int status);
 
-	@Query("SELECT r FROM RechnungEntity r where r.customerId=:customerId")
-	List<RechnungEntity> findAllByCustomer(@Param("customerId") UUID customerId);
-	
-	
+    @Query("SELECT max(r.nummer) FROM RechnungEntity r where r.status=:status")
+    Optional<Integer> getMaxNummer(@Param("status") int status);
+
+    @Query("SELECT r FROM RechnungEntity r where r.customerId=:customerId")
+    List<RechnungEntity> findAllByCustomer(@Param("customerId") UUID customerId);
+
+
 
 }

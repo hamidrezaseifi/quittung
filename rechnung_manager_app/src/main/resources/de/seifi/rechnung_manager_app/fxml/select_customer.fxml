@@ -64,24 +64,28 @@
 
 				</Tab>
 				<Tab fx:id="tbExisting" text="Vorhanden" closable="false">
-					<TableView editable="false" fx:id="twCustomers">
-						<columns>
-							<TableColumn fx:id="nameColumn" text="Name" prefWidth="90" sortable="false">
-								<cellValueFactory>
-									<PropertyValueFactory property="customerName" />
-								</cellValueFactory>
+					<VBox>
+						<TextField fx:id="txtFilter"></TextField>
+						<TableView editable="false" fx:id="twCustomers">
+							<columns>
+								<TableColumn fx:id="nameColumn" text="Name" prefWidth="90" sortable="false">
+									<cellValueFactory>
+										<PropertyValueFactory property="customerName" />
+									</cellValueFactory>
 
-							</TableColumn>
-							<TableColumn fx:id="addressColumn" text="Adresse" sortable="false">
-								<cellValueFactory>
-									<PropertyValueFactory property="address" />
-								</cellValueFactory>
+								</TableColumn>
+								<TableColumn fx:id="addressColumn" text="Adresse" sortable="false">
+									<cellValueFactory>
+										<PropertyValueFactory property="address" />
+									</cellValueFactory>
 
-							</TableColumn>
+								</TableColumn>
 
-						</columns>
+							</columns>
 
-					</TableView>
+						</TableView>
+
+					</VBox>
 
 				</Tab>
 			</tabs>

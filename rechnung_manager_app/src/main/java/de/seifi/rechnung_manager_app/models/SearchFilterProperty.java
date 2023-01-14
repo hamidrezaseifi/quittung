@@ -4,6 +4,7 @@ import de.seifi.rechnung_manager_app.utils.GeneralUtils;
 import javafx.beans.property.*;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 public class SearchFilterProperty {
 
@@ -17,28 +18,45 @@ public class SearchFilterProperty {
 
     private StringProperty label;
 
+    private ObjectProperty<CustomerModel> customer;
+
+    private StringProperty orderBy;
+
+    private StringProperty orderType;
+
     public SearchFilterProperty() {
         this.from = new SimpleObjectProperty<LocalDate>();
         this.to = new SimpleObjectProperty<LocalDate>();
         this.nummer = new SimpleStringProperty("");
         this.produkt = new SimpleStringProperty("");
         this.label = new SimpleStringProperty("Keine Filter");
+        this.customer = new SimpleObjectProperty<>(null);
+        this.orderBy = new SimpleStringProperty("nummer");
+        this.orderType = new SimpleStringProperty("desc");
 
         this.from.addListener((observableValue, localDate, t1) -> {
-            this.label.set(getLabelText());
+            reloadLabel();
         });
 
         this.to.addListener((observableValue, localDate, t1) -> {
-            this.label.set(getLabelText());
+            reloadLabel();
         });
 
         this.nummer.addListener((observableValue, s, t1) -> {
-            this.label.set(getLabelText());
+            reloadLabel();
         });
 
         this.produkt.addListener((observableValue, s, t1) -> {
-            this.label.set(getLabelText());
+            reloadLabel();
         });
+
+        this.customer.addListener((observableValue, s, t1) -> {
+            reloadLabel();
+        });
+    }
+
+    private void reloadLabel() {
+        this.label.set(getLabelText());
     }
 
     public LocalDate getFrom() {
@@ -79,11 +97,15 @@ public class SearchFilterProperty {
     }
 
     public void setNummer(String nummer) {
-        this.nummer.set(nummer);
+        reloadLabel();
     }
 
     public String getProdukt() {
         return produkt.get();
+    }
+
+    public UUID getCustomerId() {
+        return this.customer.get()!= null ? this.customer.get().getId() : null;
     }
 
     public StringProperty produktProperty() {
@@ -91,7 +113,19 @@ public class SearchFilterProperty {
     }
 
     public void setProdukt(String produkt) {
-        this.produkt.set(produkt);
+        reloadLabel();
+    }
+
+    public CustomerModel getCustomer() {
+        return customer.get();
+    }
+
+    public ObjectProperty<CustomerModel> customerProperty() {
+        return customer;
+    }
+
+    public void setCustomer(CustomerModel customer) {
+        this.customer.set(customer);
     }
 
     public String getLabel() {
@@ -102,8 +136,28 @@ public class SearchFilterProperty {
         return label;
     }
 
-    public void setLabel(String label) {
-        this.label.set(label);
+    public String getOrderBy() {
+        return orderBy.get();
+    }
+
+    public StringProperty orderByProperty() {
+        return orderBy;
+    }
+
+    public void setOrderBy(String orderBy) {
+        this.orderBy.set(orderBy);
+    }
+
+    public String getOrderType() {
+        return orderType.get();
+    }
+
+    public StringProperty orderTypeProperty() {
+        return orderType;
+    }
+
+    public void setOrderType(String orderType) {
+        this.orderType.set(orderType);
     }
 
     private String getLabelText() {
@@ -121,6 +175,9 @@ public class SearchFilterProperty {
         }
         if(this.produkt.get() != null && !this.produkt.get().trim().isEmpty()){
             labelText += String.format("nummer '%s',  ", this.produkt.get());
+        }
+        if(this.customer.get() != null){
+            labelText += String.format("Kunde '%s',  ", this.customer.get().getCustomerName());
         }
 
         return labelText;

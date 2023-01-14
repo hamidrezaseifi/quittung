@@ -117,19 +117,6 @@ public class UiUtils {
 				//quittungPringController.printRechnungList(model, null, forCustomer);
 			}
 
-			try {
-				Map<String, Object> printParameterMap = printJRDataSource.getPrintParameter();
-				jasperPrint = JasperFillManager.fillReport(rechnungStream,
-														   printParameterMap,
-														   printJRDataSource);
-
-				JasperPrintManager.printReport(jasperPrint, false);
-			} catch (Exception e) {
-				logger.error("Error in load print report.", e);
-				return;
-			}
-
-
 			if(forCustomer){
 				try {
 					printJRDataSource.reset();
@@ -143,6 +130,19 @@ public class UiUtils {
 					return;
 				}
 
+			}
+
+			try {
+				printJRDataSource.reset();
+				Map<String, Object> printParameterMap = printJRDataSource.getPrintParameter();
+				jasperPrint = JasperFillManager.fillReport(rechnungStream,
+														   printParameterMap,
+														   printJRDataSource);
+
+				JasperPrintManager.printReport(jasperPrint, false);
+			} catch (Exception e) {
+				logger.error("Error in load print report.", e);
+				return;
 			}
 
 		}

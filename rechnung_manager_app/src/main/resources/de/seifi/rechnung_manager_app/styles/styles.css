@@ -381,6 +381,29 @@
     -fx-border-style: solid;
     -fx-padding: 5px 5px 5px 31px;
 }
+
+.report-customer-label{
+    -fx-background-color: #f0f7f7;
+    -fx-border-color:black;
+    -fx-border-width: 1px;
+    -fx-border-style: solid;
+    -fx-padding: 5px 5px 5px 5px;
+}
+
+.report-customer-select-button{
+    -fx-background-image: url('../images/search_user.png');
+    -fx-background-size: 24 24;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position:center;
+}
+
+.report-customer-remove-button{
+    -fx-background-image: url('../images/cancel_2.png');
+    -fx-background-size: 24 24;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position:center;
+}
+
 .group-box{
     -fx-border-color:black;
     -fx-border-width: 1px;
