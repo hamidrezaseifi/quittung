@@ -26,7 +26,7 @@
     </columnConstraints>
 
     <HBox styleClass="group-box">
-        <Label text="Standard Druker" prefWidth="100" prefHeight="25"></Label>
+        <Label text="Standard Druker" prefWidth="100" prefHeight="25" />
         <ComboBox fx:id="cmbPrinter" prefWidth="300" prefHeight="25" />
         <padding>
             <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
