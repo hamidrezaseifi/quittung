@@ -11,7 +11,6 @@ import de.seifi.rechnung_manager_app.models.CustomerModel;
 import de.seifi.rechnung_manager_app.models.RechnungItemProperty;
 import de.seifi.rechnung_manager_app.models.RechnungModel;
 import de.seifi.rechnung_manager_app.ui.FloatGeldLabel;
-import de.seifi.rechnung_manager_app.ui.UiUtils;
 import de.seifi.rechnung_manager_app.utils.GeneralUtils;
 import de.seifi.rechnung_manager_app.utils.PrintUtils;
 import javafx.application.Platform;

@@ -1,6 +1,5 @@
 package de.seifi.rechnung_manager_app.models.print;
 
-import de.seifi.rechnung_manager_app.RechnungManagerFxApp;
 import de.seifi.rechnung_manager_app.models.*;
 import de.seifi.rechnung_manager_app.utils.GeneralUtils;
 import net.sf.jasperreports.engine.JRField;

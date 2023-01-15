@@ -2,7 +2,6 @@ package de.seifi.rechnung_manager_app.controllers;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import de.seifi.rechnung_manager_app.RechnungManagerFxApp;
 import de.seifi.rechnung_manager_app.RechnungManagerSpringApp;

@@ -10,16 +10,12 @@ import de.seifi.rechnung_manager_app.models.print.KostenvoranschlagPrintJRDataSo
 import de.seifi.rechnung_manager_app.models.print.PrintJRDataSourceBase;
 import de.seifi.rechnung_manager_app.models.print.QuittungPrintJRDataSource;
 import de.seifi.rechnung_manager_app.models.print.RechnungPrintJRDataSource;
-import de.seifi.rechnung_manager_app.ui.UiUtils;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.layout.GridPane;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperPrintManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;

@@ -1,11 +1,9 @@
 package de.seifi.rechnung_manager_app.models.print;
 
-import de.seifi.rechnung_manager_app.RechnungManagerFxApp;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
 public abstract class PrintJRDataSourceBase implements JRDataSource, IPrintJRDataSource {

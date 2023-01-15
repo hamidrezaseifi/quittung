@@ -18,7 +18,6 @@ import de.seifi.rechnung_manager_app.models.ReportItemModel;
 import de.seifi.rechnung_manager_app.services.IRechnungService;
 import de.seifi.rechnung_manager_app.ui.IntegerTextField;
 import de.seifi.rechnung_manager_app.ui.TextObserverDatePicker;
-import de.seifi.rechnung_manager_app.ui.UiUtils;
 import de.seifi.rechnung_manager_app.models.RechnungModel;
 import de.seifi.rechnung_manager_app.utils.PrintUtils;
 import javafx.application.Platform;

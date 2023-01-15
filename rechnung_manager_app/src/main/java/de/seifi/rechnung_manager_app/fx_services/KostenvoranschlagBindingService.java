@@ -2,7 +2,6 @@ package de.seifi.rechnung_manager_app.fx_services;
 
 
 import de.seifi.rechnung_common.entities.KostenvoranschlagEntity;
-import de.seifi.rechnung_common.entities.RechnungEntity;
 import de.seifi.rechnung_common.repositories.CustomerFahrzeugScheinRepository;
 import de.seifi.rechnung_common.repositories.KostenvoranschlagRepository;
 import de.seifi.rechnung_manager_app.RechnungManagerSpringApp;
@@ -13,7 +12,6 @@ import de.seifi.rechnung_manager_app.models.*;
 import de.seifi.rechnung_manager_app.ui.UiUtils;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 
 import java.time.LocalDateTime;

@@ -10,7 +10,6 @@ import de.seifi.rechnung_manager_app.adapter.CustomerAdapter;
 import de.seifi.rechnung_manager_app.adapter.ProduktAdapter;
 import de.seifi.rechnung_manager_app.adapter.RechnungAdapter;
 import de.seifi.rechnung_manager_app.enums.CustomerStatus;
-import de.seifi.rechnung_manager_app.enums.RechnungStatus;
 import de.seifi.rechnung_manager_app.models.*;
 import de.seifi.rechnung_manager_app.services.IRechnungService;
 import javafx.collections.FXCollections;

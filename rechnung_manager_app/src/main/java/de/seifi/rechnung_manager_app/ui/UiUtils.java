@@ -1,12 +1,10 @@
 package de.seifi.rechnung_manager_app.ui;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Optional;
 
 import de.seifi.rechnung_manager_app.RechnungManagerFxApp;
 import de.seifi.rechnung_manager_app.controllers.RechnungController;
-import de.seifi.rechnung_manager_app.models.KostenvoranschlagModel;
 import de.seifi.rechnung_manager_app.models.RechnungModel;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
