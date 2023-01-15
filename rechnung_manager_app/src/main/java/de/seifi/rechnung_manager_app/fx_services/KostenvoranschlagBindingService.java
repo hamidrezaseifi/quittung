@@ -2,6 +2,7 @@ package de.seifi.rechnung_manager_app.fx_services;
 
 
 import de.seifi.rechnung_common.entities.KostenvoranschlagEntity;
+import de.seifi.rechnung_common.entities.RechnungEntity;
 import de.seifi.rechnung_common.repositories.CustomerFahrzeugScheinRepository;
 import de.seifi.rechnung_common.repositories.KostenvoranschlagRepository;
 import de.seifi.rechnung_manager_app.RechnungManagerSpringApp;
@@ -345,6 +346,10 @@ public class KostenvoranschlagBindingService implements IBindingService<Kostenvo
         KostenvoranschlagEntity savingEntity = kostenvoranschlagAdapter.toEntity(savingModel);
         savingEntity.setUpdated(null);
         kostenvoranschlagRepository.save(savingEntity);
+        Optional<KostenvoranschlagEntity> savedEntityOptional = kostenvoranschlagRepository.findById(savingEntity.getId());
+        if(savedEntityOptional.isPresent()) {
+            savingModel = kostenvoranschlagAdapter.toModel(savedEntityOptional.get());
+        }
         startEditing(savingModel, customerSavingModel);
         setDirty(false);
 

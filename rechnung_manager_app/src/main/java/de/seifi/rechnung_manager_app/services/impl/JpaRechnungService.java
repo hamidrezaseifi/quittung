@@ -3,6 +3,7 @@ package de.seifi.rechnung_manager_app.services.impl;
 import de.seifi.rechnung_common.entities.RechnungEntity;
 import de.seifi.rechnung_manager_app.enums.RechnungStatus;
 import de.seifi.rechnung_manager_app.models.SearchFilterProperty;
+import de.seifi.rechnung_manager_app.services.IRechnungService;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
@@ -11,11 +12,10 @@ import javax.persistence.Query;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class JpaRechnungService {
+public class JpaRechnungService implements IRechnungService {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @PersistenceContext
@@ -25,6 +25,7 @@ public class JpaRechnungService {
 
     }
 
+    @Override
     @Transactional
     public List<RechnungEntity> search(SearchFilterProperty searchFilterProperty){
         LocalDateTime tsFrom = searchFilterProperty.getFrom().atStartOfDay();

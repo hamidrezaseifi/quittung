@@ -6,6 +6,7 @@ import de.seifi.rechnung_manager_app.fx_services.ReportBindingService;
 import de.seifi.rechnung_manager_app.models.RechnungModel;
 import de.seifi.rechnung_manager_app.models.ReportItemModel;
 import de.seifi.rechnung_manager_app.ui.UiUtils;
+import de.seifi.rechnung_manager_app.utils.PrintUtils;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -32,8 +33,8 @@ public class ReportToolsTableCell extends TableCell<ReportItemModel, String> {
 		btnPrint.setPrefHeight(30);
 		
 		btnPrint.setOnAction((ActionEvent event) -> {
-			
-			UiUtils.printRechnungItems(Arrays.asList(getCurrentRechnungModel()), false);
+
+			PrintUtils.printRechnungItems(Arrays.asList(getCurrentRechnungModel()), false);
 			
         });
 		

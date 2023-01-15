@@ -10,10 +10,10 @@ import de.seifi.rechnung_manager_app.fx_services.RechnungBindingService;
 import de.seifi.rechnung_manager_app.models.CustomerModel;
 import de.seifi.rechnung_manager_app.models.RechnungItemProperty;
 import de.seifi.rechnung_manager_app.models.RechnungModel;
-import de.seifi.rechnung_manager_app.services.impl.JpaRechnungService;
 import de.seifi.rechnung_manager_app.ui.FloatGeldLabel;
 import de.seifi.rechnung_manager_app.ui.UiUtils;
 import de.seifi.rechnung_manager_app.utils.GeneralUtils;
+import de.seifi.rechnung_manager_app.utils.PrintUtils;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -217,7 +217,7 @@ public class RechnungController implements Initializable, ControllerBase {
     	showItemsTableView.setEditable(false);
     	showItemsTableView.edit(-1, null);
 
-        UiUtils.printRechnungItems(Arrays.asList(rechnungBindingService.getRechnungSavingModel()), true);
+        PrintUtils.printRechnungItems(Arrays.asList(rechnungBindingService.getRechnungSavingModel()), true);
         showItemsTableView.setEditable(true);
 
     }

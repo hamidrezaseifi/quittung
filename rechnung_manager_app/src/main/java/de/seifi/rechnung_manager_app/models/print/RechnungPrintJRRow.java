@@ -85,4 +85,23 @@ public class RechnungPrintJRRow implements IPrintJRRow {
     public Float getGesamt() {
         return gesamt;
     }
+
+    @Override
+    public Object getFieldValue(String field) {
+        switch (field){
+            case "produkt": return getProdukt();
+            case "nummer": return getNummer();
+            case "rechnung_create": return getRechnungCreate();
+            case "customer_name": return getCustomerName();
+            case "address1": return getAddress1();
+            case "address2": return getAddress2();
+            case "payment_type": return getPaymentType();
+            case "artikel_nummer": return getArtikelNummer();
+            case "menge": return getMenge();
+            case "preis": return getPreis();
+            case "gesamt": return getGesamt();
+
+        }
+        return null;
+    }
 }

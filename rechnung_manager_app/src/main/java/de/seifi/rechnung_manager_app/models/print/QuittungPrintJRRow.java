@@ -64,4 +64,23 @@ public class QuittungPrintJRRow implements IPrintJRRow {
     public Float getGesamt() {
         return gesamt;
     }
+
+    @Override
+    public Object getFieldValue(String field) {
+        switch (field){
+            case "produkt": return getProdukt();
+            case "nummer": return getNummer();
+            case "rechnung_create": return getRechnungCreate();
+            case "customer_name": return "";
+            case "address1": return "";
+            case "address2": return "";
+            case "payment_type": return getPaymentType();
+            case "artikel_nummer": return getArtikelNummer();
+            case "menge": return getMenge();
+            case "preis": return getPreis();
+            case "gesamt": return getGesamt();
+
+        }
+        return null;
+    }
 }

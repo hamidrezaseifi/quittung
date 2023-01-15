@@ -15,11 +15,12 @@ import de.seifi.rechnung_manager_app.fx_services.ReportBindingService;
 import de.seifi.rechnung_manager_app.models.CustomerModel;
 import de.seifi.rechnung_manager_app.models.ProduktModel;
 import de.seifi.rechnung_manager_app.models.ReportItemModel;
-import de.seifi.rechnung_manager_app.services.impl.JpaRechnungService;
+import de.seifi.rechnung_manager_app.services.IRechnungService;
 import de.seifi.rechnung_manager_app.ui.IntegerTextField;
 import de.seifi.rechnung_manager_app.ui.TextObserverDatePicker;
 import de.seifi.rechnung_manager_app.ui.UiUtils;
 import de.seifi.rechnung_manager_app.models.RechnungModel;
+import de.seifi.rechnung_manager_app.utils.PrintUtils;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -75,7 +76,7 @@ public class ReportController implements Initializable, ControllerBase {
     
     private final ProduktRepository produktRepository;
    
-    private final JpaRechnungService rechnungRepository;
+    private final IRechnungService rechnungRepository;
 
     private final CustomerRepository customerRepository;
 
@@ -84,7 +85,7 @@ public class ReportController implements Initializable, ControllerBase {
 
     public ReportController() {
 		
-    	this.rechnungRepository = RechnungManagerSpringApp.applicationContext.getBean(JpaRechnungService.class);
+    	this.rechnungRepository = RechnungManagerSpringApp.applicationContext.getBean(IRechnungService.class);
     	this.produktRepository = RechnungManagerSpringApp.applicationContext.getBean(ProduktRepository.class);
         this.customerRepository = RechnungManagerSpringApp.applicationContext.getBean(CustomerRepository.class);
 
@@ -109,7 +110,7 @@ public class ReportController implements Initializable, ControllerBase {
     	}
 
         List<RechnungModel> modelList = reportBindingService.getReportItems().stream().map(r -> r.getRechnungModel()).collect(Collectors.toList());
-        UiUtils.printRechnungItems(modelList, false);
+        PrintUtils.printRechnungItems(modelList, false);
 
     }
 

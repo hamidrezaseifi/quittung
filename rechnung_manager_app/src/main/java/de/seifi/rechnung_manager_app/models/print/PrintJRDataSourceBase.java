@@ -32,17 +32,7 @@ public abstract class PrintJRDataSourceBase implements JRDataSource, IPrintJRDat
 
     protected abstract String getCreateDate();
 
-    protected Map<String, Object> preparePrintParameterMap() throws IOException {
-        Map<String, Object> printParameterMap = new HashMap<>();
-        Float totalNeto = this.getTotalNeto();
-        printParameterMap.put(IPrintJRDataSource.RECHNUNG_CREATE_DATE, this.getCreateDate());
-        printParameterMap.put(IPrintJRDataSource.PARAMETER_TOTAL_ROWS, this.getRowCount());
-        printParameterMap.put(IPrintJRDataSource.PARAMETER_TOTAL_NETO, totalNeto);
-        printParameterMap.put(IPrintJRDataSource.PARAMETER_TOTAL_MWT, totalNeto * 19 / 100);
-        printParameterMap.put(IPrintJRDataSource.PARAMETER_LOGO_PATH, RechnungManagerFxApp.getLocalJasperPrintLogoPath());
-
-        return printParameterMap;
-    }
+    protected abstract Map<String, Object> preparePrintParameterMap();
 
     public void reset(){
         this.rowIndex = -1;

@@ -12,7 +12,7 @@ import de.seifi.rechnung_manager_app.adapter.RechnungAdapter;
 import de.seifi.rechnung_manager_app.enums.CustomerStatus;
 import de.seifi.rechnung_manager_app.enums.RechnungStatus;
 import de.seifi.rechnung_manager_app.models.*;
-import de.seifi.rechnung_manager_app.services.impl.JpaRechnungService;
+import de.seifi.rechnung_manager_app.services.IRechnungService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -31,7 +31,7 @@ public class ReportBindingService {
 	    
     private final ProduktRepository produktRepository;
     
-    private final JpaRechnungService rechnungService;
+    private final IRechnungService rechnungService;
 
     private final CustomerRepository customerRepository;
 	    
@@ -52,7 +52,7 @@ public class ReportBindingService {
     private final RechnungAdapter rechnungAdapter = new RechnungAdapter(); 
     
     public ReportBindingService(ProduktRepository produktRepository,
-                                final JpaRechnungService rechnungService,
+                                final IRechnungService rechnungService,
                                 CustomerRepository customerRepository) {
     	
     	CURRENT_INSTANCE = this;

@@ -9,6 +9,7 @@ import de.seifi.rechnung_manager_app.fx_services.KostenvoranschlagBindingService
 import de.seifi.rechnung_manager_app.models.*;
 import de.seifi.rechnung_manager_app.ui.FloatGeldLabel;
 import de.seifi.rechnung_manager_app.ui.UiUtils;
+import de.seifi.rechnung_manager_app.utils.PrintUtils;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -220,7 +221,7 @@ public class KostenvoranschlagController implements Initializable, ControllerBas
     	showItemsTableView.setEditable(false);
     	showItemsTableView.edit(-1, null);
 
-        UiUtils.printKostenvoranschlagItems(Arrays.asList(bindingService.getRechnungSavingModel()));
+        PrintUtils.printKostenvoranschlagItems(Arrays.asList(bindingService.getRechnungSavingModel()));
         showItemsTableView.setEditable(true);
 
     }

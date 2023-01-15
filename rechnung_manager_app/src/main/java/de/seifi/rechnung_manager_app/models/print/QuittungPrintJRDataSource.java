@@ -1,11 +1,14 @@
 package de.seifi.rechnung_manager_app.models.print;
 
+import de.seifi.rechnung_manager_app.RechnungManagerFxApp;
 import de.seifi.rechnung_manager_app.models.RechnungItemModel;
 import de.seifi.rechnung_manager_app.models.RechnungModel;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRField;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
@@ -77,5 +80,18 @@ public class QuittungPrintJRDataSource extends PrintJRDataSourceBase {
     @Override
     protected String getCreateDate() {
         return this.createDate;
+    }
+
+    @Override
+    protected Map<String, Object> preparePrintParameterMap() {
+        Map<String, Object> printParameterMap = new HashMap<>();
+        Float totalNeto = this.getTotalNeto();
+        printParameterMap.put(IPrintJRDataSource.RECHNUNG_CREATE_DATE, this.getCreateDate());
+        printParameterMap.put(IPrintJRDataSource.PARAMETER_TOTAL_ROWS, this.getRowCount());
+        printParameterMap.put(IPrintJRDataSource.PARAMETER_TOTAL_NETO, totalNeto);
+        printParameterMap.put(IPrintJRDataSource.PARAMETER_TOTAL_MWT, totalNeto * 19 / 100);
+        printParameterMap.put(IPrintJRDataSource.PARAMETER_LOGO_PATH, RechnungManagerFxApp.getLocalJasperPrintLogoPath());
+
+        return printParameterMap;
     }
 }

@@ -1,11 +1,15 @@
 package de.seifi.rechnung_manager_app.models.print;
 
+import de.seifi.rechnung_manager_app.RechnungManagerFxApp;
 import de.seifi.rechnung_manager_app.models.CustomerModel;
 import de.seifi.rechnung_manager_app.models.RechnungItemModel;
 import de.seifi.rechnung_manager_app.models.RechnungModel;
 import net.sf.jasperreports.engine.JRField;
 
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
@@ -44,21 +48,7 @@ public class RechnungPrintJRDataSource extends PrintJRDataSourceBase {
     public Object getFieldValue(JRField jrField) {
         RechnungPrintJRRow row = rows.get(this.rowIndex);
 
-        switch (jrField.getName()){
-            case "produkt": return row.getProdukt();
-            case "nummer": return row.getNummer();
-            case "rechnung_create": return row.getRechnungCreate();
-            case "customer_name": return row.getCustomerName();
-            case "address1": return row.getAddress1();
-            case "address2": return row.getAddress2();
-            case "payment_type": return row.getPaymentType();
-            case "artikel_nummer": return row.getArtikelNummer();
-            case "menge": return row.getMenge();
-            case "preis": return row.getPreis();
-            case "gesamt": return row.getGesamt();
-
-        }
-        return null;
+        return row.getFieldValue(jrField.getName());
     }
 
     @Override
@@ -79,4 +69,19 @@ public class RechnungPrintJRDataSource extends PrintJRDataSourceBase {
     protected String getCreateDate() {
         return this.createDate;
     }
+
+
+    @Override
+    protected Map<String, Object> preparePrintParameterMap() {
+        Map<String, Object> printParameterMap = new HashMap<>();
+        Float totalNeto = this.getTotalNeto();
+        printParameterMap.put(IPrintJRDataSource.RECHNUNG_CREATE_DATE, this.getCreateDate());
+        printParameterMap.put(IPrintJRDataSource.PARAMETER_TOTAL_ROWS, this.getRowCount());
+        printParameterMap.put(IPrintJRDataSource.PARAMETER_TOTAL_NETO, totalNeto);
+        printParameterMap.put(IPrintJRDataSource.PARAMETER_TOTAL_MWT, totalNeto * 19 / 100);
+        printParameterMap.put(IPrintJRDataSource.PARAMETER_LOGO_PATH, RechnungManagerFxApp.getLocalJasperPrintLogoPath());
+
+        return printParameterMap;
+    }
+
 }
