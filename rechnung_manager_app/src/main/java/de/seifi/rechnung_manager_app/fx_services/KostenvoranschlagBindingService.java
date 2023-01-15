@@ -13,6 +13,7 @@ import de.seifi.rechnung_manager_app.models.*;
 import de.seifi.rechnung_manager_app.ui.UiUtils;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 
 import java.time.LocalDateTime;
@@ -98,6 +99,21 @@ public class KostenvoranschlagBindingService implements IBindingService<Kostenvo
 
         this.schluesselNummerProperty = new SimpleStringProperty("");
         this.fahrgestellNummerProperty = new SimpleStringProperty("");
+
+        this.schluesselNummerProperty.addListener((arg, oldVal, newVal) -> {
+            calculateButtons();
+
+        });
+
+        this.fahrgestellNummerProperty.addListener((arg, oldVal, newVal) -> {
+            calculateButtons();
+
+        });
+
+        this.selectedFahrzeugSchein.addListener((arg, oldVal, newVal) -> {
+            calculateButtons();
+
+        });
 
         this.editingMode = true;
 
