@@ -7,6 +7,6 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 public interface IRechnungService {
-    @Transactional
+
     List<RechnungEntity> search(SearchFilterProperty searchFilterProperty);
 }

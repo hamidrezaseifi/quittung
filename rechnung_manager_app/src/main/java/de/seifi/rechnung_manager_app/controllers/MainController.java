@@ -22,7 +22,9 @@ public class MainController implements Initializable {
 
 	@FXML private GridPane childBox;
 	
-	private static GridPane reportPane = null;
+	private static GridPane rechnungReportPane = null;
+
+	private static GridPane kostenvoranschlagReportPane = null;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -65,13 +67,28 @@ public class MainController implements Initializable {
 
 	@FXML
 	private void showKostenvoranschlag() throws IOException {
-		logger.debug("Show Quitting");
+		logger.debug("Show Kostenvoranschlag");
 
 		if(RechnungManagerFxApp.cannCurrentControllerClosed()) {
 			clearChildren();
 
 			childBox.getChildren().add(RechnungManagerFxApp.getKostenvoranschlag());
 
+		}
+
+	}
+
+	@FXML
+	private void showKostenvoranschlagReport() throws IOException {
+		logger.debug("Show Kostenvoranschlag Report");
+
+		if(kostenvoranschlagReportPane == null) {
+			kostenvoranschlagReportPane = RechnungManagerFxApp.getKostenvoranschlagReportPane();
+		}
+		if(RechnungManagerFxApp.cannCurrentControllerClosed()) {
+			clearChildren();
+
+			childBox.getChildren().add(kostenvoranschlagReportPane);
 		}
 
 	}
@@ -92,13 +109,13 @@ public class MainController implements Initializable {
 
 		logger.debug("Show Report");
 
-		if(reportPane == null) {
-			reportPane = RechnungManagerFxApp.getReportPane();
+		if(rechnungReportPane == null) {
+			rechnungReportPane = RechnungManagerFxApp.getRechnungReportPane();
 		}
 		if(RechnungManagerFxApp.cannCurrentControllerClosed()) {
     		clearChildren();
         	
-        	childBox.getChildren().add(reportPane);
+        	childBox.getChildren().add(rechnungReportPane);
     	}
 
 	}

@@ -11,10 +11,11 @@ import de.seifi.rechnung_common.repositories.CustomerRepository;
 import de.seifi.rechnung_common.repositories.ProduktRepository;
 import de.seifi.rechnung_manager_app.RechnungManagerFxApp;
 import de.seifi.rechnung_manager_app.RechnungManagerSpringApp;
-import de.seifi.rechnung_manager_app.fx_services.ReportBindingService;
+import de.seifi.rechnung_manager_app.fx_services.RechnungReportBindingService;
 import de.seifi.rechnung_manager_app.models.CustomerModel;
 import de.seifi.rechnung_manager_app.models.ProduktModel;
-import de.seifi.rechnung_manager_app.models.ReportItemModel;
+import de.seifi.rechnung_manager_app.models.RechnungReportItemModel;
+import de.seifi.rechnung_manager_app.services.ICustomerService;
 import de.seifi.rechnung_manager_app.services.IRechnungService;
 import de.seifi.rechnung_manager_app.ui.IntegerTextField;
 import de.seifi.rechnung_manager_app.ui.TextObserverDatePicker;
@@ -24,35 +25,30 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.RowConstraints;
 import javafx.stage.Stage;
 import net.sf.jasperreports.engine.JRException;
 
-public class ReportController implements Initializable, ControllerBase {
+public class RechnungReportController implements Initializable, ControllerBase {
 
-    @FXML private TableView<ReportItemModel> reportTableView;
+    @FXML private TableView<RechnungReportItemModel> reportTableView;
 
-    @FXML private TableColumn<ReportItemModel, String> datumColumn;
+    @FXML private TableColumn<RechnungReportItemModel, String> datumColumn;
 
-    @FXML private TableColumn<ReportItemModel, String> nummerColumn;
+    @FXML private TableColumn<RechnungReportItemModel, String> nummerColumn;
 
-    @FXML private TableColumn<ReportItemModel, String> zeitColumn;
+    @FXML private TableColumn<RechnungReportItemModel, String> zeitColumn;
 
-    @FXML private TableColumn<ReportItemModel, String> paymentTypeColumn;
+    @FXML private TableColumn<RechnungReportItemModel, String> paymentTypeColumn;
 
-    @FXML private TableColumn<ReportItemModel, String> rechnungColumn;
+    @FXML private TableColumn<RechnungReportItemModel, String> rechnungColumn;
 
-    @FXML private TableColumn<ReportItemModel, String> produktListColumn;
+    @FXML private TableColumn<RechnungReportItemModel, String> produktListColumn;
 
-    @FXML private TableColumn<ReportItemModel, String> gesamtColumn;
+    @FXML private TableColumn<RechnungReportItemModel, String> gesamtColumn;
     
-    @FXML private TableColumn<ReportItemModel, String> toolsColumn;
-
-    @FXML private GridPane rootPane;
-
-    @FXML private GridPane bannerPane;
+    @FXML private TableColumn<RechnungReportItemModel, String> toolsColumn;
 
     @FXML private Label lblFilter;
 
@@ -71,22 +67,19 @@ public class ReportController implements Initializable, ControllerBase {
     @FXML private Label lblCustomer;
 
 
-    private ReportBindingService reportBindingService;
-    
-    private final ProduktRepository produktRepository;
-   
+    private RechnungReportBindingService bindingService;
+
     private final IRechnungService rechnungRepository;
 
-    private final CustomerRepository customerRepository;
+    private final ICustomerService customerService;
 
     private Stage stage;
 
 
-    public ReportController() {
+    public RechnungReportController() {
 		
     	this.rechnungRepository = RechnungManagerSpringApp.applicationContext.getBean(IRechnungService.class);
-    	this.produktRepository = RechnungManagerSpringApp.applicationContext.getBean(ProduktRepository.class);
-        this.customerRepository = RechnungManagerSpringApp.applicationContext.getBean(CustomerRepository.class);
+        this.customerService = RechnungManagerSpringApp.applicationContext.getBean(ICustomerService.class);
 
 	}
 
@@ -94,8 +87,8 @@ public class ReportController implements Initializable, ControllerBase {
     private void search() throws IOException {
     	
     	reportTableView.setItems(null);
-        reportBindingService.search();
-        reportTableView.setItems(reportBindingService.getReportItems());
+        bindingService.search();
+        reportTableView.setItems(bindingService.getReportItems());
     }
 
     private void doReloadData() {
@@ -104,27 +97,23 @@ public class ReportController implements Initializable, ControllerBase {
     
     @FXML
     private void printRechnung() throws JRException {
-    	if(reportBindingService.getReportItems().isEmpty()) {
+    	if(bindingService.getReportItems().isEmpty()) {
     		return;
     	}
 
-        List<RechnungModel> modelList = reportBindingService.getReportItems().stream().map(r -> r.getRechnungModel()).collect(Collectors.toList());
+        List<RechnungModel> modelList = bindingService.getReportItems().stream().map(r -> r.getRechnungModel()).collect(Collectors.toList());
         PrintUtils.printRechnungItems(modelList, false);
 
     }
 
     @FXML
     private void closeRechnung() throws IOException {
-    	if(canResetData()) {
-    		doReloadData();
-	        RechnungManagerFxApp.getMainController().showHome();
-    	}
-    	
+        RechnungManagerFxApp.getMainController().showHome();
     }
 
     public void selectCustomer() throws IOException {
         SelectCustomerDialog dialog = new SelectCustomerDialog(stage,
-                                                               this.reportBindingService.getSelectedCustomerModel());
+                                                               this.bindingService.getSelectedCustomerModel());
 
         Optional<CustomerModel> result = dialog.showAndWait();
         if(result.isPresent()){
@@ -132,7 +121,7 @@ public class ReportController implements Initializable, ControllerBase {
             Platform.runLater(()->{
                 CustomerModel model = result.get();
                 lblCustomer.setText(model.getCustomerName());
-                this.reportBindingService.getSearchFilterProperty().customerProperty().set(model);
+                this.bindingService.getSearchFilterProperty().customerProperty().set(model);
             });
         }
 
@@ -140,45 +129,28 @@ public class ReportController implements Initializable, ControllerBase {
 
     public void removeCustomer() throws IOException {
         lblCustomer.setText("");
-        this.reportBindingService.getSearchFilterProperty().customerProperty().set(null);
+        this.bindingService.getSearchFilterProperty().customerProperty().set(null);
 
     }
 
-    private boolean canResetData() {
-    	if(reportBindingService.isDirty()) {
-    		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-    	    alert.setTitle("Geändrte daten löschen ...");
-    	    alert.setHeaderText("Die Daten von Rechnung ist geändert. Soll die Anderungen gelöscht werden?");
-    	    alert.setContentText(null);
-    	    Optional<ButtonType> res = alert.showAndWait();
-    	    if(res.isPresent() && res.get() == ButtonType.OK) {
-    	    	return true;
-    	    }
-    	    return false;
-    		
-    	}
-    	return true;
-    }
-    
     @Override
     public void initialize(URL url,
                            ResourceBundle resourceBundle) {
     	
     	RechnungManagerFxApp.setCurrentController(this);
 
-        reportBindingService = new ReportBindingService(
-        		this.produktRepository,
+        bindingService = new RechnungReportBindingService(
         		this.rechnungRepository,
-                this.customerRepository);
+                this.customerService);
 
 
-        dtTo.valueProperty().bindBidirectional(reportBindingService.getSearchFilterProperty().toProperty());
+        dtTo.valueProperty().bindBidirectional(bindingService.getSearchFilterProperty().toProperty());
 
-        dtFrom.valueProperty().bindBidirectional(reportBindingService.getSearchFilterProperty().fromProperty());
+        dtFrom.valueProperty().bindBidirectional(bindingService.getSearchFilterProperty().fromProperty());
 
-        txtNummer.textProperty().bindBidirectional(reportBindingService.getSearchFilterProperty().nummerProperty());
+        txtNummer.textProperty().bindBidirectional(bindingService.getSearchFilterProperty().nummerProperty());
 
-        lblFilter.textProperty().bind(reportBindingService.getSearchFilterProperty().labelProperty());
+        lblFilter.textProperty().bind(bindingService.getSearchFilterProperty().labelProperty());
         lblFilter.prefWidthProperty().bind(toolbarPane.widthProperty().subtract(370));
         filterRow.setPrefHeight(filterPane.isVisible()? 40: 0);
         lblFilter.setOnMouseClicked(mouseEvent -> {
@@ -197,26 +169,21 @@ public class ReportController implements Initializable, ControllerBase {
                                                         gesamtColumn.widthProperty()).subtract(5)
                                                                                    );
 
-        reportTableView.setItems(reportBindingService.getReportItems());
-        reportTableView.setUserData(reportBindingService);
+        reportTableView.setItems(bindingService.getReportItems());
+        reportTableView.setUserData(bindingService);
 
     }
 
 	@Override
 	public boolean isDirty() {
 		
-		return reportBindingService.isDirty();
+		return false;
 	}
 
     @Override
     public String getDirtyMessage() {
         return "Die Rechnung-Daten ist geändert aber nicht gescpeichert!";
     }
-    
-
-	public List<ProduktModel> getProduktList() {
-		return reportBindingService.getProduktList();
-	}
 
     public void setStage(Stage stage) {
         this.stage = stage;

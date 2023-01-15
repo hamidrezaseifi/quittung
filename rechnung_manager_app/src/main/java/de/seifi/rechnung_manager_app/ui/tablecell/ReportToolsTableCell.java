@@ -2,9 +2,9 @@ package de.seifi.rechnung_manager_app.ui.tablecell;
 
 import java.util.Arrays;
 
-import de.seifi.rechnung_manager_app.fx_services.ReportBindingService;
+import de.seifi.rechnung_manager_app.fx_services.RechnungReportBindingService;
 import de.seifi.rechnung_manager_app.models.RechnungModel;
-import de.seifi.rechnung_manager_app.models.ReportItemModel;
+import de.seifi.rechnung_manager_app.models.RechnungReportItemModel;
 import de.seifi.rechnung_manager_app.ui.UiUtils;
 import de.seifi.rechnung_manager_app.utils.PrintUtils;
 import javafx.event.ActionEvent;
@@ -14,7 +14,7 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
 
-public class ReportToolsTableCell extends TableCell<ReportItemModel, String> {
+public class ReportToolsTableCell extends TableCell<RechnungReportItemModel, String> {
 	
 	private final HBox hbox;
 	private final Button btnEdit;
@@ -70,9 +70,10 @@ public class ReportToolsTableCell extends TableCell<ReportItemModel, String> {
     }
 	
 	private RechnungModel getCurrentRechnungModel() {
-		ReportBindingService reportBindingService = (ReportBindingService)this.getTableView().getUserData();
+		RechnungReportBindingService
+                reportBindingService = (RechnungReportBindingService)this.getTableView().getUserData();
 		
-		ReportItemModel item = reportBindingService.getReportItems().get(this.getTableRow().getIndex());
+		RechnungReportItemModel item = reportBindingService.getReportItems().get(this.getTableRow().getIndex());
 		
 		return item.getRechnungModel();
 	}

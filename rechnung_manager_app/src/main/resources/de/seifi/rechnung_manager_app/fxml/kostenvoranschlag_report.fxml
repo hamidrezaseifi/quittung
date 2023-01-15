@@ -8,7 +8,7 @@
 
 <?import de.seifi.rechnung_manager_app.ui.IntegerTextField?>
 <GridPane fx:id="rootPane" alignment="TOP_LEFT" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
-          fx:controller="de.seifi.rechnung_manager_app.controllers.RechnungReportController">
+          fx:controller="de.seifi.rechnung_manager_app.controllers.KostenvoranschlagReportController">
     <columnConstraints>
         <ColumnConstraints hgrow="ALWAYS" />
     </columnConstraints>
@@ -42,9 +42,9 @@
 
         <TableView fx:id="reportTableView" GridPane.columnIndex="0" GridPane.rowIndex="2" editable="false">
             <columns>
-                <TableColumn fx:id="datumColumn" editable="false" sortable="true" prefWidth="120.0" text="Rechnung-Datum">
+                <TableColumn fx:id="datumColumn" editable="false" sortable="true" prefWidth="120.0" text="Datum">
                     <cellValueFactory>
-                        <PropertyValueFactory property="rechnungDatum" />
+                        <PropertyValueFactory property="created" />
                     </cellValueFactory>
 
                 </TableColumn>
@@ -54,21 +54,15 @@
                     </cellValueFactory>
 
                 </TableColumn>
-                <TableColumn fx:id="rechnungColumn" editable="false" sortable="true" prefWidth="150.0" text="Rechnung">
+                <TableColumn fx:id="customerColumn" text="Kunde" editable="false" sortable="true" prefWidth="90">
                     <cellValueFactory>
-                        <PropertyValueFactory property="typeDetails" />
+                        <PropertyValueFactory property="customer" />
                     </cellValueFactory>
 
                 </TableColumn>
-                <TableColumn fx:id="zeitColumn" text="Zeit" editable="false" sortable="true" prefWidth="90">
+                <TableColumn fx:id="statusColumn" text="Status" editable="false" sortable="true" prefWidth="50">
                     <cellValueFactory>
-                        <PropertyValueFactory property="rechnungZeit" />
-                    </cellValueFactory>
-
-                </TableColumn>
-                <TableColumn fx:id="paymentTypeColumn" text="Zahltyp" editable="false" sortable="true" prefWidth="90">
-                    <cellValueFactory>
-                        <PropertyValueFactory property="paymentType" />
+                        <PropertyValueFactory property="status" />
                     </cellValueFactory>
 
                 </TableColumn>
@@ -83,7 +77,7 @@
                 </TableColumn>
                 <TableColumn fx:id="gesamtColumn" editable="false" text="Endsumme" sortable="true" prefWidth="120">
                     <cellValueFactory>
-                        <PropertyValueFactory property="bruttoGesamt" />
+                        <PropertyValueFactory property="totalPrise" />
                     </cellValueFactory>
 
                 </TableColumn>

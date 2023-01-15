@@ -40,7 +40,7 @@
             </Menu>
             <Menu text="Kostenvoranschlag" styleClass="base-menu">
                 <MenuItem text="Kostenvoranschlag" onAction="#showKostenvoranschlag" styleClass="base-menu, kostenvoranschlag-menu"></MenuItem>
-                <MenuItem text="Kostenvoranschlag-Bericht" styleClass="base-menu, report-menu"></MenuItem>
+                <MenuItem text="Kostenvoranschlag-Bericht" onAction="#showKostenvoranschlagReport"  styleClass="base-menu, report-menu"></MenuItem>
             </Menu>
 
             <Menu text="Verwaltung" styleClass="base-menu">

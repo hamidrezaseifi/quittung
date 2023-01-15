@@ -7,6 +7,7 @@ import de.seifi.rechnung_common.repositories.RechnungRepository;
 import de.seifi.rechnung_manager_app.adapter.CustomerAdapter;
 import de.seifi.rechnung_manager_app.enums.CustomerStatus;
 import de.seifi.rechnung_manager_app.models.CustomerModel;
+import de.seifi.rechnung_manager_app.models.RechnungModel;
 import de.seifi.rechnung_manager_app.services.ICustomerService;
 import org.springframework.stereotype.Service;
 
@@ -46,9 +47,9 @@ public class JpaCustomerService implements ICustomerService {
 
     @Override
     public Map<UUID, CustomerModel> getCustomerMap() {
-        if(customerMap.isEmpty()){
-            reloadCustomerList();
-        }
+        reloadCustomerList();
+        customerMap.put(RechnungModel.QUITTUNG_CUSTOMER_ID, null);
+
         return customerMap;
     }
 

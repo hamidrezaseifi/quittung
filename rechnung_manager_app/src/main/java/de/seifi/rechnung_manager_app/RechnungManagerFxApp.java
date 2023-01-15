@@ -2,10 +2,7 @@ package de.seifi.rechnung_manager_app;
 
 import de.seifi.rechnung_common.utils.ISingleInstanceRunnable;
 import de.seifi.rechnung_common.utils.RunSingleInstance;
-import de.seifi.rechnung_manager_app.controllers.ControllerBase;
-import de.seifi.rechnung_manager_app.controllers.MainController;
-import de.seifi.rechnung_manager_app.controllers.RechnungController;
-import de.seifi.rechnung_manager_app.controllers.ReportController;
+import de.seifi.rechnung_manager_app.controllers.*;
 import de.seifi.rechnung_manager_app.enums.RechnungType;
 import de.seifi.rechnung_manager_app.models.CustomerModel;
 import de.seifi.rechnung_manager_app.models.RechnungModel;
@@ -324,14 +321,27 @@ public class RechnungManagerFxApp extends Application implements ISingleInstance
     	return homePane;
     }
 
-    public static GridPane getReportPane() throws IOException {
+    public static GridPane getRechnungReportPane() throws IOException {
 
         URL fxmlResource = RechnungManagerFxApp.class.getResource("fxml/report.fxml");
         FXMLLoader fxmlLoader = new FXMLLoader(fxmlResource);
 
         GridPane reportPane =  fxmlLoader.load();
 
-        ReportController controller = (ReportController)fxmlLoader.getController();
+        RechnungReportController controller = (RechnungReportController)fxmlLoader.getController();
+        controller.setStage(mainStage);
+
+        return reportPane;
+    }
+
+    public static GridPane getKostenvoranschlagReportPane() throws IOException {
+
+        URL fxmlResource = RechnungManagerFxApp.class.getResource("fxml/kostenvoranschlag_report.fxml");
+        FXMLLoader fxmlLoader = new FXMLLoader(fxmlResource);
+
+        GridPane reportPane =  fxmlLoader.load();
+
+        KostenvoranschlagReportController controller = fxmlLoader.getController();
         controller.setStage(mainStage);
 
         return reportPane;

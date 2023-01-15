@@ -359,6 +359,7 @@ public class KostenvoranschlagBindingService implements IBindingService<Kostenvo
 
         KostenvoranschlagEntity savingEntity = kostenvoranschlagAdapter.toEntity(savingModel);
         savingEntity.setUpdated(null);
+        savingEntity.setStatus(KostenvoranschlagStatus.ACTIVE.getValue());
         kostenvoranschlagRepository.save(savingEntity);
         Optional<KostenvoranschlagEntity> savedEntityOptional = kostenvoranschlagRepository.findById(savingEntity.getId());
         if(savedEntityOptional.isPresent()) {

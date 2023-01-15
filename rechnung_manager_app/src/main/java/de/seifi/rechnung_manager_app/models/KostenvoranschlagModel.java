@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class KostenvoranschlagModel {
 
@@ -153,5 +154,13 @@ public class KostenvoranschlagModel {
 	public void setItems(List<KostenvoranschlagItemModel> items) {
 		this.items.clear();
 		this.items.addAll(items);
+	}
+
+	public Float getTotalPrise() {
+		AtomicReference<Float> total = new AtomicReference<>(0f);
+
+		this.items.forEach(r -> total.updateAndGet(v -> v + r.getPreis()));
+
+		return total.get();
 	}
 }

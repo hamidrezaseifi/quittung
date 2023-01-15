@@ -9,7 +9,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 
-public class ReportItemModel {
+public class RechnungReportItemModel {
 
     private StringProperty rechnungDatum;
 
@@ -29,8 +29,8 @@ public class ReportItemModel {
 
     private final RechnungModel rechnungModel;
 
-    public ReportItemModel(RechnungModel model,
-                           CustomerModel customerModel) {
+    public RechnungReportItemModel(RechnungModel model,
+                                   CustomerModel customerModel) {
         this.rechnungDatum = new SimpleStringProperty(model.getRechnungCreate());
         this.nummer = new SimpleStringProperty(String.valueOf(model.getNummer()));
         this.rechnungZeit = new SimpleStringProperty(model.getRechnungCreate());

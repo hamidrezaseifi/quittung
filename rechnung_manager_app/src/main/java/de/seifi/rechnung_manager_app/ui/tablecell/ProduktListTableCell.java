@@ -1,7 +1,7 @@
 package de.seifi.rechnung_manager_app.ui.tablecell;
 
 import de.seifi.rechnung_manager_app.models.RechnungItemModel;
-import de.seifi.rechnung_manager_app.models.ReportItemModel;
+import de.seifi.rechnung_manager_app.models.RechnungReportItemModel;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
@@ -13,7 +13,7 @@ import javafx.scene.paint.Color;
 
 import java.util.List;
 
-public class ProduktListTableCell extends TableCell<ReportItemModel, List<RechnungItemModel>> {
+public class ProduktListTableCell extends TableCell<RechnungReportItemModel, List<RechnungItemModel>> {
 
     public ProduktListTableCell() {
         VBox vBox = new VBox();
