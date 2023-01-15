@@ -144,7 +144,7 @@
 
 .receipt-button {
 
-    -fx-background-image: url('../images/receipt.png');
+    -fx-background-image: url('../images/receipt-2.png');
 
     -fx-background-size: 26 26;
     -fx-background-repeat: no-repeat;
@@ -183,6 +183,39 @@
     -fx-background-repeat: no-repeat;
     -fx-background-position: 5px;
     -fx-font-size: 14px;
+}
+
+.base-menu  {
+    -fx-background-size: 24 24;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: right 5px center;
+    -fx-padding: 10 36 10 10;
+    -fx-font-size: 16px;
+}
+
+.report-menu  {
+    -fx-background-image: url('../images/search.png');
+}
+
+.quittung-menu {
+    -fx-background-image: url('../images/bill.png');
+}
+
+.rechnung-menu{
+    -fx-background-image: url('../images/receipt-2.png');
+}
+
+.home-menu{
+    -fx-background-image: url('../images/home.png');
+}
+
+.customer-menu{
+    -fx-background-image: url('../images/customer.png');
+}
+
+.kostenvoranschlag-menu{
+    -fx-background-image: url('../images/estimate.png');
+    -fx-background-size: 30 30;
 }
 
 .customer-button {
