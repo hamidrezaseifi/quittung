@@ -7,6 +7,7 @@
 <?import javafx.scene.layout.*?>
 
 <?import de.seifi.rechnung_manager_app.ui.IntegerTextField?>
+<?import de.seifi.rechnung_manager_app.ui.tablecell.kostenvoranschlag.KostenvoranschlagProduktListTableCellFactory?>
 <GridPane fx:id="rootPane" alignment="TOP_LEFT" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
           fx:controller="de.seifi.rechnung_manager_app.controllers.KostenvoranschlagReportController">
     <columnConstraints>
@@ -71,7 +72,7 @@
                         <PropertyValueFactory property="produktListItem" />
                     </cellValueFactory>
                     <cellFactory>
-                        <ProduktListTableCellFactory />
+                        <KostenvoranschlagProduktListTableCellFactory />
                     </cellFactory>
 
                 </TableColumn>

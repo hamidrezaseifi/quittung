@@ -25,13 +25,13 @@ public class KostenvoranschlagEntity extends EntityBase {
 	@Column(nullable = false)
 	private String nummer;
 
-	@Column(name="schluessel_nummer", nullable = false)
+	@Column(name="schluessel_nummer", nullable = true)
 	private String schluesselNummer;
 
-	@Column(name="fahrgestell_uummer", nullable = false)
+	@Column(name="fahrgestell_uummer", nullable = true)
 	private String fahrgestellNummer;
 
-	@Column(name="fahrzeug_schein", nullable = false)
+	@Column(name="fahrzeug_schein", nullable = true)
 	private UUID fahrzeugSchein;
 
 	@ColumnDefault("1")

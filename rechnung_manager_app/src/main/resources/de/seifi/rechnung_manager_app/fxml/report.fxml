@@ -77,7 +77,7 @@
                         <PropertyValueFactory property="produktListItem" />
                     </cellValueFactory>
                     <cellFactory>
-                        <ProduktListTableCellFactory />
+                        <RechnungProduktListTableCellFactory />
                     </cellFactory>
 
                 </TableColumn>

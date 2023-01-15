@@ -1,10 +1,12 @@
 package de.seifi.rechnung_manager_app.models;
 
+import de.seifi.rechnung_manager_app.ui.TableUtils;
+
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 
-public class KostenvoranschlagItemModel {
+public class KostenvoranschlagItemModel implements IReportLabelModel {
 
 	private UUID id;
 
@@ -140,5 +142,10 @@ public class KostenvoranschlagItemModel {
 
     public boolean isNew() {
         return id == null;
+    }
+
+    @Override
+    public String getReportLabel() {
+        return String.format("%s (%s, %s): %s", produkt, originalNummer, teilNummer, TableUtils.formatGeld(preis));
     }
 }

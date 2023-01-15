@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 
-public class RechnungItemModel {
+public class RechnungItemModel implements IReportLabelModel {
 	
 	private UUID id;
     
@@ -128,5 +128,10 @@ public class RechnungItemModel {
                 this.getUpdated());
 
         return model;
+    }
+
+    @Override
+    public String getReportLabel(){
+        return String.format("%s (%d): %s", produkt, menge, artikelNummer);
     }
 }

@@ -8,7 +8,7 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.util.Callback;
 
-public class ProduktListTableCellFactory implements
+public class RechnungProduktListTableCellFactory implements
                                          Callback<TableColumn<RechnungReportItemModel, List<RechnungItemModel>>,
                                          			TableCell<RechnungReportItemModel, List<RechnungItemModel>>> {
     @Override
