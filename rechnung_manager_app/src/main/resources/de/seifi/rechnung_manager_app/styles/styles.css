@@ -402,6 +402,16 @@
     -fx-padding: 0;
 }
 
+.tools-done-button {
+
+    -fx-background-image: url('../images/ok.png');
+
+    -fx-background-size: 30 26;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position:center;
+    -fx-padding: 0;
+}
+
 .filter-label{
     -fx-background-image: url('../images/filter1.png');
     -fx-background-size: 24 24;

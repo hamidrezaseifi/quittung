@@ -8,6 +8,7 @@
 
 <?import de.seifi.rechnung_manager_app.ui.IntegerTextField?>
 <?import de.seifi.rechnung_manager_app.ui.tablecell.kostenvoranschlag.KostenvoranschlagProduktListTableCellFactory?>
+<?import de.seifi.rechnung_manager_app.ui.tablecell.kostenvoranschlag.KostenvoranschlagReportToolsTableCellFactory?>
 <GridPane fx:id="rootPane" alignment="TOP_LEFT" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
           fx:controller="de.seifi.rechnung_manager_app.controllers.KostenvoranschlagReportController">
     <columnConstraints>
@@ -85,7 +86,7 @@
                 <TableColumn fx:id="toolsColumn" text="..." prefWidth="100" editable="false" sortable="false">
                     
                     <cellFactory>
-                        <ReportToolsTableCellFactory />
+                        <KostenvoranschlagReportToolsTableCellFactory />
                     </cellFactory>
                 </TableColumn>
             </columns>

@@ -9,11 +9,13 @@ import de.seifi.rechnung_manager_app.services.IKostenvoranschlagService;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class KostenvoranschlagService implements IKostenvoranschlagService {
@@ -70,5 +72,18 @@ public class KostenvoranschlagService implements IKostenvoranschlagService {
         List<KostenvoranschlagEntity> results = query.getResultList();
 
         return results;
+    }
+
+    @Override
+    @Transactional
+    public void updateStatus(UUID id, KostenvoranschlagStatus status) {
+        //EntityTransaction tx = entityManager.getTransaction();
+        //tx.begin();
+        KostenvoranschlagEntity entity = entityManager.find(KostenvoranschlagEntity.class, id);
+        entity.setStatus(status.getValue());
+        entityManager.merge(entity);
+        entityManager.flush();
+        //tx.commit();
+
     }
 }

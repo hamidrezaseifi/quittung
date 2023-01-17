@@ -8,6 +8,7 @@ import de.seifi.rechnung_common.repositories.ProduktRepository;
 import de.seifi.rechnung_manager_app.adapter.CustomerAdapter;
 import de.seifi.rechnung_manager_app.adapter.KostenvoranschlagAdapter;
 import de.seifi.rechnung_manager_app.enums.CustomerStatus;
+import de.seifi.rechnung_manager_app.enums.KostenvoranschlagStatus;
 import de.seifi.rechnung_manager_app.models.*;
 import de.seifi.rechnung_manager_app.services.ICustomerService;
 import de.seifi.rechnung_manager_app.services.IKostenvoranschlagService;
@@ -78,5 +79,16 @@ public class KostenvoranschlagReportBindingService {
 
     public KostenvoranschlagSearchFilterProperty getSearchFilterProperty() {
         return searchFilterProperty;
+    }
+
+    public void makeKostenvoranschlagDone(KostenvoranschlagModel model) {
+        this.kostenvoranschlagService.updateStatus(model.getId(), KostenvoranschlagStatus.DONE);
+
+        model.setStatus(KostenvoranschlagStatus.DONE);
+    }
+
+    public void setItemAt(int index, KostenvoranschlagModel model) {
+        CustomerModel customerModel = reportItems.get(index).getCustomerModel();
+        reportItems.set(index, new KostenvoranschlagReportItemModel(model, customerModel));
     }
 }

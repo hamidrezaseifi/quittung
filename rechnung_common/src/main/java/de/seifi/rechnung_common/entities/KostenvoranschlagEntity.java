@@ -19,7 +19,7 @@ public class KostenvoranschlagEntity extends EntityBase {
 	@GeneratedValue
     private UUID id;
 
-	@Column(name="customer_id", nullable = true)
+	@Column(name="customer_id", nullable = false)
 	private UUID customerId;
 
 	@Column(nullable = false)

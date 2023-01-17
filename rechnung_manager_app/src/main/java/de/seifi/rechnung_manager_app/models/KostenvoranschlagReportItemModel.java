@@ -26,6 +26,8 @@ public class KostenvoranschlagReportItemModel {
 
     private final KostenvoranschlagModel kostenvoranschlagModel;
 
+    private final CustomerModel customerModel;
+
     public KostenvoranschlagReportItemModel(KostenvoranschlagModel model,
                                             CustomerModel customerModel) {
         this.created = new SimpleStringProperty(GeneralUtils.formatDate(model.getCreated()));
@@ -36,6 +38,7 @@ public class KostenvoranschlagReportItemModel {
         this.status = new SimpleStringProperty(model.getStatus().toString());
 
         this.kostenvoranschlagModel = model;
+        this.customerModel = customerModel;
     }
 
     public String getCreated() {
@@ -88,5 +91,9 @@ public class KostenvoranschlagReportItemModel {
 
     public KostenvoranschlagModel getKostenvoranschlagModel() {
         return kostenvoranschlagModel;
+    }
+
+    public CustomerModel getCustomerModel() {
+        return customerModel;
     }
 }

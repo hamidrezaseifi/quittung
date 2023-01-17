@@ -187,7 +187,7 @@
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="31" splitType="Immediate">
+		<band height="27" splitType="Immediate">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement style="Detail" positionType="Float" x="30" y="0" width="129" height="26" uuid="5e236abc-7a8e-424c-81a7-6f7fc324552c">
@@ -301,14 +301,14 @@
 				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="10" y="25" width="534" height="1" uuid="0be1f9e2-7958-4199-b581-7f137f6fc604">
+				<reportElement x="10" y="26" width="545" height="1" uuid="0be1f9e2-7958-4199-b581-7f137f6fc604">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<printWhenExpression><![CDATA[EQUALS($P{total_rows},$V{REPORT_COUNT} )]]></printWhenExpression>
 				</reportElement>
 			</line>
 			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
-				<reportElement style="Detail" positionType="Float" x="495" y="0" width="58" height="26" uuid="18e140fd-a869-4c05-acc8-803a75e65fb5">
+				<reportElement style="Detail" positionType="Float" x="495" y="0" width="60" height="26" uuid="18e140fd-a869-4c05-acc8-803a75e65fb5">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e76e57a7-4a91-4cf6-b3e7-30775f22f522"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -329,10 +329,10 @@
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="1">
+		<band height="21">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<line>
-				<reportElement x="10" y="0" width="534" height="1" uuid="3ad3baad-648e-488a-9332-1d880fc30440">
+				<reportElement x="10" y="0" width="545" height="1" uuid="3ad3baad-648e-488a-9332-1d880fc30440">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<printWhenExpression><![CDATA[NOT( EQUALS($P{total_rows},$V{REPORT_COUNT} ) )]]></printWhenExpression>
