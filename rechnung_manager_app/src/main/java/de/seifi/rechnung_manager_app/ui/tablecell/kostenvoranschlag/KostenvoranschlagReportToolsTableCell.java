@@ -1,18 +1,20 @@
 package de.seifi.rechnung_manager_app.ui.tablecell.kostenvoranschlag;
 
+import de.seifi.rechnung_manager_app.enums.KostenvoranschlagStatus;
 import de.seifi.rechnung_manager_app.fx_services.KostenvoranschlagReportBindingService;
-import de.seifi.rechnung_manager_app.fx_services.RechnungReportBindingService;
 import de.seifi.rechnung_manager_app.models.KostenvoranschlagModel;
 import de.seifi.rechnung_manager_app.models.KostenvoranschlagReportItemModel;
-import de.seifi.rechnung_manager_app.models.RechnungModel;
-import de.seifi.rechnung_manager_app.ui.UiUtils;
 import de.seifi.rechnung_manager_app.utils.PrintUtils;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.Tooltip;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 
 import java.util.Arrays;
 
@@ -22,9 +24,10 @@ public class KostenvoranschlagReportToolsTableCell extends TableCell<Kostenvoran
 	private final Button btnEdit;
 	private final Button btnDone;
 	private final Button btnPrint;
-	
+
+	private Background doneBackground = new Background(new BackgroundFill(Color.rgb(255, 220, 220), CornerRadii.EMPTY, Insets.EMPTY));
 	public KostenvoranschlagReportToolsTableCell() {
-		
+
 		hbox = new HBox();
 		hbox.setSpacing(2);
 		
@@ -96,6 +99,9 @@ public class KostenvoranschlagReportToolsTableCell extends TableCell<Kostenvoran
 				hbox.getChildren().remove(btnEdit);
 			}
 
+			if(model.getStatus() == KostenvoranschlagStatus.DONE){
+				this.setBackground(doneBackground);
+			}
         }
     }
 

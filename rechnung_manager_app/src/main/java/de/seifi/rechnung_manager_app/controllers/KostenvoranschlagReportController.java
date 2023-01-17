@@ -4,6 +4,7 @@ import de.seifi.rechnung_common.repositories.CustomerRepository;
 import de.seifi.rechnung_common.repositories.ProduktRepository;
 import de.seifi.rechnung_manager_app.RechnungManagerFxApp;
 import de.seifi.rechnung_manager_app.RechnungManagerSpringApp;
+import de.seifi.rechnung_manager_app.enums.KostenvoranschlagStatus;
 import de.seifi.rechnung_manager_app.fx_services.KostenvoranschlagReportBindingService;
 import de.seifi.rechnung_manager_app.models.*;
 import de.seifi.rechnung_manager_app.services.ICustomerService;
@@ -14,6 +15,7 @@ import de.seifi.rechnung_manager_app.utils.PrintUtils;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -64,6 +66,8 @@ public class KostenvoranschlagReportController implements Initializable, Control
 
     @FXML private Label lblCustomer;
 
+    @FXML private ComboBox<KostenvoranschlagStatus> cmbStatus;
+
     private final IKostenvoranschlagService kostenvoranschlagService;
 
     private final ICustomerService customerService;
@@ -99,6 +103,9 @@ public class KostenvoranschlagReportController implements Initializable, Control
             filterPane.setVisible(!filterPane.isVisible());
             filterRow.setPrefHeight(filterPane.isVisible()? 40: 0);
         });
+
+        cmbStatus.getItems().addAll(KostenvoranschlagStatus.values());
+        cmbStatus.valueProperty().bindBidirectional(bindingService.getSearchFilterProperty().statusProperty());
 
         produktListColumn.prefWidthProperty().bind(
                 reportTableView.widthProperty().subtract(

@@ -16,7 +16,12 @@ import java.util.List;
 
 public class ProduktListTableCell<T extends IReportLabelModel> extends TableCell<RechnungReportItemModel, List<T>> {
 
-    public ProduktListTableCell() {
+    private final boolean isReport;
+
+    public ProduktListTableCell(boolean isReport) {
+
+        this.isReport = isReport;
+
         VBox vBox = new VBox();
         vBox.setPadding(new Insets(0));
         vBox.setSpacing(0);

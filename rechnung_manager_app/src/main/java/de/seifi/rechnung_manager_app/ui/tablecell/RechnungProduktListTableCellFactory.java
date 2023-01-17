@@ -13,6 +13,6 @@ public class RechnungProduktListTableCellFactory implements
                                          			TableCell<RechnungReportItemModel, List<RechnungItemModel>>> {
     @Override
     public TableCell<RechnungReportItemModel, List<RechnungItemModel>> call(TableColumn<RechnungReportItemModel, List<RechnungItemModel>> produktListTableColumn) {
-        return new ProduktListTableCell();
+        return new ProduktListTableCell(false);
     }
 }

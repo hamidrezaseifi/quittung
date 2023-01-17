@@ -39,6 +39,8 @@
             <Label fx:id="lblCustomer" styleClass="report-customer-label" prefWidth="170"></Label>
             <Button onAction="#selectCustomer" styleClass="report-customer-select-button" prefWidth="26" prefHeight="26"></Button>
             <Button onAction="#removeCustomer" styleClass="report-customer-remove-button" prefWidth="26" prefHeight="26"></Button>
+            <Label text="Status"></Label>
+            <ComboBox fx:id="cmbStatus" styleClass="report-status-checkbox" prefWidth="170"></ComboBox>
 
         </HBox>
 
@@ -73,7 +75,7 @@
                         <PropertyValueFactory property="produktListItem" />
                     </cellValueFactory>
                     <cellFactory>
-                        <KostenvoranschlagProduktListTableCellFactory />
+                        <KostenvoranschlagProduktListTableCellFactory isReport="true"  />
                     </cellFactory>
 
                 </TableColumn>

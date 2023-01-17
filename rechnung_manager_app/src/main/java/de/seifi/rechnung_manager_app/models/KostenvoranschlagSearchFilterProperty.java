@@ -1,5 +1,6 @@
 package de.seifi.rechnung_manager_app.models;
 
+import de.seifi.rechnung_manager_app.enums.KostenvoranschlagStatus;
 import de.seifi.rechnung_manager_app.utils.GeneralUtils;
 import javafx.beans.property.*;
 
@@ -24,18 +25,18 @@ public class KostenvoranschlagSearchFilterProperty {
 
     private StringProperty orderType;
 
-    private IntegerProperty status;
+    private ObjectProperty<KostenvoranschlagStatus> status;
 
     public KostenvoranschlagSearchFilterProperty() {
         this.from = new SimpleObjectProperty<LocalDate>();
-        this.to = new SimpleObjectProperty<LocalDate>();
+        this.to = new SimpleObjectProperty<>();
         this.nummer = new SimpleStringProperty("");
         this.produkt = new SimpleStringProperty("");
         this.label = new SimpleStringProperty("Keine Filter");
         this.customer = new SimpleObjectProperty<>(null);
         this.orderBy = new SimpleStringProperty("nummer");
         this.orderType = new SimpleStringProperty("desc");
-        this.status = new SimpleIntegerProperty(-1);
+        this.status = new SimpleObjectProperty<>(KostenvoranschlagStatus.ACTIVE);
 
         this.from.addListener((observableValue, localDate, t1) -> {
             reloadLabel();
@@ -163,15 +164,15 @@ public class KostenvoranschlagSearchFilterProperty {
         this.orderType.set(orderType);
     }
 
-    public int getStatus() {
+    public KostenvoranschlagStatus getStatus() {
         return status.get();
     }
 
-    public IntegerProperty statusProperty() {
+    public ObjectProperty<KostenvoranschlagStatus> statusProperty() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(KostenvoranschlagStatus status) {
         this.status.set(status);
     }
 
@@ -193,6 +194,10 @@ public class KostenvoranschlagSearchFilterProperty {
         }
         if(this.customer.get() != null){
             labelText += String.format("Kunde '%s',  ", this.customer.get().getCustomerName());
+        }
+        if(this.status.get().isNotNone()){
+
+            labelText += String.format("Status '%s',  ", this.status.get());
         }
 
         return labelText;

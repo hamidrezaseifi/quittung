@@ -46,7 +46,7 @@ public class KostenvoranschlagService implements IKostenvoranschlagService {
             queryString += " and k.customerId=:customerId";
         }
 
-        if(searchFilterProperty.getStatus() > -1){
+        if(searchFilterProperty.getStatus().getValue() > KostenvoranschlagStatus.NONE.getValue()){
 
             queryString += " and k.status=:status";
         }
@@ -64,9 +64,9 @@ public class KostenvoranschlagService implements IKostenvoranschlagService {
             query.setParameter("customerId", searchFilterProperty.getCustomerId());
         }
 
-        if(searchFilterProperty.getStatus() > -1){
+        if(searchFilterProperty.getStatus().getValue() > KostenvoranschlagStatus.NONE.getValue()){
 
-            query.setParameter("status", KostenvoranschlagStatus.ACTIVE.getValue());
+            query.setParameter("status", searchFilterProperty.getStatus().getValue());
         }
 
         List<KostenvoranschlagEntity> results = query.getResultList();
