@@ -16,26 +16,10 @@ public class KostenvoranschlagProduktListTableCellFactory implements
                                          Callback<TableColumn<KostenvoranschlagReportItemModel, List<KostenvoranschlagItemModel>>,
                                          			TableCell<KostenvoranschlagReportItemModel, List<KostenvoranschlagItemModel>>> {
 
-    private BooleanProperty isReport = new SimpleBooleanProperty(false);
-
-    public boolean isIsReport() {
-        return this.isReport.get();
-    }
-
-    public BooleanProperty isReportProperty() {
-
-        return isReport;
-    }
-
-    public void setIsReport(boolean isReport) {
-        this.isReport.set(isReport);
-    }
-
-
     @Override
     public TableCell<KostenvoranschlagReportItemModel,
             List<KostenvoranschlagItemModel>> call(TableColumn<KostenvoranschlagReportItemModel,
             List<KostenvoranschlagItemModel>> produktListTableColumn) {
-        return new ProduktListTableCell(isIsReport());
+        return new KostenvoranschlagProduktListTableCell();
     }
 }

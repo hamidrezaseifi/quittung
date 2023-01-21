@@ -9,6 +9,7 @@
 <?import de.seifi.rechnung_manager_app.ui.IntegerTextField?>
 <?import de.seifi.rechnung_manager_app.ui.tablecell.kostenvoranschlag.KostenvoranschlagProduktListTableCellFactory?>
 <?import de.seifi.rechnung_manager_app.ui.tablecell.kostenvoranschlag.KostenvoranschlagReportToolsTableCellFactory?>
+<?import de.seifi.rechnung_manager_app.ui.tablecell.kostenvoranschlag.KostenvoranschlagReportLabelTableCellFactory?>
 <GridPane fx:id="rootPane" alignment="TOP_LEFT" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
           fx:controller="de.seifi.rechnung_manager_app.controllers.KostenvoranschlagReportController">
     <columnConstraints>
@@ -50,24 +51,36 @@
                     <cellValueFactory>
                         <PropertyValueFactory property="created" />
                     </cellValueFactory>
+                    <cellFactory>
+                        <KostenvoranschlagReportLabelTableCellFactory />
+                    </cellFactory>
 
                 </TableColumn>
                 <TableColumn fx:id="nummerColumn" editable="false" sortable="true" prefWidth="80.0" text="Nummer">
                     <cellValueFactory>
                         <PropertyValueFactory property="nummer" />
                     </cellValueFactory>
+                    <cellFactory>
+                        <KostenvoranschlagReportLabelTableCellFactory />
+                    </cellFactory>
 
                 </TableColumn>
                 <TableColumn fx:id="customerColumn" text="Kunde" editable="false" sortable="true" prefWidth="90">
                     <cellValueFactory>
                         <PropertyValueFactory property="customer" />
                     </cellValueFactory>
+                    <cellFactory>
+                        <KostenvoranschlagReportLabelTableCellFactory />
+                    </cellFactory>
 
                 </TableColumn>
                 <TableColumn fx:id="statusColumn" text="Status" editable="false" sortable="true" prefWidth="50">
                     <cellValueFactory>
                         <PropertyValueFactory property="status" />
                     </cellValueFactory>
+                    <cellFactory>
+                        <KostenvoranschlagReportLabelTableCellFactory />
+                    </cellFactory>
 
                 </TableColumn>
                 <TableColumn fx:id="produktListColumn" prefWidth="120" text="Produkte" editable="false" sortable="false">
@@ -75,7 +88,7 @@
                         <PropertyValueFactory property="produktListItem" />
                     </cellValueFactory>
                     <cellFactory>
-                        <KostenvoranschlagProduktListTableCellFactory isReport="true"  />
+                        <KostenvoranschlagProduktListTableCellFactory  />
                     </cellFactory>
 
                 </TableColumn>
@@ -83,7 +96,9 @@
                     <cellValueFactory>
                         <PropertyValueFactory property="totalPrise" />
                     </cellValueFactory>
-
+                    <cellFactory>
+                        <KostenvoranschlagReportLabelTableCellFactory />
+                    </cellFactory>
                 </TableColumn>
                 <TableColumn fx:id="toolsColumn" text="..." prefWidth="100" editable="false" sortable="false">
                     

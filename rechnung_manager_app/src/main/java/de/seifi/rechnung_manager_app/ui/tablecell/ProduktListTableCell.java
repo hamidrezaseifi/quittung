@@ -23,7 +23,7 @@ public class ProduktListTableCell<T extends IReportLabelModel> extends TableCell
         this.isReport = isReport;
 
         VBox vBox = new VBox();
-        vBox.setPadding(new Insets(0));
+        vBox.setPadding(new Insets(2));
         vBox.setSpacing(0);
         vBox.prefWidthProperty().bind(this.widthProperty().subtract(3));
 

@@ -18,14 +18,23 @@ import javafx.scene.paint.Color;
 
 import java.util.Arrays;
 
-public class KostenvoranschlagReportToolsTableCell extends TableCell<KostenvoranschlagReportItemModel, String> {
+public class KostenvoranschlagReportToolsTableCell extends KostenvoranschlagReportBaseTableCell<String>  {
 	
 	private final HBox hbox;
 	private final Button btnEdit;
 	private final Button btnDone;
 	private final Button btnPrint;
 
-	private Background doneBackground = new Background(new BackgroundFill(Color.rgb(255, 220, 220), CornerRadii.EMPTY, Insets.EMPTY));
+	@Override
+	protected void createLabelControl() {
+
+	}
+
+	@Override
+	protected void setCellText(String value) {
+
+	}
+
 	public KostenvoranschlagReportToolsTableCell() {
 
 		hbox = new HBox();
@@ -99,19 +108,8 @@ public class KostenvoranschlagReportToolsTableCell extends TableCell<Kostenvoran
 				hbox.getChildren().remove(btnEdit);
 			}
 
-			if(model.getStatus() == KostenvoranschlagStatus.DONE){
-				this.setBackground(doneBackground);
-			}
         }
     }
 
-	private KostenvoranschlagModel getCurrentRechnungModel() {
-		KostenvoranschlagReportBindingService
-				reportBindingService = (KostenvoranschlagReportBindingService)this.getTableView().getUserData();
-
-		KostenvoranschlagReportItemModel item = reportBindingService.getReportItems().get(this.getTableRow().getIndex());
-
-		return item.getKostenvoranschlagModel();
-	}
 
 }
