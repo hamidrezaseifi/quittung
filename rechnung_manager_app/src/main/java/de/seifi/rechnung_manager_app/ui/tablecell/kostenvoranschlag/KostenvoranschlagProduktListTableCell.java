@@ -32,6 +32,9 @@ public class KostenvoranschlagProduktListTableCell extends KostenvoranschlagRepo
     protected void setCellText(List<KostenvoranschlagItemModel> newItemList) {
         vBox.getChildren().clear();
 
+        if(newItemList == null){
+            return;
+        }
 
         Color[] fxColors = {Color.rgb(242, 242, 255), Color.rgb(255, 242, 242)};
 

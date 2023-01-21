@@ -4,6 +4,7 @@ import de.seifi.rechnung_manager_app.enums.KostenvoranschlagStatus;
 import de.seifi.rechnung_manager_app.fx_services.KostenvoranschlagReportBindingService;
 import de.seifi.rechnung_manager_app.models.KostenvoranschlagModel;
 import de.seifi.rechnung_manager_app.models.KostenvoranschlagReportItemModel;
+import de.seifi.rechnung_manager_app.ui.UiUtils;
 import de.seifi.rechnung_manager_app.utils.PrintUtils;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
@@ -65,7 +66,7 @@ public class KostenvoranschlagReportToolsTableCell extends KostenvoranschlagRepo
 		btnEdit.setOnAction((ActionEvent event) -> {
 
 			KostenvoranschlagModel model = getCurrentRechnungModel();
-			//UiUtils.showRechnungViewDialog(model);
+			UiUtils.showKostenvoranschlagViewDialog(model);
 
 		});
 

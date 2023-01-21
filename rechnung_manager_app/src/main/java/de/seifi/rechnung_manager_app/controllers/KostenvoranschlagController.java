@@ -381,7 +381,7 @@ public class KostenvoranschlagController implements Initializable, ControllerBas
         toolbarBox.getChildren().remove(btnReset);
         toolbarBox.getChildren().remove(btnClose);
         
-        btnEdit.setVisible(true);
+        //btnEdit.setVisible(true);
 
 		setItemsTableViewEditable(false);
 

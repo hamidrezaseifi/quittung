@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.util.Optional;
 
 import de.seifi.rechnung_manager_app.RechnungManagerFxApp;
+import de.seifi.rechnung_manager_app.controllers.KostenvoranschlagController;
 import de.seifi.rechnung_manager_app.controllers.RechnungController;
+import de.seifi.rechnung_manager_app.models.KostenvoranschlagModel;
 import de.seifi.rechnung_manager_app.models.RechnungModel;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -65,6 +67,29 @@ public class UiUtils {
 		}
     }
 
+	public static void showKostenvoranschlagViewDialog(KostenvoranschlagModel kostenvoranschlagModel) {
+		try {
+			Stage stage = new Stage();
+			FXMLLoader fxmlLoader = RechnungManagerFxApp.getKostenvoranschlagFxmlLoader();
+			GridPane rechnungPane = fxmlLoader.load();
+
+			KostenvoranschlagController controller = fxmlLoader.getController();
+			controller.startView(kostenvoranschlagModel, stage);
+			rechnungPane.setPadding(new Insets(10));
+
+			Scene scene = new Scene(rechnungPane, 1200, 1000);
+			scene.getStylesheets().add(RechnungManagerFxApp.getMainStyle());
+
+			stage.initModality(Modality.APPLICATION_MODAL);
+			stage.setScene(scene);
+			stage.setTitle(String.format("Kostenvoranschlag Nummer %s Ansehen", kostenvoranschlagModel.getNummer()));
+			stage.showAndWait();
+
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	public static Dialog createImageViewDialog(Image img) {
 		ImageView imgPreview = new ImageView();

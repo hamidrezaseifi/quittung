@@ -306,10 +306,19 @@ public class RechnungManagerFxApp extends Application implements ISingleInstance
 
         return new Pair<>(rechnungPane, controller);
     }
+
     public static GridPane getKostenvoranschlag() throws IOException {
 
         GridPane reportPane =  (GridPane)loadFXML("kostenvoranschlag");
         return reportPane;
+    }
+
+    public static FXMLLoader getKostenvoranschlagFxmlLoader() throws IOException {
+
+        URL fxmlResource = RechnungManagerFxApp.class.getResource("fxml/kostenvoranschlag.fxml");
+        FXMLLoader fxmlLoader = new FXMLLoader(fxmlResource);
+
+        return fxmlLoader;
     }
 
 
