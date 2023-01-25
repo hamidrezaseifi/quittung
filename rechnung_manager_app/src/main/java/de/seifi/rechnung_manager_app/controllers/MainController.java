@@ -7,8 +7,10 @@ import java.util.ResourceBundle;
 import de.seifi.rechnung_manager_app.RechnungManagerFxApp;
 import de.seifi.rechnung_manager_app.enums.RechnungType;
 import de.seifi.rechnung_manager_app.models.CustomerModel;
+import de.seifi.rechnung_manager_app.models.KostenvoranschlagModel;
 import de.seifi.rechnung_manager_app.models.RechnungModel;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.*;
 import javafx.util.Pair;
@@ -169,14 +171,31 @@ public class MainController implements Initializable {
 		logger.debug(String.format("Start editing Rechnung Type '%s' id: '%s'", rechnungModel.getRechnungType(), rechnungModel.getId()));
 
 		if(RechnungManagerFxApp.cannCurrentControllerClosed()) {
-    		clearChildren();
-        	
-    		Pair<GridPane, RechnungController> pair = RechnungManagerFxApp.getRechnungPane(rechnungModel.getRechnungType());
-    		RechnungController controller = pair.getValue();
-    		controller.startEdit(rechnungModel, customerModel);
-        	childBox.getChildren().add(pair.getKey());
-    	}
-		
+			clearChildren();
+
+			Pair<GridPane, RechnungController> pair = RechnungManagerFxApp.getRechnungPane(rechnungModel.getRechnungType());
+			RechnungController controller = pair.getValue();
+			controller.startEdit(rechnungModel, customerModel);
+			childBox.getChildren().add(pair.getKey());
+		}
+
+	}
+
+	public void startEditKostenvoranschlag(KostenvoranschlagModel model, CustomerModel customerModel) throws IOException {
+		logger.debug(String.format("Start editing Kostenvoranschlag Nummer '%s' id: '%s'", model.getNummer(), model.getId()));
+
+		if(RechnungManagerFxApp.cannCurrentControllerClosed()) {
+			clearChildren();
+			FXMLLoader fxmlLoader = RechnungManagerFxApp.getKostenvoranschlagFxmlLoader();
+			GridPane pane = fxmlLoader.load();
+
+			KostenvoranschlagController controller = fxmlLoader.getController();
+
+
+			controller.startController(model,customerModel, null, false);
+			childBox.getChildren().add(pane);
+		}
+
 	}
 
     

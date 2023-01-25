@@ -71,6 +71,10 @@ public class KostenvoranschlagController implements Initializable, ControllerBas
 
     @FXML private Button btnEdit;
 
+    @FXML private Button btnViewFahrzeugschein;
+
+    @FXML private Button btnDeleteFahrzeugschein;
+
     @FXML private Label lblName;
 
     @FXML private Label lblStreet;
@@ -155,6 +159,15 @@ public class KostenvoranschlagController implements Initializable, ControllerBas
     	showItemsTableView.edit(indexofItem, produktColumn);
     	
     }
+    @FXML
+    private void startEdit() throws IOException {
+        this.stage.close();
+
+        RechnungManagerFxApp.getMainController().startEditKostenvoranschlag(this.bindingService.getRechnungSavingModel(),
+                                                                            this.bindingService.getCustomerModel());
+    }
+
+
 
     @FXML
     private void deleteItem() {
@@ -365,46 +378,39 @@ public class KostenvoranschlagController implements Initializable, ControllerBas
     	showItemsTableView.setItems(bindingService.getKostenvoranschlagItems());
 	}
     
-	public void startView(KostenvoranschlagModel rechnungModel, Stage stage) {
+	public void startController(KostenvoranschlagModel rechnungModel, CustomerModel customerModel, Stage stage, boolean isView) {
 
 
-		bindingService.startEditing(rechnungModel, null);
+		bindingService.startEditing(rechnungModel, customerModel, isView);
 		
-        bindingService.setIsView(true);
+        bindingService.setIsView(isView);
         this.stage = stage;
-        
-        addExamplarTab();
-        
-        toolbarBox.getChildren().remove(btnAddItem);
-        toolbarBox.getChildren().remove(btnDeleteItem);
-        toolbarBox.getChildren().remove(btnSave);
-        toolbarBox.getChildren().remove(btnReset);
-        toolbarBox.getChildren().remove(btnClose);
-        
-        //btnEdit.setVisible(true);
 
-		setItemsTableViewEditable(false);
+        btnEdit.setVisible(isView);
 
-        nameBox.getChildren().remove(btnSelectCsutomer);
-        lblQuittung.setVisible(false);
+        if(isView){
+            toolbarBox.getChildren().remove(btnAddItem);
+            toolbarBox.getChildren().remove(btnDeleteItem);
+            toolbarBox.getChildren().remove(btnSave);
+            toolbarBox.getChildren().remove(btnReset);
+            toolbarBox.getChildren().remove(btnClose);
+
+            setItemsTableViewEditable(false);
+
+            txtFahrgestellnummer.setDisable(isView);
+            txtSchluesselNummer.setDisable(isView);
+            btnViewFahrzeugschein.setVisible(!isView);
+            btnDeleteFahrzeugschein.setVisible(!isView);
+
+            nameBox.getChildren().remove(btnSelectCsutomer);
+            lblQuittung.setVisible(!isView);
+        }
 
 
 	}
  	private void setItemsTableViewEditable(boolean editable) {
 		//showItemsTableView.getColumns().forEach(c -> c.setEditable(editable));
         showItemsTableView.setEditable(editable);
-	}
-
-	private void addExamplarTab() {
-		TabPane tbItemsList = new TabPane();
-        GridPane.setColumnIndex(tbItemsList, 0);
-        GridPane.setRowIndex(tbItemsList, 2);
-        rootPane.getChildren().remove(itemsListBox);
-        rootPane.getChildren().add(tbItemsList);
-        
-        Tab tbOriginal = new Tab("Original");
-        tbOriginal.setContent(itemsListBox);
-        tbItemsList.getTabs().add(tbOriginal);
 	}
 
 }

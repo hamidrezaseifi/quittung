@@ -1,6 +1,7 @@
 package de.seifi.rechnung_manager_app.fx_services;
 
 
+import de.seifi.rechnung_common.entities.CustomerFahrzeugScheinEntity;
 import de.seifi.rechnung_common.entities.KostenvoranschlagEntity;
 import de.seifi.rechnung_common.repositories.CustomerFahrzeugScheinRepository;
 import de.seifi.rechnung_common.repositories.KostenvoranschlagRepository;
@@ -242,14 +243,26 @@ public class KostenvoranschlagBindingService implements IBindingService<Kostenvo
                 null,
                 KostenvoranschlagStatus.OPEN);
 
-        setRechnungModel(model);
+        setModel(model);
         
         setDirty(false);
 	}
 
-	private void setRechnungModel(KostenvoranschlagModel model) {
+	private void setModel(KostenvoranschlagModel model) {
 		this.savingModel = model;
         this.vorschlagNummer.set(String.valueOf(savingModel.getNummer()));
+
+        schluesselNummerProperty.set(model.getSchluesselNummer());
+        fahrgestellNummerProperty.set(model.getFahrgestellNummer());
+
+        if(savingModel.getFahrzeugSchein() != null){
+            Optional<CustomerFahrzeugScheinEntity> CustomerFahrzeugScheinEntityOptional =
+                    fahrzeugScheinRepository.findById(savingModel.getFahrzeugSchein());
+            if(CustomerFahrzeugScheinEntityOptional.isPresent()){
+                selectedFahrzeugSchein.set(new CustomerFahrzeugScheinModel(CustomerFahrzeugScheinEntityOptional.get()));
+                selectedFahrzeugScheinNameProperty.set(CustomerFahrzeugScheinEntityOptional.get().getName());
+            }
+        }
 	}
 
     public List<CustomerSelectModel> getCustomerSelectList() {
@@ -365,7 +378,7 @@ public class KostenvoranschlagBindingService implements IBindingService<Kostenvo
         if(savedEntityOptional.isPresent()) {
             savingModel = kostenvoranschlagAdapter.toModel(savedEntityOptional.get());
         }
-        startEditing(savingModel, customerSavingModel);
+        startEditing(savingModel, customerSavingModel, false);
         setDirty(false);
 
         return true;
@@ -439,11 +452,11 @@ public class KostenvoranschlagBindingService implements IBindingService<Kostenvo
 		return item;
 	}
 
-	public void startEditing(KostenvoranschlagModel rechnungModel, CustomerModel customerModel) {
+	public void startEditing(KostenvoranschlagModel kostenvoranschlagModel, CustomerModel customerModel, boolean isView) {
 
         if(customerModel == null){
             Optional<CustomerModel> customerEntityOptional = RechnungManagerSpringApp
-                    .getCustomerService().getById(rechnungModel.getCustomerId());
+                    .getCustomerService().getById(kostenvoranschlagModel.getCustomerId());
             if(customerEntityOptional.isEmpty()){
                 throw new RuntimeException("Der Kunde von der Kostenvoranschlag nicht gefunden!");
             }
@@ -459,14 +472,19 @@ public class KostenvoranschlagBindingService implements IBindingService<Kostenvo
 
         this.calculateButtons();
 
-		setRechnungModel(rechnungModel);
+		setModel(kostenvoranschlagModel);
 		
 		vorschlagItems.clear();
 
-        this.savingModel = rechnungModel;
+        this.savingModel = kostenvoranschlagModel;
 
-		rechnungModel.getItems().forEach(r -> addNewRowIntern(new KostenvoranschlagItemProperty(r)));
-		
+		kostenvoranschlagModel.getItems().forEach(r -> addNewRowIntern(new KostenvoranschlagItemProperty(r)));
+        if(!isView){
+            while (this.vorschlagItems.size() < INITIAL_ITEMS){
+                addNewRowIntern(new KostenvoranschlagItemProperty(true));
+            }
+        }
+
         RechnungManagerSpringApp.getProduktService().retreiveProduktList();
 		
 		isDirty = false;

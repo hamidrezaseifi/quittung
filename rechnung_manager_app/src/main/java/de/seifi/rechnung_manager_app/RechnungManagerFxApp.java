@@ -313,6 +313,7 @@ public class RechnungManagerFxApp extends Application implements ISingleInstance
         return reportPane;
     }
 
+
     public static FXMLLoader getKostenvoranschlagFxmlLoader() throws IOException {
 
         URL fxmlResource = RechnungManagerFxApp.class.getResource("fxml/kostenvoranschlag.fxml");

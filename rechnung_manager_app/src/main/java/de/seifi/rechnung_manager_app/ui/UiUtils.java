@@ -74,7 +74,7 @@ public class UiUtils {
 			GridPane rechnungPane = fxmlLoader.load();
 
 			KostenvoranschlagController controller = fxmlLoader.getController();
-			controller.startView(kostenvoranschlagModel, stage);
+			controller.startController(kostenvoranschlagModel, null, stage, true);
 			rechnungPane.setPadding(new Insets(10));
 
 			Scene scene = new Scene(rechnungPane, 1200, 1000);

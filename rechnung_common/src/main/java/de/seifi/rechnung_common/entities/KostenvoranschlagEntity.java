@@ -16,7 +16,7 @@ import java.util.UUID;
 public class KostenvoranschlagEntity extends EntityBase {
 
 	@Id
-	@GeneratedValue
+	//@GeneratedValue
     private UUID id;
 
 	@Column(name="customer_id", nullable = false)

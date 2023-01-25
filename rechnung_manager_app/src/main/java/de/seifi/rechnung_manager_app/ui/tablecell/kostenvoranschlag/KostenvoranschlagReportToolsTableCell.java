@@ -1,28 +1,23 @@
 package de.seifi.rechnung_manager_app.ui.tablecell.kostenvoranschlag;
 
-import de.seifi.rechnung_manager_app.enums.KostenvoranschlagStatus;
 import de.seifi.rechnung_manager_app.fx_services.KostenvoranschlagReportBindingService;
 import de.seifi.rechnung_manager_app.models.KostenvoranschlagModel;
-import de.seifi.rechnung_manager_app.models.KostenvoranschlagReportItemModel;
 import de.seifi.rechnung_manager_app.ui.UiUtils;
 import de.seifi.rechnung_manager_app.utils.PrintUtils;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
-import javafx.scene.control.TableCell;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Tooltip;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 public class KostenvoranschlagReportToolsTableCell extends KostenvoranschlagReportBaseTableCell<String>  {
 	
 	private final HBox hbox;
-	private final Button btnEdit;
+	private final Button btnView;
 	private final Button btnDone;
 	private final Button btnPrint;
 
@@ -55,15 +50,15 @@ public class KostenvoranschlagReportToolsTableCell extends KostenvoranschlagRepo
         });
 
 
-		btnEdit = new Button();
-		btnEdit.setPadding(new Insets(0));
-		btnEdit.getStyleClass().add("tools-edit-button");
-		btnEdit.setTooltip(new Tooltip("Kostenvoranschlag Ansehen"));
-		btnEdit.setPrefWidth(35);
-		btnEdit.setPrefHeight(30);
+		btnView = new Button();
+		btnView.setPadding(new Insets(0));
+		btnView.getStyleClass().add("tools-edit-button");
+		btnView.setTooltip(new Tooltip("Kostenvoranschlag Ansehen"));
+		btnView.setPrefWidth(35);
+		btnView.setPrefHeight(30);
 
 
-		btnEdit.setOnAction((ActionEvent event) -> {
+		btnView.setOnAction((ActionEvent event) -> {
 
 			KostenvoranschlagModel model = getCurrentRechnungModel();
 			UiUtils.showKostenvoranschlagViewDialog(model);
@@ -85,15 +80,22 @@ public class KostenvoranschlagReportToolsTableCell extends KostenvoranschlagRepo
 			KostenvoranschlagReportBindingService
 					reportBindingService = (KostenvoranschlagReportBindingService)this.getTableView().getUserData();
 
-			reportBindingService.makeKostenvoranschlagDone(model);
-			reportBindingService.setItemAt(this.getTableRow().getIndex(), model);
+			Optional<ButtonType> result =  UiUtils.showAsking("Fertig die Kostenvoranschlag ...",
+															  "Soll die Kostenvoranschlag fertig werden?");
+			if(result.isPresent()){
+				if(result.get() == ButtonType.OK){
+					reportBindingService.makeKostenvoranschlagDone(model);
+					reportBindingService.setItemAt(this.getTableRow().getIndex(), model);
+				}
+
+			}
 
 		});
 
 		
 		hbox.getChildren().add(btnPrint);
 		hbox.getChildren().add(btnDone);
-		hbox.getChildren().add(btnEdit);
+		hbox.getChildren().add(btnView);
 	}
 	
 	@Override
@@ -106,7 +108,7 @@ public class KostenvoranschlagReportToolsTableCell extends KostenvoranschlagRepo
 			KostenvoranschlagModel model = getCurrentRechnungModel();
 			if(model.getStatus().getValue() >= 10 && hbox.getChildren().size() >= 2){
 				hbox.getChildren().remove(btnDone);
-				hbox.getChildren().remove(btnEdit);
+				hbox.getChildren().remove(btnView);
 			}
 
         }
