@@ -1,6 +1,7 @@
 package de.seifi.rechnung_manager_app.enums;
 
 public enum RechnungType {
+    NONE(-1, "None"),
     RECHNUNG(1, "Rechnung"),
     QUITTUNG(10, "Quittung");
 

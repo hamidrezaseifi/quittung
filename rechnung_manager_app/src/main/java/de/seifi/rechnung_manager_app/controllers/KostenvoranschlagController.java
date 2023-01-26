@@ -5,6 +5,7 @@ import de.seifi.rechnung_common.repositories.KostenvoranschlagRepository;
 import de.seifi.rechnung_manager_app.RechnungManagerFxApp;
 import de.seifi.rechnung_manager_app.RechnungManagerSpringApp;
 import de.seifi.rechnung_manager_app.data_service.IRechnungDataHelper;
+import de.seifi.rechnung_manager_app.enums.RechnungType;
 import de.seifi.rechnung_manager_app.fx_services.KostenvoranschlagBindingService;
 import de.seifi.rechnung_manager_app.models.*;
 import de.seifi.rechnung_manager_app.ui.FloatGeldLabel;
@@ -31,10 +32,6 @@ import java.util.ResourceBundle;
 public class KostenvoranschlagController implements Initializable, ControllerBase {
 
     @FXML private TableView<KostenvoranschlagItemProperty> showItemsTableView;
-
-    @FXML private FloatGeldLabel lblNetto;
-
-    @FXML private FloatGeldLabel lblMvst;
 
     @FXML private FloatGeldLabel lblGesamt;
 
@@ -239,7 +236,7 @@ public class KostenvoranschlagController implements Initializable, ControllerBas
     }
     
     @FXML
-    private void printRechnung() throws JRException {
+    private void printKostenvoranschlag() throws JRException {
 
 
     	showItemsTableView.setEditable(false);
@@ -251,7 +248,7 @@ public class KostenvoranschlagController implements Initializable, ControllerBas
     }
 
     @FXML
-    private void closeRechnung() throws IOException {
+    private void closeKostenvoranschlag() throws IOException {
         if(bindingService.isView()){
             this.stage.close();
             return;
@@ -261,6 +258,20 @@ public class KostenvoranschlagController implements Initializable, ControllerBas
 	        RechnungManagerFxApp.getMainController().showHome();
     	}
     	
+    }
+
+    @FXML
+    private void exportKostenvoranschlag() throws IOException {
+        SelectRechnungTypeDialog dialog = new SelectRechnungTypeDialog(stage);
+
+        Optional<RechnungType> result = dialog.showAndWait();
+        if(result.isPresent() && result.get() != RechnungType.NONE){
+            RechnungModel rechnungModel = this.bindingService.exportModelIn(result.get());
+            closeKostenvoranschlag();
+            RechnungManagerFxApp.startEditRechnung(rechnungModel, this.bindingService.getCustomerModel());
+
+        }
+
     }
 
     private boolean canResetData() {
@@ -349,8 +360,6 @@ public class KostenvoranschlagController implements Initializable, ControllerBas
             bindingService.setNewProduktValue(tPos.getRow(), value);
         });
 
-        lblNetto.valueProperty().bind(bindingService.nettoSummeProperty());
-        lblMvst.valueProperty().bind(bindingService.mvstSummeProperty());
         lblGesamt.valueProperty().bind(bindingService.gesamtSummeProperty());
         
         lblNummer.textProperty().bind(bindingService.getNummerProperty());

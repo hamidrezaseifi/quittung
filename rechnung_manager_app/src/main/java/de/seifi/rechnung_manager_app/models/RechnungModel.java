@@ -173,6 +173,14 @@ public class RechnungModel {
 		this.items = items;
 	}
 
+	public void addItem(RechnungItemModel item) {
+		if(this.items == null){
+			this.items = new ArrayList<>();
+
+		}
+		this.items.add(item);
+	}
+
 	public RechnungType getRechnungType() {
 		return rechnungType;
 	}

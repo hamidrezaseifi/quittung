@@ -62,9 +62,9 @@ public class RechnungBindingService implements IBindingService<RechnungItemPrope
 
     private int activeBerechnenZiel;
 
-    private float berechnenFaktorBasis = 1.4f;
+    private float berechnenFaktorBasis = 1.5f;
 
-    private List<Float> berechnenFaktorZielList = Arrays.asList(1.4f, 1.2f);
+    private List<Float> berechnenFaktorZielList = Arrays.asList(1.5f, 1.2f);
 
     private List<String> berechnenFaktorZielColorList = Arrays.asList("-fx-background-color: white", "-fx-background-color: #f2f6ff");
     
@@ -203,18 +203,14 @@ public class RechnungBindingService implements IBindingService<RechnungItemPrope
 	        calculateRechnungSumme();
 	        
 	        customerModelProperty = new CustomerModelProperty();
-	        
 
-	        LocalDateTime ldt = LocalDateTime.now();
-
-	        String date = GeneralUtils.formatDate(ldt);
-
-	        int lastNummer = this.rechnungDataHelper.getLastActiveRechnungNummer();
-
-	        RechnungModel model = new RechnungModel(null, lastNummer + 1, date, date, 1,
+	        RechnungModel model = new RechnungModel(null, 0, "", "", 1,
                     PaymentType.NOT_SET, rechnungType, RechnungStatus.ACTIVE, RechnungManagerFxApp.loggedUser);
-	        
-	        setRechnungModel(model);
+
+
+            initializeRechnungModel(model);
+
+            setRechnungModel(model);
 			
 		}
 		
@@ -226,7 +222,28 @@ public class RechnungBindingService implements IBindingService<RechnungItemPrope
         this.visbleToggleStatusBox.set(true);
 	}
 
-	private void setRechnungModel(RechnungModel model) {
+    private void initializeRechnungModel(RechnungModel model) {
+        LocalDateTime ldt = LocalDateTime.now();
+
+        String date = GeneralUtils.formatDate(ldt);
+
+        int lastNummer = this.rechnungDataHelper.getLastActiveRechnungNummer();
+
+        model.setNummer(lastNummer + 1);
+        model.setLiferDate(date);
+        model.setRechnungCreate(date);
+        model.setStatus(RechnungStatus.ACTIVE);
+        model.setPaymentType(PaymentType.NOT_SET);
+        model.setUserId(RechnungManagerFxApp.loggedUser);
+    }
+
+    private void setRechnungModel(RechnungModel model) {
+
+        if(model.getNummer() == null || model.getNummer() < 1){
+            initializeRechnungModel(model);
+
+        }
+
 		this.rechnungSavingModel = model;
         this.rechnungNummer.set(String.valueOf(rechnungSavingModel.getNummer()));
         this.rechnungDatum.set(rechnungSavingModel.getRechnungCreate());

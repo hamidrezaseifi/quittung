@@ -264,7 +264,14 @@ public class RechnungManagerFxApp extends Application implements ISingleInstance
 
         return fxmlLoader;
     }
-    
+
+    public static FXMLLoader getSelectRechnungDialog() throws IOException {
+        URL fxmlResource = RechnungManagerFxApp.class.getResource("fxml/select_rechnung_type.fxml");
+        FXMLLoader fxmlLoader = new FXMLLoader(fxmlResource);
+
+        return fxmlLoader;
+    }
+
     public static Pair<Parent, FXMLLoader> loadFXMLLoader(String fxml) throws IOException {
         URL fxmlResource = RechnungManagerFxApp.class.getResource("fxml/" + fxml + ".fxml");
         FXMLLoader fxmlLoader = new FXMLLoader(fxmlResource);

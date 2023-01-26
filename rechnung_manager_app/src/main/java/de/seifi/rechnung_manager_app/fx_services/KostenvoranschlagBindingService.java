@@ -9,6 +9,7 @@ import de.seifi.rechnung_manager_app.RechnungManagerSpringApp;
 import de.seifi.rechnung_manager_app.adapter.KostenvoranschlagAdapter;
 import de.seifi.rechnung_manager_app.data_service.IRechnungDataHelper;
 import de.seifi.rechnung_manager_app.enums.KostenvoranschlagStatus;
+import de.seifi.rechnung_manager_app.enums.RechnungType;
 import de.seifi.rechnung_manager_app.models.*;
 import de.seifi.rechnung_manager_app.ui.UiUtils;
 import javafx.beans.property.*;
@@ -48,8 +49,6 @@ public class KostenvoranschlagBindingService implements IBindingService<Kostenvo
 
 
     private FloatProperty gesamtSumme;
-    private FloatProperty nettoSumme;
-    private FloatProperty mvstSumme;
 
     private StringProperty vorschlagNummer;
 
@@ -82,8 +81,6 @@ public class KostenvoranschlagBindingService implements IBindingService<Kostenvo
         this.customerList = new HashMap<>();
         
         gesamtSumme = new SimpleFloatProperty(0);
-        nettoSumme = new SimpleFloatProperty(0);
-        mvstSumme = new SimpleFloatProperty(0);
 
         vorschlagNummer = new SimpleStringProperty();
 
@@ -130,9 +127,7 @@ public class KostenvoranschlagBindingService implements IBindingService<Kostenvo
             netto += item.getPreis();
         }
         
-        nettoSumme.set(netto);
-        mvstSumme.set(netto * 19 / 100);
-        gesamtSumme.set(nettoSumme.getValue() + mvstSumme.getValue());
+         gesamtSumme.set(netto);
     }
 
     public ObservableList<KostenvoranschlagItemProperty> getKostenvoranschlagItems() {
@@ -195,26 +190,6 @@ public class KostenvoranschlagBindingService implements IBindingService<Kostenvo
 
     public void setGesamtSumme(float gesamtSumme) {
         this.gesamtSumme.set(gesamtSumme);
-    }
-
-    public float getNettoSumme() {
-        return nettoSumme.get();
-    }
-
-    public FloatProperty nettoSummeProperty() {
-        return nettoSumme;
-    }
-
-    public void setNettoSumme(float nettoSumme) {
-        this.nettoSumme.set(nettoSumme);
-    }
-
-    public float getMvstSumme() {
-        return mvstSumme.get();
-    }
-
-    public FloatProperty mvstSummeProperty() {
-        return mvstSumme;
     }
 
 	public void reset() {
@@ -433,6 +408,7 @@ public class KostenvoranschlagBindingService implements IBindingService<Kostenvo
         KostenvoranschlagItemProperty prop = this.vorschlagItems.get(row);
         if(prop.getPreis() != value) {
             prop.setPreis(value);
+            calculateKostenvoranschlagSumme();
             setDirty(true);
 
         }
@@ -550,5 +526,26 @@ public class KostenvoranschlagBindingService implements IBindingService<Kostenvo
     @Override
     public boolean isEditingMode() {
         return editingMode;
+    }
+
+    public RechnungModel exportModelIn(RechnungType rechnungType) {
+
+        RechnungModel rechnungModel = new RechnungModel();
+        rechnungModel.setRechnungType(rechnungType);
+        rechnungModel.setCustomerId(null);
+        rechnungModel.setNummer(null);
+        if(rechnungType == RechnungType.RECHNUNG){
+            rechnungModel.setCustomerId(this.savingModel.getCustomerId());
+        }
+        for(KostenvoranschlagItemModel item: this.savingModel.getItems()){
+            RechnungItemModel rechnungItem = new RechnungItemModel(item.getProdukt(),
+                                                                   item.getOriginalNummer(),
+                                                                   1,
+                                                                   item.getPreis());
+
+            rechnungModel.addItem(rechnungItem);
+        }
+
+        return rechnungModel;
     }
 }
