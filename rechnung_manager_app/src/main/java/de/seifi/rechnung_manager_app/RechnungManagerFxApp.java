@@ -206,10 +206,6 @@ public class RechnungManagerFxApp extends Application implements ISingleInstance
         return RechnungManagerFxApp.class.getResource("styles/styles.css").toExternalForm();
     }
 
-    public static String getPrintStyle() {
-        return RechnungManagerFxApp.class.getResource("styles/print_styles.css").toExternalForm();
-    }
-
     public static InputStream getJasperFilePath(String fileName) throws IOException {
         URL url = RechnungManagerFxApp.class.getResource("jasper/" + fileName + ".jasper");
 
@@ -283,14 +279,6 @@ public class RechnungManagerFxApp extends Application implements ISingleInstance
     public static FXMLLoader getRechnungFxmlLoader() throws IOException {
 
         URL fxmlResource = RechnungManagerFxApp.class.getResource("fxml/rechnung_base.fxml");
-        FXMLLoader fxmlLoader = new FXMLLoader(fxmlResource);
-
-        return fxmlLoader;
-    }
-
-    public static FXMLLoader getQuittungPrintFxmlLoader() throws IOException {
-
-        URL fxmlResource = RechnungManagerFxApp.class.getResource("fxml/rechnung_print.fxml");
         FXMLLoader fxmlLoader = new FXMLLoader(fxmlResource);
 
         return fxmlLoader;

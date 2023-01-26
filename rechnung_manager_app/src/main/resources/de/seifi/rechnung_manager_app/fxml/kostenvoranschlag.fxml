@@ -83,8 +83,15 @@
 				<Label fx:id="lblFahrzeugschein" text="Fahrzeugschein" GridPane.columnIndex="4" GridPane.rowIndex="3" styleClass="summe-label" textAlignment="LEFT" />
 				<HBox spacing="0" GridPane.columnIndex="5" GridPane.rowIndex="3" fx:id="fahrzeugscheinBox">
 					<Label fx:id="lblFahrzeugscheinName" text="" prefWidth="170" styleClass="rechnung-customer-label" textAlignment="LEFT" />
-					<Button fx:id="btnViewFahrzeugschein" prefWidth="30" styleClass="view-fahrzeugschein-button" onAction="#selectFahrzeugschein"></Button>
-					<Button fx:id="btnDeleteFahrzeugschein" prefWidth="30" styleClass="delete-fahrzeugschein-button" onAction="#deleteFahrzeugschein"></Button>
+					<Button fx:id="btnViewFahrzeugschein" prefWidth="30" styleClass="view-fahrzeugschein-button" onAction="#viewFahrzeugschein">
+						<tooltip><Tooltip text="Fahrzeugschein ansehen ..." /></tooltip>
+					</Button>
+					<Button fx:id="btnChooseFahrzeugschein" prefWidth="30" styleClass="accept_choose-button" onAction="#selectFahrzeugschein">
+						<tooltip><Tooltip text="Fahrzeugschein auswählen ..." /></tooltip>
+					</Button>
+					<Button fx:id="btnDeleteFahrzeugschein" prefWidth="30" styleClass="delete-fahrzeugschein-button" onAction="#deleteFahrzeugschein">
+						<tooltip><Tooltip text="Fahrzeugschein löschen ..." /></tooltip>
+					</Button>
 
 				</HBox>
 

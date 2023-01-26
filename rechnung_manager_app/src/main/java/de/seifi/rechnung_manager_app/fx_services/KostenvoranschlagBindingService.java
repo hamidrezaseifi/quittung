@@ -122,7 +122,7 @@ public class KostenvoranschlagBindingService implements IBindingService<Kostenvo
 
     }
 
-    public void calculateRechnungSumme() {
+    public void calculateKostenvoranschlagSumme() {
         float netto = 0;
 
         for(KostenvoranschlagItemProperty item:this.vorschlagItems){
@@ -223,7 +223,7 @@ public class KostenvoranschlagBindingService implements IBindingService<Kostenvo
         while (this.vorschlagItems.size() < INITIAL_ITEMS){
             addNewRowIntern(new KostenvoranschlagItemProperty(true));
         }
-        calculateRechnungSumme();
+        calculateKostenvoranschlagSumme();
 
         customerModelProperty = new CustomerModelProperty();
 
@@ -286,7 +286,7 @@ public class KostenvoranschlagBindingService implements IBindingService<Kostenvo
 		return savingModel.getNummer();
 	}
 
-    public KostenvoranschlagModel getRechnungSavingModel() {
+    public KostenvoranschlagModel getKostenvoranschlagSavingModel() {
         return savingModel;
     }
 
@@ -294,7 +294,7 @@ public class KostenvoranschlagBindingService implements IBindingService<Kostenvo
 		return vorschlagNummer;
 	}
 
-	public StringProperty getRechnungDatumProperty() {
+	public StringProperty getKostenvoranschlagDatumProperty() {
 		return vorschlagNummer;
 	}
 
@@ -333,8 +333,8 @@ public class KostenvoranschlagBindingService implements IBindingService<Kostenvo
         }
 
         if (this.selectedFahrzeugSchein.get() == null &&
-            schluesselNummerProperty.get().isEmpty() &&
-            fahrgestellNummerProperty.get().isEmpty()) {
+            (schluesselNummerProperty.get() == null ||schluesselNummerProperty.get().isEmpty()) &&
+            (fahrgestellNummerProperty.get() == null ||fahrgestellNummerProperty.get().isEmpty())) {
             if(showError){
                 UiUtils.showError("Kostenvoranschlag-Speichern",
                                   "Es ist kein Kunde ausgewählt. Bitte wählen Sie einen Kunden aus.");
@@ -368,10 +368,10 @@ public class KostenvoranschlagBindingService implements IBindingService<Kostenvo
         savingModel.setSchluesselNummer(schluesselNummerProperty.get());
         savingModel.setFahrzeugSchein(selectedFahrzeugSchein.get() != null? selectedFahrzeugSchein.get().getId(): null);
 
-        savingModel.setItems(getSavingRechnungItems());
+        savingModel.setItems(getSavingKostenvoranschlagItems());
 
         KostenvoranschlagEntity savingEntity = kostenvoranschlagAdapter.toEntity(savingModel);
-        savingEntity.setUpdated(null);
+        //savingEntity.setUpdated(null);
         savingEntity.setStatus(KostenvoranschlagStatus.ACTIVE.getValue());
         kostenvoranschlagRepository.save(savingEntity);
         Optional<KostenvoranschlagEntity> savedEntityOptional = kostenvoranschlagRepository.findById(savingEntity.getId());
@@ -384,7 +384,7 @@ public class KostenvoranschlagBindingService implements IBindingService<Kostenvo
         return true;
     }
 
-    private List<KostenvoranschlagItemModel> getSavingRechnungItems() {
+    private List<KostenvoranschlagItemModel> getSavingKostenvoranschlagItems() {
         return this.vorschlagItems.stream().
                 filter(KostenvoranschlagItemProperty::canSaved).
                 map(KostenvoranschlagItemProperty::toModel).collect(Collectors.toList());
@@ -395,7 +395,7 @@ public class KostenvoranschlagBindingService implements IBindingService<Kostenvo
         KostenvoranschlagItemProperty prop = this.vorschlagItems.get(row);
         if(prop.getProdukt() != value) {
             prop.setProdukt(value);
-            calculateRechnungSumme();
+            calculateKostenvoranschlagSumme();
             setDirty(true);
 
         }
@@ -470,8 +470,6 @@ public class KostenvoranschlagBindingService implements IBindingService<Kostenvo
 
         this.customerModelProperty.setModel(this.customerSavingModel);
 
-        this.calculateButtons();
-
 		setModel(kostenvoranschlagModel);
 		
 		vorschlagItems.clear();
@@ -486,10 +484,12 @@ public class KostenvoranschlagBindingService implements IBindingService<Kostenvo
         }
 
         RechnungManagerSpringApp.getProduktService().retreiveProduktList();
-		
-		isDirty = false;
 
-        this.calculateRechnungSumme();
+        this.calculateButtons();
+
+        isDirty = false;
+
+        this.calculateKostenvoranschlagSumme();
 	}
 
 	public void setIsView(boolean isView) {
@@ -535,7 +535,7 @@ public class KostenvoranschlagBindingService implements IBindingService<Kostenvo
 			vorschlagItems.remove(selectedIndx);
 		}
 
-        calculateRechnungSumme();
+        calculateKostenvoranschlagSumme();
         setDirty(true);
 	}
 

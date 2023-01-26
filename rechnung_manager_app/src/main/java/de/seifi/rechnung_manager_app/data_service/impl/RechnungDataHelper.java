@@ -44,17 +44,17 @@ public class RechnungDataHelper implements IRechnungDataHelper {
 
         Optional<KostenvoranschlagEntity> lastKostenvoranschlagOptional = this.kostenvoranschlagRepository.findFirstByOrderByCreatedDesc();
         int currentYear = LocalDate.now().getYear();
-
+        int newNumm = 1;
         if(lastKostenvoranschlagOptional.isPresent()){
             String lastNummer = lastKostenvoranschlagOptional.get().getNummer();
             String[] parts = lastNummer.split("/");
             if(parts[0].equals(currentYear + "")){
                 int lastNumInt = Integer.parseInt(parts[1]);
-                int newNumm = lastNumInt + 1;
-                return currentYear + "/" + newNumm;
+                newNumm = lastNumInt + 1;
             }
         }
 
-        return currentYear + "/1";
+        String formatted = String.format("%04d", newNumm);
+        return currentYear + "/" + formatted;
     }
 }

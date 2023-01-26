@@ -8,17 +8,20 @@ import de.seifi.rechnung_manager_app.data_service.IRechnungDataHelper;
 import de.seifi.rechnung_manager_app.fx_services.KostenvoranschlagBindingService;
 import de.seifi.rechnung_manager_app.models.*;
 import de.seifi.rechnung_manager_app.ui.FloatGeldLabel;
+import de.seifi.rechnung_manager_app.ui.UiUtils;
 import de.seifi.rechnung_manager_app.utils.PrintUtils;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import net.sf.jasperreports.engine.JRException;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
@@ -72,6 +75,8 @@ public class KostenvoranschlagController implements Initializable, ControllerBas
     @FXML private Button btnEdit;
 
     @FXML private Button btnViewFahrzeugschein;
+
+    @FXML private Button btnChooseFahrzeugschein;
 
     @FXML private Button btnDeleteFahrzeugschein;
 
@@ -163,7 +168,7 @@ public class KostenvoranschlagController implements Initializable, ControllerBas
     private void startEdit() throws IOException {
         this.stage.close();
 
-        RechnungManagerFxApp.getMainController().startEditKostenvoranschlag(this.bindingService.getRechnungSavingModel(),
+        RechnungManagerFxApp.getMainController().startEditKostenvoranschlag(this.bindingService.getKostenvoranschlagSavingModel(),
                                                                             this.bindingService.getCustomerModel());
     }
 
@@ -214,7 +219,14 @@ public class KostenvoranschlagController implements Initializable, ControllerBas
 
     @FXML
     private void viewFahrzeugschein(){
+        if(this.bindingService.selectedFahrzeugScheinProperty().get() != null){
+            CustomerFahrzeugScheinModel model = this.bindingService.selectedFahrzeugScheinProperty().get();
+            Image img = new Image(new ByteArrayInputStream(model.getImageBytes()));
+            Dialog showImageDialog = UiUtils.createImageViewDialog(img);
 
+            showImageDialog.showAndWait();
+
+        }
 
     }
     
@@ -233,7 +245,7 @@ public class KostenvoranschlagController implements Initializable, ControllerBas
     	showItemsTableView.setEditable(false);
     	showItemsTableView.edit(-1, null);
 
-        PrintUtils.printKostenvoranschlagItems(Arrays.asList(bindingService.getRechnungSavingModel()));
+        PrintUtils.printKostenvoranschlagItems(Arrays.asList(bindingService.getKostenvoranschlagSavingModel()));
         showItemsTableView.setEditable(true);
 
     }
@@ -378,10 +390,10 @@ public class KostenvoranschlagController implements Initializable, ControllerBas
     	showItemsTableView.setItems(bindingService.getKostenvoranschlagItems());
 	}
     
-	public void startController(KostenvoranschlagModel rechnungModel, CustomerModel customerModel, Stage stage, boolean isView) {
+	public void startController(KostenvoranschlagModel kostenvoranschlagModel, CustomerModel customerModel, Stage stage, boolean isView) {
 
 
-		bindingService.startEditing(rechnungModel, customerModel, isView);
+		bindingService.startEditing(kostenvoranschlagModel, customerModel, isView);
 		
         bindingService.setIsView(isView);
         this.stage = stage;
@@ -399,7 +411,7 @@ public class KostenvoranschlagController implements Initializable, ControllerBas
 
             txtFahrgestellnummer.setDisable(isView);
             txtSchluesselNummer.setDisable(isView);
-            btnViewFahrzeugschein.setVisible(!isView);
+            btnChooseFahrzeugschein.setVisible(!isView);
             btnDeleteFahrzeugschein.setVisible(!isView);
 
             nameBox.getChildren().remove(btnSelectCsutomer);

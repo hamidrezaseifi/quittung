@@ -36,18 +36,21 @@ public class KostenvoranschlagProduktListTableCell extends KostenvoranschlagRepo
             return;
         }
 
-        Color[] fxColors = {Color.rgb(242, 242, 255), Color.rgb(255, 242, 242)};
+        //Color[] fxColors = {Color.rgb(242, 242, 255), Color.rgb(255, 242, 242)};
+
+        Color bestelltColor = Color.rgb(242, 242, 255);
+        Color notBestelltColor = Color.rgb(255, 242, 242);
 
         for(int i=0;i<newItemList.size();i++) {
             KostenvoranschlagItemModel item = newItemList.get(i);
             Label lbl = new Label( item.getReportLabel());
             lbl.setPadding(new Insets(5));
-            lbl.setBackground(new Background(new BackgroundFill(fxColors[i % fxColors.length], new CornerRadii(0), new Insets(0))));
+            Color bgColor = item.isBestellt() ? bestelltColor: notBestelltColor;
+            lbl.setBackground(new Background(new BackgroundFill(bgColor, new CornerRadii(0), new Insets(0))));
             lbl.setTextFill(Color.BLACK);
             lbl.prefWidthProperty().bind(this.widthProperty().subtract(3));
             vBox.getChildren().add(lbl);
         }
-
 
     }
 

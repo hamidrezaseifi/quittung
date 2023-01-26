@@ -25,8 +25,8 @@
         <HBox alignment="CENTER_RIGHT" spacing="10" GridPane.columnIndex="0" fx:id="toolbarPane" GridPane.rowIndex="0" style="-fx-padding: 5px;">
             <Button alignment="CENTER_RIGHT" onAction="#search" prefHeight="26" prefWidth="110" styleClass="search-button" text="Suchen" />
             <Label fx:id="lblFilter" styleClass="filter-label"></Label>
-            <Button alignment="CENTER_RIGHT" onAction="#printRechnung" prefHeight="26" prefWidth="116" styleClass="print-button" text="Drucken" />
-            <Button alignment="CENTER_RIGHT" onAction="#closeRechnung" prefHeight="26" prefWidth="116" styleClass="cancel-button" text="Schließen" />
+            <Button alignment="CENTER_RIGHT" onAction="#printAll" prefHeight="26" prefWidth="116" styleClass="print-button" text="Drucken" />
+            <Button alignment="CENTER_RIGHT" onAction="#closeForm" prefHeight="26" prefWidth="116" styleClass="cancel-button" text="Schließen" />
 
         </HBox>
         <HBox alignment="CENTER_LEFT" fx:id="filterPane" spacing="10" GridPane.columnIndex="0" GridPane.rowIndex="1" style="-fx-padding: 5px;" visible="false">

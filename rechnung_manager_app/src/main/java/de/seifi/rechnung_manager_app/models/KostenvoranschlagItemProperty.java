@@ -2,6 +2,9 @@ package de.seifi.rechnung_manager_app.models;
 
 import javafx.beans.property.*;
 
+import java.time.LocalDateTime;
+import java.util.UUID;
+
 public class KostenvoranschlagItemProperty {
     private StringProperty produkt;
     private StringProperty originalNummer;
@@ -12,6 +15,8 @@ public class KostenvoranschlagItemProperty {
     private BooleanProperty bestellt;
     private boolean newItem;
 
+    private KostenvoranschlagItemModel existingItem = null;
+
     public KostenvoranschlagItemProperty(boolean newItem) {
 
         this.produkt = new SimpleStringProperty();
@@ -21,6 +26,7 @@ public class KostenvoranschlagItemProperty {
         this.preis = new SimpleFloatProperty(0f);
         this.bestellt = new SimpleBooleanProperty(false);
         this.newItem = newItem;
+        this.existingItem = null;
 
     }
 
@@ -32,6 +38,8 @@ public class KostenvoranschlagItemProperty {
         this.marke.set(model.getMarke());
         this.bestellt.set(model.isBestellt());
         this.preis.set(model.getPreis());
+        this.existingItem = model;
+
     }
 
     public String getProdukt() {
@@ -115,12 +123,19 @@ public class KostenvoranschlagItemProperty {
 	}
 
 	public KostenvoranschlagItemModel toModel(){
-        return new KostenvoranschlagItemModel(this.produkt.get(),
+        UUID existingId = this.existingItem != null ? this.existingItem.getId() : null;
+        LocalDateTime created = this.existingItem != null ? this.existingItem.getCreated() : null;
+        LocalDateTime updated = this.existingItem != null ? this.existingItem.getUpdated() : null;
+
+        return new KostenvoranschlagItemModel(existingId,
+                                              this.produkt.get(),
                                               this.originalNummer.get(),
                                               this.teilNummer.get(),
                                               this.marke.get(),
                                               this.bestellt.get(),
-                                              this.preis.get());
+                                              this.preis.get(),
+                                              created,
+                                              updated);
     }
 
     public boolean isValid(){

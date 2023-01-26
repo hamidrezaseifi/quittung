@@ -130,7 +130,7 @@ public class KostenvoranschlagReportController implements Initializable, Control
     }
 
     @FXML
-    private void printRechnung() throws JRException {
+    private void printAll() throws JRException {
         if(bindingService.getReportItems().isEmpty()) {
             return;
         }
@@ -142,7 +142,7 @@ public class KostenvoranschlagReportController implements Initializable, Control
     }
 
     @FXML
-    private void closeRechnung() throws IOException {
+    private void closeForm() throws IOException {
         RechnungManagerFxApp.getMainController().showHome();
 
     }

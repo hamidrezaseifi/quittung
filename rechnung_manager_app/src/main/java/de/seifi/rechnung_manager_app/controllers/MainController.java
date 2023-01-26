@@ -26,7 +26,6 @@ public class MainController implements Initializable {
 	
 	private static GridPane rechnungReportPane = null;
 
-	private static GridPane kostenvoranschlagReportPane = null;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -84,9 +83,8 @@ public class MainController implements Initializable {
 	private void showKostenvoranschlagReport() throws IOException {
 		logger.debug("Show Kostenvoranschlag Report");
 
-		if(kostenvoranschlagReportPane == null) {
-			kostenvoranschlagReportPane = RechnungManagerFxApp.getKostenvoranschlagReportPane();
-		}
+		GridPane kostenvoranschlagReportPane = RechnungManagerFxApp.getKostenvoranschlagReportPane();
+
 		if(RechnungManagerFxApp.cannCurrentControllerClosed()) {
 			clearChildren();
 

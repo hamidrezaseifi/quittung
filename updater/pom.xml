@@ -5,13 +5,13 @@
 	<parent>
 		<groupId>de.seifi</groupId>
 		<artifactId>rechnung_manager</artifactId>
-		<version>0.0.5</version>
+		<version>0.0.6</version>
 	</parent>
 	<artifactId>updater</artifactId>
 	<name>updater</name>
 	<description>updater</description>
 	<packaging>jar</packaging>
-	<version>0.0.5</version>
+	<version>0.0.6</version>
 
 	<properties>
 		<java.version>11</java.version>

@@ -1,10 +1,12 @@
 package de.seifi.rechnung_common.entities;
 
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
@@ -16,7 +18,17 @@ import java.util.UUID;
 public class KostenvoranschlagEntity extends EntityBase {
 
 	@Id
-	//@GeneratedValue
+	@GeneratedValue(generator = "UUID")
+	@GenericGenerator(
+			name = "UUID",
+			strategy = "org.hibernate.id.UUIDGenerator",
+			parameters = {
+					@Parameter(
+							name = "uuid_gen_strategy_class",
+							value = "org.hibernate.id.uuid.CustomVersionOneStrategy"
+					)
+			}
+	)
     private UUID id;
 
 	@Column(name="customer_id", nullable = false)

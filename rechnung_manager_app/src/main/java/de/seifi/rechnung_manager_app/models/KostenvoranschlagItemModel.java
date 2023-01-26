@@ -146,6 +146,13 @@ public class KostenvoranschlagItemModel implements IReportLabelModel {
 
     @Override
     public String getReportLabel() {
-        return String.format("%s (%s, %s): %s", produkt, originalNummer, teilNummer, TableUtils.formatGeld(preis));
+        String besteltLbl = bestellt ? "bestellt" : "nit bestellt";
+
+        return String.format("%s (%s, %s): %s --> (%s)",
+                             produkt,
+                             originalNummer,
+                             teilNummer,
+                             TableUtils.formatGeld(preis),
+                             besteltLbl);
     }
 }
