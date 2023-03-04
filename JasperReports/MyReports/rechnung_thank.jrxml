@@ -165,42 +165,42 @@ WHERE
 				<textFieldExpression><![CDATA[$F{payment_type} == 1? "Bar": "Card"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="10" y="150" width="100" height="15" uuid="f4c0e7d5-8ccb-489a-8a20-e48ceabd4f69"/>
+				<reportElement x="10" y="150" width="250" height="15" uuid="f4c0e7d5-8ccb-489a-8a20-e48ceabd4f69"/>
 				<textElement>
 					<font fontName="Arial" size="10" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{customer_name}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="10" y="165" width="100" height="15" uuid="9ece090d-d778-468c-b988-d2b83addb023"/>
+				<reportElement x="10" y="165" width="250" height="15" uuid="9ece090d-d778-468c-b988-d2b83addb023"/>
 				<textElement>
 					<font fontName="Arial" size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{address1}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="10" y="180" width="100" height="15" uuid="02d6c00d-facb-4de8-8943-25db11651645"/>
+				<reportElement x="10" y="180" width="250" height="15" uuid="02d6c00d-facb-4de8-8943-25db11651645"/>
 				<textElement>
 					<font fontName="Arial" size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{address2}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="222" y="150" width="69" height="15" uuid="edbd74ac-0cbd-44c9-8a8e-ccf745191172"/>
+				<reportElement x="278" y="149" width="69" height="15" uuid="edbd74ac-0cbd-44c9-8a8e-ccf745191172"/>
 				<textElement>
 					<font fontName="Arial"/>
 				</textElement>
 				<text><![CDATA[Rechnung Nr.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="222" y="165" width="69" height="15" uuid="2d2f365d-7b12-4a8f-990d-ff528a2660bc"/>
+				<reportElement x="278" y="164" width="69" height="15" uuid="2d2f365d-7b12-4a8f-990d-ff528a2660bc"/>
 				<textElement>
 					<font fontName="Arial"/>
 				</textElement>
 				<text><![CDATA[Datum]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="222" y="180" width="69" height="15" uuid="b62092ec-9053-4f27-b387-9b25d2909a68"/>
+				<reportElement x="278" y="179" width="69" height="15" uuid="b62092ec-9053-4f27-b387-9b25d2909a68"/>
 				<textElement>
 					<font fontName="Arial"/>
 				</textElement>

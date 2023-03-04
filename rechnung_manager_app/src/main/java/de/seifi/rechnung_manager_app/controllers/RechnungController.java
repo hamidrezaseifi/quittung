@@ -100,7 +100,7 @@ public class RechnungController implements Initializable, ControllerBase {
 
     @FXML private HBox toggleStatusBox;
 
-    //@FXML private Label lblStatusChange;
+    @FXML private HBox toggleButtonBox;
 
     @FXML private Button btnToggleBrerechnenZiel;
 
@@ -112,6 +112,7 @@ public class RechnungController implements Initializable, ControllerBase {
 
     @FXML private ComboBox<PaymentType> cmbPaymentType;
 
+    @FXML private ToggleGroup tgCalcGroup;
 
     private RechnungBindingService rechnungBindingService;
 
@@ -331,6 +332,13 @@ public class RechnungController implements Initializable, ControllerBase {
         btnPrint.disableProperty().bind(rechnungBindingService.getDisablePrintProperty());
         toggleStatusBox.visibleProperty().bind(rechnungBindingService.getVisbleToggleStatusBox());
 
+        tgCalcGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+            String value = newValue.getUserData().toString();
+            rechnungBindingService.setCalcFactor(Float.parseFloat(value));
+        });
+
+        selectCalcFactorButton();
+
         cmbPaymentType.getItems().addAll(PaymentType.values());
         cmbPaymentType.valueProperty().bindBidirectional(rechnungBindingService.getPaymentTypeProperty());
         cmbPaymentType.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
@@ -356,8 +364,9 @@ public class RechnungController implements Initializable, ControllerBase {
             btnToggleBrerechnenZiel.setOnAction(e -> {
                 rechnungBindingService.toggleActiveBerechnenZiel();
                 showItemsTableView.requestFocus();
+                toggleButtonBox.setVisible(!toggleButtonBox.isVisible());
+                selectCalcFactorButton();
             });
-            //btnToggleBrerechnenZiel.setVisible(false);
 
             toggleStatusBox.getChildren().add(btnToggleBrerechnenZiel);
 
@@ -373,7 +382,7 @@ public class RechnungController implements Initializable, ControllerBase {
             lblCity.textProperty().bind(rechnungBindingService.getCustomerModelProperty().getCity());
             lblHaus.textProperty().bind(rechnungBindingService.getCustomerModelProperty().getHouseNumber());
 
-            //toggleStatusBox.setVisible(false);
+            toggleStatusBox.setVisible(false);
             lblQuittung.setVisible(false);
 
             if(btnToggleBrerechnenZiel != null){
@@ -386,7 +395,17 @@ public class RechnungController implements Initializable, ControllerBase {
 
     }
 
-	@Override
+    private void selectCalcFactorButton() {
+        for(Toggle toggle: tgCalcGroup.getToggles()){
+            String value = toggle.getUserData().toString();
+            if(Float.parseFloat(value) == rechnungBindingService.getCalcFactor()){
+                tgCalcGroup.selectToggle(toggle);
+                break;
+            }
+        }
+    }
+
+    @Override
 	public boolean isDirty() {
 		
 		return rechnungBindingService.isDirty();

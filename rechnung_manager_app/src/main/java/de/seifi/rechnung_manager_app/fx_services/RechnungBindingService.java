@@ -60,14 +60,16 @@ public class RechnungBindingService implements IBindingService<RechnungItemPrope
     private final RechnungType rechnungType;
 
 
-    private int activeBerechnenZiel;
+    private final float defaultCalcFactor = 1.2f;
 
-    private float berechnenFaktorBasis = 1.5f;
+    private float calcFactor = 1.2f;
 
-    private List<Float> berechnenFaktorZielList = Arrays.asList(1.5f, 1.2f);
+    private boolean useNormalCalcFactor = true;
 
-    private List<String> berechnenFaktorZielColorList = Arrays.asList("-fx-background-color: white", "-fx-background-color: #f2f6ff");
-    
+    private String customCalcFactorStyle = "-fx-background-color: #f2f6ff";
+
+    private String normalCalcFactorStyle = "-fx-background-color: white";
+
     private StringProperty bannerBackColor;
 
     private final RechnungAdapter rechnungAdapter = new RechnungAdapter();
@@ -82,8 +84,7 @@ public class RechnungBindingService implements IBindingService<RechnungItemPrope
     	
     	CURRENT_INSTANCE = this;
 
-        this.activeBerechnenZiel = 0;
-        this.bannerBackColor = new SimpleStringProperty(this.berechnenFaktorZielColorList.get(this.activeBerechnenZiel));
+        this.bannerBackColor = new SimpleStringProperty(this.normalCalcFactorStyle);
 
         this.rechnungType = rechnungType;
         this.rechnungRepository = rechnungRepository;
@@ -112,9 +113,19 @@ public class RechnungBindingService implements IBindingService<RechnungItemPrope
     }
 
     public void toggleActiveBerechnenZiel(){
-        this.activeBerechnenZiel = this.activeBerechnenZiel == 0 ? 1 : 0;
-        this.bannerBackColor.set(this.berechnenFaktorZielColorList.get(this.activeBerechnenZiel));
+        this.useNormalCalcFactor = !useNormalCalcFactor;
+        this.bannerBackColor.set(this.useNormalCalcFactor? this.normalCalcFactorStyle: this.customCalcFactorStyle);
+        if(useNormalCalcFactor){
+            calcFactor = defaultCalcFactor;
+        }
+    }
 
+    public float getCalcFactor() {
+        return calcFactor;
+    }
+
+    public void setCalcFactor(float calcFactor) {
+        this.calcFactor = calcFactor;
     }
 
     public String getBannerBackColor() {
@@ -123,10 +134,6 @@ public class RechnungBindingService implements IBindingService<RechnungItemPrope
 
     public StringProperty bannerBackColorProperty() {
         return bannerBackColor;
-    }
-
-    public float getBerechnenFaktorZiel() {
-        return this.berechnenFaktorZielList.get(this.activeBerechnenZiel);
     }
 
     public void calculateRechnungSumme() {
@@ -188,7 +195,7 @@ public class RechnungBindingService implements IBindingService<RechnungItemPrope
 		
 		float netto = GerldCalculator.bruttoToNetto(value);
 
-        netto = (netto * getBerechnenFaktorZiel()) / berechnenFaktorBasis;
+        netto = (netto * calcFactor) / calcFactor;
 
 		return netto;
 	}
