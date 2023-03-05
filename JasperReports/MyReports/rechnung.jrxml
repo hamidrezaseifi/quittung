@@ -449,7 +449,7 @@ WHERE
 				<textElement>
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<text><![CDATA[Waren rückgabe nur innerhalb 7 Werktagen Gegen einen Gutschrift minus 15% Bearbeitungsgebühr]]></text>
+				<text><![CDATA[Warenrückgabe nur innerhalb von 7 Werktagen gegen eine Gutschrift und minus 15% Bearbeitungsgebühr.]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="10" y="103" width="534" height="16" uuid="cef3d6fe-19c4-4bd4-a596-38c29273dd8b">
@@ -458,7 +458,7 @@ WHERE
 				<textElement>
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<text><![CDATA[Elektronik oder Ausgepackte ware sind von Umtausch Ausgeschlossen sowie Autoreifen]]></text>
+				<text><![CDATA[Elektronik, ausgepackte sowie reduzierte Ware und Autoreifen sind von Umtausch Ausgeschlossen.]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="11" y="119" width="534" height="16" uuid="a9480428-b555-4b86-9370-ee7518a46c77">
@@ -467,7 +467,7 @@ WHERE
 				<textElement>
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<text><![CDATA[Bitte Überweisen Sie den Betrag unter Angaben der Rechnungsnummer innerhalb von 8 Tagen auf das Untenstehende Konto.]]></text>
+				<text><![CDATA[Bitte überweisen Sie den Betrag unter Angaben der Rechnungsnummer innerhalb von 8 Werktagen auf das untenstehende Konto.]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="11" y="148" width="118" height="16" uuid="fc571884-d512-478f-8c23-f4263fc32fd2">

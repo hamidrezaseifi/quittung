@@ -5,11 +5,19 @@
 	
 	<groupId>de.seifi</groupId>
 	<artifactId>rechnung_manager</artifactId>
-	<version>0.0.6</version>
+	<version>0.0.7</version>
 	<name>rechnung_manager</name>
 	<description>rechnung_manager</description>
 	<packaging>pom</packaging>
-	
+
+	<properties>
+		<rechnung_app.version>0.0.7</rechnung_app.version>
+		<javafx.version>17.0.1</javafx.version>
+		<javafx.maven.plugin.version>0.0.8</javafx.maven.plugin.version>
+		<maven.compiler.release>11</maven.compiler.release>
+
+	</properties>
+
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
