@@ -60,9 +60,9 @@ public class RechnungBindingService implements IBindingService<RechnungItemPrope
     private final RechnungType rechnungType;
 
 
-    private final float defaultCalcFactor = 1.2f;
+    private final float defaultCalcFactor = 1.0f;
 
-    private float calcFactor = 1.2f;
+    private float calcFactor = 1.0f;
 
     private boolean useNormalCalcFactor = true;
 
@@ -195,7 +195,7 @@ public class RechnungBindingService implements IBindingService<RechnungItemPrope
 		
 		float netto = GerldCalculator.bruttoToNetto(value);
 
-        netto = (netto * calcFactor) / calcFactor;
+        netto = netto/ calcFactor;
 
 		return netto;
 	}

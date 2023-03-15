@@ -86,6 +86,8 @@ public class RechnungController implements Initializable, ControllerBase {
 
     @FXML private Label lblName;
 
+    @FXML private Label lblCalcFactor;
+
     @FXML private Label lblStreet;
 
     @FXML private Label lblPlz;
@@ -335,6 +337,9 @@ public class RechnungController implements Initializable, ControllerBase {
         tgCalcGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
             String value = newValue.getUserData().toString();
             rechnungBindingService.setCalcFactor(Float.parseFloat(value));
+
+            lblCalcFactor.setText("Druck-Scale: " + value);
+            toggleButtonBox.setVisible(false);
         });
 
         selectCalcFactorButton();
@@ -382,7 +387,6 @@ public class RechnungController implements Initializable, ControllerBase {
             lblCity.textProperty().bind(rechnungBindingService.getCustomerModelProperty().getCity());
             lblHaus.textProperty().bind(rechnungBindingService.getCustomerModelProperty().getHouseNumber());
 
-            toggleStatusBox.setVisible(false);
             lblQuittung.setVisible(false);
 
             if(btnToggleBrerechnenZiel != null){

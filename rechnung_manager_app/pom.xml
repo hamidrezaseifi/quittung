@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>de.seifi</groupId>
 		<artifactId>rechnung_manager</artifactId>
-		<version>0.0.7</version>
+		<version>0.0.8</version>
 	</parent>
 	<artifactId>rechnung_manager_app</artifactId>
 	<name>rechnung_manager_app</name>

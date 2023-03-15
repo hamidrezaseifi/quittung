@@ -171,34 +171,40 @@
 	        </GridPane>
         
         </VBox>
-        <HBox GridPane.columnIndex="0" GridPane.rowIndex="4" spacing="0" alignment="CENTER_LEFT" fx:id="toggleStatusBox">
-			<fx:define>
-				<ToggleGroup fx:id="tgCalcGroup"/>
-			</fx:define>
-			<HBox spacing="10" fx:id="toggleButtonBox" visible="false">
-				<ToggleButton fx:id="tgb11" text="1.1" userData="1.1" toggleGroup="$tgCalcGroup" styleClass="calc-factor-toggle-button">
-				</ToggleButton>
-				<ToggleButton fx:id="tgb12" text="1.2" userData="1.2" toggleGroup="$tgCalcGroup" styleClass="calc-factor-toggle-button">
-				</ToggleButton>
-				<ToggleButton fx:id="tgb13" text="1.3" userData="1.3" toggleGroup="$tgCalcGroup" styleClass="calc-factor-toggle-button">
-				</ToggleButton>
-				<ToggleButton fx:id="tgb14" text="1.4" userData="1.4" toggleGroup="$tgCalcGroup" styleClass="calc-factor-toggle-button">
-				</ToggleButton>
-				<ToggleButton fx:id="tgb15" text="1.5" userData="1.5" toggleGroup="$tgCalcGroup" styleClass="calc-factor-toggle-button">
-				</ToggleButton>
-				<ToggleButton fx:id="tgb16" text="1.6" userData="1.6" toggleGroup="$tgCalcGroup" styleClass="calc-factor-toggle-button">
-				</ToggleButton>
-				<ToggleButton fx:id="tgb17" text="1.7" userData="1.7" toggleGroup="$tgCalcGroup" styleClass="calc-factor-toggle-button">
-				</ToggleButton>
-				<ToggleButton fx:id="tgb18" text="1.8" userData="1.8" toggleGroup="$tgCalcGroup" styleClass="calc-factor-toggle-button">
-				</ToggleButton>
-				<ToggleButton fx:id="tgb19" text="1.9" userData="1.9" toggleGroup="$tgCalcGroup" styleClass="calc-factor-toggle-button">
-				</ToggleButton>
-				<ToggleButton fx:id="tgb20" text="2.0" userData="2.0" toggleGroup="$tgCalcGroup" styleClass="calc-factor-toggle-button">
-				</ToggleButton>
+		<HBox GridPane.columnIndex="0" GridPane.rowIndex="4" spacing="0" alignment="CENTER_LEFT">
+			<Label fx:id="lblCalcFactor" text="Druck-Scale: " styleClass="calc-factor-label"></Label>
+			<HBox alignment="CENTER_LEFT" fx:id="toggleStatusBox">
+				<fx:define>
+					<ToggleGroup fx:id="tgCalcGroup"/>
+				</fx:define>
+				<HBox spacing="10" fx:id="toggleButtonBox" visible="false">
+					<ToggleButton fx:id="tgb10" text="1.1" userData="1.0" toggleGroup="$tgCalcGroup" styleClass="calc-factor-toggle-button">
+					</ToggleButton>
+					<ToggleButton fx:id="tgb11" text="1.1" userData="1.1" toggleGroup="$tgCalcGroup" styleClass="calc-factor-toggle-button">
+					</ToggleButton>
+					<ToggleButton fx:id="tgb12" text="1.2" userData="1.2" toggleGroup="$tgCalcGroup" styleClass="calc-factor-toggle-button">
+					</ToggleButton>
+					<ToggleButton fx:id="tgb13" text="1.3" userData="1.3" toggleGroup="$tgCalcGroup" styleClass="calc-factor-toggle-button">
+					</ToggleButton>
+					<ToggleButton fx:id="tgb14" text="1.4" userData="1.4" toggleGroup="$tgCalcGroup" styleClass="calc-factor-toggle-button">
+					</ToggleButton>
+					<ToggleButton fx:id="tgb15" text="1.5" userData="1.5" toggleGroup="$tgCalcGroup" styleClass="calc-factor-toggle-button">
+					</ToggleButton>
+					<ToggleButton fx:id="tgb16" text="1.6" userData="1.6" toggleGroup="$tgCalcGroup" styleClass="calc-factor-toggle-button">
+					</ToggleButton>
+					<ToggleButton fx:id="tgb17" text="1.7" userData="1.7" toggleGroup="$tgCalcGroup" styleClass="calc-factor-toggle-button">
+					</ToggleButton>
+					<ToggleButton fx:id="tgb18" text="1.8" userData="1.8" toggleGroup="$tgCalcGroup" styleClass="calc-factor-toggle-button">
+					</ToggleButton>
+					<ToggleButton fx:id="tgb19" text="1.9" userData="1.9" toggleGroup="$tgCalcGroup" styleClass="calc-factor-toggle-button">
+					</ToggleButton>
+					<ToggleButton fx:id="tgb20" text="2.0" userData="2.0" toggleGroup="$tgCalcGroup" styleClass="calc-factor-toggle-button">
+					</ToggleButton>
 
+
+				</HBox>
 			</HBox>
-        </HBox>
+		</HBox>
 
     </children>
 </GridPane>

@@ -491,3 +491,8 @@
     fx-border-radius: 5px;
 }
 
+.calc-factor-label {
+    -fx-padding: 5px 50px 5px 5px;
+    -fx-border-insets: 5px;
+    -fx-background-insets: 5px;
+}
