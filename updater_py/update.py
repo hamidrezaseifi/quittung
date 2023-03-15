@@ -1,5 +1,6 @@
 import os
 import shutil
+from pathlib import Path
 
 from google_drive_downloader import GoogleDriveDownloader as gdd
 import json
@@ -19,6 +20,13 @@ last_file_json_data = {}
 download_last_file_json_path = './last_file.json'
 
 extract_temp_path = "./temp_download"
+
+update_list_template = [
+    {"target": "data_manager/data_manager-0.0.8.jar"},
+    {"target": "data_manager/command.cfg"},
+    {"target": "rechnung_manager_app/rechnung_manager_app-0.0.8.jar"},
+    {"target": "rechnung_manager_app/command.cfg"},
+]
 
 
 def download_last_file_json():
@@ -64,6 +72,24 @@ if __name__ == '__main__':
     if os.path.exists(download_file_path):
         os.remove(download_file_path)
 
-    print('PyCharm')
+    update_list = [{
+        "source": os.path.join(extract_temp_path, i["target"]),
+        "target": "./" + i["target"],
+    } for i in update_list_template]
+
+    for item in update_list:
+        source_path = item["source"]
+        target_path = item["target"]
+        target_parent_path = Path(target_path).parent.absolute()
+        os.makedirs(target_parent_path, exist_ok=True)
+
+        shutil.move(source_path, target_path)
+
+    shutil.rmtree(extract_temp_path)
+
+    print(update_list)
+    print('Update is finish.........................')
+
+
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
