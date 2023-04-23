@@ -11,9 +11,12 @@ import de.seifi.rechnung_manager_app.models.CustomerModel;
 import de.seifi.rechnung_manager_app.models.RechnungItemProperty;
 import de.seifi.rechnung_manager_app.models.RechnungModel;
 import de.seifi.rechnung_manager_app.ui.FloatGeldLabel;
+import de.seifi.rechnung_manager_app.ui.FloatTextField;
 import de.seifi.rechnung_manager_app.utils.GeneralUtils;
 import de.seifi.rechnung_manager_app.utils.PrintUtils;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -115,6 +118,10 @@ public class RechnungController implements Initializable, ControllerBase {
     @FXML private ComboBox<PaymentType> cmbPaymentType;
 
     @FXML private ToggleGroup tgCalcGroup;
+
+    @FXML private FloatTextField txtAnzahlung;
+
+    @FXML private FloatGeldLabel lblRest;
 
     private RechnungBindingService rechnungBindingService;
 
@@ -350,6 +357,9 @@ public class RechnungController implements Initializable, ControllerBase {
             rechnungBindingService.calculateButtons();
         });
 
+        txtAnzahlung.valuePropertyProperty().bindBidirectional(rechnungBindingService.getAntahlungProperty());
+        lblRest.valueProperty().bind(rechnungBindingService.getRemainingProperty());
+
         KeyCombination kc = new KeyCodeCombination(KeyCode.T, KeyCombination.ALT_DOWN, KeyCombination.CONTROL_DOWN, KeyCombination.SHIFT_DOWN);
         if(this.rechnungType == RechnungType.QUITTUNG){
         	
@@ -464,7 +474,9 @@ public class RechnungController implements Initializable, ControllerBase {
         btnEdit.setVisible(true);
 
         cmbPaymentType.setDisable(true);
-        
+
+        txtAnzahlung.setDisable(true);
+
 		setItemsTableViewEditable(false);
 
         if(this.rechnungType == RechnungType.RECHNUNG){

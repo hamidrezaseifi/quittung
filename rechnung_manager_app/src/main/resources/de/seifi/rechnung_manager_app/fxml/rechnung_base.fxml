@@ -7,8 +7,9 @@
 <?import de.seifi.rechnung_manager_app.ui.FloatGeldLabel?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.geometry.Insets?>
+<?import de.seifi.rechnung_manager_app.ui.FloatTextField?>
 <GridPane alignment="TOP_LEFT" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
-          fx:id="rootPane">
+		  fx:id="rootPane">
     <columnConstraints>
         <ColumnConstraints hgrow="ALWAYS" />
     </columnConstraints>
@@ -145,7 +146,7 @@
 	            </columns>
 	
 	        </TableView>
-	        <GridPane alignment="TOP_RIGHT" prefHeight="90">
+	        <GridPane alignment="TOP_RIGHT" prefHeight="160">
 	            <columnConstraints>
 	                <ColumnConstraints hgrow="ALWAYS" />
 	                <ColumnConstraints hgrow="NEVER" prefWidth="120" />
@@ -153,10 +154,14 @@
 	            </columnConstraints>
 	            <rowConstraints>
 	                <RowConstraints prefHeight="20" vgrow="NEVER" />
-	                <RowConstraints prefHeight="40" vgrow="NEVER" />
-	                <RowConstraints prefHeight="40" vgrow="NEVER" />
-	                <RowConstraints prefHeight="40" vgrow="NEVER" />
-	                <RowConstraints prefHeight="40" vgrow="NEVER" />
+	                <RowConstraints prefHeight="60" vgrow="NEVER" />
+	                <RowConstraints prefHeight="60" vgrow="NEVER" />
+					<RowConstraints prefHeight="60" vgrow="NEVER" />
+					<RowConstraints prefHeight="60" vgrow="NEVER" />
+					<RowConstraints prefHeight="60" vgrow="NEVER" />
+					<RowConstraints prefHeight="60" vgrow="NEVER" />
+					<RowConstraints prefHeight="60" vgrow="NEVER" />
+					<RowConstraints prefHeight="60" vgrow="NEVER" />
 	            </rowConstraints>
 	            <children>
 	                <Label text="Nettosumme" GridPane.columnIndex="1" GridPane.rowIndex="1" styleClass="summe-label" textAlignment="LEFT" />
@@ -166,6 +171,10 @@
 	                <Line GridPane.columnSpan="2" GridPane.columnIndex="1" GridPane.rowIndex="3" strokeWidth="2" startX="40.0" startY="56.0" endX="330.0" endY="56.0"/>
 	                <Label text="Endsumme" GridPane.columnIndex="1" GridPane.rowIndex="4" textAlignment="LEFT" styleClass="summe-label" />
 	                <FloatGeldLabel fx:id="lblGesamt" GridPane.columnIndex="2" GridPane.rowIndex="4" prefWidth="170" styleClass="summe-value" textAlignment="RIGHT" />
+					<Label GridPane.columnIndex="1" GridPane.rowIndex="5" text="Anzahlung" styleClass="summe-label" textAlignment="LEFT"></Label>
+					<FloatTextField GridPane.columnIndex="2" GridPane.rowIndex="5" fx:id="txtAnzahlung" prefWidth="170"></FloatTextField>
+					<Label text="Rest" GridPane.columnIndex="1" GridPane.rowIndex="6" textAlignment="LEFT" styleClass="summe-label" />
+					<FloatGeldLabel fx:id="lblRest" GridPane.columnIndex="2" GridPane.rowIndex="6" prefWidth="170" styleClass="summe-value" textAlignment="RIGHT" />
 	            </children>
 	
 	        </GridPane>
@@ -178,7 +187,7 @@
 					<ToggleGroup fx:id="tgCalcGroup"/>
 				</fx:define>
 				<HBox spacing="10" fx:id="toggleButtonBox" visible="false">
-					<ToggleButton fx:id="tgb10" text="1.1" userData="1.0" toggleGroup="$tgCalcGroup" styleClass="calc-factor-toggle-button">
+					<ToggleButton fx:id="tgb10" text="1" userData="1.0" toggleGroup="$tgCalcGroup" styleClass="calc-factor-toggle-button">
 					</ToggleButton>
 					<ToggleButton fx:id="tgb11" text="1.1" userData="1.1" toggleGroup="$tgCalcGroup" styleClass="calc-factor-toggle-button">
 					</ToggleButton>

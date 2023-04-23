@@ -52,6 +52,8 @@ public class RechnungEntity extends EntityBase {
 	@Column(name="user_id")
 	private UUID userId;
 
+	private Float anzahlung;
+
 	@CreationTimestamp
 	@ColumnDefault("CURRENT_TIMESTAMP")
 	private LocalDateTime created;
@@ -70,6 +72,7 @@ public class RechnungEntity extends EntityBase {
 		this.paymentType = 1;
 		this.referenceId = null;
 		this.customerId = null;
+		this.anzahlung = 0f;
     }
 
 	public RechnungEntity(UUID customerId,
@@ -81,7 +84,8 @@ public class RechnungEntity extends EntityBase {
 						  int paymentType,
 						  int rechnungType,
 						  int status,
-						  UUID userId) {
+						  UUID userId,
+						  float anzahlung) {
 		this();
 		this.customerId = customerId;
 		this.referenceId = referenceId;
@@ -93,6 +97,7 @@ public class RechnungEntity extends EntityBase {
 		this.rechnungType = rechnungType;
 		this.rechnungVersion = rechnungVersion;
 		this.paymentType = paymentType;
+		this.anzahlung = anzahlung;
 	}
 
 	public RechnungEntity(UUID id,
@@ -106,6 +111,7 @@ public class RechnungEntity extends EntityBase {
 						  int rechnungType,
 						  int status,
 						  UUID userId,
+						  float anzahlung,
 						  LocalDateTime updated) {
 		this();
 		this.id = id;
@@ -120,6 +126,7 @@ public class RechnungEntity extends EntityBase {
 		this.rechnungVersion = rechnungVersion;
 		this.paymentType = paymentType;
 		this.updated = updated;
+		this.anzahlung = anzahlung;
 	}
 
 	public UUID getId() {
@@ -233,6 +240,14 @@ public class RechnungEntity extends EntityBase {
 
 	public void setUserId(UUID userId) {
 		this.userId = userId;
+	}
+
+	public Float getAnzahlung() {
+		return anzahlung;
+	}
+
+	public void setAnzahlung(Float anzahlung) {
+		this.anzahlung = anzahlung;
 	}
 
 	@Override

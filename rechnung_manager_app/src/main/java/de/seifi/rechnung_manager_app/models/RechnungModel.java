@@ -36,6 +36,9 @@ public class RechnungModel {
 
 	private UUID userId;
 
+	private float anzahlung;
+
+
 	private LocalDateTime created;
 	
 	private LocalDateTime updated;
@@ -50,7 +53,7 @@ public class RechnungModel {
 		this.items = new ArrayList<>();
 		this.rechnungVersion = 1;
 		this.referenceId = null;
-
+		this.anzahlung = 0;
     }
 
 	public RechnungModel(UUID referenceId,
@@ -61,7 +64,8 @@ public class RechnungModel {
 						 PaymentType paymentType,
 						 RechnungType rechnungType,
 						 RechnungStatus status,
-						 UUID userId) {
+						 UUID userId,
+						 float anzahlung) {
 		this();
 		this.referenceId = referenceId;
 		this.nummer = nummer;
@@ -72,6 +76,7 @@ public class RechnungModel {
 		this.rechnungType = rechnungType;
 		this.status = status;
 		this.userId = userId;
+		this.anzahlung = anzahlung;
 	}
 
 
@@ -86,6 +91,7 @@ public class RechnungModel {
 						 int rechnungType,
 						 int status,
 						 UUID userId,
+						 float anzahlung,
 						 LocalDateTime created,
 						 LocalDateTime updated) {
 		this();
@@ -102,6 +108,7 @@ public class RechnungModel {
         this.created = created;
         this.updated = updated;
 		this.userId = userId;
+		this.anzahlung = anzahlung;
 	}
 	
 	public boolean isNew() {
@@ -229,6 +236,14 @@ public class RechnungModel {
 		return created;
 	}
 
+	public float getAnzahlung() {
+		return anzahlung;
+	}
+
+	public void setAnzahlung(float anzahlung) {
+		this.anzahlung = anzahlung;
+	}
+
 	public void setCreated(LocalDateTime created) {
 		this.created = created;
 	}
@@ -274,6 +289,8 @@ public class RechnungModel {
 		return referenceId;
 	}
 
+
+
 	public RechnungModel clone(){
 		RechnungModel model = new RechnungModel(this.getId(),
 				this.getCustomerId(),
@@ -286,6 +303,7 @@ public class RechnungModel {
 				this.getRechnungType().getValue(),
 				this.getStatus().getValue(),
 				this.getUserId(),
+				this.anzahlung,
 				this.getCreated(),
 				this.getUpdated());
 

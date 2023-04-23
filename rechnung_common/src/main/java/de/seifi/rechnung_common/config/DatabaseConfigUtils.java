@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.flyway.FlywayDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -84,6 +85,7 @@ public class DatabaseConfigUtils extends ConfigReader {
 	}
 
 	@Bean
+	@FlywayDataSource
     public DataSource dataSource() {
 		readConfig();
 		

@@ -15,6 +15,7 @@ import de.seifi.rechnung_manager_app.ui.UiUtils;
 import de.seifi.rechnung_manager_app.utils.GeneralUtils;
 import de.seifi.rechnung_manager_app.utils.GerldCalculator;
 import javafx.beans.property.*;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -28,6 +29,8 @@ public class RechnungBindingService implements IBindingService<RechnungItemPrope
 	
     private int INITIAL_ITEMS = 10;
 
+    private FloatProperty anzahlungProperty;
+    private FloatProperty remainingProperty;
     private final RechnungRepository rechnungRepository;
     private final IRechnungDataHelper rechnungDataHelper;
     //private final CustomerRepository customerRepository;
@@ -101,12 +104,18 @@ public class RechnungBindingService implements IBindingService<RechnungItemPrope
         rechnungNummer = new SimpleStringProperty();
         rechnungDatum = new SimpleStringProperty();
         paymentTypeProperty = new SimpleObjectProperty<>(PaymentType.NOT_SET);
+        anzahlungProperty = new SimpleFloatProperty(0);
+        remainingProperty = new SimpleFloatProperty(0);
         
         disableSave = new SimpleBooleanProperty(true);
         disablePrint = new SimpleBooleanProperty(false);
         visbleToggleStatusBox = new SimpleBooleanProperty(rechnungType == RechnungType.QUITTUNG);
         
         this.rechnungItems = FXCollections.observableArrayList();
+
+        anzahlungProperty.addListener((v)-> {
+            calculateRechnungSumme();
+        });
         
         reset();
 
@@ -149,6 +158,7 @@ public class RechnungBindingService implements IBindingService<RechnungItemPrope
         nettoSumme.set(netto);
         mvstSumme.set(netto * 19 / 100);
         gesamtSumme.set(nettoSumme.getValue() + mvstSumme.getValue());
+        remainingProperty.set(gesamtSumme.getValue() - anzahlungProperty.get());
     }
 
     public ObservableList<RechnungItemProperty> getRechnungItems() {
@@ -212,7 +222,7 @@ public class RechnungBindingService implements IBindingService<RechnungItemPrope
 	        customerModelProperty = new CustomerModelProperty();
 
 	        RechnungModel model = new RechnungModel(null, 0, "", "", 1,
-                    PaymentType.NOT_SET, rechnungType, RechnungStatus.ACTIVE, RechnungManagerFxApp.loggedUser);
+                    PaymentType.NOT_SET, rechnungType, RechnungStatus.ACTIVE, RechnungManagerFxApp.loggedUser, 0);
 
 
             initializeRechnungModel(model);
@@ -255,6 +265,7 @@ public class RechnungBindingService implements IBindingService<RechnungItemPrope
         this.rechnungNummer.set(String.valueOf(rechnungSavingModel.getNummer()));
         this.rechnungDatum.set(rechnungSavingModel.getRechnungCreate());
         this.paymentTypeProperty.set(rechnungSavingModel.getPaymentType());
+        this.anzahlungProperty.set(rechnungSavingModel.getAnzahlung());
 	}
 
     public List<CustomerSelectModel> getCustomerSelectList() {
@@ -385,6 +396,7 @@ public class RechnungBindingService implements IBindingService<RechnungItemPrope
         }
 
         rechnungSavingModel.setPaymentType(this.paymentTypeProperty.get());
+        rechnungSavingModel.setAnzahlung(this.anzahlungProperty.getValue());
         rechnungSavingModel.getItems().clear();
         rechnungSavingModel.getItems().addAll(getSavingRechnungItems());
 
@@ -521,6 +533,7 @@ public class RechnungBindingService implements IBindingService<RechnungItemPrope
 
         this.rechnungSavingModel = rechnungModel;
         this.paymentTypeProperty.set(this.rechnungSavingModel.getPaymentType());
+        this.anzahlungProperty.set(this.rechnungSavingModel.getAnzahlung());
 
 		rechnungModel.getItems().forEach(r -> addNewRowIntern(new RechnungItemProperty(r)));
 		
@@ -590,5 +603,13 @@ public class RechnungBindingService implements IBindingService<RechnungItemPrope
         if(this.visbleToggleStatusBox.get()) {
             this.visbleToggleStatusBox.set(this.disableSave.get());
         }
+    }
+
+    public Property<Number> getAntahlungProperty() {
+        return this.anzahlungProperty;
+    }
+
+    public ObservableValue<? extends Number> getRemainingProperty() {
+        return remainingProperty;
     }
 }

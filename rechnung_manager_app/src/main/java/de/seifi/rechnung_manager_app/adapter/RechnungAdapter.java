@@ -12,13 +12,13 @@ public class RechnungAdapter extends AdapterBase<RechnungEntity, RechnungModel> 
 			entity = new RechnungEntity(model.getCustomerId(), model.getReferenceId(), model.getNummer(),
 					model.getRechnungCreate(), model.getLiferDate(), model.getRechnungVersion(),
 					model.getPaymentType().getValue(), model.getRechnungType().getValue(), model.getStatus().getValue(),
-					model.getUserId());
+					model.getUserId(), model.getAnzahlung());
 		} 
 		else {
 			entity = new RechnungEntity(model.getId(), model.getReferenceId(), model.getCustomerId(), model.getNummer(),
 					model.getRechnungCreate(), model.getLiferDate(), model.getRechnungVersion(),
 					model.getPaymentType().getValue(), model.getRechnungType().getValue(), model.getStatus().getValue(),
-					model.getUserId(), model.getUpdated());
+					model.getUserId(), model.getAnzahlung(), model.getUpdated());
 		}
 		
 		RechnungItemAdapter itemAdapter = new RechnungItemAdapter();
@@ -32,7 +32,7 @@ public class RechnungAdapter extends AdapterBase<RechnungEntity, RechnungModel> 
 		RechnungModel model = new RechnungModel(entity.getId(), entity.getCustomerId(), entity.getReferenceId(),
 				entity.getNummer(), entity.getRechnungCreate(), entity.getLiferDate(), entity.getRechnungVersion(),
 				entity.getPaymentType(), entity.getRechnungType(), entity.getStatus(), entity.getUserId(),
-				entity.getCreated(), entity.getUpdated());
+												entity.getAnzahlung(), entity.getCreated(), entity.getUpdated());
 		
 		RechnungItemAdapter itemAdapter = new RechnungItemAdapter();
 		model.setItems(itemAdapter.toModelList(entity.getItems()));
