@@ -29,7 +29,7 @@ public class RechnungBindingService implements IBindingService<RechnungItemPrope
 	
     private int INITIAL_ITEMS = 10;
 
-    private FloatProperty anzahlungProperty;
+    private StringProperty anzahlungStringProperty;
     private FloatProperty remainingProperty;
     private final RechnungRepository rechnungRepository;
     private final IRechnungDataHelper rechnungDataHelper;
@@ -104,7 +104,7 @@ public class RechnungBindingService implements IBindingService<RechnungItemPrope
         rechnungNummer = new SimpleStringProperty();
         rechnungDatum = new SimpleStringProperty();
         paymentTypeProperty = new SimpleObjectProperty<>(PaymentType.NOT_SET);
-        anzahlungProperty = new SimpleFloatProperty(0);
+        anzahlungStringProperty = new SimpleStringProperty("0");
         remainingProperty = new SimpleFloatProperty(0);
         
         disableSave = new SimpleBooleanProperty(true);
@@ -113,7 +113,7 @@ public class RechnungBindingService implements IBindingService<RechnungItemPrope
         
         this.rechnungItems = FXCollections.observableArrayList();
 
-        anzahlungProperty.addListener((v)-> {
+        anzahlungStringProperty.addListener((v)-> {
             calculateRechnungSumme();
         });
         
@@ -158,7 +158,7 @@ public class RechnungBindingService implements IBindingService<RechnungItemPrope
         nettoSumme.set(netto);
         mvstSumme.set(netto * 19 / 100);
         gesamtSumme.set(nettoSumme.getValue() + mvstSumme.getValue());
-        remainingProperty.set(gesamtSumme.getValue() - anzahlungProperty.get());
+        remainingProperty.set(gesamtSumme.getValue() - GeneralUtils.stringToFloat(anzahlungStringProperty.get()));
     }
 
     public ObservableList<RechnungItemProperty> getRechnungItems() {
@@ -265,7 +265,7 @@ public class RechnungBindingService implements IBindingService<RechnungItemPrope
         this.rechnungNummer.set(String.valueOf(rechnungSavingModel.getNummer()));
         this.rechnungDatum.set(rechnungSavingModel.getRechnungCreate());
         this.paymentTypeProperty.set(rechnungSavingModel.getPaymentType());
-        this.anzahlungProperty.set(rechnungSavingModel.getAnzahlung());
+        this.anzahlungStringProperty.set(String.valueOf(rechnungSavingModel.getAnzahlung()));
 	}
 
     public List<CustomerSelectModel> getCustomerSelectList() {
@@ -396,7 +396,7 @@ public class RechnungBindingService implements IBindingService<RechnungItemPrope
         }
 
         rechnungSavingModel.setPaymentType(this.paymentTypeProperty.get());
-        rechnungSavingModel.setAnzahlung(this.anzahlungProperty.getValue());
+        rechnungSavingModel.setAnzahlung(GeneralUtils.stringToFloat(this.anzahlungStringProperty.getValue()));
         rechnungSavingModel.getItems().clear();
         rechnungSavingModel.getItems().addAll(getSavingRechnungItems());
 
@@ -533,7 +533,7 @@ public class RechnungBindingService implements IBindingService<RechnungItemPrope
 
         this.rechnungSavingModel = rechnungModel;
         this.paymentTypeProperty.set(this.rechnungSavingModel.getPaymentType());
-        this.anzahlungProperty.set(this.rechnungSavingModel.getAnzahlung());
+        this.anzahlungStringProperty.set(String.valueOf(this.rechnungSavingModel.getAnzahlung()));
 
 		rechnungModel.getItems().forEach(r -> addNewRowIntern(new RechnungItemProperty(r)));
 		
@@ -605,8 +605,8 @@ public class RechnungBindingService implements IBindingService<RechnungItemPrope
         }
     }
 
-    public Property<Number> getAntahlungProperty() {
-        return this.anzahlungProperty;
+    public StringProperty getAntahlungProperty() {
+        return this.anzahlungStringProperty;
     }
 
     public ObservableValue<? extends Number> getRemainingProperty() {

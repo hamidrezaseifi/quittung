@@ -357,7 +357,7 @@ public class RechnungController implements Initializable, ControllerBase {
             rechnungBindingService.calculateButtons();
         });
 
-        txtAnzahlung.valuePropertyProperty().bindBidirectional(rechnungBindingService.getAntahlungProperty());
+        txtAnzahlung.textProperty().bindBidirectional(rechnungBindingService.getAntahlungProperty());
         lblRest.valueProperty().bind(rechnungBindingService.getRemainingProperty());
 
         KeyCombination kc = new KeyCodeCombination(KeyCode.T, KeyCombination.ALT_DOWN, KeyCombination.CONTROL_DOWN, KeyCombination.SHIFT_DOWN);

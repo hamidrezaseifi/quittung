@@ -17,4 +17,14 @@ public class GeneralUtils {
         String date = dateFormatter.format(ldt);
         return date;
     }
+
+    public static float stringToFloat(String value){
+        if(value == null){
+            return 0;
+
+        }
+        value = value.replace(",", ".").trim();
+
+        return Float.parseFloat(value);
+    }
 }
