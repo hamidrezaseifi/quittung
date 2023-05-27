@@ -496,7 +496,7 @@ WHERE
 				<textElement>
 					<font fontName="Arial"/>
 				</textElement>
-				<text><![CDATA[Tel.  0511/86022365]]></text>
+				<text><![CDATA[Tel 1.  0163/1555985]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="11" y="233" width="118" height="16" uuid="77bf3129-0baf-4efe-aadc-c835d52eabdf">
@@ -505,7 +505,7 @@ WHERE
 				<textElement>
 					<font fontName="Tahoma"/>
 				</textElement>
-				<text><![CDATA[Fax. 0511/86022367]]></text>
+				<text><![CDATA[Tel 2.  0176/31452352]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="175" y="183" width="170" height="16" uuid="f19386ed-b141-4865-a86d-e6fab43476b4">
@@ -532,7 +532,7 @@ WHERE
 				<textElement>
 					<font fontName="Arial"/>
 				</textElement>
-				<text><![CDATA[BIC SPKHDE2hXXX]]></text>
+				<text><![CDATA[BIC SPKHDE2HXXX]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="380" y="184" width="150" height="16" uuid="2e28ec30-145e-4be4-89c0-927541b30ffd">

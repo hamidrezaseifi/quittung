@@ -11,7 +11,7 @@
 	<packaging>pom</packaging>
 
 	<properties>
-		<rechnung_app.version>0.0.8</rechnung_app.version>
+		<rechnung_app.version>0.0.9</rechnung_app.version>
 		<javafx.version>17.0.1</javafx.version>
 		<javafx.maven.plugin.version>0.0.8</javafx.maven.plugin.version>
 		<maven.compiler.release>11</maven.compiler.release>
