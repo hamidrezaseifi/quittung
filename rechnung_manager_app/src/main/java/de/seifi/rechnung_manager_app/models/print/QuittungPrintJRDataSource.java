@@ -17,11 +17,15 @@ public class QuittungPrintJRDataSource extends PrintJRDataSourceBase {
     private final List<QuittungPrintJRRow> rows;
 
     private final String createDate;
+    private final float anzahlung;
+    private final float restZahlung;
 
     public QuittungPrintJRDataSource(List<QuittungPrintJRRow> rows,
                                      String createDate) {
         this.rows = rows;
         this.createDate = createDate;
+        this.anzahlung = 0;
+        this.restZahlung = this.getTotalNeto();
     }
 
     public QuittungPrintJRDataSource(RechnungModel rechnungModel) {
@@ -29,6 +33,8 @@ public class QuittungPrintJRDataSource extends PrintJRDataSourceBase {
                 Collectors.toList());
 
         this.createDate = rechnungModel.getRechnungCreate();
+        this.anzahlung = rechnungModel.getAnzahlung();
+        this.restZahlung = rechnungModel.getRestZahlung();
     }
 
     private QuittungPrintJRRow extractQuittungPrintJRRow(RechnungModel rechnungModel,
@@ -91,6 +97,9 @@ public class QuittungPrintJRDataSource extends PrintJRDataSourceBase {
         printParameterMap.put(IPrintJRDataSource.PARAMETER_TOTAL_NETO, totalNeto);
         printParameterMap.put(IPrintJRDataSource.PARAMETER_TOTAL_MWT, totalNeto * 19 / 100);
         printParameterMap.put(IPrintJRDataSource.PARAMETER_LOGO_PATH, RechnungManagerFxApp.getLocalJasperPrintLogoPath());
+
+        printParameterMap.put(IPrintJRDataSource.PARAMETER_ANZAHLUNG, this.anzahlung);
+        printParameterMap.put(IPrintJRDataSource.PARAMETER_REST_ZAHLUNG, this.restZahlung);
 
         return printParameterMap;
     }

@@ -87,6 +87,18 @@
                     </cellValueFactory>
 
                 </TableColumn>
+                <TableColumn fx:id="anzahlungColumn" editable="false" text="Anzahlung" sortable="true" prefWidth="120">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="anzahlung" />
+                    </cellValueFactory>
+
+                </TableColumn>
+                <TableColumn fx:id="restZahlungColumn" editable="false" text="Rest" sortable="true" prefWidth="120">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="restZahlung" />
+                    </cellValueFactory>
+
+                </TableColumn>
                 <TableColumn fx:id="toolsColumn" text="..." prefWidth="100" editable="false" sortable="false">
                     
                     <cellFactory>

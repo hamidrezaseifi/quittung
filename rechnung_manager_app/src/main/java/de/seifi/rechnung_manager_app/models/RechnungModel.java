@@ -244,6 +244,10 @@ public class RechnungModel {
 		this.anzahlung = anzahlung;
 	}
 
+	public float getRestZahlung() {
+		return getGesamt() - anzahlung;
+	}
+
 	public void setCreated(LocalDateTime created) {
 		this.created = created;
 	}

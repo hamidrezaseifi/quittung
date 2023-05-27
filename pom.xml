@@ -5,7 +5,7 @@
 	
 	<groupId>de.seifi</groupId>
 	<artifactId>rechnung_manager</artifactId>
-	<version>0.0.8</version>
+	<version>0.0.9</version>
 	<name>rechnung_manager</name>
 	<description>rechnung_manager</description>
 	<packaging>pom</packaging>

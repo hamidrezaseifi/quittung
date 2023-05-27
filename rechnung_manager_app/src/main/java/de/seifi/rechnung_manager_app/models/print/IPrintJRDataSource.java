@@ -10,5 +10,9 @@ public interface IPrintJRDataSource {
     static final String PARAMETER_LOGO_PATH = "logo_path";
     static final String RECHNUNG_CREATE_DATE = "rechnung_create";
 
+    static final String PARAMETER_ANZAHLUNG = "anzahlung";
+
+    static final String PARAMETER_REST_ZAHLUNG = "rest_zahlung";
+
     Map<String, Object> getPrintParameter() throws IOException;
 }

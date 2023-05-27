@@ -7,13 +7,10 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-import de.seifi.rechnung_common.repositories.CustomerRepository;
-import de.seifi.rechnung_common.repositories.ProduktRepository;
 import de.seifi.rechnung_manager_app.RechnungManagerFxApp;
 import de.seifi.rechnung_manager_app.RechnungManagerSpringApp;
 import de.seifi.rechnung_manager_app.fx_services.RechnungReportBindingService;
 import de.seifi.rechnung_manager_app.models.CustomerModel;
-import de.seifi.rechnung_manager_app.models.ProduktModel;
 import de.seifi.rechnung_manager_app.models.RechnungReportItemModel;
 import de.seifi.rechnung_manager_app.services.ICustomerService;
 import de.seifi.rechnung_manager_app.services.IRechnungService;
@@ -47,7 +44,11 @@ public class RechnungReportController implements Initializable, ControllerBase {
     @FXML private TableColumn<RechnungReportItemModel, String> produktListColumn;
 
     @FXML private TableColumn<RechnungReportItemModel, String> gesamtColumn;
-    
+
+    @FXML private TableColumn<RechnungReportItemModel, String> anzahlungColumn;
+
+    @FXML private TableColumn<RechnungReportItemModel, String> restZahlungColumn;
+
     @FXML private TableColumn<RechnungReportItemModel, String> toolsColumn;
 
     @FXML private Label lblFilter;
@@ -166,8 +167,9 @@ public class RechnungReportController implements Initializable, ControllerBase {
                                     paymentTypeColumn.widthProperty()).subtract(
                                         rechnungColumn.widthProperty()).subtract(
                                                     toolsColumn.widthProperty()).subtract(
-                                                        gesamtColumn.widthProperty()).subtract(5)
-                                                                                   );
+                        gesamtColumn.widthProperty()).subtract(
+                        anzahlungColumn.widthProperty()).subtract(
+                        restZahlungColumn.widthProperty()).subtract(5));
 
         reportTableView.setItems(bindingService.getReportItems());
         reportTableView.setUserData(bindingService);

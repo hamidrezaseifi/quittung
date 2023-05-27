@@ -63,6 +63,8 @@
 	<parameter name="total_rows" class="java.lang.Integer"/>
 	<parameter name="logo_path" class="java.lang.String"/>
 	<parameter name="rechnung_create" class="java.lang.String"/>
+	<parameter name="anzahlung" class="java.lang.Float"/>
+	<parameter name="rest_zahlung" class="java.lang.Float"/>
 	<queryString language="SQL">
 		<![CDATA[SELECT rechnung_item.produkt,
 	rechnung_item.artikel_nummer,
@@ -393,16 +395,16 @@ WHERE
 		</band>
 	</columnFooter>
 	<pageFooter>
-		<band height="240">
+		<band height="280">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<line>
-				<reportElement x="10" y="163" width="535" height="1" uuid="0ea21b52-ea69-46ab-908b-27795993cd36">
+				<reportElement x="10" y="202" width="535" height="1" uuid="0ea21b52-ea69-46ab-908b-27795993cd36">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 			</line>
 			<staticText>
-				<reportElement x="10" y="108" width="534" height="16" uuid="aef072f3-4dd7-4592-8a5d-47c820388486">
+				<reportElement x="10" y="147" width="534" height="16" uuid="aef072f3-4dd7-4592-8a5d-47c820388486">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
@@ -411,7 +413,7 @@ WHERE
 				<text><![CDATA[Warenrückgabe nur innerhalb von 7 Werktagen gegen eine Gutschrift und minus 15% Bearbeitungsgebühr.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="10" y="125" width="534" height="16" uuid="cef3d6fe-19c4-4bd4-a596-38c29273dd8b">
+				<reportElement x="10" y="164" width="534" height="16" uuid="cef3d6fe-19c4-4bd4-a596-38c29273dd8b">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
@@ -420,7 +422,7 @@ WHERE
 				<text><![CDATA[Elektronik, ausgepackte sowie reduzierte Ware und Autoreifen sind von Umtausch Ausgeschlossen.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="11" y="141" width="534" height="16" uuid="a9480428-b555-4b86-9370-ee7518a46c77">
+				<reportElement x="11" y="180" width="534" height="16" uuid="a9480428-b555-4b86-9370-ee7518a46c77">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
@@ -429,7 +431,7 @@ WHERE
 				<text><![CDATA[Bitte überweisen Sie den Betrag unter Angaben der Rechnungsnummer innerhalb von 8 Werktagen auf das untenstehende Konto.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="11" y="170" width="118" height="16" uuid="fc571884-d512-478f-8c23-f4263fc32fd2">
+				<reportElement x="11" y="209" width="118" height="16" uuid="fc571884-d512-478f-8c23-f4263fc32fd2">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
@@ -438,7 +440,7 @@ WHERE
 				<text><![CDATA[Kurt-Schumacher-Str: 30]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="11" y="187" width="118" height="16" uuid="423481a8-ba92-4de4-946b-edada1e9f464">
+				<reportElement x="11" y="226" width="118" height="16" uuid="423481a8-ba92-4de4-946b-edada1e9f464">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
@@ -447,7 +449,7 @@ WHERE
 				<text><![CDATA[30159 Hannover]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="11" y="204" width="118" height="16" uuid="9e57bfd2-be39-48e3-8f29-748e8634443b">
+				<reportElement x="11" y="243" width="118" height="16" uuid="9e57bfd2-be39-48e3-8f29-748e8634443b">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
@@ -456,7 +458,7 @@ WHERE
 				<text><![CDATA[Tel.  0511/86022365]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="11" y="220" width="118" height="16" uuid="77bf3129-0baf-4efe-aadc-c835d52eabdf">
+				<reportElement x="11" y="259" width="118" height="16" uuid="77bf3129-0baf-4efe-aadc-c835d52eabdf">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
@@ -465,7 +467,7 @@ WHERE
 				<text><![CDATA[Fax. 0511/86022367]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="175" y="170" width="170" height="16" uuid="f19386ed-b141-4865-a86d-e6fab43476b4">
+				<reportElement x="175" y="209" width="170" height="16" uuid="f19386ed-b141-4865-a86d-e6fab43476b4">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
@@ -474,7 +476,7 @@ WHERE
 				<text><![CDATA[Sparkasse Hannover]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="175" y="187" width="170" height="16" uuid="80303e80-6846-44f5-afc9-0af44bc45537">
+				<reportElement x="175" y="226" width="170" height="16" uuid="80303e80-6846-44f5-afc9-0af44bc45537">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
@@ -483,7 +485,7 @@ WHERE
 				<text><![CDATA[IBAN DE 87 2505 0180 0910 4996 08]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="175" y="204" width="170" height="16" uuid="da1a1cfd-3ec5-4d03-9f5c-4773e65ab1a4">
+				<reportElement x="175" y="243" width="170" height="16" uuid="da1a1cfd-3ec5-4d03-9f5c-4773e65ab1a4">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
@@ -492,7 +494,7 @@ WHERE
 				<text><![CDATA[BIC SPKHDE2hXXX]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="380" y="171" width="150" height="16" uuid="2e28ec30-145e-4be4-89c0-927541b30ffd">
+				<reportElement x="380" y="210" width="150" height="16" uuid="2e28ec30-145e-4be4-89c0-927541b30ffd">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
@@ -501,7 +503,7 @@ WHERE
 				<text><![CDATA[Email: Autoteile-Nima@web.de]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="380" y="188" width="150" height="16" uuid="82e44677-b162-4cca-aef3-2882915be52b">
+				<reportElement x="380" y="227" width="150" height="16" uuid="82e44677-b162-4cca-aef3-2882915be52b">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
@@ -510,7 +512,7 @@ WHERE
 				<text><![CDATA[Steuer-Nr. 25/121/22623]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="380" y="205" width="150" height="16" uuid="3b2048d6-9125-4565-88a1-5554bcca5f22">
+				<reportElement x="380" y="244" width="150" height="16" uuid="3b2048d6-9125-4565-88a1-5554bcca5f22">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
@@ -574,7 +576,7 @@ WHERE
 				<textFieldExpression><![CDATA[String.format("%.2f \u20AC", $P{mwt})]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="10" y="80" width="534" height="28" uuid="e6639dba-156d-4a71-a1e1-ddf166d81436">
+				<reportElement x="10" y="119" width="534" height="28" uuid="e6639dba-156d-4a71-a1e1-ddf166d81436">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement verticalAlignment="Middle">
@@ -582,6 +584,45 @@ WHERE
 				</textElement>
 				<text><![CDATA[Danke für Ihren Einkauf]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="22" y="85" width="118" height="16" uuid="36870a19-10ab-4f31-9f72-1209f9c77829">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Anzahlung]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="278" y="85" width="90" height="17" uuid="6fffce79-652f-43e7-a571-97800834cd21"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[String.format("%.2f \u20AC", $P{anzahlung})]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="Column header" positionType="Float" mode="Opaque" x="380" y="80" width="62" height="30" forecolor="#FFFCFF" backcolor="#000000" uuid="5b042827-3b4f-4f6b-8743-7e8b076b123f">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1d2f3530-21eb-4b63-8588-2076a6669d3c"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+					<paragraph lineSpacingSize="1.0" leftIndent="10"/>
+				</textElement>
+				<text><![CDATA[Rest]]></text>
+			</staticText>
+			<textField>
+				<reportElement mode="Opaque" x="442" y="80" width="101" height="30" forecolor="#FFFFFF" backcolor="#000000" uuid="3d1f1c0b-613b-4675-a6bf-ab0cf8184c30">
+					<property name="com.jaspersoft.studio.unit.firstLineIndent" value="px"/>
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+					<paragraph firstLineIndent="0" rightIndent="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA[String.format("%.2f \u20AC", $P{rest_zahlung})]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageFooter>
 </jasperReport>
