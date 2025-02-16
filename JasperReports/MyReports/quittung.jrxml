@@ -434,7 +434,8 @@ WHERE
 				<textElement>
 					<font fontName="Arial"/>
 				</textElement>
-				<text><![CDATA[Kurt-Schumacher-Str: 30]]></text>
+				<text><![CDATA[Otto-Brenner-Straße 14
+]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="11" y="165" width="118" height="16" uuid="423481a8-ba92-4de4-946b-edada1e9f464">
